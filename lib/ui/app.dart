@@ -1,3 +1,4 @@
+import 'package:dating_app/ui/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 
 class App extends StatelessWidget {
@@ -5,12 +6,10 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Container(),
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Dating App',
+      home: WelcomeScreen(),
     );
   }
 }
