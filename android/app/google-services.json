@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1060438574529",
+    "project_id": "dating-app-95830",
+    "storage_bucket": "dating-app-95830.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1060438574529:android:17585e273f3c71a0fe5b40",
+        "android_client_info": {
+          "package_name": "com.dimporg.dating_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1060438574529-6fhglm7dcm6mqnr5e4bc278kbeo3450c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzuxh9ZcfPbGX6MQ11B-jbGfYtcvG0bK4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1060438574529-6fhglm7dcm6mqnr5e4bc278kbeo3450c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
