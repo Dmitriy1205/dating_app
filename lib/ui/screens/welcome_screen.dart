@@ -1,3 +1,4 @@
+import 'package:dating_app/ui/screens/reflow_screen.dart';
 import 'package:flutter/material.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -20,7 +21,12 @@ class WelcomeScreen extends StatelessWidget {
             children: [
               ElevatedButton(
                 onPressed: () {
-                  //TODO: navigation to pre sign up screen
+                  Navigator.push<void>(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ReflowScreen(),
+                    ),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                     primary: Colors.transparent,
