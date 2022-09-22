@@ -1,9 +1,11 @@
 import 'package:dating_app/core/constants.dart';
 import 'package:dating_app/ui/screens/login_screen.dart';
 import 'package:dating_app/ui/widgets/field_decor.dart';
+import 'package:dating_app/ui/widgets/picker.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import '../../core/functions/validation.dart';
 
@@ -116,7 +118,13 @@ class _SignUpFormState extends State<SignUpForm> {
                             useEmoji: true,
                           ),
                           textFieldController: _phoneController,
-                          onInputChanged: null,
+                          onInputChanged: (phone) {
+                            phone.phoneNumber!;
+                          },
+                          onSaved: (value) {
+                            _phoneController.text = value.phoneNumber!;
+                          },
+                          formatInput: false,
                           inputDecoration: authFieldDecor('Phone Number'),
                           selectorTextStyle: TextStyle(
                             color: Colors.grey[700],
@@ -131,8 +139,19 @@ class _SignUpFormState extends State<SignUpForm> {
                         TextFormField(
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           controller: _dateController,
+                          autocorrect: false,
                           decoration: authFieldDecor('Date of Birth'),
                           validator: validateDateField,
+                          onTap: () async {
+                            DateTime? date = DateTime(1900);
+                            DateFormat formatter = DateFormat('dd-MM-yyyy');
+                            FocusScope.of(context).requestFocus(FocusNode());
+                            date = await Picker().birthDatePicker(context);
+                            _dateController.text = formatter.format(date!);
+                          },
+                          onSaved: (value) {
+                            _dateController.text = value!.trim();
+                          },
                         ),
                         const SizedBox(
                           height: 20,
@@ -245,7 +264,8 @@ class _SignUpFormState extends State<SignUpForm> {
                                               Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
-                                                      builder: (contect) => LoginScreen()));
+                                                      builder: (contect) =>
+                                                          LoginScreen()));
                                             }),
                                     ],
                                   ),
@@ -262,7 +282,6 @@ class _SignUpFormState extends State<SignUpForm> {
             ),
           ),
         ),
-
       ],
     );
   }
@@ -270,5 +289,20 @@ class _SignUpFormState extends State<SignUpForm> {
   void submit(context) {
     if (!_formKey.currentState!.validate()) return;
     _formKey.currentState!.save();
+    print(_nameController.text);
+    print(_phoneController.text);
+    print(_dateController.text);
+    print(_emailController.text);
+    const snackBar = SnackBar(
+      backgroundColor: Colors.teal,
+      content: Text(
+        'Success',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
