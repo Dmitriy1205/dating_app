@@ -1,3 +1,4 @@
+import 'package:dating_app/core/constants.dart';
 import 'package:dating_app/ui/screens/sing_up_screen.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ class ReflowScreen extends StatelessWidget {
           alignment: Alignment.center,
           children: [
             Image.asset(
-              'assets/images/comm.png',
+              Background.reflow,
               fit: BoxFit.fill,
             ),
             Padding(
@@ -74,7 +75,7 @@ class ReflowScreen extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pushReplacement(
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const SignUpScreen(),
@@ -219,7 +220,7 @@ Widget buildTextColumn() {
             TextSpan(
                 text: 'Terms and Conditions',
                 style: TextStyle(
-                  color: Colors.pinkAccent[200],
+                  color: Colors.orange[800],
                   fontSize: 12,
                 ),
                 recognizer: TapGestureRecognizer()
