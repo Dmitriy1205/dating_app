@@ -17,18 +17,11 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
-  bool isChecked = false;
-  final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
-  final _dateController = TextEditingController();
-  final _emailController = TextEditingController();
 
   @override
   void dispose() {
-    _nameController.dispose();
     _phoneController.dispose();
-    _dateController.dispose();
-    _emailController.dispose();
     super.dispose();
   }
 
@@ -96,7 +89,13 @@ class _LoginFormState extends State<LoginForm> {
                           useEmoji: true,
                         ),
                         textFieldController: _phoneController,
-                        onInputChanged: null,
+                        onInputChanged: (phone) {
+                          phone.phoneNumber!;
+                        },
+                        onSaved: (value) {
+                          _phoneController.text = value.phoneNumber!;
+                        },
+                        formatInput: false,
                         inputDecoration: authFieldDecor('Phone Number'),
                         selectorTextStyle: TextStyle(
                           color: Colors.grey[700],
@@ -110,9 +109,9 @@ class _LoginFormState extends State<LoginForm> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                                submit(context);
-                                //TODO: navigation to profile
-                              },
+                          submit(context);
+                          //TODO: navigation to profile
+                        },
                         style: ElevatedButton.styleFrom(
                             primary: Colors.transparent,
                             padding: EdgeInsets.zero,
@@ -139,7 +138,9 @@ class _LoginFormState extends State<LoginForm> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 25,),
+                      SizedBox(
+                        height: 25,
+                      ),
                       Center(
                         child: RichText(
                           text: TextSpan(
@@ -162,7 +163,8 @@ class _LoginFormState extends State<LoginForm> {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (contect) => SignUpScreen()));
+                                              builder: (contect) =>
+                                                  SignUpScreen()));
                                     }),
                             ],
                           ),
@@ -198,8 +200,10 @@ class _LoginFormState extends State<LoginForm> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
-                    FaIcon(FontAwesomeIcons.apple,color: Colors.black),
-                    SizedBox(width: 30,),
+                    FaIcon(FontAwesomeIcons.apple, color: Colors.black),
+                    SizedBox(
+                      width: 30,
+                    ),
                     Text(
                       'SIGN IN WITH APPLE',
                       style: TextStyle(color: Colors.black),
@@ -219,7 +223,7 @@ class _LoginFormState extends State<LoginForm> {
                   shadowColor: Colors.white,
                   elevation: 0,
                   fixedSize: const Size(340, 55),
-                  side:  BorderSide(color: Colors.blue),
+                  side: BorderSide(color: Colors.blue),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
@@ -228,8 +232,10 @@ class _LoginFormState extends State<LoginForm> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    FaIcon(FontAwesomeIcons.facebookF,color: Colors.blue[800]),
-                    const SizedBox(width: 10,),
+                    FaIcon(FontAwesomeIcons.facebookF, color: Colors.blue[800]),
+                    const SizedBox(
+                      width: 10,
+                    ),
                     Text(
                       'SIGN IN WITH FACEBOOK',
                       style: TextStyle(color: Colors.blue[800]),
@@ -257,17 +263,18 @@ class _LoginFormState extends State<LoginForm> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    FaIcon(FontAwesomeIcons.google,color: Colors.red),
-                    const SizedBox(width: 20,),
-                    const Text(
+                  children: const [
+                    FaIcon(FontAwesomeIcons.google, color: Colors.red),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Text(
                       'SIGN IN WITH GOOGLE',
                       style: TextStyle(color: Colors.red),
                     ),
                   ],
                 ),
               ),
-
             ],
           ),
         ),
@@ -278,5 +285,16 @@ class _LoginFormState extends State<LoginForm> {
   void submit(context) {
     if (!_formKey.currentState!.validate()) return;
     _formKey.currentState!.save();
+    const snackBar = SnackBar(
+      backgroundColor: Colors.teal,
+      content: Text(
+        'Success',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

@@ -16,6 +16,7 @@ dependencies:
   flutter_native_splash: ^2.2.9
   intl_phone_number_input: ^0.7.0+2
   font_awesome_flutter: ^10.2.1
+  intl: ^0.17.0
   firebase_core: ^1.22.0
 
 dev_dependencies:
