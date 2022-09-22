@@ -8,7 +8,10 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
-      child: const MaterialApp(
+      child: MaterialApp(
+        theme: ThemeData(
+          unselectedWidgetColor: Colors.orange,
+        ),
         debugShowCheckedModeBanner: false,
         title: 'Dating App',
         home: WelcomeScreen(),

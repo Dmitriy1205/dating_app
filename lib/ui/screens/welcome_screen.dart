@@ -1,6 +1,9 @@
 import 'package:dating_app/ui/screens/reflow_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../../core/constants.dart';
+import 'login_screen.dart';
+
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
 
@@ -11,7 +14,7 @@ class WelcomeScreen extends StatelessWidget {
       alignment: Alignment.center,
       children: [
         Image.asset(
-          'assets/images/welcome.png',
+          Background.welcome,
           fit: BoxFit.fill,
         ),
         Padding(
@@ -32,7 +35,7 @@ class WelcomeScreen extends StatelessWidget {
                     primary: Colors.transparent,
                     padding: EdgeInsets.zero,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20))),
+                        borderRadius: BorderRadius.circular(50))),
                 child: Ink(
                   decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -59,7 +62,12 @@ class WelcomeScreen extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
-                  //TODO: navigation to Login screen
+                  Navigator.push<void>(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LoginScreen(),
+                    ),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   primary: Colors.transparent,
