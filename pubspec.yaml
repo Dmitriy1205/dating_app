@@ -17,6 +17,7 @@ dependencies:
   intl_phone_number_input: ^0.7.0+2
   font_awesome_flutter: ^10.2.1
   intl: ^0.17.0
+  image_picker: ^0.8.5+3
   firebase_core: ^1.22.0
 
 dev_dependencies:
@@ -32,11 +33,8 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/welcome.png
-    - assets/images/comm.png
-    - assets/images/up.png
-    - assets/images/login.png
-    - assets/images/profile.png
+    - assets/images/
+    - assets/icons/
 
 
   # fonts:
