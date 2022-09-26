@@ -229,24 +229,47 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                         const SizedBox(
                           height: 20,
                         ),
-                        DropdownButtonFormField(
-                          icon: const Icon(Icons.keyboard_arrow_down_sharp),
-                          onChanged: (v) {},
-                          decoration: profileFieldDecor('Gender'),
-                          items: const [
-                            DropdownMenuItem(
-                              value: "MALE",
-                              child: Text(
-                                "Male",
+                        Ink(
+                          child: Container(
+                            height: 57,
+                            width: 350,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                                border: Border.all(color: Colors.grey[300]!),
+                                borderRadius: BorderRadius.circular(10.0)),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 19),
+                              child: Center(
+                                child: DropdownButtonFormField(
+                                  hint: const Text('Gender'),
+                                  icon: const Icon(
+                                      Icons.keyboard_arrow_down_sharp),
+                                  onChanged: (v) {},
+                                  decoration: const InputDecoration(
+                                    enabledBorder: InputBorder.none,
+                                    focusedBorder:InputBorder.none ,
+                                    fillColor: Colors.white,
+                                  ),
+                                  // decoration: profileFieldDecor('Gender'),
+                                  items: const [
+                                    DropdownMenuItem(
+                                      value: "MALE",
+                                      child: Text(
+                                        "Male",
+                                      ),
+                                    ),
+                                    DropdownMenuItem(
+                                      value: "FEMALE",
+                                      child: Text(
+                                        "Female",
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                            DropdownMenuItem(
-                              value: "FEMALE",
-                              child: Text(
-                                "Female",
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
 
                         const SizedBox(
