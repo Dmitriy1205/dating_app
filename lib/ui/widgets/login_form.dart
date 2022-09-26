@@ -1,4 +1,5 @@
 import 'package:dating_app/core/constants.dart';
+import 'package:dating_app/ui/screens/profile_info_screen.dart';
 import 'package:dating_app/ui/screens/sing_up_screen.dart';
 import 'package:dating_app/ui/widgets/field_decor.dart';
 import 'package:flutter/gestures.dart';
@@ -133,7 +134,7 @@ class _LoginFormState extends State<LoginForm> {
                             height: 55,
                             alignment: Alignment.center,
                             child: const Text(
-                              'CREATE ACCOUNT',
+                              'SIGN IN',
                             ),
                           ),
                         ),
@@ -248,7 +249,7 @@ class _LoginFormState extends State<LoginForm> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  //google
+                  //TODO: google
                 },
                 style: ElevatedButton.styleFrom(
                   primary: Colors.transparent,
@@ -285,16 +286,17 @@ class _LoginFormState extends State<LoginForm> {
   void submit(context) {
     if (!_formKey.currentState!.validate()) return;
     _formKey.currentState!.save();
-    const snackBar = SnackBar(
-      backgroundColor: Colors.teal,
-      content: Text(
-        'Success',
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          color: Colors.white,
-        ),
-      ),
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    // const snackBar = SnackBar(
+    //   backgroundColor: Colors.teal,
+    //   content: Text(
+    //     'Success',
+    //     textAlign: TextAlign.center,
+    //     style: TextStyle(
+    //       color: Colors.white,
+    //     ),
+    //   ),
+    // );
+    // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileInfoScreen() ));
   }
 }

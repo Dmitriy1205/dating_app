@@ -1,5 +1,6 @@
 import 'package:dating_app/core/constants.dart';
 import 'package:dating_app/ui/screens/login_screen.dart';
+import 'package:dating_app/ui/screens/profile_info_screen.dart';
 import 'package:dating_app/ui/widgets/field_decor.dart';
 import 'package:dating_app/ui/widgets/picker.dart';
 import 'package:flutter/gestures.dart';
@@ -293,16 +294,22 @@ class _SignUpFormState extends State<SignUpForm> {
     print(_phoneController.text);
     print(_dateController.text);
     print(_emailController.text);
-    const snackBar = SnackBar(
-      backgroundColor: Colors.teal,
-      content: Text(
-        'Success',
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          color: Colors.white,
-        ),
+    // const snackBar = SnackBar(
+    //   backgroundColor: Colors.teal,
+    //   content: Text(
+    //     'Success',
+    //     textAlign: TextAlign.center,
+    //     style: TextStyle(
+    //       color: Colors.white,
+    //     ),
+    //   ),
+    // );
+    // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    Navigator.push<void>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ProfileInfoScreen(),
       ),
     );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
