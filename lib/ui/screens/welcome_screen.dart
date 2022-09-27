@@ -14,7 +14,7 @@ class WelcomeScreen extends StatelessWidget {
       alignment: Alignment.center,
       children: [
         Image.asset(
-          Background.welcome,
+          Content.welcome,
           fit: BoxFit.fill,
         ),
         Padding(
