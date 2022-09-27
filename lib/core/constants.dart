@@ -6,3 +6,9 @@ class Background {
   static const String profile = 'assets/images/profile.png';
   static const String welcome = 'assets/images/welcome.png';
 }
+
+
+class CustomIcons {
+  static const String checkbox = 'assets/icons/check.png';
+  static const String photo = 'assets/icons/photo.png';
+}
