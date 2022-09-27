@@ -1,6 +1,7 @@
 import 'package:dating_app/core/constants.dart';
 import 'package:dating_app/ui/screens/login_screen.dart';
 import 'package:dating_app/ui/screens/profile_info_screen.dart';
+import 'package:dating_app/ui/screens/terms.dart';
 import 'package:dating_app/ui/widgets/field_decor.dart';
 import 'package:dating_app/ui/widgets/picker.dart';
 import 'package:flutter/gestures.dart';
@@ -195,7 +196,11 @@ class _SignUpFormState extends State<SignUpForm> {
                                       ),
                                       recognizer: TapGestureRecognizer()
                                         ..onTap = () {
-                                          //TODO: implement terms and condition screen
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const TermsAndConditions()));
                                         }),
                                 ],
                               ),
