@@ -228,11 +228,13 @@ Widget buildTextColumn(BuildContext context) {
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
                     Navigator.push(
+
                       context,
                       MaterialPageRoute(
                         builder: (context) => TermsAndConditions(),
                       ),
                     );
+
                   }),
           ],
         ),
