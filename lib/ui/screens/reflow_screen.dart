@@ -1,5 +1,6 @@
 import 'package:dating_app/core/constants.dart';
 import 'package:dating_app/ui/screens/sing_up_screen.dart';
+import 'package:dating_app/ui/screens/terms.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -68,7 +69,7 @@ class ReflowScreen extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 40),
-                    child: buildTextColumn(),
+                    child: buildTextColumn(context),
                   ),
                   const SizedBox(
                     height: 25,
@@ -120,7 +121,7 @@ class ReflowScreen extends StatelessWidget {
   }
 }
 
-Widget buildTextColumn() {
+Widget buildTextColumn(BuildContext context) {
   return Column(
     children: [
       const SizedBox(
@@ -225,7 +226,11 @@ Widget buildTextColumn() {
                 ),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
-                    //TODO: implement terms and condition screen
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                            const TermsAndConditions()));
                   }),
           ],
         ),
