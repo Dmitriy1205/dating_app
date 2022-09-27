@@ -4,7 +4,6 @@ import 'package:dating_app/ui/screens/sing_up_screen.dart';
 import 'package:dating_app/ui/widgets/field_decor.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import '../../core/functions/validation.dart';
@@ -33,7 +32,7 @@ class _LoginFormState extends State<LoginForm> {
       alignment: Alignment.center,
       children: [
         Image.asset(
-          Background.login,
+          Content.login,
           fit: BoxFit.fill,
         ),
         Padding(

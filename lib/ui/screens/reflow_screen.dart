@@ -1,3 +1,4 @@
+
 import 'package:dating_app/core/constants.dart';
 import 'package:dating_app/ui/screens/sing_up_screen.dart';
 import 'package:dating_app/ui/screens/terms.dart';
@@ -17,7 +18,7 @@ class ReflowScreen extends StatelessWidget {
           alignment: Alignment.center,
           children: [
             Image.asset(
-              Background.reflow,
+              Content.reflow,
               fit: BoxFit.fill,
             ),
             Padding(
@@ -227,10 +228,13 @@ Widget buildTextColumn(BuildContext context) {
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                            const TermsAndConditions()));
+
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TermsAndConditions(),
+                      ),
+                    );
+
                   }),
           ],
         ),

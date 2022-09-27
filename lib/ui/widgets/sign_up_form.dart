@@ -42,7 +42,7 @@ class _SignUpFormState extends State<SignUpForm> {
       alignment: Alignment.center,
       children: [
         Image.asset(
-          Background.signUp,
+          Content.signUp,
           fit: BoxFit.fill,
         ),
         Padding(
