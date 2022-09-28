@@ -10,10 +10,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
-      child: const Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: LoginForm(),
-      ),
+      child: const LoginForm(),
     );
   }
 }
