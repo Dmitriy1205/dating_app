@@ -86,11 +86,16 @@ class _HobbiesScreenState extends State<HobbiesScreen> {
                               ),
                             ],
                           ),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 10),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 12, horizontal: 5),
                             child: Text(
-                                'How do you like to spend your free time?'),
+                              'How do you like to spend your free time?',
+                              style: TextStyle(
+                                color: Colors.grey[700],
+                                fontSize: 16,
+                              ),
+                            ),
                           ),
                         ],
                       ),

@@ -18,16 +18,18 @@ class TermsAndConditions extends StatelessWidget {
                     Icons.arrow_back_ios,
                     color: Colors.deepOrangeAccent,
                   )),
-               const Text('Terms & conditions',
-                  style:
-                      TextStyle(fontSize: 25, fontWeight: FontWeight.bold),),
-            const SizedBox()
+              const Text(
+                'Terms & conditions',
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox()
             ],
           ),
           const Padding(
             padding: EdgeInsets.all(20.0),
             child: SingleChildScrollView(
-              child: Text(style: TextStyle(height: 1.4),
+              child: Text(
+                style: TextStyle(height: 1.4),
                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do '
                 'eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut '
                 'enim ad minim veniam, quis nostrud exercitation ullamco laboris '
