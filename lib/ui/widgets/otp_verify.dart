@@ -135,8 +135,8 @@ class _OtpVerificationState extends State<OtpVerification> {
   }
 
   void submit(context) {
-    // if (!_formKey.currentState!.validate()) return;
-    // _formKey.currentState!.save();
+    if (!_formKey.currentState!.validate()) return;
+    _formKey.currentState!.save();
     // const snackBar = SnackBar(
     //   backgroundColor: Colors.teal,
     //   content: Text(
@@ -148,7 +148,7 @@ class _OtpVerificationState extends State<OtpVerification> {
     //   ),
     // );
     // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    Navigator.push(
+    Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => HomeScreen()));
   }
 }
