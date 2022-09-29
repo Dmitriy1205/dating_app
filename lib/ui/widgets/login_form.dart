@@ -2,6 +2,7 @@ import 'package:dating_app/core/constants.dart';
 import 'package:dating_app/ui/screens/sing_up_screen.dart';
 import 'package:dating_app/ui/screens/verification_screen.dart';
 import 'package:dating_app/ui/widgets/field_decor.dart';
+import 'package:dating_app/ui/widgets/google_auth_button.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -256,35 +257,7 @@ class _LoginFormState extends State<LoginForm> {
                 const SizedBox(
                   height: 15,
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    //TODO: google
-                  },
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.transparent,
-                    shadowColor: Colors.white,
-                    elevation: 0,
-                    fixedSize: const Size(340, 55),
-                    side: const BorderSide(color: Colors.red),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      FaIcon(FontAwesomeIcons.google, color: Colors.red),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Text(
-                        'SIGN IN WITH GOOGLE',
-                        style: TextStyle(color: Colors.red),
-                      ),
-                    ],
-                  ),
-                ),
+                const GoogleAuthButton(),
               ],
             ),
           ),

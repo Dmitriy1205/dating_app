@@ -23,6 +23,16 @@ dependencies:
 
   # firebase
   firebase_core: ^1.22.0
+  firebase_auth: ^3.10.0
+  firebase_storage: ^10.3.9
+  cloud_firestore: ^3.4.9
+
+  #utils
+  flutter_bloc: ^8.1.1
+  bloc: ^8.1.0
+  equatable: ^2.0.5
+  get_it: ^7.2.0
+  google_sign_in: ^5.4.2
 
 dev_dependencies:
   flutter_test:
