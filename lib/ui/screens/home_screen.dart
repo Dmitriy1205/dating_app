@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:photo_card_swiper/models/photo_card.dart';
-import 'package:photo_card_swiper/photo_card_swiper.dart';
+
+import '../../data/models/photo_card.dart';
+import '../widgets/swiper.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -10,17 +11,22 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<PhotoCard> _photos = [
+  final List<PhotoCard> _photos = [
     PhotoCard(
-        title: 'Sonu Sood',
+        title: 'Michale Barns',
         description: 'A man with million hearts.',
         imagePath: 'assets/images/working_out.png',
         cardId: '1'),
     PhotoCard(
-        title: 'Dr APJ Abdul Kalam',
+        title: 'Tom Farly',
         description: 'An inspiration to many.',
         imagePath: 'assets/images/hiking.png',
         cardId: '2'),
+    PhotoCard(
+        title: 'Georg Third',
+        description: 'Wierd Guy.',
+        imagePath: 'assets/images/baking.png',
+        cardId: '3'),
   ];
 
   @override
@@ -37,17 +43,20 @@ class _HomeScreenState extends State<HomeScreen> {
               Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: GestureDetector(
-                    onTap: () {
-                      //TODO: navigation to messenger
-                    },
-                    child: SizedBox(
-                        height: 50,
-                        width: 50,
-                        child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
-                            child: Image.asset('assets/icons/messenger.png')))),
+                  onTap: () {
+                    //TODO: navigation to messenger
+                  },
+                  child: SizedBox(
+                    height: 50,
+                    width: 50,
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      child: Image.asset('assets/icons/messenger.png'),
+                    ),
+                  ),
+                ),
               ),
               Row(
                 children: [
@@ -97,27 +106,29 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Expanded(
-                child: Stack(children: [
-                  PhotoCardSwiper(
-                    photos: _photos,
-                    cardSwiped: _cardSwiped,
-                    showLoading: true,
-                    hideCenterButton: true,
-                    hideTitleText: false,
-                    hideDescriptionText: false,
-                    imageScaleType: BoxFit.cover,
-                    imageBackgroundColor: Colors.grey,
-                    leftButtonIcon: IconData(1),
-                    rightButtonIcon: Icons.check,
-                    leftButtonBackgroundColor: Colors.red[100],
-                    leftButtonIconColor: Colors.red[600],
-                    rightButtonBackgroundColor: Colors.lightGreen[100],
-                    rightButtonIconColor: Colors.lightGreen[700],
-                    leftButtonAction: _leftButtonClicked,
-                    rightButtonAction: _rightButtonClicked,
-                    onCardTap: _onCardTap,
-                  ),
-                ]),
+                child: Stack(
+                  children: [
+                    Swiper(
+                      photos: _photos,
+                      cardSwiped: _cardSwiped,
+                      showLoading: true,
+                      hideCenterButton: true,
+                      hideTitleText: false,
+                      hideDescriptionText: false,
+                      imageScaleType: BoxFit.cover,
+                      imageBackgroundColor: Colors.grey,
+                      leftButtonIcon: IconData(1),
+                      rightButtonIcon: Icons.check,
+                      leftButtonBackgroundColor: Colors.red[100],
+                      leftButtonIconColor: Colors.red[600],
+                      rightButtonBackgroundColor: Colors.lightGreen[100],
+                      rightButtonIconColor: Colors.lightGreen[700],
+                      leftButtonAction: _leftButtonClicked,
+                      rightButtonAction: _rightButtonClicked,
+                      onCardTap: _onCardTap,
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
@@ -143,7 +154,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void _leftButtonClicked() {
     print('Left button clicked');
   }
-
 
   void _rightButtonClicked() {
     print('Right button clicked');
