@@ -12,7 +12,6 @@ class SearchPrefForm extends StatefulWidget {
 }
 
 class _SearchPrefFormState extends State<SearchPrefForm> {
-  RangeValues years = const RangeValues(18, 30);
   final SearchPreferancesCubit bloc = SearchPreferancesCubit();
 
   @override
@@ -87,9 +86,9 @@ class _SearchPrefFormState extends State<SearchPrefForm> {
                                 style: TextStyle(color: Colors.black38)),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: const [
+                              children: [
                                 Text('Age'),
-                                // Text('${state.startYear}'),
+                                Text('${bloc.rangeAge.start.round().toString()} - ${bloc.rangeAge.end.round().toString()}'),
                               ],
                             ),
                             RangeSlider(
@@ -102,6 +101,26 @@ class _SearchPrefFormState extends State<SearchPrefForm> {
                                 // labels: RangeLabels(RangeValues(bloc.rangeAge)),
                                 min: 10,
                                 max: 75),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children:  [
+                                const Text('Distance'),
+                                Text('${bloc.rangeDistance.toString()} miles'),
+
+                              ],
+                            ),
+                            Slider(
+                                value:
+                                state.distance.toDouble(),
+                                onChanged: (newDistance) {
+                                  bloc.changeDistance(newDistance.toInt());
+                                  print(bloc.rangeAge);
+                                },
+                                // labels: RangeLabels(RangeValues(bloc.rangeAge)),
+                                min: 0,
+                                max: 80),
+                            Text('Looking For'),
+                            CheckboxListTile(title: Text('someone to chill with'), value: false, onChanged: (_) {},)
                           ],
                         ),
                       ),

@@ -9,9 +9,12 @@ class SearchPreferancesInitial extends SearchPreferancesState {
 }
 
 class SearchPreferenceChangeState extends SearchPreferancesState {
-   RangeValues age;
-
-  SearchPreferenceChangeState(this.age);
+   RangeValues age = RangeValues(18, 29);
+   int distance = 5;
+   List selectedLookingFor = [];
+  SearchPreferenceChangeState({required this.age, required this.distance, required this.selectedLookingFor});
   @override
-  List<Object?> get props => [age];
+  List<Object?> get props => [age, distance, selectedLookingFor];
+
+
 }
