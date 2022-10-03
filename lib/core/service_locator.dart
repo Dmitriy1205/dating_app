@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dating_app/data/repositories/auth_repository.dart';
+import 'package:dating_app/ui/bloc/auth/auth_cubit.dart';
 import 'package:dating_app/ui/bloc/google_auth/google_auth_cubit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -15,6 +16,7 @@ Future<void> boot() async {
   sl.registerLazySingleton(() => AuthRepository(auth: auth));
 
   sl.registerFactory(() => GoogleAuthCubit(sl()));
+  sl.registerFactory(() => AuthCubit(sl()));
 }
 
 Future<void> init() async {}

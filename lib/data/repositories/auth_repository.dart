@@ -8,16 +8,31 @@ class AuthRepository {
 
   AuthRepository({required this.auth});
 
-  Future<void> signupWithPhone() async {
+  Future<void> signupWithPhone(
+    String phoneNumber,
+    String verificationId,
+    Future<void> nav,
+  ) async {
     await auth.verifyPhoneNumber(
-      verificationCompleted: (value) {},
-      verificationFailed: (value) {},
-      codeSent: (d, a) {},
+      phoneNumber: phoneNumber,
+      verificationCompleted: (_) {
+
+      },
+      verificationFailed: (FirebaseAuthException e) {
+        print(e.message);
+      },
+      codeSent: (verId, _) {
+        verificationId = verId;
+        nav;
+        print(verificationId);
+      },
       codeAutoRetrievalTimeout: (value) {},
     );
   }
 
-  Future<void> loginWithPhone() async {}
+  Future<void> loginWithPhone(String phone) async {
+    await auth.signInWithPhoneNumber(phone);
+  }
 
   Future<void> loginWithApple() async {}
 
