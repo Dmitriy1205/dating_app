@@ -13,11 +13,11 @@ class SearchPrefForm extends StatefulWidget {
 
 class _SearchPrefFormState extends State<SearchPrefForm> {
   RangeValues years = const RangeValues(18, 30);
-  final SearchPreferancesBloc bloc = SearchPreferancesBloc();
+  final SearchPreferancesCubit bloc = SearchPreferancesCubit();
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SearchPreferancesBloc, SearchPreferancesState>(
+    return BlocBuilder<SearchPreferancesCubit, SearchPreferancesState>(
       bloc: bloc,
       builder: (context, state) {
         if (state is SearchPreferenceChangeState) {
@@ -94,14 +94,12 @@ class _SearchPrefFormState extends State<SearchPrefForm> {
                             ),
                             RangeSlider(
                                 values:
-                                    RangeValues(bloc.startYear, bloc.endYear),
+                                    state.age,
                                 onChanged: (newYears) {
-                                  var a = bloc.changeYears(newYears);
-                                  print(bloc.startYear);
-                                  print(bloc.endYear);
+                                  bloc.changeYears(newYears);
+                                  print(bloc.rangeAge);
                                 },
-                                labels: RangeLabels(bloc.startYear.toString(),
-                                    bloc.endYear.toString()),
+                                // labels: RangeLabels(RangeValues(bloc.rangeAge)),
                                 min: 10,
                                 max: 75),
                           ],

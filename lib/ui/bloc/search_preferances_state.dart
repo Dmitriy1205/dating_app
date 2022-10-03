@@ -9,10 +9,9 @@ class SearchPreferancesInitial extends SearchPreferancesState {
 }
 
 class SearchPreferenceChangeState extends SearchPreferancesState {
-   double? startYear;
-   double? endYear;
+   RangeValues age;
 
-  SearchPreferenceChangeState(startYear, endYear);
+  SearchPreferenceChangeState(this.age);
   @override
-  List<Object?> get props => [startYear, endYear];
+  List<Object?> get props => [age];
 }

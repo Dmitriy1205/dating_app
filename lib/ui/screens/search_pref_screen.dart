@@ -10,7 +10,7 @@ class SearchPrefScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => SearchPreferancesBloc(),
+      create: (_) => SearchPreferancesCubit(),
       child: WillPopScope(
         onWillPop: () async => false,
         child: const Scaffold(
