@@ -19,6 +19,8 @@ dependencies:
   intl: ^0.17.0
   image_picker: ^0.8.5+3
   firebase_core: ^1.22.0
+  flutter_bloc: ^8.1.1
+  equatable: ^2.0.5
 
 dev_dependencies:
   flutter_test:

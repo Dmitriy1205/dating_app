@@ -1,18 +1,20 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
+import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
-part 'search_preferances_event.dart';
 part 'search_preferances_state.dart';
 
-class SearchPreferancesBloc extends Bloc<SearchPreferancesEvent, SearchPreferancesState> {
-  SearchPreferancesBloc() : super(SearchPreferancesInitial());
+class SearchPreferancesBloc extends Cubit<SearchPreferancesState> {
+  SearchPreferancesBloc() : super(SearchPreferenceChangeState(11, 21));
 
-  @override
-  Stream<SearchPreferancesState> mapEventToState(
-    SearchPreferancesEvent event,
-  ) async* {
-    // TODO: implement mapEventToState
+  double startYear = 14;
+  double endYear = 25;
+
+  Future <void> changeYears(RangeValues rangeValues) async {
+    await {startYear = rangeValues.start};
+    await {endYear = rangeValues.end};
+    emit(SearchPreferenceChangeState(startYear, endYear));
+    print('emitted');
   }
 }
