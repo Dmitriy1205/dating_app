@@ -2,14 +2,16 @@ import 'package:dating_app/ui/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
-class OtpVerification extends StatefulWidget {
-  const OtpVerification({Key? key}) : super(key: key);
+class OtpVerificationScreen extends StatefulWidget {
+  final Future<void>? navigateTo;
+
+  const OtpVerificationScreen({Key? key, this.navigateTo}) : super(key: key);
 
   @override
-  State<OtpVerification> createState() => _OtpVerificationState();
+  State<OtpVerificationScreen> createState() => _OtpVerificationScreenState();
 }
 
-class _OtpVerificationState extends State<OtpVerification> {
+class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   final _formKey = GlobalKey<FormState>();
   final _numberController = TextEditingController();
   late String code;
