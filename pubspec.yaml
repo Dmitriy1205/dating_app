@@ -20,7 +20,7 @@ dependencies:
   pin_code_fields: ^7.4.0
   intl: ^0.17.0
   image_picker: ^0.8.5+3
-  photo_card_swiper: ^0.0.6
+#  photo_card_swiper: ^0.0.6
 
   # firebase
   firebase_core: ^1.22.0

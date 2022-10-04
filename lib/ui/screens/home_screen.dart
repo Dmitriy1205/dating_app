@@ -1,6 +1,11 @@
+import 'package:dating_app/ui/screens/%C2%A0person_profile.dart';
+import 'package:dating_app/ui/screens/messenger.dart';
+import 'package:dating_app/ui/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:photo_card_swiper/models/photo_card.dart';
-import 'package:photo_card_swiper/photo_card_swiper.dart';
+
+import '../../data/models/photo_card.dart';
+import '../widgets/swiper.dart';
+import 'filter_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -10,17 +15,39 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<PhotoCard> _photos = [
+  final List<PhotoCard> _photos = [
     PhotoCard(
-        title: 'Sonu Sood',
-        description: 'A man with million hearts.',
+        title: 'Michale Barns',
+        location: '2 miles',
+        description: 'A man with million hearts.'
+
+            '',
         imagePath: 'assets/images/working_out.png',
         cardId: '1'),
     PhotoCard(
-        title: 'Dr APJ Abdul Kalam',
+        title: 'Tom Farly',
+        location: '2 miles',
         description: 'An inspiration to many.',
         imagePath: 'assets/images/hiking.png',
         cardId: '2'),
+    PhotoCard(
+        title: 'Georg Third',
+        location: '2 miles',
+        description: 'Wierd Guy.',
+        imagePath: 'assets/images/baking.png',
+        cardId: '3'),
+    PhotoCard(
+        title: 'Tom Farly',
+        location: '2 miles',
+        description: 'An inspiration to many.',
+        imagePath: 'assets/images/hiking.png',
+        cardId: '4'),
+    PhotoCard(
+        title: 'Tom Farly',
+        location: '2 miles',
+        description: 'An inspiration to many.',
+        imagePath: 'assets/images/hiking.png',
+        cardId: '5'),
   ];
 
   @override
@@ -37,17 +64,22 @@ class _HomeScreenState extends State<HomeScreen> {
               Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: GestureDetector(
-                    onTap: () {
-                      //TODO: navigation to messenger
-                    },
-                    child: SizedBox(
-                        height: 50,
-                        width: 50,
-                        child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
-                            child: Image.asset('assets/icons/messenger.png')))),
+                  onTap: () {
+                    //TODO: navigation to messenger
+                    Navigator.push(
+                        context, MaterialPageRoute(builder: (context) => Messenger()));
+                  },
+                  child: SizedBox(
+                    height: 50,
+                    width: 50,
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      child: Image.asset('assets/icons/messenger.png'),
+                    ),
+                  ),
+                ),
               ),
               Row(
                 children: [
@@ -56,6 +88,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: GestureDetector(
                       onTap: () {
                         //TODO: navigation to profile
+                        Navigator.push(
+                            context, MaterialPageRoute(builder: (context) => ProfileScreen()));
                       },
                       child: SizedBox(
                         height: 50,
@@ -75,7 +109,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: const EdgeInsets.all(5.0),
                     child: GestureDetector(
                         onTap: () {
-                          //TODO: navigation to settings
+                          //TODO: navigation to filter_screen
+                          Navigator.push(
+                              context, MaterialPageRoute(builder: (context) => FilterScreen()));
                         },
                         child: SizedBox(
                             height: 50,
@@ -97,27 +133,23 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Expanded(
-                child: Stack(children: [
-                  PhotoCardSwiper(
-                    photos: _photos,
-                    cardSwiped: _cardSwiped,
-                    showLoading: true,
-                    hideCenterButton: true,
-                    hideTitleText: false,
-                    hideDescriptionText: false,
-                    imageScaleType: BoxFit.cover,
-                    imageBackgroundColor: Colors.grey,
-                    leftButtonIcon: IconData(1),
-                    rightButtonIcon: Icons.check,
-                    leftButtonBackgroundColor: Colors.red[100],
-                    leftButtonIconColor: Colors.red[600],
-                    rightButtonBackgroundColor: Colors.lightGreen[100],
-                    rightButtonIconColor: Colors.lightGreen[700],
-                    leftButtonAction: _leftButtonClicked,
-                    rightButtonAction: _rightButtonClicked,
-                    onCardTap: _onCardTap,
-                  ),
-                ]),
+                child: Stack(
+                  children: [
+                    Swiper(
+                      photoCards: _photos,
+                      whenCardSwiped: _cardSwiped,
+                      imageScaleType: BoxFit.cover,
+                      imageBackgroundColor: Colors.grey,
+                      leftButtonBackgroundColor: Colors.red[100],
+                      leftButtonIconColor: Colors.red[600],
+                      rightButtonBackgroundColor: Colors.lightGreen[100],
+                      rightButtonIconColor: Colors.lightGreen[700],
+                      leftButtonAction: _leftButtonClicked,
+                      rightButtonAction: _rightButtonClicked,
+                      onCardTap: _onCardTap,
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
@@ -137,13 +169,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _onCardTap(int _index) {
     print('Card with index $_index is Tapped.');
-    //Here you can navigate to detail screen or so.
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => PersonProfile()));
   }
 
   void _leftButtonClicked() {
     print('Left button clicked');
   }
-
 
   void _rightButtonClicked() {
     print('Right button clicked');
