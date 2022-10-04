@@ -42,88 +42,84 @@ class LoadingDataPhotoCardWidget extends StatelessWidget {
         width: cardWidth,
         clipBehavior: Clip.hardEdge,
         decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(25.0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey[350] ?? Colors.black,
-                blurRadius: 7.0,
-                spreadRadius: 3.0,
-                offset: Offset(2, 3),
-              ),
-            ]),
-        child: Column(
-          children: [
-            Expanded(
-              child: DefaultPhotoContainerWidget(
-                isLoading: isLoading,
-              ),
-            ),
-            Container(
-              color: Colors.white,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ClipOval(
-                        child: Material(
-                          color: Colors.grey[200],
-                          child: DefaultLeftButtonContainerWidget(
-                            isLoading: isLoading,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 20.0,
-                      ),
-                      hideCenterButton
-                          ? Container()
-                          : ClipOval(
-                              child: Material(
-                                color: Colors.grey[200],
-                                child: DefaultCenterButtonContainerWidget(
-                                  isLoading: isLoading,
-                                ),
-                              ),
-                            ),
-                      SizedBox(
-                        width: 20.0,
-                      ),
-                      ClipOval(
-                        child: Material(
-                          color: Colors.grey[200],
-                          child: DefaultRightButtonContainerWidget(
-                            isLoading: isLoading,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  DefaultTitleContainerWidget(
-                    isLoading: isLoading,
-                  ),
-                  SizedBox(
-                    height: 5.0,
-                  ),
-                  DefaultDescriptionContainerWidget(
-                    isLoading: isLoading,
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                ],
-              ),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(25.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey[350] ?? Colors.black,
+              blurRadius: 7.0,
+              spreadRadius: 3.0,
+              offset: Offset(2, 3),
             ),
           ],
         ),
+        child: Stack(children: [
+          DefaultPhotoContainerWidget(
+            isLoading: isLoading,
+          ),
+          Container(
+            color: Colors.white,
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 20.0,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ClipOval(
+                      child: Material(
+                        color: Colors.grey[200],
+                        child: DefaultLeftButtonContainerWidget(
+                          isLoading: isLoading,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 20.0,
+                    ),
+                    hideCenterButton
+                        ? Container()
+                        : ClipOval(
+                            child: Material(
+                              color: Colors.grey[200],
+                              child: DefaultCenterButtonContainerWidget(
+                                isLoading: isLoading,
+                              ),
+                            ),
+                          ),
+                    SizedBox(
+                      width: 20.0,
+                    ),
+                    ClipOval(
+                      child: Material(
+                        color: Colors.grey[200],
+                        child: DefaultRightButtonContainerWidget(
+                          isLoading: isLoading,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 20.0,
+                ),
+                DefaultTitleContainerWidget(
+                  isLoading: isLoading,
+                ),
+                SizedBox(
+                  height: 5.0,
+                ),
+                DefaultDescriptionContainerWidget(
+                  isLoading: isLoading,
+                ),
+                SizedBox(
+                  height: 20.0,
+                ),
+              ],
+            ),
+          ),
+        ]),
       ),
     );
   }

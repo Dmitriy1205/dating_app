@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:dating_app/ui/widgets/swiper_components/photo_description_widget.dart';
+import 'package:dating_app/ui/widgets/swiper_components/photo_location_info.dart';
 import 'package:dating_app/ui/widgets/swiper_components/photo_title_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -85,8 +86,8 @@ class _PhotoCardLayoutWidgetState extends State<PhotoCardLayoutWidget> {
           boxShadow: [
             BoxShadow(
               color: Colors.grey[350] ?? Colors.black,
-              blurRadius: 7.0,
-              spreadRadius: 3.0,
+              blurRadius: 1.0,
+              spreadRadius: 1.0,
               offset: Offset(2, 3),
             ),
           ],
@@ -94,7 +95,7 @@ class _PhotoCardLayoutWidgetState extends State<PhotoCardLayoutWidget> {
         child: Stack(
           children: [
             Container(
-              height: widget.cardHeight / 1.3,
+              height: widget.cardHeight / 1.4,
               width: widget.cardWidth,
               clipBehavior: Clip.hardEdge,
               decoration: BoxDecoration(
@@ -119,21 +120,19 @@ class _PhotoCardLayoutWidgetState extends State<PhotoCardLayoutWidget> {
                 children: [
                   CardActionSpecifcOverlayWidget(
                     key: UniqueKey(),
-                    buttonIconColor:
-                        Colors.red[800],
-                    buttonIcon:Card(
+                    buttonIconColor: Colors.red[800],
+                    buttonIcon: Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(40.0),
                       ),
                       child: Image.asset('assets/icons/close.png'),
-                    ) ,
+                    ),
                     // widget.leftButtonIcon ?? Icons.close,
                     isVisible: widget.isLeftOverlayShown,
                   ),
                   CardActionSpecifcOverlayWidget(
                     key: UniqueKey(),
-                    buttonIconColor:
-                         Colors.lightGreen[700],
+                    buttonIconColor: Colors.lightGreen[700],
                     buttonIcon: Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(40.0),
@@ -150,17 +149,14 @@ class _PhotoCardLayoutWidgetState extends State<PhotoCardLayoutWidget> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Container(
-                  height: widget.cardHeight / 4.5,
+                  height: widget.cardHeight / 3.5,
                   width: widget.cardWidth,
                   color: Colors.white,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       const SizedBox(
-                        height: 20.0,
-                      ),
-                      const SizedBox(
-                        height: 20.0,
+                        height: 40.0,
                       ),
                       Visibility(
                         visible: !widget.hideTitleText,
@@ -169,10 +165,17 @@ class _PhotoCardLayoutWidgetState extends State<PhotoCardLayoutWidget> {
                       const SizedBox(
                         height: 5.0,
                       ),
-                      Visibility(
-                        visible: !widget.hideDescriptionText,
-                        child:
-                            PhotoDescriptionWidget(photoCard: widget.photoCard),
+                      PhotoLocationInfo(photoCard: widget.photoCard),
+                      const SizedBox(
+                        height: 5.0,
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 15),
+                          child: PhotoDescriptionWidget(
+                              photoCard: widget.photoCard),
+                        ),
                       ),
                       const SizedBox(
                         height: 20.0,
@@ -183,7 +186,7 @@ class _PhotoCardLayoutWidgetState extends State<PhotoCardLayoutWidget> {
               ],
             ),
             Positioned(
-              bottom: 120,
+              bottom: 160,
               left: 100,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -225,6 +228,7 @@ class CardActionSpecifcOverlayWidget extends StatelessWidget {
 
   final Color? buttonIconColor;
   final Widget buttonIcon;
+
   // final IconData buttonIcon;
   final bool isVisible;
 
@@ -233,32 +237,30 @@ class CardActionSpecifcOverlayWidget extends StatelessWidget {
     return AnimatedOpacity(
       opacity: isVisible ? 1 : 0,
       duration: Duration(milliseconds: 500),
-      curve: Curves.elasticOut,
+      curve: Curves.easeInCirc,
       onEnd: () {},
       child: BackdropFilter(
         filter: ImageFilter.blur(
           sigmaX: 2.0,
           sigmaY: 2.0,
         ),
-        child: Container(
-          color: Colors.white.withOpacity(0.3),
-          child: Center(
-              child: ClipOval(
+        child: Center(
+          child: ClipOval(
+            clipBehavior: Clip.antiAlias,
             child: Container(
-              width: 95,
-              height: 95,
+              width: 135,
+              height: 135,
               color: Colors.white.withOpacity(0.7),
-              child: Center(
-                child:buttonIcon
+              child: Center(child: buttonIcon
 
-                // Icon(
-                //   buttonIcon,
-                //   color: buttonIconColor,
-                //   size: 55.0,
-                // ),
-              ),
+                  // Icon(
+                  //   buttonIcon,
+                  //   color: buttonIconColor,
+                  //   size: 55.0,
+                  // ),
+                  ),
             ),
-          ),),
+          ),
         ),
       ),
     );

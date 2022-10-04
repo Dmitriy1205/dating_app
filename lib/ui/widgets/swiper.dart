@@ -1,5 +1,4 @@
 import 'package:dating_app/ui/widgets/swiper_components/feedback_photo_card_widget.dart';
-import 'package:dating_app/ui/widgets/swiper_components/loading_data_photo_card.dart';
 import 'package:dating_app/ui/widgets/swiper_components/photo_card_layout_widget.dart';
 import 'package:flutter/material.dart';
 import '../../core/notifiers/feedback_photo_card_value_notifier.dart';
@@ -15,8 +14,8 @@ enum CardActionDirection {
 const String _stackViewKey = 'photo_card_stack_view';
 
 class Swiper extends StatefulWidget {
-  final List<PhotoCard> photos;
-  final Function? cardSwiped;
+  final List<PhotoCard> photoCards;
+  final Function? whenCardSwiped;
   final bool showLoading;
   final bool hideCenterButton;
   final bool hideTitleText;
@@ -38,8 +37,8 @@ class Swiper extends StatefulWidget {
   final Function? onCardTap;
 
   const Swiper({
-    required this.photos,
-    this.cardSwiped,
+    required this.photoCards,
+    this.whenCardSwiped,
     this.showLoading = true,
     this.imageScaleType = BoxFit.cover,
     this.imageBackgroundColor = Colors.black87,
@@ -85,14 +84,14 @@ class _SwiperState extends State<Swiper> {
   @override
   void initState() {
     super.initState();
-    _reversedPhotos = widget.photos.reversed.toList();
+    _reversedPhotos = widget.photoCards.reversed.toList();
     _updatedPhotos = _reversedPhotos;
   }
 
   @override
   void didUpdateWidget(covariant Swiper oldWidget) {
     super.didUpdateWidget(oldWidget);
-    _reversedPhotos = widget.photos.reversed.toList();
+    _reversedPhotos = widget.photoCards.reversed.toList();
     setState(() {
       _updatedPhotos = _reversedPhotos;
     });
@@ -116,160 +115,176 @@ class _SwiperState extends State<Swiper> {
               bottom: _bottomPadding,
               top: _topPadding,
               right: 15.0),
-          child: (_updatedPhotos.isEmpty && widget.showLoading)
-              ? LoadingDataPhotoCardWidget(
-                  cardHeight: cardHeight,
-                  cardWidth: cardWidth,
-                  hideCenterButton: widget.hideCenterButton,
-                  isLoading: true)
-              : Stack(
-                  key: const Key(_stackViewKey),
-                  children: _updatedPhotos.map(
-                    (updatedPhoto) {
-                      final index = _reversedPhotos.indexWhere((photo) {
-                        return photo.cardId.toLowerCase() ==
-                            updatedPhoto.cardId.toLowerCase();
-                      });
+          child:
+              //TODO: Refresh button for finished List(if empty = no mathes for yo today, if not empty = put list)
+              (_updatedPhotos.isEmpty && widget.showLoading)
+                  ? Center(
+                      child: Text('Hello'),
+                    )
+                  // ?LoadingDataPhotoCardWidget(
+                  //         cardHeight: cardHeight,
+                  //         cardWidth: cardWidth,
+                  //         hideCenterButton: widget.hideCenterButton,
+                  //         isLoading: true)
+                  : Stack(
+                      key: const Key(_stackViewKey),
+                      children: _updatedPhotos.map(
+                        (updatedPhoto) {
+                          final index = _reversedPhotos.indexWhere((photo) {
+                            return photo.cardId.toLowerCase() ==
+                                updatedPhoto.cardId.toLowerCase();
+                          });
 
-                      final reverseOffset =
-                          (_updatedPhotos.length - 1) - index;
-                      final topOffsetForCard = _offset * reverseOffset;
+                          final reverseOffset =
+                              (_updatedPhotos.length - 1) - index;
+                          final topOffsetForCard = _offset * reverseOffset;
 
-                      final updatedCardHeight =
-                          cardHeight - (_offset * (index));
+                          final updatedCardHeight =
+                              cardHeight - (_offset * (index));
 
-                      final tapIndex = (widget.photos.length - 1) - index;
+                          final tapIndex = (widget.photoCards.length - 1) - index;
 
-                      return Positioned(
-                        top: topOffsetForCard,
-                        child: Draggable(
-                          axis: Axis.horizontal,
-                          childWhenDragging: Container(),
-                          maxSimultaneousDrags: 1,
-                          onDragCompleted: () {
-                            _hideAllPhotoCardOverlayWidgets();
-                          },
-                          onDragStarted: () {},
-                          onDragEnd: (details) {
-                            _hideAllPhotoCardOverlayWidgets();
-                            if (details.offset.dx > 150.0) {
-                              _updatedPhotos.removeAt(index);
-                              _likeCard(forIndex: index);
-                            } else if (details.offset.dx < -150.0) {
-                              _updatedPhotos.removeAt(index);
-                              _unlikeCard(forIndex: index);
-                            }
-                          },
-                          onDragUpdate: (DragUpdateDetails details) {
-                            if (details.delta.dx < -3) {
-                              _feedbackPhotoCardValueNotifier
-                                  .updateCardSwipeActionValue(
-                                      value:
-                                          CardActionDirection.cardLeftAction);
-                            } else if (details.delta.dx > 3) {
-                              _feedbackPhotoCardValueNotifier
-                                  .updateCardSwipeActionValue(
-                                      value:
-                                          CardActionDirection.cardRightAction);
-                            }
-                          },
-                          feedback: FeedbackPhotoCardWidget(
-                            cardHeight: updatedCardHeight,
-                            cardWidth: cardWidth,
-                            photoCard: updatedPhoto,
-                            leftButtonIcon: widget.leftButtonIcon,
-                            rightButtonIcon: widget.rightButtonIcon,
-                            centerButtonIcon: widget.centerButtonIcon,
-                            hideCenterButton: widget.hideCenterButton,
-                            hideTitleText: widget.hideTitleText,
-                            hideDescriptionText: widget.hideDescriptionText,
-                            imageScaleType: widget.imageScaleType,
-                            imageBackgroundColor: widget.imageBackgroundColor,
-                            feedbackPhotoCardValueNotifier:
-                                _feedbackPhotoCardValueNotifier,
-                            leftButtonIconColor: widget.leftButtonIconColor,
-                            leftButtonBackgroundColor:
-                                widget.leftButtonBackgroundColor,
-                            centerButtonBackgroundColor:
-                                widget.centerButtonBackgroundColor,
-                            centerButtonIconColor: widget.centerButtonIconColor,
-                            rightButtonBackgroundColor:
-                                widget.rightButtonBackgroundColor,
-                            rightButtonIconColor: widget.rightButtonIconColor,
-                          ),
-                          child: PhotoCardLayoutWidget(
-                            cardHeight: updatedCardHeight,
-                            cardWidth: cardWidth,
-                            imageScaleType: widget.imageScaleType,
-                            imageBackgroundColor: widget.imageBackgroundColor,
-                            hideCenterButton: widget.hideCenterButton,
-                            hideTitleText: widget.hideTitleText,
-                            hideDescriptionText: widget.hideDescriptionText,
-                            photoCard: updatedPhoto,
-                            leftButtonIcon: widget.leftButtonIcon,
-                            rightButtonIcon: widget.rightButtonIcon,
-                            centerButtonIcon: widget.centerButtonIcon,
-                            isLeftOverlayShown: _isPhotoCardLeftOverlayShown,
-                            isCenterOverlayShown:
-                                _isPhotoCardCenterOverlayShown,
-                            isRightOverlayShown: _isPhotoCardRightOverlayShown,
-                            leftButtonIconColor: widget.leftButtonIconColor,
-                            leftButtonBackgroundColor:
-                                widget.leftButtonBackgroundColor,
-                            centerButtonBackgroundColor:
-                                widget.centerButtonBackgroundColor,
-                            centerButtonIconColor: widget.centerButtonIconColor,
-                            rightButtonBackgroundColor:
-                                widget.rightButtonBackgroundColor,
-                            rightButtonIconColor: widget.rightButtonIconColor,
-                            onCardTap: widget.onCardTap,
-                            photoIndex: tapIndex,
-                            leftButtonAction: () {
-                              setState(() {
-                                _showLeftPhotoCardOverlayWidget();
-                              });
-                              Future.delayed(Duration(milliseconds: 500), () {
-                                _updatedPhotos.removeAt(index);
-                                _unlikeCard(forIndex: index);
+                          return Positioned(
+                            top: topOffsetForCard,
+                            child: Draggable(
+                              axis: Axis.horizontal,
+                              childWhenDragging: Container(),
+                              maxSimultaneousDrags: 1,
+                              onDragCompleted: () {
                                 _hideAllPhotoCardOverlayWidgets();
-                                if (widget.leftButtonAction != null) {
-                                  widget.leftButtonAction!();
+                              },
+                              onDragStarted: () {},
+                              onDragEnd: (details) {
+                                _hideAllPhotoCardOverlayWidgets();
+                                if (details.offset.dx > 150.0) {
+                                  _updatedPhotos.removeAt(index);
+                                  _likeCard(forIndex: index);
+                                } else if (details.offset.dx < -150.0) {
+                                  _updatedPhotos.removeAt(index);
+                                  _unlikeCard(forIndex: index);
                                 }
-                              });
-                            },
-                            centerButtonAction: () {
-                              setState(() {
-                                _showCenterPhotoCardOverlayWidget();
-                              });
-                              Future.delayed(Duration(milliseconds: 500), () {
-                                _updatedPhotos.removeAt(index);
-                                _favoriteCard(forIndex: index);
+                              },
+                              onDragUpdate: (DragUpdateDetails details) {
+                                if (details.delta.dx < -3) {
+                                  _feedbackPhotoCardValueNotifier
+                                      .updateCardSwipeActionValue(
+                                          value: CardActionDirection
+                                              .cardLeftAction);
+                                } else if (details.delta.dx > 3) {
+                                  _feedbackPhotoCardValueNotifier
+                                      .updateCardSwipeActionValue(
+                                          value: CardActionDirection
+                                              .cardRightAction);
+                                }
+                              },
+                              feedback: FeedbackPhotoCardWidget(
+                                cardHeight: updatedCardHeight,
+                                cardWidth: cardWidth,
+                                photoCard: updatedPhoto,
+                                leftButtonIcon: widget.leftButtonIcon,
+                                rightButtonIcon: widget.rightButtonIcon,
+                                centerButtonIcon: widget.centerButtonIcon,
+                                hideCenterButton: widget.hideCenterButton,
+                                hideTitleText: widget.hideTitleText,
+                                hideDescriptionText: widget.hideDescriptionText,
+                                imageScaleType: widget.imageScaleType,
+                                imageBackgroundColor:
+                                    widget.imageBackgroundColor,
+                                feedbackPhotoCardValueNotifier:
+                                    _feedbackPhotoCardValueNotifier,
+                                leftButtonIconColor: widget.leftButtonIconColor,
+                                leftButtonBackgroundColor:
+                                    widget.leftButtonBackgroundColor,
+                                centerButtonBackgroundColor:
+                                    widget.centerButtonBackgroundColor,
+                                centerButtonIconColor:
+                                    widget.centerButtonIconColor,
+                                rightButtonBackgroundColor:
+                                    widget.rightButtonBackgroundColor,
+                                rightButtonIconColor:
+                                    widget.rightButtonIconColor,
+                              ),
+                              child: PhotoCardLayoutWidget(
+                                cardHeight: updatedCardHeight,
+                                cardWidth: cardWidth,
+                                imageScaleType: widget.imageScaleType,
+                                imageBackgroundColor:
+                                    widget.imageBackgroundColor,
+                                hideCenterButton: widget.hideCenterButton,
+                                hideTitleText: widget.hideTitleText,
+                                hideDescriptionText: widget.hideDescriptionText,
+                                photoCard: updatedPhoto,
+                                leftButtonIcon: widget.leftButtonIcon,
+                                rightButtonIcon: widget.rightButtonIcon,
+                                centerButtonIcon: widget.centerButtonIcon,
+                                isLeftOverlayShown:
+                                    _isPhotoCardLeftOverlayShown,
+                                isCenterOverlayShown:
+                                    _isPhotoCardCenterOverlayShown,
+                                isRightOverlayShown:
+                                    _isPhotoCardRightOverlayShown,
+                                leftButtonIconColor: widget.leftButtonIconColor,
+                                leftButtonBackgroundColor:
+                                    widget.leftButtonBackgroundColor,
+                                centerButtonBackgroundColor:
+                                    widget.centerButtonBackgroundColor,
+                                centerButtonIconColor:
+                                    widget.centerButtonIconColor,
+                                rightButtonBackgroundColor:
+                                    widget.rightButtonBackgroundColor,
+                                rightButtonIconColor:
+                                    widget.rightButtonIconColor,
+                                onCardTap: widget.onCardTap,
+                                photoIndex: tapIndex,
+                                leftButtonAction: () {
+                                  setState(() {
+                                    _showLeftPhotoCardOverlayWidget();
+                                  });
+                                  Future.delayed(Duration(milliseconds: 500),
+                                      () {
+                                    _updatedPhotos.removeAt(index);
+                                    _unlikeCard(forIndex: index);
+                                    _hideAllPhotoCardOverlayWidgets();
+                                    if (widget.leftButtonAction != null) {
+                                      widget.leftButtonAction!();
+                                    }
+                                  });
+                                },
+                                centerButtonAction: () {
+                                  setState(() {
+                                    _showCenterPhotoCardOverlayWidget();
+                                  });
+                                  Future.delayed(Duration(milliseconds: 500),
+                                      () {
+                                    _updatedPhotos.removeAt(index);
+                                    _favoriteCard(forIndex: index);
 
-                                _hideAllPhotoCardOverlayWidgets();
-                                if (widget.centerButtonAction != null) {
-                                  widget.centerButtonAction!();
-                                }
-                              });
-                            },
-                            rightButtonAction: () {
-                              setState(() {
-                                _showRightPhotoCardOverlayWidget();
-                              });
-                              Future.delayed(Duration(milliseconds: 500), () {
-                                _updatedPhotos.removeAt(index);
-                                _likeCard(forIndex: index);
-                                _hideAllPhotoCardOverlayWidgets();
-                                if (widget.rightButtonAction != null) {
-                                  widget.rightButtonAction!();
-                                }
-                              });
-                            },
-                          ),
-                        ),
-                      );
-                    },
-                  ).toList(),
-                ),
+                                    _hideAllPhotoCardOverlayWidgets();
+                                    if (widget.centerButtonAction != null) {
+                                      widget.centerButtonAction!();
+                                    }
+                                  });
+                                },
+                                rightButtonAction: () {
+                                  setState(() {
+                                    _showRightPhotoCardOverlayWidget();
+                                  });
+                                  Future.delayed(Duration(milliseconds: 500),
+                                      () {
+                                    _updatedPhotos.removeAt(index);
+                                    _likeCard(forIndex: index);
+                                    _hideAllPhotoCardOverlayWidgets();
+                                    if (widget.rightButtonAction != null) {
+                                      widget.rightButtonAction!();
+                                    }
+                                  });
+                                },
+                              ),
+                            ),
+                          );
+                        },
+                      ).toList(),
+                    ),
         );
       },
     );
@@ -302,27 +317,27 @@ class _SwiperState extends State<Swiper> {
 
   void _unlikeCard({required int forIndex}) {
     setState(() {
-      if (widget.cardSwiped != null) {
-        final _reverseOffset = (widget.photos.length - 1) - forIndex;
-        widget.cardSwiped!(CardActionDirection.cardLeftAction, _reverseOffset);
+      if (widget.whenCardSwiped != null) {
+        final _reverseOffset = (widget.photoCards.length - 1) - forIndex;
+        widget.whenCardSwiped!(CardActionDirection.cardLeftAction, _reverseOffset);
       }
     });
   }
 
   void _likeCard({required int forIndex}) {
     setState(() {
-      if (widget.cardSwiped != null) {
-        final _reverseOffset = (widget.photos.length - 1) - forIndex;
-        widget.cardSwiped!(CardActionDirection.cardRightAction, _reverseOffset);
+      if (widget.whenCardSwiped != null) {
+        final _reverseOffset = (widget.photoCards.length - 1) - forIndex;
+        widget.whenCardSwiped!(CardActionDirection.cardRightAction, _reverseOffset);
       }
     });
   }
 
   void _favoriteCard({required int forIndex}) {
     setState(() {
-      if (widget.cardSwiped != null) {
-        final _reverseOffset = (widget.photos.length - 1) - forIndex;
-        widget.cardSwiped!(
+      if (widget.whenCardSwiped != null) {
+        final _reverseOffset = (widget.photoCards.length - 1) - forIndex;
+        widget.whenCardSwiped!(
             CardActionDirection.cardCenterAction, _reverseOffset);
       }
     });

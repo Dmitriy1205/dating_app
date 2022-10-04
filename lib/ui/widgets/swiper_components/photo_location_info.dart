@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../data/models/photo_card.dart';
 
-class PhotoDescriptionWidget extends StatelessWidget {
-  const PhotoDescriptionWidget({
+class PhotoLocationInfo extends StatelessWidget {
+  const PhotoLocationInfo({
     Key? key,
     required this.photoCard,
   }) : super(key: key);
@@ -13,10 +13,9 @@ class PhotoDescriptionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      photoCard.description,
+      photoCard.location,
       style: TextStyle(
-        fontSize: 14.0,
-        fontWeight: FontWeight.normal,
+        fontSize: 15.0,
         color: Colors.grey[700],
       ),
       textAlign: TextAlign.center,

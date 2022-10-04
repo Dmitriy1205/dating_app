@@ -13,9 +13,9 @@ class PhotoTitleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      '${photoCard.title}',
-      style: TextStyle(
-        fontSize: 26.0,
+      photoCard.title,
+      style: const TextStyle(
+        fontSize: 18.0,
         fontWeight: FontWeight.bold,
         color: Colors.black,
       ),

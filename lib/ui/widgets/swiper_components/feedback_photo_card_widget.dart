@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:dating_app/ui/widgets/swiper_components/photo_description_widget.dart';
+import 'package:dating_app/ui/widgets/swiper_components/photo_location_info.dart';
 import 'package:dating_app/ui/widgets/swiper_components/photo_title_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -58,20 +59,21 @@ class FeedbackPhotoCardWidget extends StatelessWidget {
         width: cardWidth,
         clipBehavior: Clip.hardEdge,
         decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(15.0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey[350] ?? Colors.black,
-                blurRadius: 7.0,
-                spreadRadius: 3.0,
-                offset: Offset(2, 3),
-              ),
-            ]),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey[350] ?? Colors.black,
+              blurRadius: 0.0,
+              spreadRadius: 0.0,
+              offset: const Offset(2, 3),
+            ),
+          ],
+        ),
         child: Stack(
           children: [
             Container(
-              height: cardHeight / 1.3,
+              height: cardHeight / 1.4,
               width: cardWidth,
               clipBehavior: Clip.hardEdge,
               decoration: BoxDecoration(
@@ -92,40 +94,48 @@ class FeedbackPhotoCardWidget extends StatelessWidget {
                       ),
               ),
               margin: const EdgeInsets.all(0.0),
-              child: Stack(
-                children: [
-                  CardActionSpecifcOverlayWidget(
-                    key: UniqueKey(),
-                    buttonIconColor: Colors.red[800],
-                    buttonIcon: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(40.0),
-                      ),
-                      child: Image.asset('assets/icons/close.png'),
-                    ),
-                    // widget.leftButtonIcon ?? Icons.close,
-                    isVisible: true,
-                  ),
-                  CardActionSpecifcOverlayWidget(
-                    key: UniqueKey(),
-                    buttonIconColor: Colors.lightGreen[700],
-                    buttonIcon: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(40.0),
-                      ),
-                      child: Image.asset('assets/icons/message.png'),
-                    ),
-                    // widget.rightButtonIcon! ?? Icons.check,
-                    isVisible: true,
-                  ),
-                ],
+              child: ValueListenableBuilder(
+                valueListenable:
+                    feedbackPhotoCardValueNotifier.swipeDirectionValueNotifier,
+                builder: (_, CardActionDirection value, __) {
+                  switch (value) {
+                    case CardActionDirection.cardLeftAction:
+                      return CardActionSpecifcOverlayWidget(
+                        key: UniqueKey(),
+                        buttonIconColor: Colors.red[800],
+                        buttonIcon: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(80.0),
+                          ),
+                          child: Image.asset('assets/icons/close.png'),
+                        ),
+                        // widget.leftButtonIcon ?? Icons.close,
+                        isVisible: true,
+                      );
+                    case CardActionDirection.cardRightAction:
+                      return CardActionSpecifcOverlayWidget(
+                        key: UniqueKey(),
+                        buttonIconColor: Colors.lightGreen[700],
+                        buttonIcon: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(80.0),
+                          ),
+                          child: Image.asset('assets/icons/message.png'),
+                        ),
+                        // widget.rightButtonIcon! ?? Icons.check,
+                        isVisible: true,
+                      );
+                    default:
+                      return Container();
+                  }
+                },
               ),
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Container(
-                  height: cardHeight / 4.5,
+                  height: cardHeight / 3.5,
                   width: cardWidth,
                   color: Colors.white,
                   child: Column(
@@ -144,9 +154,15 @@ class FeedbackPhotoCardWidget extends StatelessWidget {
                       const SizedBox(
                         height: 5.0,
                       ),
-                      Visibility(
-                        visible: !hideDescriptionText,
-                        child: PhotoDescriptionWidget(photoCard: photoCard),
+                      PhotoLocationInfo(photoCard: photoCard),
+                      const SizedBox(
+                        height: 5.0,
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 15),
+                          child: PhotoDescriptionWidget(photoCard: photoCard),
+                        ),
                       ),
                       const SizedBox(
                         height: 20.0,
@@ -157,7 +173,7 @@ class FeedbackPhotoCardWidget extends StatelessWidget {
               ],
             ),
             Positioned(
-              bottom: 120,
+              bottom: 160,
               left: 100,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -209,16 +225,14 @@ class CardActionSpecifcOverlayWidget extends StatelessWidget {
       onEnd: () {},
       child: BackdropFilter(
         filter: ImageFilter.blur(
-          sigmaX: 2.0,
-          sigmaY: 2.0,
+          sigmaX: 1.0,
+          sigmaY: 1.0,
         ),
-        child: Container(
-          color: Colors.white.withOpacity(0.3),
-          child: Center(
-              child: ClipOval(
+        child: Center(
+          child: ClipOval(
             child: Container(
-              width: 95,
-              height: 95,
+              width: 135,
+              height: 135,
               color: Colors.white.withOpacity(0.7),
               child: Center(
                 child: buttonIcon,
@@ -229,7 +243,7 @@ class CardActionSpecifcOverlayWidget extends StatelessWidget {
                 // ),
               ),
             ),
-          )),
+          ),
         ),
       ),
     );
@@ -289,27 +303,24 @@ class LeftButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipOval(
-      child: Material(
-        shape: RoundedRectangleBorder(
-          side: BorderSide(
-              color: Colors.grey[200] ?? Colors.grey,
-              width: 6,
-              style: BorderStyle.solid),
-          borderRadius: BorderRadius.circular(50),
+      child: InkWell(
+        splashColor: Colors.white,
+        child: SizedBox(
+          width: 75,
+          height: 75,
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(40.0),
+            ),
+            child: Image.asset('assets/icons/close.png'),
+          ),
+          // Icon(
+          //   leftButtonIcon ?? Icons.close,
+          //   color: leftButtonIconColor ?? Colors.red[800],
+          //   size: 50,
+          // ),
         ),
-        color: leftButtonBackgroundColor ?? Colors.red[100],
-        child: InkWell(
-          splashColor: Colors.white,
-          child: SizedBox(
-              width: 65,
-              height: 65,
-              child: Icon(
-                leftButtonIcon ?? Icons.close,
-                color: leftButtonIconColor ?? Colors.red[800],
-                size: 50,
-              )),
-          onTap: () {},
-        ),
+        onTap: () {},
       ),
     );
   }
