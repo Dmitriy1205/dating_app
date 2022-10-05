@@ -118,7 +118,7 @@ class _SwiperState extends State<Swiper> {
           child:
               //TODO: Refresh button for finished List(if empty = no mathes for yo today, if not empty = put list)
               (_updatedPhotos.isEmpty && widget.showLoading)
-                  ? Center(
+                  ? const Center(
                       child: Text('Hello'),
                     )
                   // ?LoadingDataPhotoCardWidget(

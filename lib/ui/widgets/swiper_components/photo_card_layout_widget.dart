@@ -125,7 +125,7 @@ class _PhotoCardLayoutWidgetState extends State<PhotoCardLayoutWidget> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(40.0),
                       ),
-                      child: Image.asset('assets/icons/close.png'),
+                      child: Image.asset('assets/icons/red_close.png'),
                     ),
                     // widget.leftButtonIcon ?? Icons.close,
                     isVisible: widget.isLeftOverlayShown,
@@ -137,7 +137,7 @@ class _PhotoCardLayoutWidgetState extends State<PhotoCardLayoutWidget> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(40.0),
                       ),
-                      child: Image.asset('assets/icons/message.png'),
+                      child: Image.asset('assets/icons/green_mess.png'),
                     ),
                     // widget.rightButtonIcon! ?? Icons.check,
                     isVisible: widget.isRightOverlayShown,
@@ -250,7 +250,7 @@ class CardActionSpecifcOverlayWidget extends StatelessWidget {
             child: Container(
               width: 135,
               height: 135,
-              color: Colors.white.withOpacity(0.7),
+              // color: Colors.white.withOpacity(0.7),
               child: Center(child: buttonIcon
 
                   // Icon(

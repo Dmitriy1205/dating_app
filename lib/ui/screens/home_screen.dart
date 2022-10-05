@@ -20,15 +20,14 @@ class _HomeScreenState extends State<HomeScreen> {
         title: 'Michale Barns',
         location: '2 miles',
         description: 'A man with million hearts.'
-
             '',
-        imagePath: 'assets/images/working_out.png',
+        imagePath: 'assets/images/pic.png',
         cardId: '1'),
     PhotoCard(
         title: 'Tom Farly',
         location: '2 miles',
         description: 'An inspiration to many.',
-        imagePath: 'assets/images/hiking.png',
+        imagePath: 'assets/images/pic.png',
         cardId: '2'),
     PhotoCard(
         title: 'Georg Third',
@@ -42,12 +41,6 @@ class _HomeScreenState extends State<HomeScreen> {
         description: 'An inspiration to many.',
         imagePath: 'assets/images/hiking.png',
         cardId: '4'),
-    PhotoCard(
-        title: 'Tom Farly',
-        location: '2 miles',
-        description: 'An inspiration to many.',
-        imagePath: 'assets/images/hiking.png',
-        cardId: '5'),
   ];
 
   @override
@@ -66,8 +59,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: GestureDetector(
                   onTap: () {
                     //TODO: navigation to messenger
-                    Navigator.push(
-                        context, MaterialPageRoute(builder: (context) => Messenger()));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Messenger()));
                   },
                   child: SizedBox(
                     height: 50,
@@ -89,7 +82,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       onTap: () {
                         //TODO: navigation to profile
                         Navigator.push(
-                            context, MaterialPageRoute(builder: (context) => ProfileScreen()));
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ProfileScreen()));
                       },
                       child: SizedBox(
                         height: 50,
@@ -111,7 +106,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         onTap: () {
                           //TODO: navigation to filter_screen
                           Navigator.push(
-                              context, MaterialPageRoute(builder: (context) => FilterScreen()));
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => FilterScreen()));
                         },
                         child: SizedBox(
                             height: 50,

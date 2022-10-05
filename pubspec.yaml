@@ -20,6 +20,8 @@ dependencies:
   pin_code_fields: ^7.4.0
   intl: ^0.17.0
   image_picker: ^0.8.5+3
+  carousel_slider: ^4.1.1
+  dots_indicator: ^2.0.0
 #  photo_card_swiper: ^0.0.6
 
   # firebase
