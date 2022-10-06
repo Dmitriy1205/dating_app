@@ -108,6 +108,7 @@ class _SwiperState extends State<Swiper> {
         final double cardHeight =
             maxHeight - (_topPadding + _bottomPadding + extraOffset);
         final double cardWidth = maxWidth - (_leftPadding + _rightPadding);
+        // final center = constraints.smallest.center(Offset.zero);
 
         return Container(
           padding: EdgeInsets.only(
@@ -142,8 +143,12 @@ class _SwiperState extends State<Swiper> {
                           final updatedCardHeight =
                               cardHeight - (_offset * (index));
 
-                          final tapIndex = (widget.photoCards.length - 1) - index;
-
+                          final tapIndex =
+                              (widget.photoCards.length - 1) - index;
+                          // final matrix = Matrix4.identity()
+                          //   ..translate(center.dx, center.dy)
+                          //   ..rotateZ(6.0)
+                          //   ..translate(-center.dx, -center.dy);
                           return Positioned(
                             top: topOffsetForCard,
                             child: Draggable(
@@ -319,7 +324,8 @@ class _SwiperState extends State<Swiper> {
     setState(() {
       if (widget.whenCardSwiped != null) {
         final _reverseOffset = (widget.photoCards.length - 1) - forIndex;
-        widget.whenCardSwiped!(CardActionDirection.cardLeftAction, _reverseOffset);
+        widget.whenCardSwiped!(
+            CardActionDirection.cardLeftAction, _reverseOffset);
       }
     });
   }
@@ -328,7 +334,8 @@ class _SwiperState extends State<Swiper> {
     setState(() {
       if (widget.whenCardSwiped != null) {
         final _reverseOffset = (widget.photoCards.length - 1) - forIndex;
-        widget.whenCardSwiped!(CardActionDirection.cardRightAction, _reverseOffset);
+        widget.whenCardSwiped!(
+            CardActionDirection.cardRightAction, _reverseOffset);
       }
     });
   }

@@ -1,4 +1,4 @@
-import 'package:dating_app/ui/screens/%C2%A0person_profile.dart';
+import 'package:dating_app/ui/screens/person_profile.dart';
 import 'package:dating_app/ui/screens/messenger.dart';
 import 'package:dating_app/ui/screens/profile_screen.dart';
 import 'package:flutter/material.dart';

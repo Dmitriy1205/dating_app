@@ -26,4 +26,22 @@ class Content {
     'assets/images/photography.png',
     'assets/images/acting.png',
   ];
+  static const List<String> settingsList = [
+    'assets/icons/notifications.png',
+    'assets/icons/blocked.png',
+    'assets/icons/friends.png',
+    'assets/icons/faq.png',
+    'assets/icons/terms.png',
+    'assets/icons/privacy.png',
+    'assets/icons/logout.png',
+  ];
+  static const List<String> settingNames = [
+    'Notifications',
+    'Blocked Contacts',
+    'Friend List',
+    'Faq\'s',
+    'Terms & Conditions',
+    'Privacy Policy',
+    'Logout'
+  ];
 }
