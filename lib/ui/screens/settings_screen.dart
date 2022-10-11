@@ -1,10 +1,23 @@
 import 'package:dating_app/core/constants.dart';
+import 'package:dating_app/ui/screens/blocked_contacts_screen.dart';
+import 'package:dating_app/ui/screens/faq_screen.dart';
+import 'package:dating_app/ui/screens/privacy_screen.dart';
+import 'package:dating_app/ui/screens/terms.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 
-class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({Key? key}) : super(key: key);
+import 'friend_list_screen.dart';
+
+class SettingsScreen extends StatefulWidget {
+  SettingsScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  bool isToggle = true;
 
   @override
   Widget build(BuildContext context) {
@@ -31,14 +44,23 @@ class SettingsScreen extends StatelessWidget {
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
-      body: InkWell(
-        onTap: () {},
-        child: ListView.builder(
-          itemCount: Content.settingNames.length,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5),
-              child: Container(
+      body: ListView.builder(
+        itemCount: Content.settingNames.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5),
+            child: InkWell(
+              onTap: () {
+                Content.settingNames[index] == Content.settingNames.first
+                    ? const SizedBox()
+                    : Content.settingNames[index] == Content.settingNames.last
+                        ? Container()
+                        : Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => screens[index]));
+              },
+              child: SizedBox(
                 height: 80,
                 child: Card(
                   child: Padding(
@@ -72,8 +94,12 @@ class SettingsScreen extends StatelessWidget {
                                 padding: 2,
                                 toggleSize: 17,
                                 activeColor: Colors.orange.shade700,
-                                onToggle: (bool value) {},
-                                value: true,
+                                onToggle: (value) {
+                                  setState(() {
+                                    isToggle = value;
+                                  });
+                                },
+                                value: isToggle,
                               )
                             : Content.settingNames[index] ==
                                     Content.settingNames.last
@@ -87,10 +113,20 @@ class SettingsScreen extends StatelessWidget {
                   ),
                 ),
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }
 }
+
+List screens = [
+  SizedBox(),
+  BlockedContactsScreen(),
+  FriendListScreen(),
+  FaqScreen(),
+  TermsAndConditions(),
+  PrivacyScreen(),
+  SizedBox(),
+];

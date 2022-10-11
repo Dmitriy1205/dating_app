@@ -44,4 +44,17 @@ class Content {
     'Privacy Policy',
     'Logout'
   ];
+  static const List<String> faqHeader = [
+    'Cancelling a subscription-',
+    'Unable to signin-',
+    'Email/Password issue-',
+  ];
+  static const List<String> faqBody = [
+    'if you were interested for canceling a subscription'
+        ' or you havedecided to turn auto subscription'
+        ' renuwal',
+    'if you having problem with signin, please review'
+    ' the information below to help troubleshoot the problem',
+    'Friend List',
+  ];
 }
