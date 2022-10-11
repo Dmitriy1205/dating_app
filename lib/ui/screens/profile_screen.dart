@@ -41,7 +41,7 @@ class ProfileScreen extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const SettingsScreen()));
+                          builder: (context) =>  SettingsScreen()));
                 },
                 child: SizedBox(
                   height: 35,

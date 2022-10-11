@@ -15,9 +15,7 @@ class AuthRepository {
   ) async {
     await auth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
-      verificationCompleted: (_) {
-
-      },
+      verificationCompleted: (_) {},
       verificationFailed: (FirebaseAuthException e) {
         print(e.message);
       },
@@ -57,5 +55,9 @@ class AuthRepository {
     } on Exception catch (e) {
       throw BadRequestException(message: e.toString());
     }
+  }
+
+  Future<void> logout() async {
+    await auth.signOut();
   }
 }
