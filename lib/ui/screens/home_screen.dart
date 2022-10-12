@@ -1,5 +1,5 @@
 import 'package:dating_app/ui/screens/person_profile.dart';
-import 'package:dating_app/ui/screens/messenger.dart';
+import 'package:dating_app/ui/screens/contacts_screen.dart';
 import 'package:dating_app/ui/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -60,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   onTap: () {
                     //TODO: navigation to messenger
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Messenger()));
+                        MaterialPageRoute(builder: (context) => ContactsScreen()));
                   },
                   child: SizedBox(
                     height: 50,
