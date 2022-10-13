@@ -30,10 +30,14 @@ class MessengerScreen extends StatelessWidget {
         ),
         actions: <Widget>[
           PopupMenuButton<String>(
-            icon: Icon(Icons.more_vert,color: Colors.black,),
+            icon: Icon(
+              Icons.more_vert,
+              color: Colors.black,
+            ),
             onSelected: handleClick,
             itemBuilder: (BuildContext context) {
-              return {'Block','Clear Chat','Report User', 'Unfriend'}.map((String choice) {
+              return {'Block', 'Clear Chat', 'Report User', 'Unfriend'}
+                  .map((String choice) {
                 return PopupMenuItem<String>(
                   value: choice,
                   child: Text(choice),
@@ -46,6 +50,7 @@ class MessengerScreen extends StatelessWidget {
       body: Container(),
     );
   }
+
   void handleClick(String value) {
     switch (value) {
       case 'Logout':
