@@ -1,10 +1,20 @@
 part of 'facebook_auth_cubit.dart';
 
-abstract class FacebookAuthState extends Equatable {
-  const FacebookAuthState();
-}
+class FacebookAuthState extends Equatable {
+  final Status? status;
 
-class FacebookAuthInitial extends FacebookAuthState {
+  const FacebookAuthState({
+    this.status,
+  });
+
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [status];
+
+  FacebookAuthState copyWith({
+    Status? status,
+  }) {
+    return FacebookAuthState(
+      status: status ?? this.status,
+    );
+  }
 }

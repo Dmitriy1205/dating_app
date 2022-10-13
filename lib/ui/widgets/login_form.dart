@@ -2,6 +2,7 @@ import 'package:dating_app/core/constants.dart';
 import 'package:dating_app/ui/bloc/auth/auth_cubit.dart';
 import 'package:dating_app/ui/screens/otp_verification_screen.dart';
 import 'package:dating_app/ui/screens/sing_up_screen.dart';
+import 'package:dating_app/ui/widgets/facebook_auth_button.dart';
 import 'package:dating_app/ui/widgets/field_decor.dart';
 import 'package:dating_app/ui/widgets/google_auth_button.dart';
 import 'package:flutter/gestures.dart';
@@ -230,36 +231,7 @@ class _LoginFormState extends State<LoginForm> {
                     const SizedBox(
                       height: 15,
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        //TODO: facebook
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.transparent,
-                        shadowColor: Colors.white,
-                        elevation: 0,
-                        fixedSize: const Size(340, 55),
-                        side: BorderSide(color: Colors.blue),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                      ),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          FaIcon(FontAwesomeIcons.facebookF,
-                              color: Colors.blue[800]),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            'SIGN IN WITH FACEBOOK',
-                            style: TextStyle(color: Colors.blue[800]),
-                          ),
-                        ],
-                      ),
-                    ),
+                    const FacebookAuthButton(),
                     const SizedBox(
                       height: 15,
                     ),

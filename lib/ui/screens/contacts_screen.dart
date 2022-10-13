@@ -77,7 +77,7 @@ class ContactsScreen extends StatelessWidget {
             height: 30,
           ),
           SizedBox(
-            height: MediaQuery.of(context).size.height / 1.4,
+            height: MediaQuery.of(context).size.height / 1.6,
             child: ListView.builder(
                 shrinkWrap: true,
                 itemCount: Content.hobbiesList.length,
