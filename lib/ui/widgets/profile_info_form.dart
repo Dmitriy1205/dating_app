@@ -57,7 +57,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
             decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage(
-                  Background.profile,
+                  Content.profile,
                 ),
                 fit: BoxFit.fitWidth,
               ),
