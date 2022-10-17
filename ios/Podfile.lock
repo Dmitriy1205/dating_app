@@ -129,6 +129,8 @@ PODS:
   - nanopb/decode (2.30909.0)
   - nanopb/encode (2.30909.0)
   - PromisesObjC (2.1.1)
+  - sign_in_with_apple (0.0.1):
+    - Flutter
 
 DEPENDENCIES:
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
@@ -143,6 +145,7 @@ DEPENDENCIES:
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - libphonenumber (from `.symlinks/plugins/libphonenumber/ios`)
   - libphonenumber_plugin (from `.symlinks/plugins/libphonenumber_plugin/ios`)
+  - sign_in_with_apple (from `.symlinks/plugins/sign_in_with_apple/ios`)
 
 SPEC REPOS:
   trunk:
@@ -196,6 +199,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/libphonenumber/ios"
   libphonenumber_plugin:
     :path: ".symlinks/plugins/libphonenumber_plugin/ios"
+  sign_in_with_apple:
+    :path: ".symlinks/plugins/sign_in_with_apple/ios"
 
 CHECKOUT OPTIONS:
   FirebaseFirestore:
@@ -223,7 +228,7 @@ SPEC CHECKSUMS:
   FirebaseFirestore: cbb150095370d64f1f021e3a7eecd2b543356ae3
   FirebaseStorage: a806d9f9eededf6fb1d906e79221b83ada1dbb4f
   FirebaseStorageInternal: 81d8a597324ccd06c41a43c5700bc1185a2fc328
-  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   flutter_facebook_auth: 361ac7a57263ebf327f26089507ead0d66558ee8
   flutter_native_splash: 52501b97d1c0a5f898d687f1646226c1f93c56ef
   google_sign_in_ios: 4f85eb9f937450765c8573bb85fd8cd6a5af675c
@@ -238,6 +243,7 @@ SPEC CHECKSUMS:
   libphonenumber_plugin: 7cf755ad1656145935d6c208173a476bd3f12898
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
+  sign_in_with_apple: f3bf75217ea4c2c8b91823f225d70230119b8440
 
 PODFILE CHECKSUM: 57b27a55bd5e494bb37ea06ba558a3c99d0cfac3
 
