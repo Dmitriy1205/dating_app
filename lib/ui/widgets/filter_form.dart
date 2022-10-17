@@ -168,7 +168,7 @@ class _FilterFormState extends State<FilterForm> {
                           fillColor: Colors.white,
                         ),
                         // decoration: profileFieldDecor('Gender'),
-                        items: [
+                        items: const [
                           DropdownMenuItem(
                             value: "MALE",
                             child: Text(

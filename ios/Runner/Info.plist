@@ -23,7 +23,7 @@
         <key>FacebookAppID</key>
         <string>504249461570428</string>
         <key>FacebookClientToken</key>
-        <string>becf0ce0e8025a081b23bc632460665f</string>
+        <string>token</string>
         <key>FacebookDisplayName</key>
         <string>date_app</string>
 
@@ -33,6 +33,8 @@
         <array>
              <string>fbapi</string>
              <string>fb-messenger-share-api</string>
+             <string>fbauth2</string>
+              <string>fbshareextension</string>
          </array>
 
 	    <key>NSPhotoLibraryUsageDescription</key>
