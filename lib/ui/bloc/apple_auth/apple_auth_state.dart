@@ -1,10 +1,20 @@
 part of 'apple_auth_cubit.dart';
 
-abstract class AppleAuthState extends Equatable {
-  const AppleAuthState();
-}
+class AppleAuthState extends Equatable {
+  final Status? status;
 
-class AppleAuthInitial extends AppleAuthState {
+  const AppleAuthState({
+    this.status,
+  });
+
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [status];
+
+  AppleAuthState copyWith({
+    Status? status,
+  }) {
+    return AppleAuthState(
+      status: status ?? this.status,
+    );
+  }
 }

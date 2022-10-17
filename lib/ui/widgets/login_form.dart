@@ -2,13 +2,13 @@ import 'package:dating_app/core/constants.dart';
 import 'package:dating_app/ui/bloc/auth/auth_cubit.dart';
 import 'package:dating_app/ui/screens/otp_verification_screen.dart';
 import 'package:dating_app/ui/screens/sing_up_screen.dart';
+import 'package:dating_app/ui/widgets/apple_auth_button.dart';
 import 'package:dating_app/ui/widgets/facebook_auth_button.dart';
 import 'package:dating_app/ui/widgets/field_decor.dart';
 import 'package:dating_app/ui/widgets/google_auth_button.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import '../../core/functions/validation.dart';
 
@@ -198,44 +198,16 @@ class _LoginFormState extends State<LoginForm> {
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 55),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        //TODO: Apple sign in
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.transparent,
-                        shadowColor: Colors.white,
-                        elevation: 0,
-                        fixedSize: const Size(340, 55),
-                        side: const BorderSide(color: Colors.black),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                      ),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          FaIcon(FontAwesomeIcons.apple, color: Colors.black),
-                          SizedBox(
-                            width: 30,
-                          ),
-                          Text(
-                            'SIGN IN WITH APPLE',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
+                  children: const [
+                    AppleAuthButton(),
+                    SizedBox(
                       height: 15,
                     ),
-                    const FacebookAuthButton(),
-                    const SizedBox(
+                    FacebookAuthButton(),
+                    SizedBox(
                       height: 15,
                     ),
-                    const GoogleAuthButton(),
+                    GoogleAuthButton(),
                   ],
                 ),
               ),
