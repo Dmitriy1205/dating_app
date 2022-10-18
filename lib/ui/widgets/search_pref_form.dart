@@ -1,18 +1,9 @@
 import 'package:dating_app/core/constants.dart';
+import 'package:dating_app/core/themes/checkboxes.dart';
 import 'package:dating_app/ui/bloc/search_preferances_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-final List<String> listValues = [
-  'Someone to chill with',
-  'a friend',
-  'a romantic partner',
-  'a business partner',
-  'a mentor',
-  'a mentee'
-];
-final List<bool> checks = List.generate(listValues.length, (_) => false);
 
 class SearchPrefForm extends StatefulWidget {
   const SearchPrefForm({Key? key}) : super(key: key);
@@ -154,9 +145,8 @@ class _SearchPrefFormState extends State<SearchPrefForm> {
                                             padding: const EdgeInsets.all(10.0),
                                             child: Column(
                                               children: <Widget>[
-                                                CheckboxListTile(
-                                                    activeColor:
-                                                        Colors.pink[300],
+                                                GestureDetector(
+                                                  child: ListTile(
                                                     dense: true,
                                                     //font change
                                                     title: Text(
@@ -169,18 +159,21 @@ class _SearchPrefFormState extends State<SearchPrefForm> {
                                                               FontWeight.w600,
                                                           letterSpacing: 0.5),
                                                     ),
-                                                    value: lookingForMap.values
-                                                        .elementAt(index),
-                                                    // checks[index],
-                                                    onChanged: (bool? val) {
+                                                    trailing: lookingForMap.values
+                                                        .elementAt(index) ? CustomCheckbox.checked() : null,
+                                                    onTap:
+                                                        () {
                                                       lookingForMap.update(
                                                           lookingForMap.keys
                                                               .elementAt(index),
-                                                          (value) => val!);
-                                                      // checks[index] = val!;
+                                                          (value) => !value);
                                                       setState(() {});
                                                       print('$lookingForMap');
-                                                    },
+                                                    setState(() {
+
+                                                    });
+                                                      },
+                                                  ),
                                                 )
                                               ],
                                             ),
@@ -195,11 +188,13 @@ class _SearchPrefFormState extends State<SearchPrefForm> {
                                     width: 350,
                                     decoration: BoxDecoration(
                                         color: Colors.white,
-                                        border: Border.all(color: Colors.grey[300]!),
-                                        borderRadius: BorderRadius.circular(10.0)),
+                                        border: Border.all(
+                                            color: Colors.grey[300]!),
+                                        borderRadius:
+                                            BorderRadius.circular(10.0)),
                                     child: Padding(
-                                      padding:
-                                      const EdgeInsets.symmetric(horizontal: 19),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 19),
                                       child: Center(
                                         child: DropdownButtonFormField(
                                           hint: const Text('Gender'),
@@ -208,7 +203,7 @@ class _SearchPrefFormState extends State<SearchPrefForm> {
                                           onChanged: (v) {},
                                           decoration: const InputDecoration(
                                             enabledBorder: InputBorder.none,
-                                            focusedBorder:InputBorder.none ,
+                                            focusedBorder: InputBorder.none,
                                             fillColor: Colors.white,
                                           ),
                                           // decoration: profileFieldDecor('Gender'),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../core/service_locator.dart';
+import '../core/themes/colors.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -19,7 +20,7 @@ class App extends StatelessWidget {
           ),
         ],
         child: MaterialApp(
-          theme: ThemeData(
+          theme: ThemeData(sliderTheme: CustomColors.CustomGradient(),
             unselectedWidgetColor: Colors.orange,
           ),
           debugShowCheckedModeBanner: false,
