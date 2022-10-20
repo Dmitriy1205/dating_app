@@ -102,6 +102,7 @@ class _LoginFormState extends State<LoginForm> {
                                   AutovalidateMode.onUserInteraction,
                               selectorConfig: const SelectorConfig(
                                 setSelectorButtonAsPrefixIcon: true,
+                                showFlags: false,
                                 // leadingPadding: 20,
                                 useEmoji: true,
                               ),

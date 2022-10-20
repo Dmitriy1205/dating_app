@@ -16,7 +16,7 @@ class AuthRepository {
   Future<void> signupWithPhone(
     String phoneNumber,
     String verificationId,
-    Future<void> nav,
+    void Function(String s) nav,
   ) async {
     await auth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
@@ -26,15 +26,17 @@ class AuthRepository {
       },
       codeSent: (verId, _) {
         verificationId = verId;
-        nav;
-        print(verificationId);
+        nav( verificationId);
+        print('print 1 $verificationId');
       },
       codeAutoRetrievalTimeout: (value) {},
     );
   }
 
-  Future<void> loginWithPhone(String phone) async {
-    await auth.signInWithPhoneNumber(phone);
+  Future<void> loginWithPhone(String verId, String code) async {
+    PhoneAuthCredential credential =
+        PhoneAuthProvider.credential(verificationId: verId, smsCode: code);
+    await auth.signInWithCredential(credential);
   }
 
   Future<void> loginWithApple() async {

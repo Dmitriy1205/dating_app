@@ -13,15 +13,16 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> signUp({
     required String phoneNumber,
     required String verificationId,
-    required Future<void> navigateTo,
+    required void Function(String s) nav,
   }) async {
     emit(state.copyWith(status: Status.loading()));
     try {
       await authRepository.signupWithPhone(
         phoneNumber,
         verificationId,
-        navigateTo,
+        nav,
       );
+      print('print 2 $verificationId');
       emit(state.copyWith(status: Status.loaded()));
     } on Exception catch (e) {
       emit(state.copyWith(status: Status.error(e.toString())));

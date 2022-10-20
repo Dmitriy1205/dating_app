@@ -1,7 +1,6 @@
 import 'package:dating_app/core/constants.dart';
 import 'package:dating_app/ui/bloc/auth/auth_cubit.dart';
 import 'package:dating_app/ui/screens/login_screen.dart';
-import 'package:dating_app/ui/screens/profile_info_screen.dart';
 import 'package:dating_app/ui/screens/terms.dart';
 import 'package:dating_app/ui/widgets/field_decor.dart';
 import 'package:dating_app/ui/widgets/picker.dart';
@@ -12,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import '../../core/functions/validation.dart';
+import '../screens/otp_verification_screen.dart';
 
 class SignUpForm extends StatefulWidget {
   const SignUpForm({Key? key}) : super(key: key);
@@ -119,10 +119,12 @@ class _SignUpFormState extends State<SignUpForm> {
                               height: 20,
                             ),
                             InternationalPhoneNumberInput(
+                              initialValue: PhoneNumber(isoCode: 'UA'),
                               autoValidateMode:
                                   AutovalidateMode.onUserInteraction,
                               selectorConfig: const SelectorConfig(
                                 setSelectorButtonAsPrefixIcon: true,
+                                showFlags: false,
                                 // leadingPadding: 20,
                                 useEmoji: true,
                               ),
@@ -224,24 +226,26 @@ class _SignUpFormState extends State<SignUpForm> {
                               onPressed: isChecked == false
                                   ? null
                                   : () {
-                                submit(context);
-                                      // if (!_formKey.currentState!.validate()) {
-                                      //   return;
-                                      // }
-                                      //
-                                      // _formKey.currentState!.save();
+                                      if (!_formKey.currentState!.validate()) {
+                                        return;
+                                      }
+                                      _formKey.currentState!.save();
                                       //TODO: Add phone auth with email link auth to signup
-                                      // context.read<AuthCubit>().signUp(
-                                      //       phoneNumber: _phoneController.text,
-                                      //       verificationId: verificationId,
-                                      //       navigateTo: Navigator.push<void>(
-                                      //         context,
-                                      //         MaterialPageRoute(
-                                      //           builder: (context) =>
-                                      //               const OtpVerificationScreen(),
-                                      //         ),
-                                      //       ),
-                                      //     );
+
+                                      context.read<AuthCubit>().signUp(
+                                          phoneNumber: _phoneController.text,
+                                          verificationId: verificationId,
+                                          nav: (verId) {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    OtpVerificationScreen(
+                                                  verId: verId,
+                                                ),
+                                              ),
+                                            );
+                                          });
                                     },
                               style: ElevatedButton.styleFrom(
                                   primary: Colors.transparent,
@@ -321,29 +325,29 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
-  void submit(context) {
-    if (!_formKey.currentState!.validate()) return;
-    _formKey.currentState!.save();
-    print(_nameController.text);
-    print(_phoneController.text);
-    print(_dateController.text);
-    print(_emailController.text);
-    // const snackBar = SnackBar(
-    //   backgroundColor: Colors.teal,
-    //   content: Text(
-    //     'Success',
-    //     textAlign: TextAlign.center,
-    //     style: TextStyle(
-    //       color: Colors.white,
-    //     ),
-    //   ),
-    // );
-    // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    Navigator.push<void>(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ProfileInfoScreen(),
-      ),
-    );
-  }
+// void submit(context) {
+//   if (!_formKey.currentState!.validate()) return;
+//   _formKey.currentState!.save();
+//   print(_nameController.text);
+//   print(_phoneController.text);
+//   print(_dateController.text);
+//   print(_emailController.text);
+//   // const snackBar = SnackBar(
+//   //   backgroundColor: Colors.teal,
+//   //   content: Text(
+//   //     'Success',
+//   //     textAlign: TextAlign.center,
+//   //     style: TextStyle(
+//   //       color: Colors.white,
+//   //     ),
+//   //   ),
+//   // );
+//   // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+//   Navigator.push<void>(
+//     context,
+//     MaterialPageRoute(
+//       builder: (context) => ProfileInfoScreen(),
+//     ),
+//   );
+// }
 }
