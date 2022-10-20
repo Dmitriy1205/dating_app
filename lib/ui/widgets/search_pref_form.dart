@@ -1,5 +1,6 @@
 import 'package:dating_app/core/constants.dart';
 import 'package:dating_app/core/themes/checkboxes.dart';
+import 'package:dating_app/core/themes/text_styles.dart';
 import 'package:dating_app/ui/bloc/search_preferances_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ class SearchPrefForm extends StatefulWidget {
 class _SearchPrefFormState extends State<SearchPrefForm> {
   final SearchPreferancesCubit bloc = SearchPreferancesCubit();
   Map<String, bool> lookingForMap = {
-    'Someone to chill with': false,
+    'someone to chill with': false,
     'a friend': false,
     'a romantic partner': false,
     'a business partner': false,
@@ -94,16 +95,24 @@ class _SearchPrefFormState extends State<SearchPrefForm> {
                                     // ),
                                   ],
                                 ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
                                 const Text(
                                     'We\'ll use this information to show you people with similar interests and hobbies as you!',
                                     style: TextStyle(color: Colors.black38)),
+                                const SizedBox(
+                                  height: 30,
+                                ),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     const Text('Age'),
                                     Text(
-                                        '${bloc.rangeAge.start.round().toString()} - ${bloc.rangeAge.end.round().toString()}'),
+                                        '${bloc.rangeAge.start.round().toString()} - ${bloc.rangeAge.end.round().toString()}',
+                                        style: const TextStyle(
+                                            color: Colors.black45)),
                                   ],
                                 ),
                                 RangeSlider(
@@ -112,27 +121,34 @@ class _SearchPrefFormState extends State<SearchPrefForm> {
                                       bloc.changeYears(newYears);
                                       print(bloc.rangeAge);
                                     },
-                                    min: 10,
-                                    max: 75),
+                                    min: 15,
+                                    max: 55),
+                                const SizedBox(
+                                  height: 15,
+                                ),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     const Text('Distance'),
                                     Text(
-                                        '${bloc.rangeDistance.toString()} miles'),
+                                        '${bloc.rangeDistance.toString()} miles',
+                                        style: const TextStyle(
+                                            color: Colors.black45)),
                                   ],
                                 ),
                                 Slider(
                                     value: state.distance.toDouble(),
                                     onChanged: (newDistance) {
                                       bloc.changeDistance(newDistance.toInt());
-                                      print(bloc.rangeAge);
                                     },
-                                    // labels: RangeLabels(RangeValues(bloc.rangeAge)),
                                     min: 0,
-                                    max: 80),
-                                const Text('Looking For'),
+                                    max: 70),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                CustomTextStyle.bigText('Looking For',
+                                    additionalText: '(select one or more:)'),
                                 Wrap(children: [
                                   ListView.builder(
                                       scrollDirection: Axis.vertical,
@@ -141,47 +157,71 @@ class _SearchPrefFormState extends State<SearchPrefForm> {
                                       itemBuilder:
                                           (BuildContext context, int index) {
                                         return Card(
-                                          child: Container(
-                                            padding: const EdgeInsets.all(10.0),
-                                            child: Column(
-                                              children: <Widget>[
-                                                GestureDetector(
-                                                  child: ListTile(
-                                                    dense: true,
-                                                    //font change
-                                                    title: Text(
-                                                      lookingForMap.keys
-                                                          .elementAt(index),
-                                                      // listValues[index],
-                                                      style: const TextStyle(
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          letterSpacing: 0.5),
-                                                    ),
-                                                    trailing: lookingForMap.values
-                                                        .elementAt(index) ? CustomCheckbox.checked() : null,
-                                                    onTap:
-                                                        () {
-                                                      lookingForMap.update(
-                                                          lookingForMap.keys
-                                                              .elementAt(index),
-                                                          (value) => !value);
-                                                      setState(() {});
-                                                      print('$lookingForMap');
-                                                    setState(() {
-
-                                                    });
-                                                      },
-                                                  ),
-                                                )
-                                              ],
+                                          shape: RoundedRectangleBorder(
+                                            side: BorderSide(
+                                              color: lookingForMap.values
+                                                      .elementAt(index)
+                                                  ? Colors.orangeAccent
+                                                  : Colors.black12,
                                             ),
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                          ),
+                                          child: Column(
+                                            children: <Widget>[
+                                              GestureDetector(
+                                                child: ListTile(
+                                                  contentPadding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          25, 10, 10, 10),
+                                                  dense: true,
+                                                  title: Text(
+                                                    lookingForMap.keys
+                                                        .elementAt(index),
+                                                    style: const TextStyle(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                        letterSpacing: 0.5,
+                                                        color: Colors.black54),
+                                                  ),
+                                                  trailing: lookingForMap.values
+                                                          .elementAt(index)
+                                                      ? CustomCheckbox.checked()
+                                                      : null,
+                                                  onTap: () {
+                                                    lookingForMap.update(
+                                                        lookingForMap.keys
+                                                            .elementAt(index),
+                                                        (value) => !value);
+                                                    if (lookingForMap.values
+                                                        .elementAt(index)) {
+                                                      bloc.selectLookingFor(
+                                                          lookingForMap.keys
+                                                              .elementAt(
+                                                                  index));
+                                                    } else {
+                                                      bloc.deSelectLookingFor(
+                                                          lookingForMap.keys
+                                                              .elementAt(
+                                                                  index));
+                                                    }
+                                                  },
+                                                ),
+                                              )
+                                            ],
                                           ),
                                         );
                                       }),
                                 ]),
-                                Text('Gender:'),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                CustomTextStyle.bigText('Gender',
+                                    additionalText: '(select one or more:)'),
+                                const SizedBox(
+                                  height: 20,
+                                ),
                                 Ink(
                                   child: Container(
                                     height: 57,
@@ -197,7 +237,7 @@ class _SearchPrefFormState extends State<SearchPrefForm> {
                                           horizontal: 19),
                                       child: Center(
                                         child: DropdownButtonFormField(
-                                          hint: const Text('Gender'),
+                                          hint: const Text('Select'),
                                           icon: const Icon(
                                               Icons.keyboard_arrow_down_sharp),
                                           onChanged: (v) {},
@@ -233,8 +273,9 @@ class _SearchPrefFormState extends State<SearchPrefForm> {
               ],
             ),
           );
-        } else
+        } else {
           return const Text('Error');
+        }
       },
     );
   }

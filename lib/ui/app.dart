@@ -1,4 +1,5 @@
 import 'package:dating_app/ui/bloc/auth/auth_cubit.dart';
+import 'package:dating_app/ui/screens/search_pref_screen.dart';
 import 'package:dating_app/ui/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,7 +21,7 @@ class App extends StatelessWidget {
           ),
         ],
         child: MaterialApp(
-          theme: ThemeData(sliderTheme: CustomColors.CustomGradient(),
+          theme: ThemeData(sliderTheme: CustomColors.customGradient(),
             unselectedWidgetColor: Colors.orange,
           ),
           debugShowCheckedModeBanner: false,

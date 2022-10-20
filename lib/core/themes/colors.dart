@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
 class CustomColors {
-  static SliderThemeData CustomGradient() {
+  static SliderThemeData customGradient() {
     return SliderThemeData(
       trackShape: GradientRectSliderTrackShape(),
       thumbColor: Colors.white,
-      rangeTrackShape: GradientRectRangeSliderTrackShape(),
+      rangeTrackShape: const GradientRectRangeSliderTrackShape(),
     );
   }
 }
