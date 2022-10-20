@@ -8,6 +8,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';
 
 import '../ui/bloc/apple_auth/apple_auth_cubit.dart';
+import '../ui/bloc/otp_verification/otp_cubit.dart';
 
 final sl = GetIt.instance;
 
@@ -20,6 +21,7 @@ Future<void> boot() async {
 
   sl.registerFactory(() => GoogleAuthCubit(sl()));
   sl.registerFactory(() => AppleAuthCubit(sl()));
+  sl.registerFactory(() => OtpCubit(sl()));
   sl.registerFactory(() => FacebookAuthCubit(sl()));
   sl.registerFactory(() => AuthCubit(sl()));
 }

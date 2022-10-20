@@ -17,6 +17,7 @@ class App extends StatelessWidget {
           BlocProvider(
             create: (context) => sl<AuthCubit>(),
           ),
+
         ],
         child: MaterialApp(
           theme: ThemeData(
