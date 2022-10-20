@@ -278,46 +278,50 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            SizedBox(
-                              width: 170,
-                              child: TextFormField(
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                autocorrect: false,
-                                controller: _heightController,
-                                keyboardType: TextInputType.number,
-                                decoration: profileFieldDecor('Height'),
-                                onSaved: (value) {
-                                  _heightController.text = value!.trim();
-                                },
-                                validator: validateNameField,
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.allow(
-                                    RegExp("[0-9]"),
-                                  ),
-                                  LengthLimitingTextInputFormatter(3),
-                                ],
+                            Flexible(flex: 1,
+                              child: SizedBox(
+
+                                child: TextFormField(
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  autocorrect: false,
+                                  controller: _heightController,
+                                  keyboardType: TextInputType.number,
+                                  decoration: profileFieldDecor('Height'),
+                                  onSaved: (value) {
+                                    _heightController.text = value!.trim();
+                                  },
+                                  validator: validateNameField,
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(
+                                      RegExp("[0-9]"),
+                                    ),
+                                    LengthLimitingTextInputFormatter(3),
+                                  ],
+                                ),
                               ),
                             ),
-                            SizedBox(
-                              width: 170,
-                              child: TextFormField(
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                autocorrect: false,
-                                controller: _ageController,
-                                keyboardType: TextInputType.number,
-                                decoration: profileFieldDecor('Age'),
-                                onSaved: (value) {
-                                  _ageController.text = value!.trim();
-                                },
-                                validator: validateNameField,
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.allow(
-                                    RegExp("[0-9]"),
-                                  ),
-                                  LengthLimitingTextInputFormatter(2),
-                                ],
+                            SizedBox( width: 10),
+                            Flexible(
+                              child: SizedBox(
+                                child: TextFormField(
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  autocorrect: false,
+                                  controller: _ageController,
+                                  keyboardType: TextInputType.number,
+                                  decoration: profileFieldDecor('Age'),
+                                  onSaved: (value) {
+                                    _ageController.text = value!.trim();
+                                  },
+                                  validator: validateNameField,
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(
+                                      RegExp("[0-9]"),
+                                    ),
+                                    LengthLimitingTextInputFormatter(2),
+                                  ],
+                                ),
                               ),
                             ),
                           ],
