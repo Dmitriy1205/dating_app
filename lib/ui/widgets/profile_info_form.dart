@@ -1,15 +1,11 @@
-import 'dart:io';
 import 'package:dating_app/ui/widgets/reusable_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../../core/constants.dart';
-import '../../core/functions/validation.dart';
 import '../screens/hobbies_screen.dart';
 import '../screens/interests_screen.dart';
 import '../screens/search_pref_screen.dart';
-import 'field_decor.dart';
 
 class ProfileInfoFrom extends StatefulWidget {
   const ProfileInfoFrom({Key? key}) : super(key: key);
@@ -21,29 +17,8 @@ class ProfileInfoFrom extends StatefulWidget {
 class _ProfileInfoFromState extends State<ProfileInfoFrom> {
   final _formKey = GlobalKey<FormState>();
   bool isChecked = false;
-  final _nameController = TextEditingController();
-  final _bioController = TextEditingController();
-  final _heightController = TextEditingController();
-  final _ageController = TextEditingController();
-  final _universityController = TextEditingController();
-  final _degreeController = TextEditingController();
-  final _companyController = TextEditingController();
-  final _jobController = TextEditingController();
+
   ReUsableWidgets reUsableWidgets = ReUsableWidgets();
-
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _bioController.dispose();
-    _heightController.dispose();
-    _ageController.dispose();
-    _universityController.dispose();
-    _degreeController.dispose();
-    _companyController.dispose();
-    _jobController.dispose();
-
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -182,282 +157,11 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                             ],
                           ),
                         ),
-                        const SizedBox(
-                          height: 40,
-                        ),
-                        const Text(
-                          'General',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        TextFormField(
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          autocorrect: false,
-                          controller: _nameController,
-                          keyboardType: TextInputType.name,
-                          decoration: profileFieldDecor('Name'),
-                          onSaved: (value) {
-                            _nameController.text = value!.trim();
-                          },
-                          validator: validateNameField,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(
-                              RegExp("[a-zA-Z ]"),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        TextFormField(
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          autocorrect: false,
-                          controller: _bioController,
-                          keyboardType: TextInputType.multiline,
-                          maxLines: 6,
-                          decoration:
-                              profileFieldDecor('Tell us about yourself'),
-                          onSaved: (value) {
-                            _bioController.text = value!.trim();
-                          },
-                          validator: validateNameField,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Ink(
-                          child: Container(
-                            height: 57,
-                            width: 350,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(color: Colors.grey[300]!),
-                                borderRadius: BorderRadius.circular(10.0)),
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 19),
-                              child: Center(
-                                child: DropdownButtonFormField(
-                                  hint: const Text('Gender'),
-                                  icon: const Icon(
-                                      Icons.keyboard_arrow_down_sharp),
-                                  onChanged: (v) {},
-                                  decoration: const InputDecoration(
-                                    enabledBorder: InputBorder.none,
-                                    focusedBorder: InputBorder.none,
-                                    fillColor: Colors.white,
-                                  ),
-                                  // decoration: profileFieldDecor('Gender'),
-                                  items: const [
-                                    DropdownMenuItem(
-                                      value: "MALE",
-                                      child: Text(
-                                        "Male",
-                                      ),
-                                    ),
-                                    DropdownMenuItem(
-                                      value: "FEMALE",
-                                      child: Text(
-                                        "Female",
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Flexible(
-                              flex: 1,
-                              child: SizedBox(
-                                child: TextFormField(
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  autocorrect: false,
-                                  controller: _heightController,
-                                  keyboardType: TextInputType.number,
-                                  decoration: profileFieldDecor('Height'),
-                                  onSaved: (value) {
-                                    _heightController.text = value!.trim();
-                                  },
-                                  validator: validateNameField,
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.allow(
-                                      RegExp("[0-9]"),
-                                    ),
-                                    LengthLimitingTextInputFormatter(3),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            Flexible(
-                              child: SizedBox(
-                                child: TextFormField(
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  autocorrect: false,
-                                  controller: _ageController,
-                                  keyboardType: TextInputType.number,
-                                  decoration: profileFieldDecor('Age'),
-                                  onSaved: (value) {
-                                    _ageController.text = value!.trim();
-                                  },
-                                  validator: validateNameField,
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.allow(
-                                      RegExp("[0-9]"),
-                                    ),
-                                    LengthLimitingTextInputFormatter(2),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        TextFormField(
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          autocorrect: false,
-                          controller: _universityController,
-                          keyboardType: TextInputType.name,
-                          decoration: profileFieldDecor('University'),
-                          onSaved: (value) {
-                            _universityController.text = value!.trim();
-                          },
-                          validator: validateNameField,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        TextFormField(
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          autocorrect: false,
-                          controller: _degreeController,
-                          keyboardType: TextInputType.name,
-                          decoration: profileFieldDecor('Degree/Major'),
-                          onSaved: (value) {
-                            _degreeController.text = value!.trim();
-                          },
-                          validator: validateNameField,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        TextFormField(
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          autocorrect: false,
-                          controller: _companyController,
-                          keyboardType: TextInputType.name,
-                          decoration: profileFieldDecor('Company'),
-                          onSaved: (value) {
-                            _companyController.text = value!.trim();
-                          },
-                          validator: validateNameField,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        TextFormField(
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          autocorrect: false,
-                          controller: _jobController,
-                          keyboardType: TextInputType.name,
-                          decoration: profileFieldDecor('Job Title'),
-                          onSaved: (value) {
-                            _jobController.text = value!.trim();
-                          },
-                          validator: validateNameField,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        //TODO: change this formfield to button with choosing a hobbies Chip() widget
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => HobbiesScreen()));
-                          },
-                          child: Ink(
-                            color: Colors.white,
-                            child: Container(
-                              height: 57,
-                              width: 350,
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.grey[300]!),
-                                  borderRadius: BorderRadius.circular(10.0)),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 19),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'Hobbies',
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey[700]),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => InterestsScreen()));
-                          },
-                          child: Ink(
-                            color: Colors.white,
-                            child: Container(
-                              height: 57,
-                              width: 350,
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.grey[300]!),
-                                  borderRadius: BorderRadius.circular(10.0)),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 19),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'Interests',
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey[700]),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+                        reUsableWidgets.generalInfoEditWidget(),
+                        reUsableWidgets.openHobbiesOrInterestst(
+                            context, 'Hobbies'),
+                        reUsableWidgets.openHobbiesOrInterestst(
+                            context, 'Interests'),
                         const SizedBox(
                           height: 25,
                         ),
@@ -476,10 +180,6 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
   void submit(context) {
     if (!_formKey.currentState!.validate()) return;
     _formKey.currentState!.save();
-    print(_nameController.text);
-    print(_bioController.text);
-    print(_heightController.text);
-    print(_ageController.text);
     const snackBar = SnackBar(
       backgroundColor: Colors.teal,
       content: Text(

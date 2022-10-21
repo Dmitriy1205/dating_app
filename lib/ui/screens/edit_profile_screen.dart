@@ -14,7 +14,6 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-  bool isToggle = true;
 
   @override
   Widget build(BuildContext context) {

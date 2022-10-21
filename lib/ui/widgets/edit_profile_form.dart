@@ -10,6 +10,7 @@ class EditProfileForm extends StatefulWidget {
 
 class _EditProfileFormState extends State<EditProfileForm> {
   ReUsableWidgets reUsableWidgets = ReUsableWidgets();
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
