@@ -2,7 +2,6 @@ import 'package:dating_app/core/constants.dart';
 import 'package:dating_app/core/themes/checkboxes.dart';
 import 'package:dating_app/core/themes/text_styles.dart';
 import 'package:dating_app/ui/bloc/search_preferances_bloc.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -90,9 +89,6 @@ class _SearchPrefFormState extends State<SearchPrefForm> {
                                             width: 25,
                                             child: Image.asset(
                                                 CustomIcons.checkbox))),
-                                    // const Icon(
-                                    //   Icons.check,
-                                    // ),
                                   ],
                                 ),
                                 const SizedBox(
@@ -119,7 +115,6 @@ class _SearchPrefFormState extends State<SearchPrefForm> {
                                     values: state.age,
                                     onChanged: (newYears) {
                                       bloc.changeYears(newYears);
-                                      print(bloc.rangeAge);
                                     },
                                     min: 15,
                                     max: 55),
