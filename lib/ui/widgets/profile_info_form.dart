@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:dating_app/ui/widgets/reusable_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -28,7 +29,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
   final _degreeController = TextEditingController();
   final _companyController = TextEditingController();
   final _jobController = TextEditingController();
-  File? _image;
+  ReUsableWidgets reUsableWidgets = ReUsableWidgets();
 
   @override
   void dispose() {
@@ -141,7 +142,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                 width: 150,
                                 child: GestureDetector(
                                   onTap: () {
-                                    _showPicker(context);
+                                    reUsableWidgets.showPicker(context);
                                   },
                                   child: Card(
                                     elevation: 5,
@@ -234,7 +235,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                             height: 57,
                             width: 350,
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                                color: Colors.white,
                                 border: Border.all(color: Colors.grey[300]!),
                                 borderRadius: BorderRadius.circular(10.0)),
                             child: Padding(
@@ -248,7 +249,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                   onChanged: (v) {},
                                   decoration: const InputDecoration(
                                     enabledBorder: InputBorder.none,
-                                    focusedBorder:InputBorder.none ,
+                                    focusedBorder: InputBorder.none,
                                     fillColor: Colors.white,
                                   ),
                                   // decoration: profileFieldDecor('Gender'),
@@ -278,9 +279,9 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Flexible(flex: 1,
+                            Flexible(
+                              flex: 1,
                               child: SizedBox(
-
                                 child: TextFormField(
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
@@ -301,7 +302,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                 ),
                               ),
                             ),
-                            SizedBox( width: 10),
+                            SizedBox(width: 10),
                             Flexible(
                               child: SizedBox(
                                 child: TextFormField(
@@ -490,130 +491,5 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
       ),
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
-
-  Future imageFromGallery() async {
-    final ImagePicker _picker = ImagePicker();
-    final pickedFile = await _picker.pickImage(
-      source: ImageSource.gallery,
-      maxWidth: 200,
-      maxHeight: 400,
-      imageQuality: 100,
-    );
-
-    setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-      } else {
-        // print('No image selected.');
-      }
-    });
-  }
-
-  Future imageFromCamera() async {
-    final ImagePicker _picker = ImagePicker();
-    final pickedFile = await _picker.pickImage(
-      source: ImageSource.camera,
-      maxWidth: 200,
-      maxHeight: 400,
-      imageQuality: 100,
-    );
-
-    setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-      } else {
-        print('No photo selected.');
-      }
-    });
-  }
-
-  void _showPicker(context) {
-    showModalBottomSheet(
-        backgroundColor: Colors.transparent,
-        context: context,
-        builder: (BuildContext bc) {
-          return SafeArea(
-            child: Wrap(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 15, 15, 8),
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: Column(
-                      children: [
-                        const ListTile(
-                          title: Center(
-                            child: Text(
-                              'Choose your image',
-                              style: TextStyle(fontSize: 12),
-                            ),
-                          ),
-                        ),
-                        const Divider(
-                          thickness: 2,
-                        ),
-                        ListTile(
-                            title: const Center(
-                              child: Text(
-                                'Image from files',
-                                style: TextStyle(
-                                  color: Colors.blue,
-                                ),
-                              ),
-                            ),
-                            onTap: () {
-                              imageFromCamera();
-                              Navigator.of(context).pop();
-                            }),
-                        const Divider(
-                          thickness: 2,
-                        ),
-                        ListTile(
-                            title: const Center(
-                              child: Text(
-                                'Photo',
-                                style: TextStyle(
-                                  color: Colors.blue,
-                                ),
-                              ),
-                            ),
-                            onTap: () {
-                              imageFromGallery();
-                              Navigator.of(context).pop();
-                            }),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: Column(
-                      children: [
-                        ListTile(
-                            title: const Center(
-                                child: Text(
-                              'Cancel',
-                              style: TextStyle(
-                                  color: Colors.redAccent,
-                                  fontWeight: FontWeight.bold),
-                            )),
-                            onTap: () {
-                              Navigator.of(context).pop();
-                            }),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        });
   }
 }
