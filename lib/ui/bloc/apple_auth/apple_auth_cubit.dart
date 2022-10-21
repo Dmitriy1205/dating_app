@@ -19,6 +19,7 @@ class AppleAuthCubit extends Cubit<AppleAuthState> {
       await _repository.loginWithApple();
       emit(state.copyWith(status: Status.loaded()));
     } on BadRequestException catch (e) {
+      print(e.message);
       emit(state.copyWith(status: Status.error(e.message)));
     }
   }
