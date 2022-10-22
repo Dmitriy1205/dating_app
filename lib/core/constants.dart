@@ -58,3 +58,9 @@ class Content {
     'Friend List',
   ];
 }
+
+
+class CustomIcons {
+  static const String checkbox = 'assets/icons/check.png';
+  static const String photo = 'assets/icons/photo.png';
+}

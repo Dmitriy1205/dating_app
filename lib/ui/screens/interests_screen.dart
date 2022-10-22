@@ -1,3 +1,4 @@
+import 'package:dating_app/core/themes/checkboxes.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/constants.dart';
@@ -134,18 +135,8 @@ class _InterestsScreenState extends State<InterestsScreen> {
                                 right: 17,
                                 top: 14,
                                 child: !_checks[i]
-                                    ? SizedBox(
-                                        height: 20,
-                                        width: 20,
-                                        child: Image.asset(
-                                            'assets/icons/grey_check.png'),
-                                      )
-                                    : SizedBox(
-                                        height: 20,
-                                        width: 20,
-                                        child: Image.asset(
-                                            'assets/icons/check.png'),
-                                      ),
+                                    ? CustomCheckbox.checked()
+                                    : CustomCheckbox.unChecked()
                               ),
                             ],
                           );
