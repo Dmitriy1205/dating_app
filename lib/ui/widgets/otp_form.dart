@@ -1,9 +1,9 @@
+import 'package:dating_app/ui/screens/profile_info_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../bloc/otp_verification/otp_cubit.dart';
-import '../screens/home_screen.dart';
 
 class OtpForm extends StatefulWidget {
   final String verId;
@@ -32,7 +32,7 @@ class _OtpFormState extends State<OtpForm> {
       listener: (context, state) {
         if (state.status!.isLoaded) {
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => HomeScreen()));
+              context, MaterialPageRoute(builder: (context) => ProfileInfoScreen()));
         }
       },
       builder: (context, state) {

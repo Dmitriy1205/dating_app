@@ -15,7 +15,7 @@ class SearchPreferenceChangeState extends SearchPreferancesState {
   SearchPreferenceChangeState(
       {required this.age,
       required this.distance,
-      required this.selectedLookingFor});
+      });
 
   @override
   List<Object?> get props => [double.nan];
