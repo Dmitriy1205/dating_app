@@ -1,10 +1,11 @@
 import 'package:dating_app/core/constants.dart';
-import 'package:dating_app/core/themes/checkboxes.dart';
 import 'package:dating_app/core/themes/text_styles.dart';
 import 'package:dating_app/ui/bloc/search_preferances_bloc.dart';
 import 'package:dating_app/ui/widgets/reusable_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../screens/home_screen.dart';
 
 class SearchPrefForm extends StatefulWidget {
   const SearchPrefForm({Key? key}) : super(key: key);
@@ -76,7 +77,8 @@ class _SearchPrefFormState extends State<SearchPrefForm> {
                                     ),
                                     GestureDetector(
                                         onTap: () {
-                                          //TODO: submit all data and navigate to home page
+                                          Navigator.pushReplacement(
+                                              context, MaterialPageRoute(builder: (context) => HomeScreen()));
                                         },
                                         child: SizedBox(
                                             height: 25,
