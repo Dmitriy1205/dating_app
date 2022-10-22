@@ -1,6 +1,11 @@
 import 'package:dating_app/ui/bloc/auth/auth_cubit.dart';
+import 'package:dating_app/ui/screens/edit_profile_screen.dart';
+import 'package:dating_app/ui/screens/profile_info_screen.dart';
+import 'package:dating_app/ui/screens/profile_screen.dart';
 import 'package:dating_app/ui/screens/search_pref_screen.dart';
 import 'package:dating_app/ui/screens/welcome_screen.dart';
+import 'package:dating_app/ui/widgets/edit_profile_form.dart';
+import 'package:dating_app/ui/widgets/profile_info_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -27,7 +32,9 @@ class App extends StatelessWidget {
           ),
           debugShowCheckedModeBanner: false,
           title: 'Dating App',
-          home: const WelcomeScreen(),
+          home: const ProfileScreen()
+          // ProfileInfoScreen()
+          // WelcomeScreen(),
         ),
       ),
     );
