@@ -1,10 +1,11 @@
 import 'package:dating_app/core/constants.dart';
-import 'package:dating_app/core/themes/checkboxes.dart';
 import 'package:dating_app/core/themes/text_styles.dart';
 import 'package:dating_app/ui/bloc/search_preferances_bloc.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:dating_app/ui/widgets/reusable_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../screens/home_screen.dart';
 
 class SearchPrefForm extends StatefulWidget {
   const SearchPrefForm({Key? key}) : super(key: key);
@@ -15,14 +16,7 @@ class SearchPrefForm extends StatefulWidget {
 
 class _SearchPrefFormState extends State<SearchPrefForm> {
   final SearchPreferancesCubit bloc = SearchPreferancesCubit();
-  Map<String, bool> lookingForMap = {
-    'someone to chill with': false,
-    'a friend': false,
-    'a romantic partner': false,
-    'a business partner': false,
-    'a mentor': false,
-    'a mentee': false
-  };
+  ReUsableWidgets reUsableWidgets = ReUsableWidgets();
   final List<String> gender = ['male', 'female'];
 
   @override
@@ -83,16 +77,14 @@ class _SearchPrefFormState extends State<SearchPrefForm> {
                                     ),
                                     GestureDetector(
                                         onTap: () {
-                                          //TODO: submit all data and navigate to home page
+                                          Navigator.pushReplacement(
+                                              context, MaterialPageRoute(builder: (context) => HomeScreen()));
                                         },
                                         child: SizedBox(
                                             height: 25,
                                             width: 25,
                                             child: Image.asset(
                                                 CustomIcons.checkbox))),
-                                    // const Icon(
-                                    //   Icons.check,
-                                    // ),
                                   ],
                                 ),
                                 const SizedBox(
@@ -119,7 +111,6 @@ class _SearchPrefFormState extends State<SearchPrefForm> {
                                     values: state.age,
                                     onChanged: (newYears) {
                                       bloc.changeYears(newYears);
-                                      print(bloc.rangeAge);
                                     },
                                     min: 15,
                                     max: 55),
@@ -144,79 +135,7 @@ class _SearchPrefFormState extends State<SearchPrefForm> {
                                     },
                                     min: 0,
                                     max: 70),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                CustomTextStyle.bigText('Looking For',
-                                    additionalText: '(select one or more:)'),
-                                Wrap(children: [
-                                  ListView.builder(
-                                      scrollDirection: Axis.vertical,
-                                      shrinkWrap: true,
-                                      itemCount: lookingForMap.length,
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        return Card(
-                                          shape: RoundedRectangleBorder(
-                                            side: BorderSide(
-                                              color: lookingForMap.values
-                                                      .elementAt(index)
-                                                  ? Colors.orangeAccent
-                                                  : Colors.black12,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(10.0),
-                                          ),
-                                          child: Column(
-                                            children: <Widget>[
-                                              GestureDetector(
-                                                child: ListTile(
-                                                  contentPadding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          25, 10, 10, 10),
-                                                  dense: true,
-                                                  title: Text(
-                                                    lookingForMap.keys
-                                                        .elementAt(index),
-                                                    style: const TextStyle(
-                                                        fontSize: 17,
-                                                        fontWeight:
-                                                            FontWeight.normal,
-                                                        letterSpacing: 0.5,
-                                                        color: Colors.black54),
-                                                  ),
-                                                  trailing: lookingForMap.values
-                                                          .elementAt(index)
-                                                      ? CustomCheckbox.checked()
-                                                      : null,
-                                                  onTap: () {
-                                                    lookingForMap.update(
-                                                        lookingForMap.keys
-                                                            .elementAt(index),
-                                                        (value) => !value);
-                                                    if (lookingForMap.values
-                                                        .elementAt(index)) {
-                                                      bloc.selectLookingFor(
-                                                          lookingForMap.keys
-                                                              .elementAt(
-                                                                  index));
-                                                    } else {
-                                                      bloc.deSelectLookingFor(
-                                                          lookingForMap.keys
-                                                              .elementAt(
-                                                                  index));
-                                                    }
-                                                  },
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        );
-                                      }),
-                                ]),
-                                const SizedBox(
-                                  height: 20,
-                                ),
+                                reUsableWidgets.lookingForWidget(),
                                 CustomTextStyle.bigText('Gender',
                                     additionalText: '(select one or more:)'),
                                 const SizedBox(
