@@ -12,6 +12,7 @@ import 'package:intl/intl.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import '../../core/functions/validation.dart';
 import '../screens/otp_verification_screen.dart';
+import '../screens/profile_info_screen.dart';
 
 class SignUpForm extends StatefulWidget {
   const SignUpForm({Key? key}) : super(key: key);
@@ -230,7 +231,6 @@ class _SignUpFormState extends State<SignUpForm> {
                                         return;
                                       }
                                       _formKey.currentState!.save();
-                                      //TODO: Add phone auth with email link auth to signup
 
                                       context.read<AuthCubit>().signUp(
                                           phoneNumber: _phoneController.text,
@@ -241,7 +241,13 @@ class _SignUpFormState extends State<SignUpForm> {
                                               MaterialPageRoute(
                                                 builder: (context) =>
                                                     OtpVerificationScreen(
+                                                  page:
+                                                      const ProfileInfoScreen(),
                                                   verId: verId,
+                                                  name: _nameController.text,
+                                                  phone: _phoneController.text,
+                                                  date: _dateController.text,
+                                                  email: _emailController.text,
                                                 ),
                                               ),
                                             );

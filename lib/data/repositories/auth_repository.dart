@@ -7,36 +7,100 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../../core/exceptions.dart';
+import '../data_provider/firestore_data_provider.dart';
 
 class AuthRepository {
   final FirebaseAuth auth;
+  final FirebaseDataProvider db;
 
-  AuthRepository({required this.auth});
+  AuthRepository({required this.db, required this.auth});
 
   Future<void> signupWithPhone(
     String phoneNumber,
     String verificationId,
     void Function(String s) nav,
   ) async {
-    await auth.verifyPhoneNumber(
-      phoneNumber: phoneNumber,
-      verificationCompleted: (_) {},
-      verificationFailed: (FirebaseAuthException e) {
-        print(e.message);
-      },
-      codeSent: (verId, _) {
-        verificationId = verId;
-        nav( verificationId);
-        print('print 1 $verificationId');
-      },
-      codeAutoRetrievalTimeout: (value) {},
-    );
+    try {
+      await auth.verifyPhoneNumber(
+        phoneNumber: phoneNumber,
+        verificationCompleted: (_) {},
+        verificationFailed: (FirebaseAuthException e) {
+          print(e.message);
+        },
+        codeSent: (verId, _) {
+          //TODO: uncomment below code for signup first user
+          // if(phoneNumber == currentUser()!.phoneNumber){
+          //   print(' User is already exist , you need to login');
+          //   return;
+          // }
+          verificationId = verId;
+          nav(verificationId);
+          print('print 1 $verificationId');
+        },
+        codeAutoRetrievalTimeout: (value) {},
+      );
+    } on FirebaseAuthException catch (e) {
+      throw BadRequestException(message: e.message!);
+    } catch (e) {
+      throw BadRequestException(message: e.toString());
+    }
   }
 
-  Future<void> loginWithPhone(String verId, String code) async {
-    PhoneAuthCredential credential =
-        PhoneAuthProvider.credential(verificationId: verId, smsCode: code);
-    await auth.signInWithCredential(credential);
+  Future<void> loginWithPhone(
+    String phoneNumber,
+    String verificationId,
+    void Function(String s) nav,
+  ) async {
+    try {
+      await auth.verifyPhoneNumber(
+        phoneNumber: phoneNumber,
+        verificationCompleted: (_) {},
+        verificationFailed: (FirebaseAuthException e) {
+          print('auth_repository login failed ${e.message}');
+        },
+        codeSent: (verId, _) {
+          if (phoneNumber == currentUser()!.phoneNumber) {
+            verificationId = verId;
+            nav(verificationId);
+            print('print 1 $verificationId');
+          } else {
+            print(' no match user');
+          }
+        },
+        codeAutoRetrievalTimeout: (value) {},
+      );
+    } on FirebaseAuthException catch (e) {
+      throw BadRequestException(message: e.message!);
+    } catch (e) {
+      throw BadRequestException(message: e.toString());
+    }
+  }
+
+  Future<void> phoneVerification(
+    String verId,
+    String code,
+    String name,
+    String phone,
+    String date,
+    String email,
+  ) async {
+    try {
+      PhoneAuthCredential credential =
+          PhoneAuthProvider.credential(verificationId: verId, smsCode: code);
+      var signIn = await auth.signInWithCredential(credential);
+      signIn;
+      await db.createUser(signIn.user!, name, phone, date, email);
+      //TODO: uncomment below code for signup first user
+      // if (currentUser()!.uid.isEmpty) {
+      //   signIn;
+      //   await db.createUser(signIn.user!, name, phone, date, email);
+      // }
+      // signIn;
+    } on FirebaseAuthException catch (e) {
+      throw BadRequestException(message: e.message!);
+    } catch (e) {
+      throw BadRequestException(message: e.toString());
+    }
   }
 
   Future<void> loginWithApple() async {
@@ -102,6 +166,10 @@ class AuthRepository {
     } on Exception catch (e) {
       throw BadRequestException(message: e.toString());
     }
+  }
+
+  User? currentUser() {
+    return auth.currentUser;
   }
 
   Future<void> logout() async {
