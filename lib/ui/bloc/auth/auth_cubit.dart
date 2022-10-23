@@ -28,4 +28,22 @@ class AuthCubit extends Cubit<AuthState> {
       emit(state.copyWith(status: Status.error(e.toString())));
     }
   }
+  Future<void> login({
+    required String phoneNumber,
+    required String verificationId,
+    required void Function(String s) nav,
+  }) async {
+    emit(state.copyWith(status: Status.loading()));
+    try {
+      await authRepository.loginWithPhone(
+        phoneNumber,
+        verificationId,
+        nav,
+      );
+      print('print 2 $verificationId');
+      emit(state.copyWith(status: Status.loaded()));
+    } on Exception catch (e) {
+      emit(state.copyWith(status: Status.error(e.toString())));
+    }
+  }
 }

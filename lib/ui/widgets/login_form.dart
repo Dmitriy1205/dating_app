@@ -1,5 +1,6 @@
 import 'package:dating_app/core/constants.dart';
 import 'package:dating_app/ui/bloc/auth/auth_cubit.dart';
+import 'package:dating_app/ui/screens/home_screen.dart';
 import 'package:dating_app/ui/screens/otp_verification_screen.dart';
 import 'package:dating_app/ui/screens/sing_up_screen.dart';
 import 'package:dating_app/ui/widgets/apple_auth_button.dart';
@@ -22,6 +23,7 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
   final _phoneController = TextEditingController();
+  String verificationId = '';
 
   @override
   void dispose() {
@@ -98,6 +100,7 @@ class _LoginFormState extends State<LoginForm> {
                               height: 50,
                             ),
                             InternationalPhoneNumberInput(
+                              initialValue: PhoneNumber(isoCode: 'UA'),
                               autoValidateMode:
                                   AutovalidateMode.onUserInteraction,
                               selectorConfig: const SelectorConfig(
@@ -127,8 +130,21 @@ class _LoginFormState extends State<LoginForm> {
                             ),
                             ElevatedButton(
                               onPressed: () {
-                                submit(context);
-                                //TODO: navigation to profile
+                                if (!_formKey.currentState!.validate()) return;
+                                _formKey.currentState!.save();
+                                context.read<AuthCubit>().login(
+                                    phoneNumber: _phoneController.text,
+                                    verificationId: verificationId,
+                                    nav: (verId) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  OtpVerificationScreen(
+                                                    verId: verId,
+                                                    page: HomeScreen(),
+                                                  )));
+                                    });
                               },
                               style: ElevatedButton.styleFrom(
                                   primary: Colors.transparent,
@@ -218,22 +234,22 @@ class _LoginFormState extends State<LoginForm> {
       },
     );
   }
-
-  void submit(context) {
-    if (!_formKey.currentState!.validate()) return;
-    _formKey.currentState!.save();
-    // const snackBar = SnackBar(
-    //   backgroundColor: Colors.teal,
-    //   content: Text(
-    //     'Success',
-    //     textAlign: TextAlign.center,
-    //     style: TextStyle(
-    //       color: Colors.white,
-    //     ),
-    //   ),
-    // );
-    // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => OtpVerificationScreen()));
-  }
+  //
+  // void submit(context) {
+  //   if (!_formKey.currentState!.validate()) return;
+  //   _formKey.currentState!.save();
+  //   // const snackBar = SnackBar(
+  //   //   backgroundColor: Colors.teal,
+  //   //   content: Text(
+  //   //     'Success',
+  //   //     textAlign: TextAlign.center,
+  //   //     style: TextStyle(
+  //   //       color: Colors.white,
+  //   //     ),
+  //   //   ),
+  //   // );
+  //   // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  //   Navigator.push(context,
+  //       MaterialPageRoute(builder: (context) => OtpVerificationScreen()));
+  // }
 }

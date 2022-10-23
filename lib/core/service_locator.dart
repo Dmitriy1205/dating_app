@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dating_app/data/data_provider/firestore_data_provider.dart';
 import 'package:dating_app/data/repositories/auth_repository.dart';
 import 'package:dating_app/ui/bloc/auth/auth_cubit.dart';
 import 'package:dating_app/ui/bloc/facebook_auth/facebook_auth_cubit.dart';
@@ -17,7 +18,11 @@ Future<void> boot() async {
   FirebaseFirestore database = FirebaseFirestore.instance;
   FirebaseStorage storage = FirebaseStorage.instance;
 
-  sl.registerLazySingleton(() => AuthRepository(auth: auth));
+  sl.registerLazySingleton(() => FirebaseDataProvider(database));
+  sl.registerLazySingleton(() => AuthRepository(
+        auth: auth,
+        db: sl(),
+      ));
 
   sl.registerFactory(() => GoogleAuthCubit(sl()));
   sl.registerFactory(() => AppleAuthCubit(sl()));

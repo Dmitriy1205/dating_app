@@ -1,4 +1,3 @@
-import 'package:dating_app/ui/screens/profile_info_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -7,9 +6,21 @@ import '../bloc/otp_verification/otp_cubit.dart';
 
 class OtpForm extends StatefulWidget {
   final String verId;
+  final String? name;
+  final String? phone;
+  final String? date;
+  final String? email;
+  final Widget page;
 
-  const OtpForm({Key? key, required this.verId, })
-      : super(key: key);
+  const OtpForm({
+    Key? key,
+    required this.verId,
+    this.name,
+    this.phone,
+    this.date,
+    this.email,
+    required this.page,
+  }) : super(key: key);
 
   @override
   State<OtpForm> createState() => _OtpFormState();
@@ -32,7 +43,7 @@ class _OtpFormState extends State<OtpForm> {
       listener: (context, state) {
         if (state.status!.isLoaded) {
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => ProfileInfoScreen()));
+              context, MaterialPageRoute(builder: (context) => widget.page));
         }
       },
       builder: (context, state) {
@@ -97,9 +108,14 @@ class _OtpFormState extends State<OtpForm> {
                 onPressed: () {
                   if (!_formKey.currentState!.validate()) return;
                   _formKey.currentState!.save();
-                  context.read<OtpCubit>().verify(widget.verId, _numberController.text);
-
-                  //TODO: navigation to HomePage
+                  context.read<OtpCubit>().verify(
+                        widget.verId,
+                        _numberController.text,
+                        widget.name ?? '',
+                        widget.phone ?? '',
+                        widget.date ?? '',
+                        widget.email ?? '',
+                      );
                 },
                 style: ElevatedButton.styleFrom(
                     primary: Colors.transparent,
