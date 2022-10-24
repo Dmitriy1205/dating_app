@@ -43,9 +43,9 @@ class ReUsableWidgets {
           ),
           CustomTextStyle.bigText('Looking For',
               additionalText: '(select one or more:)'),
-          const SizedBox(
-            height: 20,
-          ),
+          // const SizedBox(
+          //   height: 20,
+          // ),
           Wrap(children: [
             ListView.builder(
                 scrollDirection: Axis.vertical,
@@ -86,7 +86,9 @@ class ReUsableWidgets {
                   );
                 }),
           ]),
-        ],
+          const SizedBox(
+            height: 20,
+          ), ],
       ),
     );
   }
