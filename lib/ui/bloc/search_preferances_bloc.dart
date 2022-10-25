@@ -9,6 +9,7 @@ class SearchPreferancesCubit extends Cubit<SearchPreferancesState> {
   SearchPreferancesCubit()
       : super(SearchPreferenceChangeState(
       age: RangeValues(20, 30), distance: 28, selectedLookingForList: []));
+
   RangeValues rangeAge = RangeValues(20, 30);
   int rangeDistance = 28;
   List<String> selectedLookingForList = [];
@@ -26,6 +27,7 @@ class SearchPreferancesCubit extends Cubit<SearchPreferancesState> {
         age: rangeAge,
         distance: rangeDistance, selectedLookingForList: selectedLookingForList,
       ));
+
   }
 
   Future<void> changeDistance(int newRangeDistance) async {
@@ -35,7 +37,4 @@ class SearchPreferancesCubit extends Cubit<SearchPreferancesState> {
         distance: rangeDistance, selectedLookingForList: selectedLookingForList,
     ));
   }
-
-
-
 }

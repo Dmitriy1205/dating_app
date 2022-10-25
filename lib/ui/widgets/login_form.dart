@@ -1,5 +1,6 @@
 import 'package:dating_app/core/constants.dart';
 import 'package:dating_app/ui/bloc/auth/auth_cubit.dart';
+import 'package:dating_app/ui/screens/home_screen.dart';
 import 'package:dating_app/ui/screens/otp_verification_screen.dart';
 import 'package:dating_app/ui/screens/sing_up_screen.dart';
 import 'package:dating_app/ui/widgets/apple_auth_button.dart';
@@ -24,6 +25,8 @@ class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
   final _phoneController = TextEditingController();
   ReUsableWidgets reUsableWidgets = ReUsableWidgets();
+  String verificationId = '';
+
 
   @override
   void dispose() {
@@ -100,6 +103,7 @@ class _LoginFormState extends State<LoginForm> {
                               height: 50,
                             ),
                             InternationalPhoneNumberInput(
+                              initialValue: PhoneNumber(isoCode: 'UA'),
                               autoValidateMode:
                                   AutovalidateMode.onUserInteraction,
                               selectorConfig: const SelectorConfig(
@@ -126,6 +130,57 @@ class _LoginFormState extends State<LoginForm> {
                             ),
                             reUsableWidgets.customGradientButton(context,
                                 text: 'SIGN IN'),
+                            const SizedBox(
+                              height: 35,
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                if (!_formKey.currentState!.validate()) return;
+                                _formKey.currentState!.save();
+                                context.read<AuthCubit>().login(
+                                    phoneNumber: _phoneController.text,
+                                    verificationId: verificationId,
+                                    nav: (verId) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  OtpVerificationScreen(
+                                                    verId: verId,
+                                                    page: HomeScreen(),
+                                                  )));
+                                    });
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  primary: Colors.transparent,
+                                  padding: EdgeInsets.zero,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50))),
+                              child: Ink(
+                                decoration: BoxDecoration(
+                                    gradient: const LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment(0.1, 2.1),
+                                      colors: [
+                                        Colors.orange,
+                                        Colors.purple,
+                                      ],
+                                    ),
+                                    borderRadius: BorderRadius.circular(50)),
+                                child: Container(
+                                  width: 340,
+                                  height: 55,
+                                  alignment: Alignment.center,
+                                  child: const Text(
+                                    'SIGN IN',
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 35,
+                            ),
+
                             Center(
                               child: RichText(
                                 text: TextSpan(

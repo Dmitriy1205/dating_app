@@ -6,13 +6,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/service_locator.dart';
 
 class OtpVerificationScreen extends StatelessWidget {
-  final Future<void>? verifyCode;
   final String? verId;
+  final String? name;
+  final String? phone;
+  final String? date;
+  final String? email;
+  final Widget page;
 
   const OtpVerificationScreen({
     Key? key,
-    this.verifyCode,
     this.verId,
+    this.name,
+    this.phone,
+    this.date,
+    this.email, required this.page,
   }) : super(key: key);
 
   @override
@@ -38,7 +45,12 @@ class OtpVerificationScreen extends StatelessWidget {
           ),
         ),
         body: OtpForm(
+          page: page,
           verId: verId!,
+          name: name,
+          phone: phone,
+          date: date,
+          email: email,
         ),
       ),
     );
