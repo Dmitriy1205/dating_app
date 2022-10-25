@@ -28,7 +28,7 @@ class AuthRepository {
           print(e.message);
         },
         codeSent: (verId, _) {
-          //TODO: uncomment below code for signup first user
+          //TODO: uncomment below code in end for signup first user
           // if(phoneNumber == currentUser()!.phoneNumber){
           //   print(' User is already exist , you need to login');
           //   return;
@@ -90,7 +90,7 @@ class AuthRepository {
       var signIn = await auth.signInWithCredential(credential);
       signIn;
       await db.createUser(signIn.user!, name, phone, date, email);
-      //TODO: uncomment below code for signup first user
+      //TODO: uncomment below code in end for signup first user
       // if (currentUser()!.uid.isEmpty) {
       //   signIn;
       //   await db.createUser(signIn.user!, name, phone, date, email);
