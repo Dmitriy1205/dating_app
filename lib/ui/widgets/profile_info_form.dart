@@ -17,17 +17,19 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
   bool isChecked = false;
 
   ReUsableWidgets reUsableWidgets = ReUsableWidgets();
+
   @override
   void dispose() {
-   reUsableWidgets.nameController.dispose();
-   reUsableWidgets.bioController.dispose();
-   reUsableWidgets.heightController.dispose();
-   reUsableWidgets.ageController.dispose();
-   reUsableWidgets.universityController.dispose();
-   reUsableWidgets.degreeController.dispose();
-   reUsableWidgets.companyController.dispose();
-   reUsableWidgets.jobController.dispose();
+    reUsableWidgets.nameController.dispose();
+    reUsableWidgets.bioController.dispose();
+    reUsableWidgets.heightController.dispose();
+    reUsableWidgets.ageController.dispose();
+    reUsableWidgets.universityController.dispose();
+    reUsableWidgets.degreeController.dispose();
+    reUsableWidgets.companyController.dispose();
+    reUsableWidgets.jobController.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -165,7 +167,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                             ],
                           ),
                         ),
-                        reUsableWidgets.generalInfoEditWidget('register'),
+                        reUsableWidgets.generalInfoEditWidget('profile info'),
                         reUsableWidgets.openHobbiesOrInterests(
                             context, 'Hobbies'),
                         reUsableWidgets.openHobbiesOrInterests(
