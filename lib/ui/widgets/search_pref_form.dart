@@ -17,7 +17,6 @@ class SearchPrefForm extends StatefulWidget {
 class _SearchPrefFormState extends State<SearchPrefForm> {
   final SearchPreferancesCubit bloc = SearchPreferancesCubit();
   ReUsableWidgets reUsableWidgets = ReUsableWidgets();
-  final List<String> gender = ['male', 'female'];
 
   @override
   Widget build(BuildContext context) {
@@ -135,7 +134,9 @@ class _SearchPrefFormState extends State<SearchPrefForm> {
                                     },
                                     min: 0,
                                     max: 70),
-                                reUsableWidgets.lookingForWidget(),
+                                reUsableWidgets.lookingForWidget(context,
+                                    onTap: (value) => bloc.changeData(value!),
+                                    selected: bloc.selectedLookingForList),
                                 CustomTextStyle.bigText('Gender',
                                     additionalText: '(select one or more:)'),
                                 const SizedBox(

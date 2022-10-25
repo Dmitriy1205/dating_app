@@ -7,6 +7,7 @@ import 'package:dating_app/ui/widgets/apple_auth_button.dart';
 import 'package:dating_app/ui/widgets/facebook_auth_button.dart';
 import 'package:dating_app/ui/widgets/field_decor.dart';
 import 'package:dating_app/ui/widgets/google_auth_button.dart';
+import 'package:dating_app/ui/widgets/reusable_widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,7 +24,9 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
   final _phoneController = TextEditingController();
+  ReUsableWidgets reUsableWidgets = ReUsableWidgets();
   String verificationId = '';
+
 
   @override
   void dispose() {
@@ -125,6 +128,8 @@ class _LoginFormState extends State<LoginForm> {
                               selectorButtonOnErrorPadding: 0,
                               validator: validatePhoneField,
                             ),
+                            reUsableWidgets.customGradientButton(context,
+                                text: 'SIGN IN'),
                             const SizedBox(
                               height: 35,
                             ),
@@ -175,6 +180,7 @@ class _LoginFormState extends State<LoginForm> {
                             SizedBox(
                               height: 35,
                             ),
+
                             Center(
                               child: RichText(
                                 text: TextSpan(
@@ -234,22 +240,4 @@ class _LoginFormState extends State<LoginForm> {
       },
     );
   }
-  //
-  // void submit(context) {
-  //   if (!_formKey.currentState!.validate()) return;
-  //   _formKey.currentState!.save();
-  //   // const snackBar = SnackBar(
-  //   //   backgroundColor: Colors.teal,
-  //   //   content: Text(
-  //   //     'Success',
-  //   //     textAlign: TextAlign.center,
-  //   //     style: TextStyle(
-  //   //       color: Colors.white,
-  //   //     ),
-  //   //   ),
-  //   // );
-  //   // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  //   Navigator.push(context,
-  //       MaterialPageRoute(builder: (context) => OtpVerificationScreen()));
-  // }
 }

@@ -48,6 +48,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
   //   super.dispose();
   // }
 
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ProfileInfoCubit, ProfileInfoState>(
@@ -444,6 +445,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                             ),
                           ),
                         ),
+
                         const Divider(
                           thickness: 2,
                         ),
@@ -464,6 +466,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                             }),
                         const Divider(
                           thickness: 2,
+
                         ),
                         ListTile(
                             title: const Center(
