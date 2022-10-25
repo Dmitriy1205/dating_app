@@ -6,6 +6,7 @@ import 'package:dating_app/ui/widgets/apple_auth_button.dart';
 import 'package:dating_app/ui/widgets/facebook_auth_button.dart';
 import 'package:dating_app/ui/widgets/field_decor.dart';
 import 'package:dating_app/ui/widgets/google_auth_button.dart';
+import 'package:dating_app/ui/widgets/reusable_widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,6 +23,7 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
   final _phoneController = TextEditingController();
+  ReUsableWidgets reUsableWidgets = ReUsableWidgets();
 
   @override
   void dispose() {
@@ -122,43 +124,8 @@ class _LoginFormState extends State<LoginForm> {
                               selectorButtonOnErrorPadding: 0,
                               validator: validatePhoneField,
                             ),
-                            const SizedBox(
-                              height: 35,
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                submit(context);
-                                //TODO: navigation to profile
-                              },
-                              style: ElevatedButton.styleFrom(
-                                  primary: Colors.transparent,
-                                  padding: EdgeInsets.zero,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(50))),
-                              child: Ink(
-                                decoration: BoxDecoration(
-                                    gradient: const LinearGradient(
-                                      begin: Alignment.topCenter,
-                                      end: Alignment(0.1, 2.1),
-                                      colors: [
-                                        Colors.orange,
-                                        Colors.purple,
-                                      ],
-                                    ),
-                                    borderRadius: BorderRadius.circular(50)),
-                                child: Container(
-                                  width: 340,
-                                  height: 55,
-                                  alignment: Alignment.center,
-                                  child: const Text(
-                                    'SIGN IN',
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 35,
-                            ),
+                            reUsableWidgets.customGradientButton(context,
+                                text: 'SIGN IN'),
                             Center(
                               child: RichText(
                                 text: TextSpan(
@@ -217,23 +184,5 @@ class _LoginFormState extends State<LoginForm> {
         );
       },
     );
-  }
-
-  void submit(context) {
-    if (!_formKey.currentState!.validate()) return;
-    _formKey.currentState!.save();
-    // const snackBar = SnackBar(
-    //   backgroundColor: Colors.teal,
-    //   content: Text(
-    //     'Success',
-    //     textAlign: TextAlign.center,
-    //     style: TextStyle(
-    //       color: Colors.white,
-    //     ),
-    //   ),
-    // );
-    // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => OtpVerificationScreen()));
   }
 }

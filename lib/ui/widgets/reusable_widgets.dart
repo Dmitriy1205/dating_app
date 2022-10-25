@@ -7,6 +7,8 @@ import '../../core/functions/validation.dart';
 import '../../core/themes/checkboxes.dart';
 import '../../core/themes/text_styles.dart';
 import '../screens/interests_screen.dart';
+import '../screens/login_screen.dart';
+import '../screens/otp_verification_screen.dart';
 import 'field_decor.dart';
 
 class ReUsableWidgets {
@@ -31,11 +33,82 @@ class ReUsableWidgets {
     'a mentee': false
   };
 
-  List<String> selectedLookingFor = [];
+  Widget customGradientButton(BuildContext context, {required String text}) {
+    return Column(
+      children: [
+        const SizedBox(
+          height: 35,
+        ),
+        ElevatedButton(
+          onPressed: () {
+            switch (text) {
+              case 'SIGN IN':
+                {
+                  submit(context);
+                }
+                break;
+              case 'SAVE':
+                {}
+            }
 
-  Widget lookingForWidget() {
+            text == 'SIGN IN' ? submit(context) : null;
+            //TODO: navigation to profile
+          },
+          style: ElevatedButton.styleFrom(
+              primary: Colors.transparent,
+              padding: EdgeInsets.zero,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50))),
+          child: Ink(
+            decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment(0.1, 2.1),
+                  colors: [
+                    Colors.orange,
+                    Colors.purple,
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(50)),
+            child: Container(
+              width: 340,
+              height: 55,
+              alignment: Alignment.center,
+              child: Text(
+                text,
+              ),
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 35,
+        ),
+      ],
+    );
+  }
+
+  void submit(context) {
+    if (!_formKey.currentState!.validate()) return;
+    _formKey.currentState!.save();
+    const snackBar = SnackBar(
+      backgroundColor: Colors.teal,
+      content: Text(
+        'Success',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => OtpVerificationScreen()));
+  }
+
+  Widget lookingForWidget(BuildContext context,
+      {required Function(String?) onTap, required List<String> selected}) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 19),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: [
           const SizedBox(
@@ -76,16 +149,23 @@ class ReUsableWidgets {
                                     letterSpacing: 0.5,
                                     color: Colors.black54),
                               ),
-                              trailing: lookingForMap.values.elementAt(index)
+                              trailing: selected.contains(lookingForMap.keys.elementAt(index))
                                   ? CustomCheckbox.checked()
                                   : null,
-                              onTap: () {}),
+                              onTap: () {
+                                onTap(lookingForMap.keys.elementAt(index));
+
+                                // print('lookingFor ${lookingForMap}');
+                              }),
                         )
                       ],
                     ),
                   );
                 }),
           ]),
+          const SizedBox(
+            height: 20,
+          ),
         ],
       ),
     );
@@ -239,7 +319,9 @@ class ReUsableWidgets {
           const SizedBox(
             height: 20,
           ),
-          registerOrEditInfo == 'register' ? registerForm() : editForm()
+          registerOrEditInfo == 'register'
+              ? badgeForm(isRegisterForm: true)
+              : editForm()
         ],
       ),
     );
@@ -259,63 +341,72 @@ class ReUsableWidgets {
     );
   }
 
-  Widget registerForm() {
-    return Column(
-      children: [
-        TextFormField(
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          autocorrect: false,
-          controller: universityController,
-          keyboardType: TextInputType.name,
-          decoration: profileFieldDecor('University'),
-          onSaved: (value) {
-            universityController.text = value!.trim();
-          },
-          validator: validateNameField,
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        TextFormField(
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          autocorrect: false,
-          controller: degreeController,
-          keyboardType: TextInputType.name,
-          decoration: profileFieldDecor('Degree/Major'),
-          onSaved: (value) {
-            degreeController.text = value!.trim();
-          },
-          validator: validateNameField,
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        TextFormField(
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          autocorrect: false,
-          controller: companyController,
-          keyboardType: TextInputType.name,
-          decoration: profileFieldDecor('Company'),
-          onSaved: (value) {
-            companyController.text = value!.trim();
-          },
-          validator: validateNameField,
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        TextFormField(
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          autocorrect: false,
-          controller: jobController,
-          keyboardType: TextInputType.name,
-          decoration: profileFieldDecor('Job Title'),
-          onSaved: (value) {
-            jobController.text = value!.trim();
-          },
-          validator: validateNameField,
-        ),
-      ],
+  Widget badgeForm({required bool isRegisterForm}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        children: [
+          CustomTextStyle.bigText('Badge'),
+          const SizedBox(
+            height: 20,
+          ),
+          TextFormField(
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            autocorrect: false,
+            controller: universityController,
+            keyboardType: TextInputType.name,
+            decoration: profileFieldDecor('University'),
+            onSaved: (value) {
+              universityController.text = value!.trim();
+            },
+            validator: validateNameField,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          if (isRegisterForm)
+            TextFormField(
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              autocorrect: false,
+              controller: degreeController,
+              keyboardType: TextInputType.name,
+              decoration: profileFieldDecor('Degree/Major'),
+              onSaved: (value) {
+                degreeController.text = value!.trim();
+              },
+              validator: validateNameField,
+            ),
+          const SizedBox(
+            height: 10,
+          ),
+          TextFormField(
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            autocorrect: false,
+            controller: companyController,
+            keyboardType: TextInputType.name,
+            decoration: profileFieldDecor('Company'),
+            onSaved: (value) {
+              companyController.text = value!.trim();
+            },
+            validator: validateNameField,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          if (isRegisterForm)
+            TextFormField(
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              autocorrect: false,
+              controller: jobController,
+              keyboardType: TextInputType.name,
+              decoration: profileFieldDecor('Job Title'),
+              onSaved: (value) {
+                jobController.text = value!.trim();
+              },
+              validator: validateNameField,
+            ),
+        ],
+      ),
     );
   }
 

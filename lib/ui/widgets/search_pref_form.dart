@@ -1,5 +1,4 @@
 import 'package:dating_app/core/constants.dart';
-import 'package:dating_app/core/themes/checkboxes.dart';
 import 'package:dating_app/core/themes/text_styles.dart';
 import 'package:dating_app/ui/bloc/search_preferances_bloc.dart';
 import 'package:dating_app/ui/widgets/reusable_widgets.dart';
@@ -133,7 +132,9 @@ class _SearchPrefFormState extends State<SearchPrefForm> {
                                     },
                                     min: 0,
                                     max: 70),
-                                reUsableWidgets.lookingForWidget(),
+                                reUsableWidgets.lookingForWidget(context,
+                                    onTap: (value) => bloc.changeData(value!),
+                                    selected: bloc.selectedLookingForList),
                                 CustomTextStyle.bigText('Gender',
                                     additionalText: '(select one or more:)'),
                                 const SizedBox(

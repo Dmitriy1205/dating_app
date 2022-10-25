@@ -9,12 +9,14 @@ class SearchPreferancesInitial extends SearchPreferancesState {
 
 class SearchPreferenceChangeState extends SearchPreferancesState {
   RangeValues age;
-  int distance = 5;
-  List selectedLookingFor = [];
+  int distance;
+
+  late List<String> selectedLookingForList;
 
   SearchPreferenceChangeState(
       {required this.age,
       required this.distance,
+        required this.selectedLookingForList
       });
 
   @override
