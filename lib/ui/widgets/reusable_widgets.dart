@@ -172,6 +172,7 @@ class ReUsableWidgets {
   }
 
   Widget generalInfoEditWidget(String registerOrEditInfo) {
+
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 19),
         child: Column(
@@ -333,6 +334,7 @@ class ReUsableWidgets {
       case 'profile info':
         return badgeForm(isRegisterForm: true, isProfileInfoForm: false);
     }
+
   }
 
   Widget editForm() {
@@ -425,52 +427,49 @@ class ReUsableWidgets {
   }
 
   Widget openHobbiesOrInterests(BuildContext context, String component) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 19),
-      child: Column(
-        children: [
-          const SizedBox(
-            height: 20,
-          ),
-          CustomTextStyle.bigText(component),
-          const SizedBox(
-            height: 20,
-          ),
-          InkWell(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => component == 'Interests'
-                          ? const InterestsScreen()
-                          : const HobbiesScreen()));
-            },
-            child: Ink(
-              color: Colors.white,
-              child: Container(
-                height: 57,
-                width: 400,
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey[300]!),
-                    borderRadius: BorderRadius.circular(10.0)),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 19),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Text(
-                        'Select',
-                        style: TextStyle(fontSize: 16, color: Colors.black54),
-                      ),
-                    ],
-                  ),
+    return Column(
+      children: [
+        const SizedBox(
+          height: 20,
+        ),
+        CustomTextStyle.bigText(component),
+        const SizedBox(
+          height: 20,
+        ),
+        InkWell(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => component == 'Interests'
+                        ? const InterestsScreen()
+                        : const HobbiesScreen()));
+          },
+          child: Ink(
+            color: Colors.white,
+            child: Container(
+              height: 57,
+              width: 400,
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey[300]!),
+                  borderRadius: BorderRadius.circular(10.0)),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 19),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Text(
+                      'Select',
+                      style: TextStyle(fontSize: 16, color: Colors.black54),
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
