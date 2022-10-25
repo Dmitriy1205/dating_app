@@ -17,9 +17,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   }
 }
 
-
-
-
 abstract class EditProfileState extends Equatable {}
 
 class EditProfileInitial extends EditProfileState {

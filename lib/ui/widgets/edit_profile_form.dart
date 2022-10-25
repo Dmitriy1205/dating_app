@@ -79,7 +79,8 @@ class _EditProfileFormState extends State<EditProfileForm> {
               reUsableWidgets.lookingForWidget(context,
                   onTap: (value) => bloc.changeData(value!),
                   selected: bloc.selectedLookingForList),
-              reUsableWidgets.badgeForm(isRegisterForm: false),
+              reUsableWidgets.badgeForm(
+                  isRegisterForm: false, isProfileInfoForm: true),
               reUsableWidgets.customGradientButton(context, text: 'SAVE')
             ],
           ),
