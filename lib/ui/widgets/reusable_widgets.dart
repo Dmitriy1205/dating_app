@@ -101,8 +101,8 @@ class ReUsableWidgets {
       ),
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => OtpVerificationScreen()));
+    // Navigator.push(context,
+        // MaterialPageRoute(builder: (context) => OtpVerificationScreen()));
   }
 
   Widget lookingForWidget(BuildContext context,
