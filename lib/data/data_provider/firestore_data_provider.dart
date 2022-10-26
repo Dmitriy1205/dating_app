@@ -6,7 +6,7 @@ import '../../core/exceptions.dart';
 class FirebaseDataProvider {
   final FirebaseFirestore firestore;
 
-  FirebaseDataProvider(this.firestore);
+  FirebaseDataProvider({required this.firestore});
 
   Future<void> createUser(
     User user,
@@ -27,5 +27,12 @@ class FirebaseDataProvider {
     }
   }
 
-  Future<void> update() async {}
+  Future<void> setGeneralFields(String id, Map<String, dynamic> data) async {
+    try {
+      await firestore.collection('ProfileInfo').doc(id).set(data);
+    } on FirebaseException catch (e) {
+      print(e.message);
+      throw BadRequestException(message: e.message!);
+    }
+  }
 }
