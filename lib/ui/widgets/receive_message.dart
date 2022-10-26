@@ -12,46 +12,38 @@ class ReplyCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width - 15,
+    return Stack(alignment: AlignmentDirectional.topStart, children: [
+      Container(
+        height: 45,
+        width: 45,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(50),
+          child: Image.asset(Content.interestsList[4]),
+          // fit: BoxFit.fill,
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
+      ),
+      Positioned(
+        left: 55,
+        child: Row(
           children: [
-            Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(messageModel.time,
-                      style: const TextStyle(color: Colors.black54)),
-                  Column(
-                    children: [
-                      Text(messageModel.senderName,
-                          style: CustomTextStyle.customFontStyle()),
-                      Text(
-                        messageModel.message,
-                        style: const TextStyle(
-                          fontSize: 16,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(width: 10),
-                  Container(
-                    height: 45,
-                    width: 45,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(50),
-                      child: Image.asset(Content.interestsList[4]),
-                      // fit: BoxFit.fill,
-                    ),
-                  ),
-                ]),
+            Text('${messageModel.senderName} ',
+                style: CustomTextStyle.customFontStyle()),
+            Text(messageModel.time,
+                style: const TextStyle(color: Colors.black54)),
           ],
         ),
       ),
-    );
+      Positioned(
+        top: 20,
+        left: 55,
+        child: Text(
+          messageModel.message,
+          style: const TextStyle(
+            fontSize: 16,
+          ),
+        ),
+      ),
+      SizedBox(width: 10),
+    ]);
   }
 }
