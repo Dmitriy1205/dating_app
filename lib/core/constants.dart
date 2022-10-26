@@ -54,13 +54,14 @@ class Content {
         ' or you havedecided to turn auto subscription'
         ' renuwal',
     'if you having problem with signin, please review'
-    ' the information below to help troubleshoot the problem',
+        ' the information below to help troubleshoot the problem',
     'Friend List',
   ];
 }
 
-
 class CustomIcons {
   static const String checkbox = 'assets/icons/check.png';
   static const String photo = 'assets/icons/photo.png';
+  static const String sendMessage = 'assets/icons/send_message_icon.png';
+  static const String attachMessage = 'assets/icons/attach_message_icon.png';
 }

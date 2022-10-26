@@ -14,4 +14,11 @@ class CustomTextStyle {
       ],
     );
   }
+
+  static customFontStyle(){
+    return const TextStyle(
+        fontWeight: FontWeight.w800,
+        color: Colors.black54,fontSize: 15
+    );
+  }
 }

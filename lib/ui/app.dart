@@ -29,7 +29,9 @@ class App extends StatelessWidget {
           ),
           debugShowCheckedModeBanner: false,
           title: 'Dating App',
-          home: WelcomeScreen(),
+          home:
+          ContactsScreen()
+          // WelcomeScreen(),
         ),
       ),
     );

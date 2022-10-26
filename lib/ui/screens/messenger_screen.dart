@@ -1,3 +1,4 @@
+import 'package:dating_app/ui/widgets/messenger_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -30,7 +31,7 @@ class MessengerScreen extends StatelessWidget {
         ),
         actions: <Widget>[
           PopupMenuButton<String>(
-            icon: Icon(
+            icon: const Icon(
               Icons.more_vert,
               color: Colors.black,
             ),
@@ -47,7 +48,7 @@ class MessengerScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Container(),
+      body: MessengerWidget(),
     );
   }
 

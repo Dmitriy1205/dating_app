@@ -128,8 +128,6 @@ class _LoginFormState extends State<LoginForm> {
                               selectorButtonOnErrorPadding: 0,
                               validator: validatePhoneField,
                             ),
-                            reUsableWidgets.customGradientButton(context,
-                                text: 'SIGN IN'),
                             const SizedBox(
                               height: 35,
                             ),
