@@ -23,7 +23,7 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
-  final _phoneController = TextEditingController();
+  final _phoneController = TextEditingController(text: '932383265');
   ReUsableWidgets reUsableWidgets = ReUsableWidgets();
   String verificationId = '';
 

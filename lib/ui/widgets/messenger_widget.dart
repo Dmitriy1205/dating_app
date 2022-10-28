@@ -2,12 +2,16 @@ import 'package:dating_app/data/models/message_model.dart';
 import 'package:dating_app/ui/widgets/my_message.dart';
 import 'package:dating_app/ui/widgets/receive_message.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import '../../core/constants.dart';
+import '../../data/models/user_model.dart';
+import '../bloc/messenger_cubit.dart';
 
 class MessengerWidget extends StatefulWidget {
-  const MessengerWidget({Key? key}) : super(key: key);
+  MessengerWidget(BuildContext context, {required this.user}) : super();
+  final UserModel user;
 
   @override
   State<MessengerWidget> createState() => _MessengerWidgetState();
@@ -16,26 +20,50 @@ class MessengerWidget extends StatefulWidget {
 class _MessengerWidgetState extends State<MessengerWidget> {
   TextEditingController myMessageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
+  late MessengerCubit messengerCubit;
+
+  _MessengerWidgetState();
+
+  @override
+  void initState() {
+    messengerCubit = MessengerCubit();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(child: SingleChildScrollView(child: messages())),
-        typeMessage()
-      ],
+    return BlocBuilder<MessengerCubit, MessengerStates>(
+      bloc: messengerCubit,
+      builder: (context, state) {
+        print('state ${state}');
+        if (state is SendMessageState) {
+          return Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: messages(context, state),
+                ),
+              ),
+              typeMessage(context)
+            ],
+          );
+        } else {
+          return Column(
+            children: [
+              const Expanded(
+                child: Center(
+                  child: Text('send your first message '),
+                ),
+              ),
+              typeMessage(context)
+            ],
+          );
+        }
+      },
     );
   }
 
-  MessageModel message1 =
-      MessageModel('Hey! Are You There?', 'sim', '08:00 Am', 'John');
-  MessageModel message2 = MessageModel('Yeah', 'my', '08:02 Am', 'Sophia');
-  late MessageModel messageModel;
-  List<MessageModel> messagesList = [];
-
-  Widget messages() {
-    messagesList.addAll([message1, message2]);
-
+  Widget messages(BuildContext context, SendMessageState state) {
     return Column(
       children: [
         Row(
@@ -51,9 +79,10 @@ class _MessengerWidgetState extends State<MessengerWidget> {
               width: 15,
             ),
             Expanded(
-                child: Divider(
-              color: Colors.black54,
-            )),
+              child: Divider(
+                color: Colors.black54,
+              ),
+            ),
           ],
         ),
         const SizedBox(
@@ -62,24 +91,24 @@ class _MessengerWidgetState extends State<MessengerWidget> {
         ListView.builder(
             shrinkWrap: true,
             controller: _scrollController,
-            itemCount: messagesList.length,
+            itemCount: state.messagesList.length,
             itemBuilder: (context, index) {
               print('alllllllll');
 
-              if (index == messagesList.length) {
+              if (index == state.messagesList.length) {
                 print('1');
                 return const SizedBox(
                   height: 70,
                   child: Icon(Icons.access_alarm),
                 );
               }
-              if (messagesList[index].type == "my") {
+              if (state.messagesList[index].type == "my") {
                 print('2');
                 return Padding(
                   padding: const EdgeInsets.fromLTRB(8, 5, 20, 10),
                   child: OwnMessageCard1(
-                    messageModel: messagesList[index],
-                    time: messagesList[index].time,
+                    messageModel: state.messagesList[index],
+                    time: state.messagesList[index].time!,
                   ),
                 );
               } else {
@@ -88,8 +117,8 @@ class _MessengerWidgetState extends State<MessengerWidget> {
                 return Padding(
                   padding: const EdgeInsets.fromLTRB(20, 5, 20, 10),
                   child: ReplyCard(
-                    messageModel: messagesList[index],
-                    time: messagesList[index].time,
+                    messageModel: state.messagesList[index],
+                    time: state.messagesList[index].time!,
                   ),
                 );
               }
@@ -98,53 +127,57 @@ class _MessengerWidgetState extends State<MessengerWidget> {
     );
   }
 
-  Widget typeMessage() {
+  Widget typeMessage(BuildContext context) {
     return SizedBox(
-        width: MediaQuery.of(context).size.width - 20,
-        child: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25),
-          ),
-          child: TextFormField(
-              controller: myMessageController,
-              decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: "Type your message...",
-                  hintStyle: const TextStyle(color: Colors.grey),
-                  prefix: const SizedBox(
-                    width: 20,
+      width: MediaQuery.of(context).size.width - 20,
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25),
+        ),
+        child: TextFormField(
+          controller: myMessageController,
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            hintText: "Type your message...",
+            hintStyle: const TextStyle(color: Colors.grey),
+            prefix: const SizedBox(
+              width: 20,
+            ),
+            suffixIcon: SizedBox(
+              width: 100,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  InkWell(
+                    onTap: () {},
+                    child: SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: Image.asset(CustomIcons.attachMessage)),
                   ),
-                  suffixIcon: SizedBox(
-                    width: 100,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        InkWell(
-                          onTap: () {},
-                          child: SizedBox(
-                              width: 50,
-                              height: 50,
-                              child: Image.asset(CustomIcons.attachMessage)),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            MessageModel message = MessageModel(
-                                myMessageController.text,
-                                'my',
-                                DateFormat.jm().format(DateTime.now()),
-                                'Sophia');
-                            messagesList.add(message);
-                            setState(() {
-                            });
-                          },
-                          child: SizedBox(
-                              width: 50,
-                              height: 50,
-                              child: Image.asset(CustomIcons.sendMessage)),
-                        ),
-                      ],
-                    ),
-                  ))),
-        ));
+                  InkWell(
+                    onTap: () {
+                      MessageModel message = MessageModel(
+                          myMessageController.text,
+                          'my',
+                          DateFormat.jm().format(DateTime.now()),
+                          'Sophia',
+                          widget.user.firstName,
+                          "${widget.user.firstName}+'Sophia'");
+                      messengerCubit.sendMessage(message);
+                      print('send event to bloc');
+                    },
+                    child: SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: Image.asset(CustomIcons.sendMessage)),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

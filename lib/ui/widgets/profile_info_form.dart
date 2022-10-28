@@ -48,7 +48,6 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
   //   super.dispose();
   // }
 
-
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ProfileInfoCubit, ProfileInfoState>(
@@ -197,7 +196,10 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                         showPicker(
                                           context,
                                           func: (File? f) {
-                                            context.read<ProfileInfoCubit>().uploadImage(f!, '${_itemCount++}');
+                                            context
+                                                .read<ProfileInfoCubit>()
+                                                .uploadImage(
+                                                    f!, '${_itemCount++}');
                                           },
                                         );
                                       },
@@ -445,7 +447,6 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                             ),
                           ),
                         ),
-
                         const Divider(
                           thickness: 2,
                         ),
@@ -466,7 +467,6 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                             }),
                         const Divider(
                           thickness: 2,
-
                         ),
                         ListTile(
                             title: const Center(
@@ -546,7 +546,6 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
     } else {
       // print('No image selected.');
     }
-
   }
 
   Widget registerForm() {

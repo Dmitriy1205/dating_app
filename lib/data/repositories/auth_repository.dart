@@ -8,12 +8,13 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../../core/exceptions.dart';
 import '../data_provider/firestore_data_provider.dart';
+import '../models/user_model.dart';
 
 class AuthRepository {
   final FirebaseAuth auth;
   final FirebaseDataProvider db;
-
-  AuthRepository({required this.db, required this.auth});
+  UserModel userModel;
+  AuthRepository({required this.db, required this.auth, required this.userModel});
 
   Future<void> signupWithPhone(
     String phoneNumber,
@@ -59,6 +60,8 @@ class AuthRepository {
           print('auth_repository login failed ${e.message}');
         },
         codeSent: (verId, _) {
+          verificationId = verId;
+          nav(verificationId);
           if (phoneNumber == currentUser()!.phoneNumber) {
             verificationId = verId;
             nav(verificationId);
