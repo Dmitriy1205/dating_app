@@ -18,4 +18,20 @@ class StorageDataProvider {
       throw BadRequestException(message: e.message.toString());
     }
   }
+
+  Future<List<String>> getAll(String ref) async {
+    try {
+      var images = await storage.ref(ref).listAll();
+      print(images);
+      List<String> data = [];
+      for (int i = 0; i < images.items.length; i++) {
+        String url = await images.items[i].getDownloadURL();
+        data.add(url);
+      }
+      print(data);
+      return data;
+    } on FirebaseException catch (e) {
+      throw BadRequestException(message: e.message.toString());
+    }
+  }
 }

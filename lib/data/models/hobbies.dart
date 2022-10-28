@@ -9,7 +9,7 @@ class Hobbies {
   bool? reading;
 
   Hobbies({
-    this.workingout,
+    this.workingout = false,
     this.hiking = false,
     this.biking = false,
     this.shopping = false,

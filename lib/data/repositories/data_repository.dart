@@ -5,7 +5,11 @@ class DataRepository {
 
   DataRepository({required this.dataProvider});
 
-  Future<void> setFields(String id, Map<String, dynamic> data) async {
-    return dataProvider.setGeneralFields(id, data);
+  Future<void> setProfileFields(String id, Map<String, dynamic> data) async {
+    return dataProvider.setProfileFields(id, data);
+  }
+
+  Future<void> setSearchFields(String id, Map<String, dynamic> data) async {
+    return dataProvider.setSearchPreference(id, data);
   }
 }

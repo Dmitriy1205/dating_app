@@ -12,6 +12,7 @@ import 'package:get_it/get_it.dart';
 import '../data/data_provider/storage_data_provider.dart';
 import '../data/repositories/storage_repository.dart';
 import '../ui/bloc/apple_auth/apple_auth_cubit.dart';
+import '../ui/bloc/image_picker/image_picker_cubit.dart';
 import '../ui/bloc/otp_verification/otp_cubit.dart';
 import '../ui/bloc/profile_info_cubit/profile_info_cubit.dart';
 
@@ -36,7 +37,9 @@ Future<void> boot() async {
 
   //Cubits
   sl.registerFactory(() => GoogleAuthCubit(sl()));
-  sl.registerFactory(() => ProfileInfoCubit(db: sl(), auth: sl(), storage: sl()));
+  sl.registerFactory(() => ImagePickerCubit(storage: sl(), auth: sl()));
+  sl.registerFactory(
+      () => ProfileInfoCubit(db: sl(), auth: sl(), storage: sl()));
   sl.registerFactory(() => AppleAuthCubit(sl()));
   sl.registerFactory(() => OtpCubit(sl()));
   sl.registerFactory(() => FacebookAuthCubit(sl()));

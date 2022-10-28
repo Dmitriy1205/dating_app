@@ -2,6 +2,7 @@ import 'package:dating_app/core/themes/checkboxes.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/constants.dart';
+import '../../data/models/interests.dart';
 
 class InterestsScreen extends StatefulWidget {
   const InterestsScreen({Key? key}) : super(key: key);
@@ -11,6 +12,8 @@ class InterestsScreen extends StatefulWidget {
 }
 
 class _InterestsScreenState extends State<InterestsScreen> {
+  Map<String, dynamic> interests = Interests().toMap();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,7 +69,7 @@ class _InterestsScreenState extends State<InterestsScreen> {
                               GestureDetector(
                                 onTap: () {
                                   //TODO: submit all data and back
-                                  Navigator.pop(context);
+                                  Navigator.pop(context, interests);
                                   const snackBar = SnackBar(
                                     backgroundColor: Colors.teal,
                                     content: Text(
@@ -97,7 +100,7 @@ class _InterestsScreenState extends State<InterestsScreen> {
                       child: GridView.builder(
                         physics: const ClampingScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: Content.interestsList.length,
+                        itemCount: interests.length,
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2),
@@ -108,7 +111,9 @@ class _InterestsScreenState extends State<InterestsScreen> {
                                 child: InkWell(
                                   onTap: () {
                                     setState(() {
-                                      _checks[i] = !_checks[i];
+                                      interests.update(
+                                          interests.keys.elementAt(i),
+                                          (value) => !value);
                                     });
                                   },
                                   child: SizedBox(
@@ -123,7 +128,7 @@ class _InterestsScreenState extends State<InterestsScreen> {
                                 left: 20,
                                 bottom: 16,
                                 child: Text(
-                                  name[i],
+                                  interests.keys.elementAt(i),
                                   style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 14,
@@ -132,12 +137,11 @@ class _InterestsScreenState extends State<InterestsScreen> {
                                 ),
                               ),
                               Positioned(
-                                right: 17,
-                                top: 14,
-                                child: !_checks[i]
-                                    ? CustomCheckbox.checked()
-                                    : CustomCheckbox.unChecked()
-                              ),
+                                  right: 17,
+                                  top: 14,
+                                  child: interests.values.elementAt(i)
+                                      ? CustomCheckbox.checked()
+                                      : CustomCheckbox.unChecked()),
                             ],
                           );
                         },
@@ -153,17 +157,3 @@ class _InterestsScreenState extends State<InterestsScreen> {
     );
   }
 }
-
-final List<bool> _checks =
-    List.generate(Content.hobbiesList.length, (_) => false);
-
-final List<String> name = [
-  'Politics',
-  'Fashion',
-  'Fine Arts',
-  'Music',
-  'Dance',
-  'Film',
-  'Photography',
-  'Acting',
-];

@@ -27,7 +27,7 @@ class FirebaseDataProvider {
     }
   }
 
-  Future<void> setGeneralFields(String id, Map<String, dynamic> data) async {
+  Future<void> setProfileFields(String id, Map<String, dynamic> data) async {
     try {
       await firestore.collection('ProfileInfo').doc(id).set(data);
     } on FirebaseException catch (e) {
@@ -35,4 +35,5 @@ class FirebaseDataProvider {
       throw BadRequestException(message: e.message!);
     }
   }
+  Future<void> setSearchPreference(String id, Map<String, dynamic> data)async{}
 }
