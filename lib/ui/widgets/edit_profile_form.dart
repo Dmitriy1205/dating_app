@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dating_app/ui/widgets/reusable_widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -28,7 +30,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
                   width: 150,
                   child: GestureDetector(
                     onTap: () {
-                      reUsableWidgets.showPicker(context);
+                      reUsableWidgets.showPicker(context, func: (File? f) {  });
                     },
                     child: Card(
                       elevation: 5,

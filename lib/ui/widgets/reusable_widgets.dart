@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dating_app/ui/screens/hobbies_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,6 +13,8 @@ import 'field_decor.dart';
 
 class ReUsableWidgets {
   final _formKey = GlobalKey<FormState>();
+  File? _image;
+
   bool isChecked = false;
   final nameController = TextEditingController();
   final bioController = TextEditingController();
@@ -333,7 +337,7 @@ class ReUsableWidgets {
                 MaterialPageRoute(
                     builder: (context) => component == 'Interests'
                         ? const InterestsScreen()
-                        : const HobbiesScreen()));
+                        :  HobbiesScreen()));
           },
           child: Ink(
             color: Colors.white,
@@ -363,7 +367,8 @@ class ReUsableWidgets {
     );
   }
 
-  void showPicker(BuildContext context) {
+  void showPicker(BuildContext context,
+      {required void Function(File? f) func}) {
     showModalBottomSheet(
         backgroundColor: Colors.transparent,
         context: context,
@@ -400,7 +405,9 @@ class ReUsableWidgets {
                               ),
                             ),
                             onTap: () {
-                              imageFromCamera();
+                              imageFromCamera(getPhoto: (File? f) {
+                                func(f);
+                              });
                               Navigator.of(context).pop();
                             }),
                         const Divider(
@@ -416,7 +423,9 @@ class ReUsableWidgets {
                               ),
                             ),
                             onTap: () {
-                              imageFromGallery();
+                              imageFromGallery(getImage: (File? f) {
+                                func(f);
+                              });
                               Navigator.of(context).pop();
                             }),
                       ],
@@ -452,7 +461,7 @@ class ReUsableWidgets {
         });
   }
 
-  Future imageFromGallery() async {
+  Future imageFromGallery({required Function(File?) getImage}) async {
     final ImagePicker picker = ImagePicker();
     final pickedFile = await picker.pickImage(
       source: ImageSource.gallery,
@@ -460,9 +469,15 @@ class ReUsableWidgets {
       maxHeight: 400,
       imageQuality: 100,
     );
+    if (pickedFile != null) {
+      _image = File(pickedFile.path);
+      getImage(_image!);
+    } else {
+      // print('No image selected.');
+    }
   }
 
-  Future imageFromCamera() async {
+  Future imageFromCamera({required Function(File?) getPhoto}) async {
     final ImagePicker picker = ImagePicker();
     final pickedFile = await picker.pickImage(
       source: ImageSource.camera,
@@ -470,5 +485,11 @@ class ReUsableWidgets {
       maxHeight: 400,
       imageQuality: 100,
     );
+    if (pickedFile != null) {
+      _image = File(pickedFile.path);
+      getPhoto(_image!);
+    } else {
+      // print('No image selected.');
+    }
   }
 }

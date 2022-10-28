@@ -10,4 +10,8 @@ class StorageRepository {
   Future<String> upload(File source, String destination) async {
     return await storageProvider.upload(source, destination);
   }
+
+  Future<List<String>> getAll(String ref) async {
+    return await storageProvider.getAll(ref);
+  }
 }
