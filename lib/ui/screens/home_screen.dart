@@ -45,111 +45,108 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white24,
-          automaticallyImplyLeading: false,
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: GestureDetector(
-                  onTap: () {
-                    //TODO: navigation to messenger
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => ContactsScreen()));
-                  },
-                  child: SizedBox(
-                    height: 50,
-                    width: 50,
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      child: Image.asset('assets/icons/messenger.png'),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white24,
+        automaticallyImplyLeading: false,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: GestureDetector(
+                onTap: () {
+                  //TODO: navigation to messenger
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ContactsScreen()));
+                },
+                child: SizedBox(
+                  height: 50,
+                  width: 50,
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
                     ),
+                    child: Image.asset('assets/icons/messenger.png'),
                   ),
                 ),
               ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        //TODO: navigation to profile
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ProfileScreen()));
-                      },
-                      child: SizedBox(
-                        height: 50,
-                        width: 50,
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                          child: Image.asset(
-                            'assets/icons/profile.png',
-                          ),
+            ),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      //TODO: navigation to profile
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ProfileScreen()));
+                    },
+                    child: SizedBox(
+                      height: 50,
+                      width: 50,
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        child: Image.asset(
+                          'assets/icons/profile.png',
                         ),
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: GestureDetector(
-                        onTap: () {
-                          //TODO: navigation to filter_screen
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => FilterScreen()));
-                        },
-                        child: SizedBox(
-                            height: 50,
-                            width: 50,
-                            child: Card(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                ),
-                                child: Image.asset('assets/icons/menu.png')))),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: GestureDetector(
+                      onTap: () {
+                        //TODO: navigation to filter_screen
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => FilterScreen()));
+                      },
+                      child: SizedBox(
+                          height: 50,
+                          width: 50,
+                          child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                              child: Image.asset('assets/icons/menu.png')))),
+                ),
+              ],
+            ),
+          ],
+        ),
+        elevation: 0,
+      ),
+      body: Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              child: Stack(
+                children: [
+                  Swiper(
+                    photoCards: _photos,
+                    whenCardSwiped: _cardSwiped,
+                    imageScaleType: BoxFit.cover,
+                    imageBackgroundColor: Colors.grey,
+                    leftButtonBackgroundColor: Colors.red[100],
+                    leftButtonIconColor: Colors.red[600],
+                    rightButtonBackgroundColor: Colors.lightGreen[100],
+                    rightButtonIconColor: Colors.lightGreen[700],
+                    leftButtonAction: _leftButtonClicked,
+                    rightButtonAction: _rightButtonClicked,
+                    onCardTap: _onCardTap,
                   ),
                 ],
               ),
-            ],
-          ),
-          elevation: 0,
-        ),
-        body: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(
-                child: Stack(
-                  children: [
-                    Swiper(
-                      photoCards: _photos,
-                      whenCardSwiped: _cardSwiped,
-                      imageScaleType: BoxFit.cover,
-                      imageBackgroundColor: Colors.grey,
-                      leftButtonBackgroundColor: Colors.red[100],
-                      leftButtonIconColor: Colors.red[600],
-                      rightButtonBackgroundColor: Colors.lightGreen[100],
-                      rightButtonIconColor: Colors.lightGreen[700],
-                      leftButtonAction: _leftButtonClicked,
-                      rightButtonAction: _rightButtonClicked,
-                      onCardTap: _onCardTap,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
