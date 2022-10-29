@@ -1,4 +1,3 @@
-
 import 'package:bloc/bloc.dart';
 import 'package:dating_app/data/models/hobbies.dart';
 import 'package:dating_app/data/repositories/data_repository.dart';
@@ -21,7 +20,6 @@ class ProfileInfoCubit extends Cubit<ProfileInfoState> {
   final StorageRepository storage;
 
   String get id => auth.currentUser()!.uid;
-  Hobbies hobbies = Hobbies();
 
   Future<void> saveData({required Map<String, dynamic> data}) async {
     emit(state.copyWith(status: Status.loading()));
@@ -33,17 +31,5 @@ class ProfileInfoCubit extends Cubit<ProfileInfoState> {
       print(e);
       emit(state.copyWith(status: Status.error(e.toString())));
     }
-  }
-
-  Future<void> up(bool value) async {
-    if (value) {
-      value = false;
-    } else {
-      value = true;
-    }
-
-    emit(state.copyWith(
-      status: Status.loaded(),
-    ));
   }
 }

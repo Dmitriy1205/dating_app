@@ -35,5 +35,13 @@ class FirebaseDataProvider {
       throw BadRequestException(message: e.message!);
     }
   }
-  Future<void> setSearchPreference(String id, Map<String, dynamic> data)async{}
+
+  Future<void> setSearchPreference(String id, Map<String, dynamic> data) async {
+    try {
+      await firestore.collection('SearchPreferences').doc(id).set(data);
+    } on FirebaseException catch (e) {
+      print(e.message);
+      throw BadRequestException(message: e.message!);
+    }
+  }
 }

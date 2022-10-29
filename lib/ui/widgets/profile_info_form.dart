@@ -21,7 +21,7 @@ class ProfileInfoFrom extends StatefulWidget {
 class _ProfileInfoFromState extends State<ProfileInfoFrom> {
   final _formKey = GlobalKey<FormState>();
   String userImage = '';
-  late String gender;
+  String gender = '';
   final nameController = TextEditingController();
   final bioController = TextEditingController();
   final heightController = TextEditingController();
@@ -238,13 +238,13 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                           horizontal: 19),
                                       child: Center(
                                         child: DropdownButtonFormField(
-                                          value: gender,
-                                          validator: (v) {
-                                            if (v == null) {
-                                              return 'Choose your gender';
-                                            }
-                                            return null;
-                                          },
+                                          // value: gender,
+                                          // validator: (v) {
+                                          //   if (v == null) {
+                                          //     return 'Choose your gender';
+                                          //   }
+                                          //   return null;
+                                          // },
                                           hint: const Text('Gender'),
                                           icon: const Icon(
                                               Icons.keyboard_arrow_down_sharp),

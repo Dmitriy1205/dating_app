@@ -11,8 +11,8 @@ class ProfileInfoData {
   String? degree;
   String? company;
   String? job;
-  List<Hobbies>? hobbies;
-  List<Interests>? interests;
+  Map<String, dynamic>? hobbies;
+  Map<String, dynamic>? interests;
 
   Map<String, dynamic> toMap() => {
         'name': name,

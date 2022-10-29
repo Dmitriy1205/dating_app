@@ -9,8 +9,6 @@ import '../../core/functions/validation.dart';
 import '../../core/themes/checkboxes.dart';
 import '../../core/themes/text_styles.dart';
 import '../screens/interests_screen.dart';
-import '../screens/login_screen.dart';
-import '../screens/otp_verification_screen.dart';
 import 'field_decor.dart';
 
 class ReUsableWidgets {
@@ -84,7 +82,7 @@ class ReUsableWidgets {
             ),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 35,
         ),
       ],
@@ -106,26 +104,25 @@ class ReUsableWidgets {
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
     // Navigator.push(context,
-        // MaterialPageRoute(builder: (context) => OtpVerificationScreen()));
+    // MaterialPageRoute(builder: (context) => OtpVerificationScreen()));
   }
 
   Widget lookingForWidget(BuildContext context,
-      {required Function(String?) onTap, required List<String> selected}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Column(
-        children: [
-          const SizedBox(
-            height: 20,
-          ),
-          CustomTextStyle.bigText('Looking For',
-              additionalText: '(select one or more:)'),
-          // const SizedBox(
-          //   height: 20,
-          // ),
-          Wrap(children: [
+      {required Function(String?) onTap,
+      required List<String> selected,
+      Function(Map<String, dynamic>)? lookingFor}) {
+    return Column(
+      children: [
+        const SizedBox(
+          height: 20,
+        ),
+        CustomTextStyle.bigText('Looking For',
+            additionalText: '(select one or more:)'),
+        Wrap(
+          children: [
             ListView.builder(
                 scrollDirection: Axis.vertical,
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: lookingForMap.length,
                 itemBuilder: (BuildContext context, int index) {
@@ -144,7 +141,7 @@ class ReUsableWidgets {
                         GestureDetector(
                           child: ListTile(
                               contentPadding:
-                                  const EdgeInsets.fromLTRB(25, 10, 10, 10),
+                                  const EdgeInsets.fromLTRB(25, 5, 10, 5),
                               dense: true,
                               title: Text(
                                 lookingForMap.keys.elementAt(index),
@@ -157,26 +154,28 @@ class ReUsableWidgets {
                               trailing: selected.contains(
                                       lookingForMap.keys.elementAt(index))
                                   ? CustomCheckbox.checked()
-                                  : null,
+                                  : const SizedBox(),
                               onTap: () {
                                 onTap(lookingForMap.keys.elementAt(index));
+
+                                lookingForMap.update(
+                                    lookingForMap.keys.elementAt(index),
+                                    (value) => !value);
+                                print(lookingForMap);
+                                lookingFor!(lookingForMap);
                               }),
                         )
                       ],
                     ),
                   );
                 }),
-          ]),
-          const SizedBox(
-            height: 20,
-          ),
-        ],
-      ),
+          ],
+        ),
+      ],
     );
   }
 
   Widget generalInfoEditWidget(String registerOrEditInfo) {
-
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 19),
         child: Column(
@@ -338,7 +337,6 @@ class ReUsableWidgets {
       case 'profile info':
         return badgeForm(isRegisterForm: true, isProfileInfoForm: false);
     }
-
   }
 
   Widget editForm() {
@@ -447,7 +445,7 @@ class ReUsableWidgets {
                 MaterialPageRoute(
                     builder: (context) => component == 'Interests'
                         ? const InterestsScreen()
-                        :  HobbiesScreen()));
+                        : HobbiesScreen()));
           },
           child: Ink(
             color: Colors.white,
