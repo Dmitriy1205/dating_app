@@ -11,7 +11,7 @@ import '../../data/repositories/data_repository.dart';
 class SearchPreferencesCubit extends Cubit<SearchPreferencesState> {
   final DataRepository db;
   final AuthRepository auth;
-  SearchPrefData searchData = SearchPrefData();
+  SearchPrefFields searchData = SearchPrefFields();
 
   SearchPreferencesCubit({
     required this.auth,
@@ -40,13 +40,13 @@ class SearchPreferencesCubit extends Cubit<SearchPreferencesState> {
   Future<void> setDistance(int distance) async =>
       emit(state.copyWith(distance: distance));
 
-  Future<void> saveData({required SearchPrefData data}) async {
+  Future<void> saveData({required SearchPrefFields data}) async {
     searchData.distance = data.distance;
     searchData.yearsRange = data.yearsRange;
     searchData.lookingFor = data.lookingFor;
     searchData.gender = data.gender;
     var id = auth.currentUser()!.uid;
-    await db.setSearchFields(id, searchData.toMap());
+    await db.setSearchFields(id, searchData.toFirestore());
     emit(state.copyWith(status: Status.loaded()));
   }
 }

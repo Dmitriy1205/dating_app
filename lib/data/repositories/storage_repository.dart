@@ -11,7 +11,7 @@ class StorageRepository {
     return await storageProvider.upload(source, destination);
   }
 
-  Future<List<String>> getAll(String ref) async {
-    return await storageProvider.getAll(ref);
+  Future<List<String>> getAll(String id) async {
+    return await storageProvider.getAll(id);
   }
 }

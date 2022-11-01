@@ -24,14 +24,17 @@ class App extends StatelessWidget {
         ],
         child: MaterialApp(
           theme: ThemeData(
+            chipTheme: chipTheme(),
             sliderTheme: CustomColors.customGradient(),
             unselectedWidgetColor: Colors.orange,
           ),
           debugShowCheckedModeBanner: false,
           title: 'Dating App',
-          home: WelcomeScreen(),
+          home: const WelcomeScreen(),
         ),
       ),
     );
   }
+
+
 }

@@ -75,7 +75,7 @@ class SearchPrefForm extends StatelessWidget {
                                     context
                                         .read<SearchPreferencesCubit>()
                                         .saveData(
-                                            data: SearchPrefData()
+                                            data: SearchPrefFields()
                                               ..yearsRange = yearsRange
                                               ..distance = distance
                                               ..lookingFor = lookingFor

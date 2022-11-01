@@ -20,13 +20,13 @@ class Interests {
   });
 
   Map<String, dynamic> toMap() => {
-        'politics': politics,
-        'fashion': fashion,
-        'finArt': finArt,
-        'music': music,
-        'dance': dance,
-        'film': film,
-        'photography': photography,
-        'acting': acting,
+        'Politics': politics,
+        'Fashion': fashion,
+        'FinArt': finArt,
+        'Music': music,
+        'Dance': dance,
+        'Film': film,
+        'Photography': photography,
+        'Acting': acting,
       };
 }

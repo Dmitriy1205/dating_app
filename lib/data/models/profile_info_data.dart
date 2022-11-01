@@ -1,7 +1,6 @@
-import 'package:dating_app/data/models/hobbies.dart';
-import 'package:dating_app/data/models/interests.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class ProfileInfoData {
+class ProfileInfoFields {
   String? name;
   String? bio;
   String? gender;
@@ -14,7 +13,40 @@ class ProfileInfoData {
   Map<String, dynamic>? hobbies;
   Map<String, dynamic>? interests;
 
-  Map<String, dynamic> toMap() => {
+  ProfileInfoFields(
+      {this.name,
+      this.bio,
+      this.gender,
+      this.height,
+      this.age,
+      this.university,
+      this.degree,
+      this.company,
+      this.job,
+      this.hobbies,
+      this.interests});
+
+  factory ProfileInfoFields.fromFirestore(
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+    SnapshotOptions? options,
+  ) {
+    final data = snapshot.data();
+    return ProfileInfoFields(
+      name: data?['name'],
+      bio: data?['bio'],
+      gender: data?['gender'],
+      height: data?['height'],
+      age: data?['age'],
+      university: data?['university'],
+      degree: data?['degree'],
+      company: data?['company'],
+      job: data?['job'],
+      hobbies: data?['hobbies'],
+      interests: data?['interests'],
+    );
+  }
+
+  Map<String, dynamic> toFirestore() => {
         'name': name,
         'bio': bio,
         'gender': gender,

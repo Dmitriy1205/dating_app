@@ -5,6 +5,7 @@ import 'package:dating_app/data/repositories/data_repository.dart';
 import 'package:dating_app/ui/bloc/auth/auth_cubit.dart';
 import 'package:dating_app/ui/bloc/facebook_auth/facebook_auth_cubit.dart';
 import 'package:dating_app/ui/bloc/google_auth/google_auth_cubit.dart';
+import 'package:dating_app/ui/bloc/profile/profile_cubit.dart';
 import 'package:dating_app/ui/bloc/search_preferences_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -38,6 +39,7 @@ Future<void> boot() async {
 
   //Cubits
   sl.registerFactory(() => GoogleAuthCubit(sl()));
+  sl.registerFactory(() => ProfileCubit(auth: sl(), db: sl(), storage: sl()));
   sl.registerFactory(() => SearchPreferencesCubit(
         db: sl(),
         auth: sl(),
