@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import '../../core/constants.dart';
+import '../../core/service_locator.dart';
 import '../../data/models/user_model.dart';
 import '../bloc/messenger_cubit.dart';
 
@@ -20,20 +21,14 @@ class MessengerWidget extends StatefulWidget {
 class _MessengerWidgetState extends State<MessengerWidget> {
   TextEditingController myMessageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
-  late MessengerCubit messengerCubit;
 
   _MessengerWidgetState();
 
-  @override
-  void initState() {
-    messengerCubit = MessengerCubit();
-    super.initState();
-  }
+
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MessengerCubit, MessengerStates>(
-      bloc: messengerCubit,
       builder: (context, state) {
         print('state ${state}');
         if (state is SendMessageState) {
@@ -93,8 +88,6 @@ class _MessengerWidgetState extends State<MessengerWidget> {
             controller: _scrollController,
             itemCount: state.messagesList.length,
             itemBuilder: (context, index) {
-              print('alllllllll');
-
               if (index == state.messagesList.length) {
                 print('1');
                 return const SizedBox(
@@ -161,11 +154,12 @@ class _MessengerWidgetState extends State<MessengerWidget> {
                           myMessageController.text,
                           'my',
                           DateFormat.jm().format(DateTime.now()),
-                          'Sophia',
+                          'Yaroslav',
                           widget.user.firstName,
-                          "${widget.user.firstName}+'Sophia'");
-                      messengerCubit.sendMessage(message);
-                      print('send event to bloc');
+                          "${widget.user.firstName}+yar");
+                      context.read<MessengerCubit>().sendMessage(message);
+                      myMessageController.clear();
+
                     },
                     child: SizedBox(
                         width: 50,

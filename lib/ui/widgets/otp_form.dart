@@ -2,24 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
+import '../../data/models/user_model.dart';
 import '../bloc/otp_verification/otp_cubit.dart';
 
 class OtpForm extends StatefulWidget {
   final String verId;
-  final String? name;
-  final String? phone;
-  final String? date;
-  final String? email;
   final Widget page;
+  final UserModel userModel;
 
   const OtpForm({
     Key? key,
     required this.verId,
-    this.name,
-    this.phone,
-    this.date,
-    this.email,
     required this.page,
+    required this.userModel,
   }) : super(key: key);
 
   @override
@@ -111,10 +106,7 @@ class _OtpFormState extends State<OtpForm> {
                   context.read<OtpCubit>().verify(
                         widget.verId,
                         _numberController.text,
-                        widget.name ?? '',
-                        widget.phone ?? '',
-                        widget.date ?? '',
-                        widget.email ?? '',
+                        widget.userModel,
                       );
                 },
                 style: ElevatedButton.styleFrom(

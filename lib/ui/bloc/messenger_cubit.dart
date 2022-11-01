@@ -1,22 +1,33 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../core/service_locator.dart';
 import '../../data/models/message_model.dart';
+import '../../data/models/user_model.dart';
 import '../../data/repositories/data_repository.dart';
 
 class MessengerCubit extends Cubit<MessengerStates> {
-  MessengerCubit() : super(MessengerInit());
+  MessengerCubit(this.userModel, this.db) : super(MessengerInit()) {
+    loadAllMessages();
+  }
+
+  final UserModel userModel;
   List<MessageModel> messagesList = [];
+  final DataRepository db;
+
   Future<void> sendMessage(MessageModel messageModel) async {
+    db.sendMessageToPal(messageModel);
 
-    DataRepository db = sl();
-
-    await db.sendMessageToPal(messageModel);
-    messagesList.add(messageModel);
-    print('${messageModel.message}');
     emit(SendMessageState(messagesList: messagesList));
-    // messagesList.forEach((element) {element.message})}');
+  }
+
+  Future<void> loadAllMessages() async {
+    List<MessageModel> messagesList =
+        await db.getAllChatMessages('${userModel.firstName}');
+    if (messagesList.isNotEmpty) {
+      emit(SendMessageState(messagesList: messagesList));
+    } else {
+      emit(MessengerInit());
+    }
   }
 }
 
@@ -30,9 +41,8 @@ class MessengerInit extends MessengerStates {}
 class SendMessageState extends MessengerStates {
   List<MessageModel> messagesList;
 
-  SendMessageState({required this.messagesList}){
-    print('messages from STATE   ${messagesList.length}');
-
+  SendMessageState({required this.messagesList}) {
+    print('messages from SendMessageState ${messagesList.length}');
   }
 
   @override

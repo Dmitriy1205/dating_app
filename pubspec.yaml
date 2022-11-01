@@ -27,10 +27,10 @@ dependencies:
 #  photo_card_swiper: ^0.0.6
 
   # firebase
-  firebase_core: ^1.22.0
-  firebase_auth: ^3.10.0
-  firebase_storage: ^10.3.9
-  cloud_firestore: ^3.4.9
+  firebase_core: 2.1.1
+  firebase_auth: 4.1.0
+  firebase_storage: 11.0.3
+  cloud_firestore: 4.0.3
 
   #utils
   flutter_bloc: ^8.1.1
@@ -38,7 +38,7 @@ dependencies:
   equatable: ^2.0.5
   get_it: ^7.2.0
   google_sign_in: ^5.4.2
-  flutter_facebook_auth: ^4.4.1+1
+  flutter_facebook_auth: 5.0.1
   sign_in_with_apple: ^4.1.0
   crypto: ^3.0.2
 

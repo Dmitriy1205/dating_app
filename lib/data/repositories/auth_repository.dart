@@ -60,8 +60,11 @@ class AuthRepository {
           print('auth_repository login failed ${e.message}');
         },
         codeSent: (verId, _) {
+          print('auth_repository1  ${currentUser()!.phoneNumber}');
+          print('auth_repository2  ${auth.currentUser!.phoneNumber}');
           verificationId = verId;
           nav(verificationId);
+
           if (phoneNumber == currentUser()!.phoneNumber) {
             verificationId = verId;
             nav(verificationId);
@@ -82,17 +85,16 @@ class AuthRepository {
   Future<void> phoneVerification(
     String verId,
     String code,
-    String name,
-    String phone,
-    String date,
-    String email,
+     UserModel userModel
   ) async {
     try {
       PhoneAuthCredential credential =
           PhoneAuthProvider.credential(verificationId: verId, smsCode: code);
       var signIn = await auth.signInWithCredential(credential);
-      signIn;
-      await db.createUser(signIn.user!, name, phone, date, email);
+      await db.createUser(signIn.user!, userModel);
+
+      print('credential $credential');
+
       //TODO: uncomment below code in end for signup first user
       // if (currentUser()!.uid.isEmpty) {
       //   signIn;
@@ -102,6 +104,7 @@ class AuthRepository {
     } on FirebaseAuthException catch (e) {
       throw BadRequestException(message: e.message!);
     } catch (e) {
+      print('eee $e');
       throw BadRequestException(message: e.toString());
     }
   }
@@ -172,6 +175,7 @@ class AuthRepository {
   }
 
   User? currentUser() {
+    print('auth.currentUser ${auth.currentUser}');
     return auth.currentUser;
   }
 

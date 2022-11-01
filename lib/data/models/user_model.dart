@@ -4,20 +4,26 @@ class UserModel {
       this.lastName,
       this.email,
       this.phoneNumber,
-      this.birthday});
+      this.birthday,
+      this.userId,
+      this.registrationDate});
 
   String? firstName;
   String? lastName;
   String? phoneNumber;
   String? email;
   String? birthday;
+  String? userId;
+  String? registrationDate;
 
-  UserModel.fromJson(Map<String, dynamic> json) {
-    firstName = json['name'];
-    lastName = json['lastName'];
-    phoneNumber = json['phoneNumber'];
-    email = json['email'];
-    birthday = json['birthday'];
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(firstName : json['name'],
+    lastName : json['lastName'],
+    phoneNumber : json['phoneNumber'],
+    email : json['email'],
+    birthday : json['birthday'],
+    userId : json['userId'],
+    registrationDate : json['registrationDate'],);
   }
 
   // factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -30,10 +36,12 @@ class UserModel {
   //   );
   // }
 
-  Map<String, String> toJson() => {
-    'name' : firstName!,
-    'lastName' : lastName!,
-    'phoneNumber' : phoneNumber!,
-    'email' : email!,
-  };
+  Map<String, dynamic> toJson() => {
+        'name': firstName,
+        'lastName': lastName,
+        'phoneNumber': phoneNumber,
+        'email': email,
+        'userId': userId,
+        'registrationDate': registrationDate
+      };
 }

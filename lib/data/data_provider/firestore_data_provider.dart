@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dating_app/data/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,18 +16,10 @@ class FirebaseDataProvider {
 
   Future<void> createUser(
     User user,
-    String name,
-    String phone,
-    String date,
-    String email,
+    UserModel userModel
   ) async {
     try {
-      await firestore.collection('users').doc(user.uid).set({
-        'name': name,
-        'phone': phone,
-        'date': date,
-        'email': email,
-      });
+      await firestore.collection('users').doc(user.uid).set(userModel.toJson());
     } on FirebaseException catch (e) {
       throw BadRequestException(message: e.message!);
     }
@@ -43,9 +37,31 @@ class FirebaseDataProvider {
   Future<MessageModel?> sendMessageToPal(MessageModel messageModel) async {
     try {
       await firestore
-          .collection('Messages')
-          .doc('${messageModel.recipientName}' + '${messageModel.senderName}')
-          .set(messageModel.toJson());
+          .collection(
+              'chats/${messageModel.recipientName}_${messageModel.senderName}/messages')
+          .add(messageModel.toJson());
+
+      print(
+          'chats/${messageModel.recipientName}_${messageModel.senderName}/messages');
+    } on FirebaseException catch (e) {
+      throw BadRequestException(message: e.message!);
+    }
+  }
+
+  Future<List<MessageModel>> getAllChatMessages(String chatId) async {
+    try {
+      print('chatIdchatId ${chatId}');
+
+      List<MessageModel> queryListMessages = await firestore
+          .collection('chats/$chatId/messages')
+          .get()
+          .then((QuerySnapshot querySnapshot) => querySnapshot.docs
+              .map((e) =>
+                  MessageModel.fromJson(e.data() as Map<String, dynamic>))
+              .toList());
+      // queryListMessages.forEach((element) {print('queryListMessages ${element.message})}');});
+
+      return queryListMessages;
     } on FirebaseException catch (e) {
       throw BadRequestException(message: e.message!);
     }

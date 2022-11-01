@@ -11,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import '../../core/functions/validation.dart';
+import '../../data/models/user_model.dart';
 import '../screens/otp_verification_screen.dart';
 import '../screens/profile_info_screen.dart';
 
@@ -29,6 +30,7 @@ class _SignUpFormState extends State<SignUpForm> {
   final _dateController = TextEditingController();
   final _emailController = TextEditingController();
   String verificationId = '';
+  UserModel userModel = UserModel();
 
   @override
   void dispose() {
@@ -231,6 +233,12 @@ class _SignUpFormState extends State<SignUpForm> {
                                         return;
                                       }
                                       _formKey.currentState!.save();
+                                      userModel.firstName =
+                                          _nameController.text;
+                                      userModel.phoneNumber =
+                                          _phoneController.text;
+                                      userModel.birthday = _dateController.text;
+                                      userModel.email = _emailController.text;
 
                                       context.read<AuthCubit>().signUp(
                                           phoneNumber: _phoneController.text,
@@ -241,14 +249,22 @@ class _SignUpFormState extends State<SignUpForm> {
                                               MaterialPageRoute(
                                                 builder: (context) =>
                                                     OtpVerificationScreen(
-                                                  page:
-                                                      const ProfileInfoScreen(),
-                                                  verId: verId,
-                                                  name: _nameController.text,
-                                                  phone: _phoneController.text,
-                                                  date: _dateController.text,
-                                                  email: _emailController.text,
-                                                ),
+                                                        page:
+                                                            const ProfileInfoScreen(),
+                                                        verId: verId,
+                                                        userModel: UserModel()
+                                                          ..firstName =
+                                                              _nameController
+                                                                  .text
+                                                          ..phoneNumber =
+                                                              _phoneController
+                                                                  .text
+                                                          ..birthday =
+                                                              _dateController
+                                                                  .text
+                                                          ..email =
+                                                              _emailController
+                                                                  .text),
                                               ),
                                             );
                                           });

@@ -6,6 +6,7 @@ import 'package:dating_app/ui/bloc/auth/auth_cubit.dart';
 import 'package:dating_app/ui/bloc/contacts_cubit.dart';
 import 'package:dating_app/ui/bloc/facebook_auth/facebook_auth_cubit.dart';
 import 'package:dating_app/ui/bloc/google_auth/google_auth_cubit.dart';
+import 'package:dating_app/ui/bloc/messenger_cubit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';
@@ -45,6 +46,7 @@ Future<void> boot() async {
   sl.registerFactory(() => FacebookAuthCubit(sl()));
   sl.registerFactory(() => AuthCubit(sl()));
   sl.registerFactory(() => ContactsCubit());
+  sl.registerFactory(() => MessengerCubit(userModel, sl()));
 }
 
 Future<void> init() async {}

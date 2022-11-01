@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../core/service_locator.dart';
+
 class MessengerScreen extends StatelessWidget {
   const MessengerScreen({Key? key, required this.user}) : super(key: key);
   final UserModel user;
@@ -12,7 +14,7 @@ class MessengerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (BuildContext context) => MessengerCubit(),
+        create: (BuildContext context) => sl<MessengerCubit>(),
         child: Scaffold(
           appBar: AppBar(
             elevation: 0,
