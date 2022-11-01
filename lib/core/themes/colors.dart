@@ -11,6 +11,16 @@ class CustomColors {
   }
 }
 
+ChipThemeData chipTheme() {
+  return ChipThemeData(
+    backgroundColor: Colors.transparent,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(5),
+    ),
+    side: const BorderSide(color: Colors.grey),
+  );
+}
+
 class GradientRectSliderTrackShape extends SliderTrackShape
     with BaseSliderTrackShape {
   @override
