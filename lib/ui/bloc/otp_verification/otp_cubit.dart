@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:dating_app/data/models/status.dart';
-import 'package:dating_app/data/models/user_model.dart';
 import 'package:dating_app/data/repositories/auth_repository.dart';
 import 'package:equatable/equatable.dart';
 
@@ -11,14 +10,20 @@ class OtpCubit extends Cubit<OtpState> {
   final AuthRepository repository;
 
   Future<void> verify(
-    String verId,
-    String code,
-      UserModel userModel
-  ) async {
+      String verId,
+      String code,
+      String name,
+      String phone,
+      String date,
+      String email,
+      ) async {
     await repository.phoneVerification(
       verId,
       code,
-      userModel
+      name,
+      phone,
+      date,
+      email,
     );
     emit(state.copyWith(status: Status.loaded()));
   }

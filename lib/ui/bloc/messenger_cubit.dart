@@ -1,28 +1,32 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../data/models/message_model.dart';
 import '../../data/models/user_model.dart';
 import '../../data/repositories/data_repository.dart';
 
 class MessengerCubit extends Cubit<MessengerStates> {
-  MessengerCubit(this.userModel, this.db) : super(MessengerInit()) {
-    loadAllMessages();
-  }
+  MessengerCubit(this.db, this.auth) : super(MessengerInit()) {
 
-  final UserModel userModel;
+  }
+  final FirebaseAuth auth;
   List<MessageModel> messagesList = [];
   final DataRepository db;
 
-  Future<void> sendMessage(MessageModel messageModel) async {
-    db.sendMessageToPal(messageModel);
+  get currentUserId => auth.currentUser!.uid;
 
-    emit(SendMessageState(messagesList: messagesList));
+  Future<void> sendMessage(MessageModel messageModel, UserModel userModel) async {
+    final String chatId = '${userModel.userId}_${currentUserId}';
+    db.sendMessageToPal(messageModel, chatId);
+    loadAllMessages(userModel);
+    // emit(SendMessageState(messagesList: messagesList));
   }
 
-  Future<void> loadAllMessages() async {
+  Future<void> loadAllMessages(UserModel userModel) async {
+    print('userModel.userId MessengerCubit ${userModel.userId}_$currentUserId');
     List<MessageModel> messagesList =
-        await db.getAllChatMessages('${userModel.firstName}');
+        await db.getAllChatMessages('${userModel.userId}_$currentUserId');
     if (messagesList.isNotEmpty) {
       emit(SendMessageState(messagesList: messagesList));
     } else {
@@ -46,5 +50,5 @@ class SendMessageState extends MessengerStates {
   }
 
   @override
-  List<Object?> get props => [double.nan];
+  List<Object?> get props => [messagesList];
 }

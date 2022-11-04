@@ -16,8 +16,18 @@ class FirebaseDataProvider {
 
   Future<void> createUser(
     User user,
-    UserModel userModel
+    String name,
+    String phone,
+    String date,
+    String email,
   ) async {
+    userModel.firstName = name;
+    userModel.userId = user.uid;
+    userModel.registrationDate = DateTime.now().toString();
+    userModel.email = email;
+    userModel.phoneNumber = phone;
+    userModel.birthday = date;
+
     try {
       await firestore.collection('users').doc(user.uid).set(userModel.toJson());
     } on FirebaseException catch (e) {
@@ -34,32 +44,36 @@ class FirebaseDataProvider {
     }
   }
 
-  Future<MessageModel?> sendMessageToPal(MessageModel messageModel) async {
+  Future<MessageModel?> sendMessageToPal(
+      MessageModel messageModel, chatId) async {
     try {
       await firestore
-          .collection(
-              'chats/${messageModel.recipientName}_${messageModel.senderName}/messages')
+          .collection('chats/${chatId}/messages')
           .add(messageModel.toJson());
 
-      print(
-          'chats/${messageModel.recipientName}_${messageModel.senderName}/messages');
+      print(' sendMessageToPal  $chatId');
     } on FirebaseException catch (e) {
       throw BadRequestException(message: e.message!);
     }
   }
 
   Future<List<MessageModel>> getAllChatMessages(String chatId) async {
+
     try {
-      print('chatIdchatId ${chatId}');
+      print('getAllChatMessages   $chatId');
 
       List<MessageModel> queryListMessages = await firestore
-          .collection('chats/$chatId/messages')
+          .collection('chats/$chatId/messages').orderBy('time', descending: false)
           .get()
-          .then((QuerySnapshot querySnapshot) => querySnapshot.docs
-              .map((e) =>
-                  MessageModel.fromJson(e.data() as Map<String, dynamic>))
-              .toList());
-      // queryListMessages.forEach((element) {print('queryListMessages ${element.message})}');});
+          .then((QuerySnapshot querySnapshot) {
+        return querySnapshot.docs.map((e) {
+          print('eeeeeeeeee   queryListMessages ${e}');
+          return MessageModel.fromJson(e.data() as Map<String, dynamic>);
+        }).toList();
+      });
+      queryListMessages.forEach((element) {
+        print('element ${element}');
+      });
 
       return queryListMessages;
     } on FirebaseException catch (e) {

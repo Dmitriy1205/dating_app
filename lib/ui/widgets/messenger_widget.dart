@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import '../../core/constants.dart';
-import '../../core/service_locator.dart';
 import '../../data/models/user_model.dart';
 import '../bloc/messenger_cubit.dart';
 
@@ -24,7 +23,17 @@ class _MessengerWidgetState extends State<MessengerWidget> {
 
   _MessengerWidgetState();
 
+  @override
+  void initState() {
+    context.read<MessengerCubit>().loadAllMessages(widget.user);
+    super.initState();
+  }
 
+  @override
+  void didUpdateWidget(covariant MessengerWidget oldWidget) {
+    context.read<MessengerCubit>().loadAllMessages(widget.user);
+    super.didUpdateWidget(oldWidget);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +105,7 @@ class _MessengerWidgetState extends State<MessengerWidget> {
                 );
               }
               if (state.messagesList[index].type == "my") {
-                print('2');
+                print('${state.messagesList[index].time!}');
                 return Padding(
                   padding: const EdgeInsets.fromLTRB(8, 5, 20, 10),
                   child: OwnMessageCard1(
@@ -153,13 +162,12 @@ class _MessengerWidgetState extends State<MessengerWidget> {
                       MessageModel message = MessageModel(
                           myMessageController.text,
                           'my',
-                          DateFormat.jm().format(DateTime.now()),
-                          'Yaroslav',
+                          DateTime.now().toString(),
+                          '',
                           widget.user.firstName,
                           "${widget.user.firstName}+yar");
-                      context.read<MessengerCubit>().sendMessage(message);
+                      context.read<MessengerCubit>().sendMessage(message, widget.user);
                       myMessageController.clear();
-
                     },
                     child: SizedBox(
                         width: 50,

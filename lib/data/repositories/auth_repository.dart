@@ -13,8 +13,9 @@ import '../models/user_model.dart';
 class AuthRepository {
   final FirebaseAuth auth;
   final FirebaseDataProvider db;
-  UserModel userModel;
-  AuthRepository({required this.db, required this.auth, required this.userModel});
+  late UserModel userModel;
+
+  AuthRepository({required this.db, required this.auth});
 
   Future<void> signupWithPhone(
     String phoneNumber,
@@ -22,9 +23,14 @@ class AuthRepository {
     void Function(String s) nav,
   ) async {
     try {
+      print('phoneNumber  TRYYY signupWithPhone ${phoneNumber}');
       await auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
-        verificationCompleted: (_) {},
+        verificationCompleted: (_) {
+          print(
+              'currentUser()!.phoneNumber --- CurrentUserId   ${currentUser()!.phoneNumber}');
+          print('phoneNumber   ${phoneNumber}');
+        },
         verificationFailed: (FirebaseAuthException e) {
           print(e.message);
         },
@@ -41,6 +47,7 @@ class AuthRepository {
         codeAutoRetrievalTimeout: (value) {},
       );
     } on FirebaseAuthException catch (e) {
+      print('print 1 ${e.message.toString()}');
       throw BadRequestException(message: e.message!);
     } catch (e) {
       throw BadRequestException(message: e.toString());
@@ -53,25 +60,30 @@ class AuthRepository {
     void Function(String s) nav,
   ) async {
     try {
+      print(
+          'print 1 TRY');
       await auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
-        verificationCompleted: (_) {},
+        verificationCompleted: (_) {
+          // print(
+          //     'print 1 verificationCompleted --- CurrentUserId   ${auth.currentUser!.uid}');
+        },
         verificationFailed: (FirebaseAuthException e) {
-          print('auth_repository login failed ${e.message}');
+          print('print  2 auth_repository login failed ${e.message}');
         },
         codeSent: (verId, _) {
-          print('auth_repository1  ${currentUser()!.phoneNumber}');
-          print('auth_repository2  ${auth.currentUser!.phoneNumber}');
-          verificationId = verId;
-          nav(verificationId);
-
-          if (phoneNumber == currentUser()!.phoneNumber) {
+          // print('print 4 verificationId = verId;  ${auth.currentUser!.phoneNumber}');
+          //
+          //
+          // if (phoneNumber == auth.currentUser!.phoneNumber) {
+          //   print(
+          //       'print 3 verificationCompleted --- CurrentUserId   ${auth.currentUser!.uid}');
             verificationId = verId;
             nav(verificationId);
-            print('print 1 $verificationId');
-          } else {
-            print(' no match user');
-          }
+          //   print('print 4  $verificationId');
+          // } else {
+          //   print(' no match user');
+          // }
         },
         codeAutoRetrievalTimeout: (value) {},
       );
@@ -85,16 +97,18 @@ class AuthRepository {
   Future<void> phoneVerification(
     String verId,
     String code,
-     UserModel userModel
+    String name,
+    String phone,
+    String date,
+    String email,
   ) async {
     try {
       PhoneAuthCredential credential =
           PhoneAuthProvider.credential(verificationId: verId, smsCode: code);
       var signIn = await auth.signInWithCredential(credential);
-      await db.createUser(signIn.user!, userModel);
-
-      print('credential $credential');
-
+      signIn;
+      print('print 5');
+      await db.createUser(signIn.user!, name, phone, date, email);
       //TODO: uncomment below code in end for signup first user
       // if (currentUser()!.uid.isEmpty) {
       //   signIn;
@@ -104,7 +118,6 @@ class AuthRepository {
     } on FirebaseAuthException catch (e) {
       throw BadRequestException(message: e.message!);
     } catch (e) {
-      print('eee $e');
       throw BadRequestException(message: e.toString());
     }
   }
@@ -175,7 +188,6 @@ class AuthRepository {
   }
 
   User? currentUser() {
-    print('auth.currentUser ${auth.currentUser}');
     return auth.currentUser;
   }
 

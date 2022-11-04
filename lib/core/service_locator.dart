@@ -27,15 +27,13 @@ Future<void> boot() async {
   UserModel userModel = UserModel();
 
   //Data Providers
-  sl.registerLazySingleton(
-      () => FirebaseDataProvider(firestore: firestore));
+  sl.registerLazySingleton(() => FirebaseDataProvider(firestore: firestore));
   sl.registerLazySingleton(() => StorageDataProvider(storage: storage));
 
   //Repositories
   sl.registerLazySingleton(() => DataRepository(dataProvider: sl()));
   sl.registerLazySingleton(() => StorageRepository(storageProvider: sl()));
-  sl.registerLazySingleton(
-      () => AuthRepository(auth: auth, db: sl(), userModel: userModel));
+  sl.registerLazySingleton(() => AuthRepository(auth: auth, db: sl()));
 
   //Cubits
   sl.registerFactory(() => GoogleAuthCubit(sl()));
@@ -46,7 +44,7 @@ Future<void> boot() async {
   sl.registerFactory(() => FacebookAuthCubit(sl()));
   sl.registerFactory(() => AuthCubit(sl()));
   sl.registerFactory(() => ContactsCubit());
-  sl.registerFactory(() => MessengerCubit(userModel, sl()));
+  sl.registerFactory(() => MessengerCubit(sl(), auth));
 }
 
 Future<void> init() async {}
