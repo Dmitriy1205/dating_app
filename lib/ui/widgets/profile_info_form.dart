@@ -1,3 +1,4 @@
+import 'package:dating_app/data/models/hobbies.dart';
 import 'package:dating_app/ui/bloc/profile_info_cubit/profile_info_cubit.dart';
 import 'package:dating_app/ui/widgets/image_picker_list.dart';
 import 'package:dating_app/ui/widgets/reusable_widgets.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/functions/validation.dart';
 import '../../core/themes/text_styles.dart';
+import '../../data/models/interests.dart';
 import '../screens/hobbies_screen.dart';
 import '../screens/interests_screen.dart';
 import '../screens/search_pref_screen.dart';
@@ -31,9 +33,9 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
   final companyController = TextEditingController();
   final jobController = TextEditingController();
   final locationController = TextEditingController();
-  Map<String, dynamic> hobbies = {};
+  Map<String, dynamic> hobbies = Hobbies().toMap();
 
-  Map<String, dynamic> interests = {};
+  Map<String, dynamic> interests = Interests().toMap();
 
   ReUsableWidgets reUsableWidgets = ReUsableWidgets();
 
@@ -354,8 +356,9 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                     final result = await Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) =>
-                                            const HobbiesScreen(),
+                                        builder: (context) => HobbiesScreen(
+                                          hobbies: hobbies,
+                                        ),
                                       ),
                                     );
                                     hobbies = result;
@@ -407,8 +410,9 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                     final result = await Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) =>
-                                            const InterestsScreen(),
+                                        builder: (context) => InterestsScreen(
+                                          interests: interests,
+                                        ),
                                       ),
                                     );
                                     interests = result;

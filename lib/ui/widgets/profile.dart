@@ -182,14 +182,14 @@ class Profile extends StatelessWidget {
                       height: 8,
                     ),
                     Row(
-                      children: const [
-                        Text(
+                      children: [
+                        const Text(
                           'Joined Date : ',
                           textAlign: TextAlign.start,
                           style: TextStyle(fontSize: 14),
                         ),
                         Text(
-                          'Oct 31, 2022',
+                          state.user!.joinDate!,
                           textAlign: TextAlign.start,
                           style: TextStyle(color: Colors.grey, fontSize: 14),
                         ),
@@ -198,37 +198,34 @@ class Profile extends StatelessWidget {
                     const SizedBox(
                       height: 8,
                     ),
-
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Looking For : ',
-                            textAlign: TextAlign.start,
-                            style: TextStyle(fontSize: 14),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Looking For : ',
+                          textAlign: TextAlign.start,
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        Flexible(
+                          child: Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.end,
+                            children: List<Widget>.generate(
+                              state.lookingFor!.length,
+                              (index) =>
+                                  state.lookingFor!.values.elementAt(index) ==
+                                          false
+                                      ? const SizedBox()
+                                      : Text(
+                                          '${state.lookingFor!.keys.elementAt(index)}, ',
+                                          textAlign: TextAlign.start,
+                                          style: const TextStyle(
+                                              color: Colors.grey, fontSize: 14),
+                                        ),
+                            ).toList(),
                           ),
-                          Flexible(
-                            child: Wrap(
-                              crossAxisAlignment: WrapCrossAlignment.end,
-                              children: List<Widget>.generate(
-                                state.lookingFor!.length,
-                                (index) =>
-                                    state.lookingFor!.values.elementAt(index) ==
-                                            false
-                                        ? const SizedBox()
-                                        : Text(
-                                            '${state.lookingFor!.keys.elementAt(index)}, ',
-                                            textAlign: TextAlign.start,
-                                            style: const TextStyle(
-                                                color: Colors.grey,
-                                                fontSize: 14),
-                                          ),
-                              ).toList(),
-                            ),
-                          ),
-                        ],
-                      ),
-
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -286,22 +283,23 @@ class Profile extends StatelessWidget {
                     Wrap(
                       children: List<Widget>.generate(
                         state.profile!.interests!.length,
-                        (index) =>
-                            state.profile!.interests!.values.elementAt(index) ==
-                                    false
-                                ? const SizedBox()
-                                : Padding(
-                                    padding: const EdgeInsets.only(right: 6),
-                                    child: Chip(
-                                      label: Text(
-                                        state.profile!.interests!.keys
-                                            .elementAt(index),
-                                        style: TextStyle(
-                                            color: Colors.grey.shade800,
-                                            fontSize: 14),
-                                      ),
-                                    ),
-                                  ),
+                            (index) =>
+                        state.profile!.hobbies!.values.elementAt(index) ==
+                            false
+                            ? const SizedBox()
+                            : Padding(
+                          padding: const EdgeInsets.only(right: 6),
+                          child: Chip(
+                            label: Text(
+                              state.profile!.hobbies!.keys
+                                  .elementAt(index),
+                              style: TextStyle(
+                                color: Colors.grey.shade800,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                        ),
                       ).toList(),
                     ),
                   ],
@@ -327,23 +325,22 @@ class Profile extends StatelessWidget {
                     Wrap(
                       children: List<Widget>.generate(
                         state.profile!.interests!.length,
-                        (index) =>
-                            state.profile!.hobbies!.values.elementAt(index) ==
-                                    false
-                                ? const SizedBox()
-                                : Padding(
-                                    padding: const EdgeInsets.only(right: 6),
-                                    child: Chip(
-                                      label: Text(
-                                        state.profile!.hobbies!.keys
-                                            .elementAt(index),
-                                        style: TextStyle(
-                                          color: Colors.grey.shade800,
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                            (index) =>
+                        state.profile!.interests!.values.elementAt(index) ==
+                            false
+                            ? const SizedBox()
+                            : Padding(
+                          padding: const EdgeInsets.only(right: 6),
+                          child: Chip(
+                            label: Text(
+                              state.profile!.interests!.keys
+                                  .elementAt(index),
+                              style: TextStyle(
+                                  color: Colors.grey.shade800,
+                                  fontSize: 14),
+                            ),
+                          ),
+                        ),
                       ).toList(),
                     ),
                   ],
@@ -357,12 +354,12 @@ class Profile extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 60),
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => EditProfileScreen()));
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(
+                              builder: (context) => const EditProfileScreen()))
+                          .then((value) =>
+                              context.read<ProfileCubit>().getData());
                     },
-
-                    //TODO: Add phone auth with email link auth to signup
-
                     style: ElevatedButton.styleFrom(
                         primary: Colors.transparent,
                         padding: EdgeInsets.zero,

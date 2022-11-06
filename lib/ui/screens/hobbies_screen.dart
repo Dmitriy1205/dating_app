@@ -2,17 +2,16 @@ import 'package:dating_app/core/constants.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/themes/checkboxes.dart';
-import '../../data/models/hobbies.dart';
 
 class HobbiesScreen extends StatefulWidget {
-  const HobbiesScreen({Key? key}) : super(key: key);
+  final Map<String,dynamic>? hobbies;
+  const HobbiesScreen({Key? key, this.hobbies}) : super(key: key);
 
   @override
   State<HobbiesScreen> createState() => _HobbiesScreenState();
 }
 
 class _HobbiesScreenState extends State<HobbiesScreen> {
-  Map<String, dynamic> hobbies = Hobbies().toMap();
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +67,7 @@ class _HobbiesScreenState extends State<HobbiesScreen> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.pop(context, hobbies);
+                                  Navigator.pop(context, widget.hobbies);
                                   const snackBar = SnackBar(
                                     backgroundColor: Colors.teal,
                                     content: Text(
@@ -109,7 +108,7 @@ class _HobbiesScreenState extends State<HobbiesScreen> {
                       child: GridView.builder(
                         physics: const ClampingScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: hobbies.length,
+                        itemCount: widget.hobbies!.length,
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2),
@@ -120,7 +119,7 @@ class _HobbiesScreenState extends State<HobbiesScreen> {
                                 child: InkWell(
                                   onTap: () {
                                     setState(() {
-                                      hobbies.update(hobbies.keys.elementAt(i),
+                                      widget.hobbies!.update(widget.hobbies!.keys.elementAt(i),
                                           (value) => !value);
                                     });
                                     //
@@ -142,7 +141,7 @@ class _HobbiesScreenState extends State<HobbiesScreen> {
                                 left: 20,
                                 bottom: 16,
                                 child: Text(
-                                  hobbies.keys.elementAt(i),
+                                  widget.hobbies!.keys.elementAt(i),
                                   style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 14,
@@ -153,7 +152,7 @@ class _HobbiesScreenState extends State<HobbiesScreen> {
                               Positioned(
                                   right: 17,
                                   top: 14,
-                                  child: hobbies.values.elementAt(i)
+                                  child: widget.hobbies!.values.elementAt(i)
                                       ? CustomCheckbox.checked()
                                       : CustomCheckbox.unChecked()),
                             ],

@@ -11,7 +11,9 @@ part 'image_picker_state.dart';
 
 class ImagePickerCubit extends Cubit<ImagePickerState> {
   ImagePickerCubit({required this.auth, required this.storage})
-      : super(ImagePickerState(status: Status.initial()));
+      : super(ImagePickerState(status: Status.initial())){
+    getAllImages();
+  }
 
   final AuthRepository auth;
   final StorageRepository storage;

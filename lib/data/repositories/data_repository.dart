@@ -30,4 +30,12 @@ class DataRepository {
     final fields = await dataProvider.getSearchFields(id);
     return fields;
   }
+
+  Future<void> updateSearchFields(String id, Map<String, dynamic> data) async {
+    await dataProvider.updateSearchFields(id,data);
+  }
+
+  Future<void> updateProfileFields(String id, Map<String, dynamic> data) async {
+    await dataProvider.updateProfileFields(id, data);
+  }
 }
