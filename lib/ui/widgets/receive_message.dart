@@ -1,5 +1,6 @@
 import 'package:dating_app/data/models/message_model.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../core/constants.dart';
 import '../../core/themes/text_styles.dart';
@@ -26,23 +27,23 @@ class ReplyCard extends StatelessWidget {
         left: 55,
         child: Row(
           children: [
-            // Text('${messageModel.senderName} ',
-            //     style: CustomTextStyle.customFontStyle()),
-            // Text(messageModel.time,
-            //     style: const TextStyle(color: Colors.black54)),
+            Text('${messageModel.senderName} ',
+                style: CustomTextStyle.customFontStyle()),
+            Text(DateFormat.jm().format((DateTime.parse(messageModel.time!))),
+                style: const TextStyle(color: Colors.black54)),
           ],
         ),
       ),
-      // Positioned(
-      //   top: 20,
-        // left: 55,
-        // child: Text(
-          // messageModel.message,
-          // style: const TextStyle(
-          //   fontSize: 16,
-          // ),
-        // ),
-      // ),
+      Positioned(
+        top: 20,
+        left: 55,
+        child: Text(
+          messageModel.message!,
+          style: const TextStyle(
+            fontSize: 16,
+          ),
+        ),
+      ),
       SizedBox(width: 10),
     ]);
   }

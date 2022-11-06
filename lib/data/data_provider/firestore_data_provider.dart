@@ -46,6 +46,7 @@ class FirebaseDataProvider {
 
   Future<MessageModel?> sendMessageToPal(
       MessageModel messageModel, chatId) async {
+    print("collection('chats/${chatId}/messages')");
     try {
       await firestore
           .collection('chats/${chatId}/messages')
@@ -57,13 +58,21 @@ class FirebaseDataProvider {
     }
   }
 
-  Future<List<MessageModel>> getAllChatMessages(String chatId) async {
+  String getClearChatId(String senderId, String recipientId) {
+    int a = senderId.codeUnitAt(0);
+    int b = recipientId.codeUnitAt(0);
+    String clearId =
+        a > b ? '${senderId}_$recipientId' : '${recipientId}_$senderId';
+    return clearId;
+  }
 
+  Future<List<MessageModel>> getAllChatMessages(String chatId) async {
     try {
       print('getAllChatMessages   $chatId');
 
       List<MessageModel> queryListMessages = await firestore
-          .collection('chats/$chatId/messages').orderBy('time', descending: false)
+          .collection('chats/$chatId/messages')
+          .orderBy('time', descending: false)
           .get()
           .then((QuerySnapshot querySnapshot) {
         return querySnapshot.docs.map((e) {
@@ -80,6 +89,17 @@ class FirebaseDataProvider {
       throw BadRequestException(message: e.message!);
     }
   }
+
+  Stream<List<MessageModel>> getAllChatMessagesStream(String chatId) =>
+      firestore
+          .collection('chats/$chatId/messages')
+          .orderBy('time', descending: false)
+          .snapshots().map((snapshot) => snapshot.docs.map((doc) =>
+          MessageModel.fromJson(doc.data())).toList());
+
+
+
+
 
   Future<List<UserModel>> getUsers() async {
     try {
