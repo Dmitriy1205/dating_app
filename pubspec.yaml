@@ -13,6 +13,7 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
+
   # visual
   flutter_native_splash: ^2.2.9
   intl_phone_number_input: ^0.7.0+2
@@ -41,6 +42,7 @@ dependencies:
   flutter_facebook_auth: ^4.4.1+1
   sign_in_with_apple: ^4.1.0
   crypto: ^3.0.2
+  jiffy: ^5.0.0
 
 dev_dependencies:
   flutter_test:

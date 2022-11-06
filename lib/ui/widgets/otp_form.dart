@@ -10,6 +10,7 @@ class OtpForm extends StatefulWidget {
   final String? phone;
   final String? date;
   final String? email;
+  final String? joinDate;
   final Widget page;
 
   const OtpForm({
@@ -20,6 +21,7 @@ class OtpForm extends StatefulWidget {
     this.date,
     this.email,
     required this.page,
+    this.joinDate,
   }) : super(key: key);
 
   @override
@@ -115,6 +117,7 @@ class _OtpFormState extends State<OtpForm> {
                         widget.phone ?? '',
                         widget.date ?? '',
                         widget.email ?? '',
+                        widget.joinDate ?? '',
                       );
                 },
                 style: ElevatedButton.styleFrom(

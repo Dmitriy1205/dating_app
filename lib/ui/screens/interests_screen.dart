@@ -5,14 +5,16 @@ import '../../core/constants.dart';
 import '../../data/models/interests.dart';
 
 class InterestsScreen extends StatefulWidget {
-  const InterestsScreen({Key? key}) : super(key: key);
+  final Map<String, dynamic>? interests;
+
+  const InterestsScreen({Key? key, this.interests}) : super(key: key);
 
   @override
   State<InterestsScreen> createState() => _InterestsScreenState();
 }
 
 class _InterestsScreenState extends State<InterestsScreen> {
-  Map<String, dynamic> interests = Interests().toMap();
+  // Map<String, dynamic> interests = Interests().toMap();
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +71,7 @@ class _InterestsScreenState extends State<InterestsScreen> {
                               GestureDetector(
                                 onTap: () {
                                   //TODO: submit all data and back
-                                  Navigator.pop(context, interests);
+                                  Navigator.pop(context, widget.interests);
                                   const snackBar = SnackBar(
                                     backgroundColor: Colors.teal,
                                     content: Text(
@@ -100,7 +102,7 @@ class _InterestsScreenState extends State<InterestsScreen> {
                       child: GridView.builder(
                         physics: const ClampingScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: interests.length,
+                        itemCount: widget.interests!.length,
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2),
@@ -111,8 +113,8 @@ class _InterestsScreenState extends State<InterestsScreen> {
                                 child: InkWell(
                                   onTap: () {
                                     setState(() {
-                                      interests.update(
-                                          interests.keys.elementAt(i),
+                                      widget.interests!.update(
+                                          widget.interests!.keys.elementAt(i),
                                           (value) => !value);
                                     });
                                   },
@@ -128,7 +130,7 @@ class _InterestsScreenState extends State<InterestsScreen> {
                                 left: 20,
                                 bottom: 16,
                                 child: Text(
-                                  interests.keys.elementAt(i),
+                                  widget.interests!.keys.elementAt(i),
                                   style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 14,
@@ -139,7 +141,7 @@ class _InterestsScreenState extends State<InterestsScreen> {
                               Positioned(
                                   right: 17,
                                   top: 14,
-                                  child: interests.values.elementAt(i)
+                                  child: widget.interests!.values.elementAt(i)
                                       ? CustomCheckbox.checked()
                                       : CustomCheckbox.unChecked()),
                             ],

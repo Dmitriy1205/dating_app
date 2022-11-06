@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:jiffy/jiffy.dart';
 import '../../core/functions/validation.dart';
 import '../screens/otp_verification_screen.dart';
 import '../screens/profile_info_screen.dart';
@@ -29,6 +30,7 @@ class _SignUpFormState extends State<SignUpForm> {
   final _dateController = TextEditingController();
   final _emailController = TextEditingController();
   String verificationId = '';
+  DateTime now = DateTime.now();
 
   @override
   void dispose() {
@@ -157,11 +159,11 @@ class _SignUpFormState extends State<SignUpForm> {
                               validator: validateDateField,
                               onTap: () async {
                                 DateTime? date = DateTime(1900);
-                                DateFormat formatter = DateFormat('dd-MM-yyyy');
+                                // DateFormat formatter = DateFormat('dd-MM-yyyy');
                                 FocusScope.of(context)
                                     .requestFocus(FocusNode());
                                 date = await Picker().birthDatePicker(context);
-                                _dateController.text = formatter.format(date!);
+                                _dateController.text = Jiffy(date).yMMMMd;
                               },
                               onSaved: (value) {
                                 _dateController.text = value!.trim();
@@ -248,6 +250,7 @@ class _SignUpFormState extends State<SignUpForm> {
                                                   phone: _phoneController.text,
                                                   date: _dateController.text,
                                                   email: _emailController.text,
+                                                  joinDate: Jiffy(now).yMMMMd,
                                                 ),
                                               ),
                                             );
@@ -330,30 +333,4 @@ class _SignUpFormState extends State<SignUpForm> {
       },
     );
   }
-
-// void submit(context) {
-//   if (!_formKey.currentState!.validate()) return;
-//   _formKey.currentState!.save();
-//   print(_nameController.text);
-//   print(_phoneController.text);
-//   print(_dateController.text);
-//   print(_emailController.text);
-//   // const snackBar = SnackBar(
-//   //   backgroundColor: Colors.teal,
-//   //   content: Text(
-//   //     'Success',
-//   //     textAlign: TextAlign.center,
-//   //     style: TextStyle(
-//   //       color: Colors.white,
-//   //     ),
-//   //   ),
-//   // );
-//   // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-//   Navigator.push<void>(
-//     context,
-//     MaterialPageRoute(
-//       builder: (context) => ProfileInfoScreen(),
-//     ),
-//   );
-// }
 }

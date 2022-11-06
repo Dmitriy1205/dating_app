@@ -38,7 +38,7 @@ class ProfileInfoFields {
       height: data?['height'],
       age: data?['age'],
       university: data?['university'],
-      degree: data?['degree'],
+      degree: data?['degree/major'],
       company: data?['company'],
       job: data?['job'],
       hobbies: data?['hobbies'],

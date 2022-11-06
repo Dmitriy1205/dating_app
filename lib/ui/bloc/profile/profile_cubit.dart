@@ -5,6 +5,7 @@ import 'package:dating_app/data/repositories/data_repository.dart';
 import 'package:dating_app/data/repositories/storage_repository.dart';
 import 'package:equatable/equatable.dart';
 
+import '../../../core/exceptions.dart';
 import '../../../data/models/app_user.dart';
 import '../../../data/models/status.dart';
 
@@ -39,8 +40,9 @@ class ProfileCubit extends Cubit<ProfileState> {
         images: image,
         lookingFor: search?.lookingFor,
       ));
-    } on Exception catch (e) {
-      // TODO
+    } on BadRequestException catch (e) {
+      print(e.message);
+      emit(state.copyWith(status: Status.error(e.message)));
     }
   }
 }

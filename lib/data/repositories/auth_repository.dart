@@ -59,13 +59,15 @@ class AuthRepository {
           print('auth_repository login failed ${e.message}');
         },
         codeSent: (verId, _) {
-          if (phoneNumber == currentUser()!.phoneNumber) {
-            verificationId = verId;
-            nav(verificationId);
-            print('print 1 $verificationId');
-          } else {
-            print(' no match user');
-          }
+          verificationId = verId;
+          nav(verificationId);
+          // if (phoneNumber == currentUser()!.phoneNumber) {
+          //   verificationId = verId;
+          //   nav(verificationId);
+          //   print('print 1 $verificationId');
+          // } else {
+          //   print(' no match user');
+          // }
         },
         codeAutoRetrievalTimeout: (value) {},
       );
@@ -82,6 +84,7 @@ class AuthRepository {
     String name,
     String phone,
     String date,
+    String joinDate,
     String email,
   ) async {
     try {
@@ -89,7 +92,7 @@ class AuthRepository {
           PhoneAuthProvider.credential(verificationId: verId, smsCode: code);
       var signIn = await auth.signInWithCredential(credential);
       signIn;
-      await db.createUser(signIn.user!, name, phone, date, email);
+      await db.createUser(signIn.user!, name, phone, date, email,joinDate,);
       //TODO: uncomment below code in end for signup first user
       // if (currentUser()!.uid.isEmpty) {
       //   signIn;

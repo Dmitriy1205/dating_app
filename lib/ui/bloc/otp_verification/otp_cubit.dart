@@ -16,6 +16,7 @@ class OtpCubit extends Cubit<OtpState> {
     String phone,
     String date,
     String email,
+    String joinDate,
   ) async {
     await repository.phoneVerification(
       verId,
@@ -24,6 +25,7 @@ class OtpCubit extends Cubit<OtpState> {
       phone,
       date,
       email,
+      joinDate,
     );
     emit(state.copyWith(status: Status.loaded()));
   }

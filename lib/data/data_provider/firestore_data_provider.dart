@@ -16,6 +16,7 @@ class FirebaseDataProvider {
     String name,
     String phone,
     String date,
+    String joinDate,
     String email,
   ) async {
     try {
@@ -24,6 +25,7 @@ class FirebaseDataProvider {
         'phone': phone,
         'date': date,
         'email': email,
+        'joinDate': joinDate,
       });
     } on FirebaseException catch (e) {
       throw BadRequestException(message: e.message!);
@@ -90,6 +92,30 @@ class FirebaseDataProvider {
               toFirestore: (SearchPrefFields s, _) => s.toFirestore())
           .get();
       return doc.data();
+    } on FirebaseException catch (e) {
+      print(e.message);
+      throw BadRequestException(message: e.message!);
+    }
+  }
+
+  Future<void> updateSearchFields(String id, Map<String, dynamic> data) async {
+    try {
+      await firestore
+          .collection('SearchPreferences')
+          .doc(id)
+          .set(data, SetOptions(merge: true));
+    } on FirebaseException catch (e) {
+      print(e.message);
+      throw BadRequestException(message: e.message!);
+    }
+  }
+
+  Future<void> updateProfileFields(String id, Map<String, dynamic> data) async {
+    try {
+      await firestore
+          .collection('ProfileInfo')
+          .doc(id)
+          .set(data, SetOptions(merge: true));
     } on FirebaseException catch (e) {
       print(e.message);
       throw BadRequestException(message: e.message!);

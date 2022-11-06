@@ -16,7 +16,14 @@ class SearchPrefForm extends StatelessWidget {
 
   int? distance;
 
-  Map<String, dynamic>? lookingFor;
+  Map<String, dynamic>? lookingFor = {
+    'someone to chill with': false,
+    'a friend': false,
+    'a romantic partner': false,
+    'a business partner': false,
+    'a mentor': false,
+    'a mentee': false
+  };
   Map<String, int>? yearsRange;
 
   @override
@@ -148,14 +155,19 @@ class SearchPrefForm extends StatelessWidget {
                               },
                               min: 0,
                               max: 70),
-                          reUsableWidgets.lookingForWidget(context,
-                              onTap: (value) {
-                            context
-                                .read<SearchPreferencesCubit>()
-                                .setLookingForFields(value!);
-                          }, lookingFor: (v) {
-                            lookingFor = v;
-                          }, selected: state.selectedLookingForList!),
+                          reUsableWidgets.lookingForWidget(
+                            context,
+                            onTap: (value) {
+                              context
+                                  .read<SearchPreferencesCubit>()
+                                  .setLookingForFields(value!);
+                            },
+                            lookingFor: (v) {
+                              lookingFor = v;
+                            },
+                            // selected: state.selectedLookingForList!,
+                            lookingForMap: lookingFor!,
+                          ),
                           CustomTextStyle.bigText('Gender',
                               additionalText: '(select one or more:)'),
                           const SizedBox(

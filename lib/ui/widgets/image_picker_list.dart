@@ -93,11 +93,14 @@ class _ImagePickerList extends StatelessWidget {
                             width: 150,
                             child: Card(
                               elevation: 5,
-                              child: Image.network(
-                                list.reversed.toList()[index],
-                                width: 150,
-                                height: 200,
-                                fit: BoxFit.cover,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(5),
+                                child: Image.network(
+                                  list.reversed.toList()[index],
+                                  width: 150,
+                                  height: 200,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                           ),
