@@ -37,8 +37,8 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
 
   Map<String, dynamic> interests = Interests().toMap();
 
-  ReUsableWidgets reUsableWidgets = ReUsableWidgets();
 
+  ReUsableWidgets reUsableWidgets = ReUsableWidgets();
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ProfileInfoCubit, ProfileInfoState>(
@@ -167,6 +167,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                             const SizedBox(
                               height: 20,
                             ),
+
                             ImagePickerList(
                               userImage: (i) {
                                 userImage = i;
@@ -470,6 +471,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
       },
     );
   }
+
 
   Widget registerForm() {
     return Column(

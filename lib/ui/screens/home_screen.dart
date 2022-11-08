@@ -8,7 +8,7 @@ import '../widgets/swiper.dart';
 import 'filter_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({Key? key}) : super(key: key);
+  HomeScreen({Key? key, }) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();

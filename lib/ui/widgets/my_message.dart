@@ -1,5 +1,6 @@
 import 'package:dating_app/data/models/message_model.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../core/constants.dart';
 
@@ -39,16 +40,16 @@ class OwnMessageCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         const SizedBox(width: 10),
-                        Text(messageModel.time,
+                        Text(messageModel.time!,
                             style: const TextStyle(color: Colors.black54)),
                         Text('${messageModel.senderName} '),
                       ],
                     ),
-                    Text(
-                      messageModel.message,
-                      style:
-                          const TextStyle(fontSize: 16, color: Colors.black87),
-                    ),
+                    // Text(
+                    //   messageModel.message,
+                    //   style:
+                    //       const TextStyle(fontSize: 16, color: Colors.black87),
+                    // ),
                   ],
                 )
               ],
@@ -77,7 +78,7 @@ class OwnMessageCard1 extends StatelessWidget {
             right: 55,
             child: Row(
               children: [
-                Text(messageModel.time,
+                Text(DateFormat.jm().format((DateTime.parse(messageModel.time!))),
                     style: const TextStyle(color: Colors.black54)),
                 Text(' ${messageModel.senderName}'),
               ],
@@ -93,7 +94,7 @@ class OwnMessageCard1 extends StatelessWidget {
         ),
         Positioned(top: 20,right: 55,
           child: Text(
-            messageModel.message,
+            ' ${messageModel.message}',
             style: const TextStyle(fontSize: 16, color: Colors.black87),
           ),
         ),

@@ -8,10 +8,12 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../../core/exceptions.dart';
 import '../data_provider/firestore_data_provider.dart';
+import '../models/user_model.dart';
 
 class AuthRepository {
   final FirebaseAuth auth;
   final FirebaseDataProvider db;
+  late UserModel userModel;
 
   AuthRepository({required this.db, required this.auth});
 
@@ -21,9 +23,14 @@ class AuthRepository {
     void Function(String s) nav,
   ) async {
     try {
+      print('phoneNumber  TRYYY signupWithPhone ${phoneNumber}');
       await auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
-        verificationCompleted: (_) {},
+        verificationCompleted: (_) {
+          print(
+              'currentUser()!.phoneNumber --- CurrentUserId   ${currentUser()!.phoneNumber}');
+          print('phoneNumber   ${phoneNumber}');
+        },
         verificationFailed: (FirebaseAuthException e) {
           print(e.message);
         },
@@ -40,6 +47,7 @@ class AuthRepository {
         codeAutoRetrievalTimeout: (value) {},
       );
     } on FirebaseAuthException catch (e) {
+      print('print 1 ${e.message.toString()}');
       throw BadRequestException(message: e.message!);
     } catch (e) {
       throw BadRequestException(message: e.toString());
@@ -52,19 +60,26 @@ class AuthRepository {
     void Function(String s) nav,
   ) async {
     try {
+      print(
+          'print 1 TRY');
       await auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
-        verificationCompleted: (_) {},
+        verificationCompleted: (_) {
+          // print(
+          //     'print 1 verificationCompleted --- CurrentUserId   ${auth.currentUser!.uid}');
+        },
         verificationFailed: (FirebaseAuthException e) {
-          print('auth_repository login failed ${e.message}');
+          print('print  2 auth_repository login failed ${e.message}');
         },
         codeSent: (verId, _) {
+
           verificationId = verId;
           nav(verificationId);
           // if (phoneNumber == currentUser()!.phoneNumber) {
           //   verificationId = verId;
           //   nav(verificationId);
           //   print('print 1 $verificationId');
+
           // } else {
           //   print(' no match user');
           // }

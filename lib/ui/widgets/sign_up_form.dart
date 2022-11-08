@@ -25,10 +25,10 @@ class SignUpForm extends StatefulWidget {
 class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
   bool isChecked = false;
-  final _nameController = TextEditingController();
-  final _phoneController = TextEditingController();
+  final _nameController = TextEditingController(text: 'Yaroslav');
+  final _phoneController = TextEditingController( text: '932383265');
   final _dateController = TextEditingController();
-  final _emailController = TextEditingController();
+  final _emailController = TextEditingController(text: 'yarshau@gmail.com');
   String verificationId = '';
   DateTime now = DateTime.now();
 
@@ -103,7 +103,7 @@ class _SignUpFormState extends State<SignUpForm> {
                             ),
                             TextFormField(
                               autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
+                              AutovalidateMode.onUserInteraction,
                               autocorrect: false,
                               controller: _nameController,
                               keyboardType: TextInputType.name,
@@ -124,7 +124,7 @@ class _SignUpFormState extends State<SignUpForm> {
                             InternationalPhoneNumberInput(
                               initialValue: PhoneNumber(isoCode: 'UA'),
                               autoValidateMode:
-                                  AutovalidateMode.onUserInteraction,
+                              AutovalidateMode.onUserInteraction,
                               selectorConfig: const SelectorConfig(
                                 setSelectorButtonAsPrefixIcon: true,
                                 showFlags: false,
@@ -152,7 +152,7 @@ class _SignUpFormState extends State<SignUpForm> {
                             ),
                             TextFormField(
                               autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
+                              AutovalidateMode.onUserInteraction,
                               controller: _dateController,
                               autocorrect: false,
                               decoration: authFieldDecor('Date of Birth'),
@@ -174,7 +174,7 @@ class _SignUpFormState extends State<SignUpForm> {
                             ),
                             TextFormField(
                               autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
+                              AutovalidateMode.onUserInteraction,
                               controller: _emailController,
                               keyboardType: TextInputType.emailAddress,
                               decoration: authFieldDecor('Email'),
@@ -215,7 +215,7 @@ class _SignUpFormState extends State<SignUpForm> {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          const TermsAndConditions()));
+                                                      const TermsAndConditions()));
                                             }),
                                     ],
                                   ),
@@ -229,6 +229,7 @@ class _SignUpFormState extends State<SignUpForm> {
                               onPressed: isChecked == false
                                   ? null
                                   : () {
+
                                       if (!_formKey.currentState!.validate()) {
                                         return;
                                       }
@@ -253,9 +254,10 @@ class _SignUpFormState extends State<SignUpForm> {
                                                   joinDate: Jiffy(now).yMMMMd,
                                                 ),
                                               ),
-                                            );
-                                          });
-                                    },
+                                        ),
+                                      );
+                                    });
+                              },
                               style: ElevatedButton.styleFrom(
                                   primary: Colors.transparent,
                                   padding: EdgeInsets.zero,
@@ -285,7 +287,7 @@ class _SignUpFormState extends State<SignUpForm> {
                             Center(
                               child: Padding(
                                 padding:
-                                    const EdgeInsets.fromLTRB(0, 105, 0, 0),
+                                const EdgeInsets.fromLTRB(0, 105, 0, 0),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
@@ -334,3 +336,4 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 }
+
