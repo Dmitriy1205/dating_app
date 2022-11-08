@@ -1,13 +1,15 @@
-import 'dart:io';
-
+import 'package:dating_app/data/models/hobbies.dart';
 import 'package:dating_app/ui/bloc/profile_info_cubit/profile_info_cubit.dart';
+import 'package:dating_app/ui/widgets/image_picker_list.dart';
+import 'package:dating_app/ui/widgets/reusable_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
-
-import '../../core/constants.dart';
 import '../../core/functions/validation.dart';
+import '../../core/themes/text_styles.dart';
+import '../../data/models/interests.dart';
+import '../screens/hobbies_screen.dart';
+import '../screens/interests_screen.dart';
 import '../screens/search_pref_screen.dart';
 import 'field_decor.dart';
 
@@ -20,9 +22,8 @@ class ProfileInfoFrom extends StatefulWidget {
 
 class _ProfileInfoFromState extends State<ProfileInfoFrom> {
   final _formKey = GlobalKey<FormState>();
-  bool isChecked = false;
-  File? _image;
-  int _itemCount = 0;
+  String userImage = '';
+  String gender = '';
   final nameController = TextEditingController();
   final bioController = TextEditingController();
   final heightController = TextEditingController();
@@ -32,22 +33,12 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
   final companyController = TextEditingController();
   final jobController = TextEditingController();
   final locationController = TextEditingController();
+  Map<String, dynamic> hobbies = Hobbies().toMap();
 
-  // ReUsableWidgets reUsableWidgets = ReUsableWidgets();
+  Map<String, dynamic> interests = Interests().toMap();
 
-  // @override
-  // void dispose() {
-  //   nameController.dispose();
-  //   bioController.dispose();
-  //   heightController.dispose();
-  //   ageController.dispose();
-  //   universityController.dispose();
-  //   degreeController.dispose();
-  //   companyController.dispose();
-  //   jobController.dispose();
-  //   super.dispose();
-  // }
 
+  ReUsableWidgets reUsableWidgets = ReUsableWidgets();
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ProfileInfoCubit, ProfileInfoState>(
@@ -84,17 +75,17 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
           child: Stack(
             alignment: Alignment.center,
             children: [
-              Container(
+              SizedBox(
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(
-                      Content.profile,
-                    ),
-                    fit: BoxFit.fitWidth,
-                  ),
-                ),
+                // decoration: const BoxDecoration(
+                //   image: DecorationImage(
+                //     image: AssetImage(
+                //       Content.profile,
+                //     ),
+                //     fit: BoxFit.fitWidth,
+                //   ),
+                // ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20),
@@ -142,31 +133,26 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                 ),
                                 GestureDetector(
                                     onTap: () {
-                                      context.read<ProfileInfoCubit>().saveData(
-                                          data: {
-                                            'name': nameController.text,
-                                            'bio': bioController.text,
-                                            'gender': 'gender',
-                                            'height': heightController.text,
-                                            'age': ageController.text,
-                                            'university':
-                                                universityController.text,
-                                            'degree/major':
-                                                degreeController.text,
-                                            'company': companyController.text,
-                                            'job': jobController.text,
-                                          }
-                                          // ProfileInfoData()
-                                          //   ..name = nameController.text
-                                          //   ..bio = bioController.text
-                                          //   ..gender = 'male'
-                                          //   ..height = heightController.text
-                                          //   ..company = companyController.text
-                                          //   ..age = ageController.text
-                                          //   ..university = universityController.text
-                                          //   ..degree = degreeController.text
-                                          //   ..job = jobController.text
-                                          );
+                                      if (!_formKey.currentState!.validate()) {
+                                        return;
+                                      }
+                                      _formKey.currentState!.save();
+                                      context
+                                          .read<ProfileInfoCubit>()
+                                          .saveData(data: {
+                                        'image': userImage,
+                                        'name': nameController.text,
+                                        'bio': bioController.text,
+                                        'gender': gender,
+                                        'height': heightController.text,
+                                        'age': ageController.text,
+                                        'university': universityController.text,
+                                        'degree/major': degreeController.text,
+                                        'company': companyController.text,
+                                        'job': jobController.text,
+                                        'hobbies': hobbies,
+                                        'interests': interests,
+                                      });
                                     },
                                     child: SizedBox(
                                         height: 25,
@@ -181,65 +167,11 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                             const SizedBox(
                               height: 20,
                             ),
-                            SizedBox(
-                              height: 230,
-                              width: double.infinity,
-                              child: ListView(
-                                shrinkWrap: true,
-                                scrollDirection: Axis.horizontal,
-                                children: [
-                                  SizedBox(
-                                    height: 200,
-                                    width: 150,
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        showPicker(
-                                          context,
-                                          func: (File? f) {
-                                            context
-                                                .read<ProfileInfoCubit>()
-                                                .uploadImage(
-                                                    f!, '${_itemCount++}');
-                                          },
-                                        );
-                                      },
-                                      child: Card(
-                                        elevation: 5,
-                                        child: Center(
-                                          child: SizedBox(
-                                              height: 50,
-                                              width: 50,
-                                              child: Image.asset(
-                                                  'assets/icons/photo.png')),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 15,
-                                  ),
-                                  //TODO: add horizontal lisview.builder to make row of pictures from storage
-                                  const SizedBox(
-                                    height: 200,
-                                    width: 150,
-                                    child: Card(
-                                      elevation: 5,
-                                      child: Center(),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 15,
-                                  ),
-                                  const SizedBox(
-                                    height: 200,
-                                    width: 150,
-                                    child: Card(
-                                      elevation: 5,
-                                      child: Center(),
-                                    ),
-                                  ),
-                                ],
-                              ),
+
+                            ImagePickerList(
+                              userImage: (i) {
+                                userImage = i;
+                              },
                             ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -309,10 +241,20 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                           horizontal: 19),
                                       child: Center(
                                         child: DropdownButtonFormField(
+                                          // value: gender,
+                                          // validator: (v) {
+                                          //   if (v == null) {
+                                          //     return 'Choose your gender';
+                                          //   }
+                                          //   return null;
+                                          // },
                                           hint: const Text('Gender'),
                                           icon: const Icon(
                                               Icons.keyboard_arrow_down_sharp),
-                                          onChanged: (v) {},
+                                          onChanged: (v) {
+                                            gender = v.toString();
+                                          },
+
                                           decoration: const InputDecoration(
                                             enabledBorder: InputBorder.none,
                                             focusedBorder: InputBorder.none,
@@ -321,13 +263,13 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                           // decoration: profileFieldDecor('Gender'),
                                           items: const [
                                             DropdownMenuItem(
-                                              value: "MALE",
+                                              value: 'Male',
                                               child: Text(
-                                                "Male",
+                                                'Male',
                                               ),
                                             ),
                                             DropdownMenuItem(
-                                              value: "FEMALE",
+                                              value: 'Female',
                                               child: Text(
                                                 "Female",
                                               ),
@@ -401,6 +343,114 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                 registerForm(),
                               ],
                             ),
+                            Column(
+                              children: [
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                CustomTextStyle.bigText('Hobbies'),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                InkWell(
+                                  onTap: () async {
+                                    final result = await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => HobbiesScreen(
+                                          hobbies: hobbies,
+                                        ),
+                                      ),
+                                    );
+                                    hobbies = result;
+                                  },
+                                  child: Ink(
+                                    color: Colors.white,
+                                    child: Container(
+                                      height: 57,
+                                      width: 400,
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Colors.grey[300]!),
+                                          borderRadius:
+                                              BorderRadius.circular(10.0)),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 19),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: const [
+                                            Text(
+                                              'Select',
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.black54),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                CustomTextStyle.bigText('Interests'),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                InkWell(
+                                  onTap: () async {
+                                    final result = await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => InterestsScreen(
+                                          interests: interests,
+                                        ),
+                                      ),
+                                    );
+                                    interests = result;
+                                  },
+                                  child: Ink(
+                                    color: Colors.white,
+                                    child: Container(
+                                      height: 57,
+                                      width: 400,
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Colors.grey[300]!),
+                                          borderRadius:
+                                              BorderRadius.circular(10.0)),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 19),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: const [
+                                            Text(
+                                              'Select',
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.black54),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                             // reUsableWidgets.openHobbiesOrInterests(
                             //     context, 'Hobbies'),
                             // reUsableWidgets.openHobbiesOrInterests(
@@ -422,131 +472,6 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
     );
   }
 
-  void showPicker(BuildContext context,
-      {required void Function(File? f) func}) {
-    showModalBottomSheet(
-        backgroundColor: Colors.transparent,
-        context: context,
-        builder: (BuildContext bc) {
-          return SafeArea(
-            child: Wrap(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 15, 15, 8),
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: Column(
-                      children: [
-                        const ListTile(
-                          title: Center(
-                            child: Text(
-                              'Choose your image',
-                              style: TextStyle(fontSize: 12),
-                            ),
-                          ),
-                        ),
-                        const Divider(
-                          thickness: 2,
-                        ),
-                        ListTile(
-                            title: const Center(
-                              child: Text(
-                                'Image from files',
-                                style: TextStyle(
-                                  color: Colors.blue,
-                                ),
-                              ),
-                            ),
-                            onTap: () {
-                              imageFromCamera(getPhoto: (File? f) {
-                                func(f);
-                              });
-                              Navigator.of(context).pop();
-                            }),
-                        const Divider(
-                          thickness: 2,
-                        ),
-                        ListTile(
-                            title: const Center(
-                              child: Text(
-                                'Photo',
-                                style: TextStyle(
-                                  color: Colors.blue,
-                                ),
-                              ),
-                            ),
-                            onTap: () {
-                              imageFromGallery(getImage: (File? f) {
-                                func(f);
-                              });
-                              Navigator.of(context).pop();
-                            }),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: Column(
-                      children: [
-                        ListTile(
-                            title: const Center(
-                                child: Text(
-                              'Cancel',
-                              style: TextStyle(
-                                  color: Colors.redAccent,
-                                  fontWeight: FontWeight.bold),
-                            )),
-                            onTap: () {
-                              Navigator.of(context).pop();
-                            }),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        });
-  }
-
-  Future imageFromGallery({required Function(File?) getImage}) async {
-    final ImagePicker picker = ImagePicker();
-    final pickedFile = await picker.pickImage(
-      source: ImageSource.gallery,
-      maxWidth: 200,
-      maxHeight: 400,
-      imageQuality: 100,
-    );
-    if (pickedFile != null) {
-      _image = File(pickedFile.path);
-    } else {
-      // print('No image selected.');
-    }
-    getImage(_image!);
-  }
-
-  Future imageFromCamera({required Function(File?) getPhoto}) async {
-    final ImagePicker picker = ImagePicker();
-    final pickedFile = await picker.pickImage(
-      source: ImageSource.camera,
-      maxWidth: 200,
-      maxHeight: 400,
-      imageQuality: 100,
-    );
-    if (pickedFile != null) {
-      _image = File(pickedFile.path);
-      getPhoto(_image!);
-    } else {
-      // print('No image selected.');
-    }
-  }
 
   Widget registerForm() {
     return Column(
@@ -607,19 +532,4 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
       ],
     );
   }
-// void submit(context) {
-//   if (!_formKey.currentState!.validate()) return;
-//   _formKey.currentState!.save();
-//   const snackBar = SnackBar(
-//     backgroundColor: Colors.teal,
-//     content: Text(
-//       'Success',
-//       textAlign: TextAlign.center,
-//       style: TextStyle(
-//         color: Colors.white,
-//       ),
-//     ),
-//   );
-//   ScaffoldMessenger.of(context).showSnackBar(snackBar);
-// }
 }

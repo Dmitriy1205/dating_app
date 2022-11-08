@@ -57,6 +57,16 @@ class Content {
         ' the information below to help troubleshoot the problem',
     'Friend List',
   ];
+  static const List<String> name = [
+    'Politics',
+    'Fashion',
+    'Fine Arts',
+    'Music',
+    'Dance',
+    'Film',
+    'Photography',
+    'Acting',
+  ];
 }
 
 class CustomIcons {

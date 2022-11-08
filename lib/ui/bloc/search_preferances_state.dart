@@ -1,24 +1,41 @@
-part of 'search_preferances_bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
-abstract class SearchPreferancesState extends Equatable {}
+import '../../data/models/status.dart';
 
-class SearchPreferancesInitial extends SearchPreferancesState {
-  @override
-  List<Object?> get props => [];
-}
+class SearchPreferencesState extends Equatable {
+  final Status? status;
+  final RangeValues? age;
+  final int? distance;
+  final List<String>? selectedLookingForList;
 
-class SearchPreferenceChangeState extends SearchPreferancesState {
-  RangeValues age;
-  int distance;
-
-  late List<String> selectedLookingForList;
-
-  SearchPreferenceChangeState(
-      {required this.age,
-      required this.distance,
-        required this.selectedLookingForList
-      });
+  const SearchPreferencesState({
+    this.status,
+    this.age,
+    this.distance,
+    this.selectedLookingForList,
+  });
 
   @override
-  List<Object?> get props => [double.nan];
+  List<Object?> get props => [
+        status,
+        age,
+        distance,
+        selectedLookingForList,
+      ];
+
+  SearchPreferencesState copyWith({
+    Status? status,
+    RangeValues? age,
+    int? distance,
+    List<String>? selectedLookingForList,
+  }) {
+    return SearchPreferencesState(
+      status: status ?? this.status,
+      age: age ?? this.age,
+      distance: distance ?? this.distance,
+      selectedLookingForList:
+          selectedLookingForList ?? this.selectedLookingForList,
+    );
+  }
 }

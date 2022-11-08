@@ -72,15 +72,14 @@ class AuthRepository {
           print('print  2 auth_repository login failed ${e.message}');
         },
         codeSent: (verId, _) {
-          // print('print 4 verificationId = verId;  ${auth.currentUser!.phoneNumber}');
-          //
-          //
-          // if (phoneNumber == auth.currentUser!.phoneNumber) {
-          //   print(
-          //       'print 3 verificationCompleted --- CurrentUserId   ${auth.currentUser!.uid}');
-            verificationId = verId;
-            nav(verificationId);
-          //   print('print 4  $verificationId');
+
+          verificationId = verId;
+          nav(verificationId);
+          // if (phoneNumber == currentUser()!.phoneNumber) {
+          //   verificationId = verId;
+          //   nav(verificationId);
+          //   print('print 1 $verificationId');
+
           // } else {
           //   print(' no match user');
           // }
@@ -100,6 +99,7 @@ class AuthRepository {
     String name,
     String phone,
     String date,
+    String joinDate,
     String email,
   ) async {
     try {
@@ -107,8 +107,7 @@ class AuthRepository {
           PhoneAuthProvider.credential(verificationId: verId, smsCode: code);
       var signIn = await auth.signInWithCredential(credential);
       signIn;
-      print('print 5');
-      await db.createUser(signIn.user!, name, phone, date, email);
+      await db.createUser(signIn.user!, name, phone, date, email,joinDate,);
       //TODO: uncomment below code in end for signup first user
       // if (currentUser()!.uid.isEmpty) {
       //   signIn;

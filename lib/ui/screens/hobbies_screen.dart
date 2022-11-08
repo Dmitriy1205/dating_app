@@ -1,14 +1,18 @@
 import 'package:dating_app/core/constants.dart';
 import 'package:flutter/material.dart';
 
+import '../../core/themes/checkboxes.dart';
+
 class HobbiesScreen extends StatefulWidget {
-  const HobbiesScreen({Key? key}) : super(key: key);
+  final Map<String,dynamic>? hobbies;
+  const HobbiesScreen({Key? key, this.hobbies}) : super(key: key);
 
   @override
   State<HobbiesScreen> createState() => _HobbiesScreenState();
 }
 
 class _HobbiesScreenState extends State<HobbiesScreen> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,8 +67,7 @@ class _HobbiesScreenState extends State<HobbiesScreen> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  //TODO: submit all data and back
-                                  Navigator.pop(context);
+                                  Navigator.pop(context, widget.hobbies);
                                   const snackBar = SnackBar(
                                     backgroundColor: Colors.teal,
                                     content: Text(
@@ -105,7 +108,7 @@ class _HobbiesScreenState extends State<HobbiesScreen> {
                       child: GridView.builder(
                         physics: const ClampingScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: Content.hobbiesList.length,
+                        itemCount: widget.hobbies!.length,
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2),
@@ -116,8 +119,16 @@ class _HobbiesScreenState extends State<HobbiesScreen> {
                                 child: InkWell(
                                   onTap: () {
                                     setState(() {
-                                      _checks[i] = !_checks[i];
+                                      widget.hobbies!.update(widget.hobbies!.keys.elementAt(i),
+                                          (value) => !value);
                                     });
+                                    //
+                                    // bool ho = hobbies.update(
+                                    //     hobbies.keys.elementAt(i),
+                                    //     (value) => !value);
+                                    // context.read<HobbiesCubit>().check(ho);
+                                    //
+                                    // hobbies;
                                   },
                                   child: SizedBox(
                                     width: 170,
@@ -130,7 +141,7 @@ class _HobbiesScreenState extends State<HobbiesScreen> {
                                 left: 20,
                                 bottom: 16,
                                 child: Text(
-                                  name[i],
+                                  widget.hobbies!.keys.elementAt(i),
                                   style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 14,
@@ -139,22 +150,11 @@ class _HobbiesScreenState extends State<HobbiesScreen> {
                                 ),
                               ),
                               Positioned(
-                                right: 17,
-                                top: 14,
-                                child: !_checks[i]
-                                    ? SizedBox(
-                                        height: 20,
-                                        width: 20,
-                                        child: Image.asset(
-                                            'assets/icons/grey_check.png'),
-                                      )
-                                    : SizedBox(
-                                        height: 20,
-                                        width: 20,
-                                        child: Image.asset(
-                                            'assets/icons/check.png'),
-                                      ),
-                              ),
+                                  right: 17,
+                                  top: 14,
+                                  child: widget.hobbies!.values.elementAt(i)
+                                      ? CustomCheckbox.checked()
+                                      : CustomCheckbox.unChecked()),
                             ],
                           );
                         },
@@ -170,17 +170,3 @@ class _HobbiesScreenState extends State<HobbiesScreen> {
     );
   }
 }
-
-final List<bool> _checks =
-    List.generate(Content.hobbiesList.length, (_) => false);
-
-final List<String> name = [
-  'Working out',
-  'Hiking',
-  'Biking',
-  'Shopping',
-  'Cooking',
-  'Baking',
-  'Drinking',
-  'Reading',
-];

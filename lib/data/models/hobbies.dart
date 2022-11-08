@@ -9,7 +9,7 @@ class Hobbies {
   bool? reading;
 
   Hobbies({
-    this.workingout,
+    this.workingout = false,
     this.hiking = false,
     this.biking = false,
     this.shopping = false,
@@ -20,13 +20,13 @@ class Hobbies {
   });
 
   Map<String, dynamic> toMap() => {
-        'workingout': workingout,
-        'hiking': hiking,
-        'biking': biking,
-        'shopping': shopping,
-        'cooking': cooking,
-        'baking': baking,
-        'drinking': drinking,
-        'reading': reading,
+        'WorkingOut': workingout,
+        'Hiking': hiking,
+        'Biking': biking,
+        'Shopping': shopping,
+        'Cooking': cooking,
+        'Baking': baking,
+        'Drinking': drinking,
+        'Reading': reading,
       };
 }

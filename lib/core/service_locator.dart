@@ -8,6 +8,8 @@ import 'package:dating_app/ui/bloc/facebook_auth/facebook_auth_cubit.dart';
 import 'package:dating_app/ui/bloc/google_auth/google_auth_cubit.dart';
 import 'package:dating_app/ui/bloc/messenger_cubit.dart';
 import 'package:dating_app/ui/screens/messenger_screen.dart';
+import 'package:dating_app/ui/bloc/profile/profile_cubit.dart';
+import 'package:dating_app/ui/bloc/search_preferences_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';
@@ -16,6 +18,8 @@ import '../data/data_provider/storage_data_provider.dart';
 import '../data/models/user_model.dart';
 import '../data/repositories/storage_repository.dart';
 import '../ui/bloc/apple_auth/apple_auth_cubit.dart';
+import '../ui/bloc/edit_profile_bloc.dart';
+import '../ui/bloc/image_picker/image_picker_cubit.dart';
 import '../ui/bloc/otp_verification/otp_cubit.dart';
 import '../ui/bloc/profile_info_cubit/profile_info_cubit.dart';
 
@@ -39,8 +43,23 @@ Future<void> boot() async {
 
   //Cubits
   sl.registerFactory(() => GoogleAuthCubit(sl()));
+
+  sl.registerFactory(() => ProfileCubit(auth: sl(), db: sl(), storage: sl()));
   sl.registerFactory(
-      () => ProfileInfoCubit(db: sl(), auth: sl(), storage: sl()));
+      () => EditProfileCubit(auth: sl(), db: sl(), storage: sl()));
+  sl.registerFactory(() => SearchPreferencesCubit(
+        db: sl(),
+        auth: sl(),
+      ));
+  sl.registerFactory(() => ImagePickerCubit(
+        storage: sl(),
+        auth: sl(),
+      ));
+  sl.registerFactory(() => ProfileInfoCubit(
+        db: sl(),
+        auth: sl(),
+        storage: sl(),
+      ));
   sl.registerFactory(() => AppleAuthCubit(sl()));
   sl.registerFactory(() => OtpCubit(sl()));
   sl.registerFactory(() => FacebookAuthCubit(sl()));
