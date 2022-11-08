@@ -3,6 +3,7 @@ import 'package:dating_app/ui/bloc/contacts_cubit.dart';
 import 'package:dating_app/ui/screens/messenger_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:dating_app/core/service_locator.dart' as sl;
 
 
 
@@ -117,6 +118,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
                           itemBuilder: (context, index) {
                             return GestureDetector(
                               onTap: () {
+                                sl.userModel = state.usersList[index];
                                 // MessengerScreen(user: state.usersList[index]);
                                 Navigator.push(
                                     context,

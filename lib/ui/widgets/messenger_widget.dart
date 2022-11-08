@@ -1,17 +1,15 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dating_app/data/models/message_model.dart';
 import 'package:dating_app/ui/widgets/my_message.dart';
 import 'package:dating_app/ui/widgets/receive_message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 
 import '../../core/constants.dart';
 import '../../data/models/user_model.dart';
 import '../bloc/messenger_cubit.dart';
 
 class MessengerWidget extends StatefulWidget {
-  MessengerWidget(BuildContext context, {required this.user}) : super();
+  const MessengerWidget(BuildContext context, {required this.user}) : super();
   final UserModel user;
 
   @override
@@ -24,18 +22,11 @@ class _MessengerWidgetState extends State<MessengerWidget> {
 
   _MessengerWidgetState();
 
-  @override
-  void initState() {
-    context.read<MessengerCubit>().messagesStream(widget.user);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    context.read<MessengerCubit>().messagesStream(widget.user);
-    print('disposed');
-    super.dispose();
-  }
+  // @override
+  // void initState() {
+  //   context.read<MessengerCubit>().messagesStream(widget.user);
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +34,7 @@ class _MessengerWidgetState extends State<MessengerWidget> {
       builder: (context, state) {
         print('state ${state}');
         if (state is SendMessageState) {
+          print('state SendMessageState222${state.messagesList.last}');
           return Column(
             children: [
               Expanded(
@@ -51,7 +43,7 @@ class _MessengerWidgetState extends State<MessengerWidget> {
               typeMessage(context)
             ],
           );
-        } else {
+        } else if (state is MessengerInit) {
           return Column(
             children: [
               const Expanded(
@@ -62,99 +54,84 @@ class _MessengerWidgetState extends State<MessengerWidget> {
               typeMessage(context)
             ],
           );
+        } else {
+          return Column(
+            children: const [
+              Expanded(
+                child: Center(
+                  child: Text('Error, no states found'),
+                ),
+              ),
+            ],
+          );
         }
       },
     );
   }
 
   Widget messages(BuildContext context, SendMessageState state) {
-    return StreamBuilder<List<MessageModel>>(
-        stream: context.read<MessengerCubit>().messagesStream(widget.user),
-        builder: (context, snapshot) {
-          print('snapshot ${snapshot.connectionState}');
-          if (snapshot.connectionState == ConnectionState.active) {
-            print('snapshot.done ${snapshot.data?.first.message}');
-            if (snapshot.hasData) {
-              return SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Row(
-                      children: const [
-                        Expanded(
-                          child: Divider(color: Colors.black54),
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text("today"),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Expanded(
-                          child: Divider(
-                            color: Colors.black54,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: snapshot.data?.length,
-                        itemBuilder: (context, index) {
-                          if (index == snapshot.data!.length) {
-                            print(
-                                'state.messagesList.length ${snapshot.data!.length}');
-                            return const SizedBox(
-                              height: 70,
-                              child: Icon(Icons.access_alarm),
-                            );
-                          }
-                          if (snapshot.data![index].recipientName ==
-                              widget.user.firstName) {
-                            return Padding(
-                              padding: const EdgeInsets.fromLTRB(8, 5, 20, 10),
-                              child: OwnMessageCard1(
-                                messageModel: snapshot.data![index],
-                                time: snapshot.data![index].time!,
-                              ),
-                            );
-                          } else {
-                            return Padding(
-                              padding: const EdgeInsets.fromLTRB(20, 5, 20, 10),
-                              child: ReplyCard(
-                                messageModel: snapshot.data![index],
-                                time: snapshot.data![index].time!,
-                              ),
-                            );
-                          }
-                        }),
-                  ],
+    return SingleChildScrollView(
+      // controller: _scrollController,
+      child: Column(
+        children: [
+          Row(
+            children: const [
+              Expanded(
+                child: Divider(color: Colors.black54),
+              ),
+              SizedBox(
+                width: 15,
+              ),
+              Text("today"),
+              SizedBox(
+                width: 15,
+              ),
+              Expanded(
+                child: Divider(
+                  color: Colors.black54,
                 ),
-              );
-            } else {
-              return Text('No data found');
-            }
-          }
-          if (snapshot.connectionState == ConnectionState.none) {
-            print('no data');
-            return Text('no data');
-          }
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            print('waiting');
-
-            return CircularProgressIndicator();
-          }
-          if (snapshot.connectionState == ConnectionState.none) {
-            return Text('ConnectionState.none');
-          } else if (snapshot.hasError) {
-            return Text('${snapshot.error}');
-          } else
-            return Text('Unknown problem');
-        });
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+          ListView.builder(
+              controller: _scrollController,
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: state.messagesList.length,
+              itemBuilder: (context, index) {
+                if (index == state.messagesList.length) {
+                  print(
+                      'state.messagesList.length ${state.messagesList.length}');
+                  return const SizedBox(
+                    height: 70,
+                    child: Icon(Icons.access_alarm),
+                  );
+                }
+                if (state.messagesList[index].recipientName ==
+                    widget.user.firstName) {
+                  return Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 5, 20, 10),
+                    child: OwnMessageCard1(
+                      messageModel: state.messagesList[index],
+                      time: state.messagesList[index].time!,
+                    ),
+                  );
+                } else {
+                  return Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 5, 20, 10),
+                    child: ReplyCard(
+                      messageModel: state.messagesList[index],
+                      time: state.messagesList[index].time!,
+                    ),
+                  );
+                }
+              }),
+        ],
+      ),
+    );
   }
 
   Widget typeMessage(BuildContext context) {
@@ -190,12 +167,15 @@ class _MessengerWidgetState extends State<MessengerWidget> {
                       MessageModel message = MessageModel(
                           message: myMessageController.text,
                           time: DateTime.now().toString(),
-                          senderName: '',
+                          senderName: null,
                           recipientName: widget.user.firstName,
-                          chatId: '');
+                          chatId: null);
                       context
                           .read<MessengerCubit>()
                           .sendMessage(message, widget.user);
+                      print('sendMessage ${message}');
+                      print('sendMessage ${widget.user}');
+
                       myMessageController.clear();
                     },
                     child: SizedBox(

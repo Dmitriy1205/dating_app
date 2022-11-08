@@ -22,11 +22,11 @@ class DataRepository {
     return await dataProvider.sendMessageToPal(messageModel, chatId);
   }
 
-  Future<List<MessageModel>> getAllChatMessages(
-      String senderId, String recipientId) async {
-    String chatId = dataProvider.getClearChatId(senderId, recipientId);
-    return await dataProvider.getAllChatMessages(chatId);
-  }
+  // Future<List<MessageModel>> getAllChatMessages(
+  //     String senderId, String recipientId) async {
+  //   String chatId = dataProvider.getClearChatId(senderId, recipientId);
+  //   return await dataProvider.getAllChatMessages(chatId);
+  // }
   Stream<List<MessageModel>> getAllChatMessagesStream(
       String senderId, String recipientId)  {
     String chatId = dataProvider.getClearChatId(senderId, recipientId);

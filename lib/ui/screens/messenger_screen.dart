@@ -10,7 +10,6 @@ import '../../core/service_locator.dart';
 class MessengerScreen extends StatelessWidget {
   const MessengerScreen({Key? key, required this.user}) : super(key: key);
   final UserModel user;
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
