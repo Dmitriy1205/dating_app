@@ -103,7 +103,7 @@ class _SignUpFormState extends State<SignUpForm> {
                             ),
                             TextFormField(
                               autovalidateMode:
-                              AutovalidateMode.onUserInteraction,
+                                  AutovalidateMode.onUserInteraction,
                               autocorrect: false,
                               controller: _nameController,
                               keyboardType: TextInputType.name,
@@ -124,7 +124,7 @@ class _SignUpFormState extends State<SignUpForm> {
                             InternationalPhoneNumberInput(
                               initialValue: PhoneNumber(isoCode: 'UA'),
                               autoValidateMode:
-                              AutovalidateMode.onUserInteraction,
+                                  AutovalidateMode.onUserInteraction,
                               selectorConfig: const SelectorConfig(
                                 setSelectorButtonAsPrefixIcon: true,
                                 showFlags: false,
@@ -159,7 +159,7 @@ class _SignUpFormState extends State<SignUpForm> {
                               validator: validateDateField,
                               onTap: () async {
                                 DateTime? date = DateTime(1900);
-                                // DateFormat formatter = DateFormat('dd-MM-yyyy');
+                                DateFormat formatter = DateFormat('dd-MM-yyyy');
                                 FocusScope.of(context)
                                     .requestFocus(FocusNode());
                                 date = await Picker().birthDatePicker(context);
@@ -229,35 +229,33 @@ class _SignUpFormState extends State<SignUpForm> {
                               onPressed: isChecked == false
                                   ? null
                                   : () {
-
-                                      if (!_formKey.currentState!.validate()) {
-                                        return;
-                                      }
-                                      _formKey.currentState!.save();
-
-                                      context.read<AuthCubit>().signUp(
-                                          phoneNumber: _phoneController.text,
-                                          verificationId: verificationId,
-                                          nav: (verId) {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    OtpVerificationScreen(
-                                                  page:
-                                                      const ProfileInfoScreen(),
-                                                  verId: verId,
-                                                  name: _nameController.text,
-                                                  phone: _phoneController.text,
-                                                  date: _dateController.text,
-                                                  email: _emailController.text,
-                                                  joinDate: Jiffy(now).yMMMMd,
-                                                ),
+                                if (!_formKey.currentState!.validate()) {
+                                  return;
+                                }
+                                _formKey.currentState!.save();
+                                print(' START --- _phoneController.text,   ${_phoneController.text}');
+                                context.read<AuthCubit>().signUp(
+                                    phoneNumber: _phoneController.text,
+                                    verificationId: verificationId,
+                                    nav: (verId) {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              OtpVerificationScreen(
+                                                page:
+                                                const ProfileInfoScreen(),
+                                                verId: verId,
+                                                name: _nameController.text,
+                                                phone: _phoneController.text,
+                                                date: _dateController.text,
+                                                email: _emailController.text,
                                               ),
                                         ),
                                       );
                                     });
                               },
+
                               style: ElevatedButton.styleFrom(
                                   primary: Colors.transparent,
                                   padding: EdgeInsets.zero,
@@ -287,7 +285,7 @@ class _SignUpFormState extends State<SignUpForm> {
                             Center(
                               child: Padding(
                                 padding:
-                                const EdgeInsets.fromLTRB(0, 105, 0, 0),
+                                    const EdgeInsets.fromLTRB(0, 105, 0, 0),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
@@ -336,4 +334,3 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 }
-
