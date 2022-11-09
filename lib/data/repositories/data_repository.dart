@@ -36,7 +36,7 @@ class DataRepository {
     String chatId = dataProvider.getClearChatId(senderId, recipientId);
     return dataProvider.getAllChatMessagesStream(chatId);
   }
-}
+
 
   Future<void> setSearchFields(String id, Map<String, dynamic> data) async {
     return dataProvider.setSearchPreference(id, data);
