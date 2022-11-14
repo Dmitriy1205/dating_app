@@ -66,7 +66,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '${state.usersList!.length.toString()} Connections',
+                            '${state.usersList.length.toString()} Connections',
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 18),
                           ),

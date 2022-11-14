@@ -171,7 +171,7 @@ class _PhotoCardLayoutWidgetState extends State<PhotoCardLayoutWidget> {
                         ),
                       ),
                       const SizedBox(
-                        height: 20.0,
+                        height: 10.0,
                       ),
                     ],
                   ),

@@ -120,7 +120,7 @@ class _SwiperState extends State<Swiper> {
               //TODO: Refresh button for finished List(if empty = no mathes for yo today, if not empty = put list)
               (_updatedPhotos.isEmpty && widget.showLoading)
                   ? const Center(
-                      child: Text('Hello'),
+                      child: Text('Sorry, no matches'),
                     )
                   // ?LoadingDataPhotoCardWidget(
                   //         cardHeight: cardHeight,
@@ -130,10 +130,10 @@ class _SwiperState extends State<Swiper> {
                   : Stack(
                       key: const Key(_stackViewKey),
                       children: _updatedPhotos.map(
-                        (updatedPhoto) {
+                        (e) {
                           final index = _reversedPhotos.indexWhere((photo) {
                             return photo.cardId.toLowerCase() ==
-                                updatedPhoto.cardId.toLowerCase();
+                                e.cardId.toLowerCase();
                           });
 
                           final reverseOffset =
@@ -141,12 +141,12 @@ class _SwiperState extends State<Swiper> {
                           final topOffsetForCard = _offset * reverseOffset;
 
                           final updatedCardHeight =
-                              cardHeight - (_offset * (index));
+                              cardHeight + (_offset * (index));
 
                           final tapIndex =
                               (widget.photoCards.length - 1) - index;
                           // final matrix = Matrix4.identity()
-                          //   ..translate(center.dx, center.dy)
+                          //   ..translate(center.dy, center.dx)
                           //   ..rotateZ(6.0)
                           //   ..translate(-center.dx, -center.dy);
                           return Positioned(
@@ -170,12 +170,12 @@ class _SwiperState extends State<Swiper> {
                                 }
                               },
                               onDragUpdate: (DragUpdateDetails details) {
-                                if (details.delta.dx < -3) {
+                                if (details.delta.dx < -5) {
                                   _feedbackPhotoCardValueNotifier
                                       .updateCardSwipeActionValue(
                                           value: CardActionDirection
                                               .cardLeftAction);
-                                } else if (details.delta.dx > 3) {
+                                } else if (details.delta.dx > 5) {
                                   _feedbackPhotoCardValueNotifier
                                       .updateCardSwipeActionValue(
                                           value: CardActionDirection
@@ -185,7 +185,7 @@ class _SwiperState extends State<Swiper> {
                               feedback: FeedbackPhotoCardWidget(
                                 cardHeight: updatedCardHeight,
                                 cardWidth: cardWidth,
-                                photoCard: updatedPhoto,
+                                photoCard: e,
                                 leftButtonIcon: widget.leftButtonIcon,
                                 rightButtonIcon: widget.rightButtonIcon,
                                 centerButtonIcon: widget.centerButtonIcon,
@@ -218,7 +218,7 @@ class _SwiperState extends State<Swiper> {
                                 hideCenterButton: widget.hideCenterButton,
                                 hideTitleText: widget.hideTitleText,
                                 hideDescriptionText: widget.hideDescriptionText,
-                                photoCard: updatedPhoto,
+                                photoCard: e,
                                 leftButtonIcon: widget.leftButtonIcon,
                                 rightButtonIcon: widget.rightButtonIcon,
                                 centerButtonIcon: widget.centerButtonIcon,
