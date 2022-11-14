@@ -3,9 +3,9 @@ import 'package:dating_app/data/models/profile_info_data.dart';
 import 'package:dating_app/data/repositories/data_repository.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../data/models/app_user.dart';
 import '../../../data/models/search_pref_data.dart';
 import '../../../data/models/status.dart';
+import '../../../data/models/user_model.dart';
 
 part 'home_state.dart';
 

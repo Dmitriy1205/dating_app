@@ -27,7 +27,7 @@ class MessengerCubit extends Cubit<MessengerStates> {
 
   void sendMessage(MessageModel messageModel, UserModel userModel) async {
     messageModel.senderName = currentUserName;
-    db.sendMessageToPal(messageModel, userModel.userId, currentUserId);
+    db.sendMessageToPal(messageModel, userModel.id, currentUserId);
     print('sendMessage ${messagesList.last}');
 
     // if (messagesList.isNotEmpty) {
@@ -40,7 +40,7 @@ class MessengerCubit extends Cubit<MessengerStates> {
   void messagesStream() async {
     print('messagesStream ${userModel.firstName}');
     final messages = db
-        .getAllChatMessagesStream(userModel.userId.toString(), currentUserId)
+        .getAllChatMessagesStream(userModel.id.toString(), currentUserId)
         .listen((event) {
       print('stream used messagesStream  listen ${event}');
       // for (var element in event) {

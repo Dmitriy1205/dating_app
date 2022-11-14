@@ -8,13 +8,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../../core/exceptions.dart';
 import '../models/message_model.dart';
 
-import 'package:dating_app/data/models/app_user.dart';
 import 'package:dating_app/data/models/profile_info_data.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
-import '../../core/exceptions.dart';
 import '../models/search_pref_data.dart';
-
 
 class FirebaseDataProvider {
   final FirebaseFirestore firestore;
@@ -32,28 +27,15 @@ class FirebaseDataProvider {
     String joinDate,
     String email,
   ) async {
+    userModel.id = user.uid;
     userModel.firstName = name;
-    userModel.userId = user.uid;
-    userModel.registrationDate = DateTime.now().toString();
-    userModel.email = email;
-    userModel.phoneNumber = phone;
+    userModel.phone = phone;
     userModel.birthday = date;
+    userModel.email = email;
+    userModel.joinDate = joinDate;
 
     try {
-
-      await firestore.collection('users').doc(user.uid).set({
-        'id': user.uid,
-        'name': name,
-        'phone': phone,
-        'date': date,
-        'email': email,
-        'joinDate': joinDate,
-      });
-
-
-      await firestore.collection('users').doc(user.uid).set(userModel.toJson());
-
-
+      await firestore.collection('users').doc(user.uid).set(userModel.toFirestore());
     } on FirebaseException catch (e) {
       throw BadRequestException(message: e.message!);
     }
@@ -68,7 +50,6 @@ class FirebaseDataProvider {
     }
   }
 
-
   Future<MessageModel?> sendMessageToPal(
       MessageModel messageModel, chatId) async {
     print("collection('chats/${chatId}/messages')");
@@ -79,7 +60,7 @@ class FirebaseDataProvider {
 
       print(' sendMessageToPal  $chatId');
     } on FirebaseException catch (e) {
-       throw BadRequestException(message: e.message!);
+      throw BadRequestException(message: e.message!);
     }
   }
 
@@ -91,7 +72,6 @@ class FirebaseDataProvider {
       throw BadRequestException(message: e.message!);
     }
   }
-
 
   String getClearChatId(String senderId, String recipientId) {
     int compareInt = senderId.compareTo(recipientId);
@@ -144,8 +124,7 @@ class FirebaseDataProvider {
           .orderBy('time', descending: false)
           .snapshots()
           .map((snapshot) => snapshot.docs
-              .map((doc) =>
-                  MessageModel.fromJson(doc.data()))
+              .map((doc) => MessageModel.fromJson(doc.data()))
               .toList());
 
   Future<List<UserModel>> getUsers() async {
@@ -157,11 +136,12 @@ class FirebaseDataProvider {
       print('palls ${users}');
       print('${palsList.length}  palls ${palsList[0].firstName} ');
       return palsList;
-    } on FirebaseException catch (e) {   throw BadRequestException(message: e.message!);
+    } on FirebaseException catch (e) {
+      throw BadRequestException(message: e.message!);
     }
   }
 
-Future<ProfileInfoFields?> getProfileFields(String id) async {
+  Future<ProfileInfoFields?> getProfileFields(String id) async {
     try {
       final doc = await firestore
           .collection('ProfileInfo')
@@ -177,14 +157,14 @@ Future<ProfileInfoFields?> getProfileFields(String id) async {
     }
   }
 
-  Future<UserFields?> getUserFields(String id) async {
+  Future<UserModel?> getUserFields(String id) async {
     try {
       final doc = await firestore
           .collection('users')
           .doc(id)
           .withConverter(
-              fromFirestore: UserFields.fromFirestore,
-              toFirestore: (UserFields u, _) => u.toFirestore())
+              fromFirestore: UserModel.fromFirestore,
+              toFirestore: (UserModel u, _) => u.toFirestore())
           .get();
       return doc.data();
     } on FirebaseException catch (e) {
@@ -255,11 +235,11 @@ Future<ProfileInfoFields?> getProfileFields(String id) async {
     }
   }
 
-  Future<List<UserFields>> getAllUserFields() async {
+  Future<List<UserModel>> getAllUserFields() async {
     try {
       final doc = await firestore.collection('users').get();
 
-      return doc.docs.map((e) => UserFields.fromJson(e.data())).toList();
+      return doc.docs.map((e) => UserModel.fromJson(e.data())).toList();
     } on FirebaseException catch (e) {
       print(e.message);
       throw BadRequestException(message: e.message!);

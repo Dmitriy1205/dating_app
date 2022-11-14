@@ -1,6 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dating_app/data/data_provider/firestore_data_provider.dart';
-import 'package:dating_app/data/models/app_user.dart';
 import 'package:dating_app/data/models/profile_info_data.dart';
 import 'package:dating_app/data/models/search_pref_data.dart';
 
@@ -15,7 +13,6 @@ class DataRepository {
   Future<void> setProfileFields(String id, Map<String, dynamic> data) async {
     return dataProvider.setProfileFields(id, data);
   }
-
 
   Future<List<UserModel>> getPals() async {
     return await dataProvider.getUsers();
@@ -33,11 +30,10 @@ class DataRepository {
   //   return await dataProvider.getAllChatMessages(chatId);
   // }
   Stream<List<MessageModel>> getAllChatMessagesStream(
-      String senderId, String recipientId)  {
+      String senderId, String recipientId) {
     String chatId = dataProvider.getClearChatId(senderId, recipientId);
     return dataProvider.getAllChatMessagesStream(chatId);
   }
-}
 
   Future<void> setSearchFields(String id, Map<String, dynamic> data) async {
     return dataProvider.setSearchPreference(id, data);
@@ -48,7 +44,7 @@ class DataRepository {
     return fields;
   }
 
-  Future<UserFields?> getUserFields(String id) async {
+  Future<UserModel?> getUserFields(String id) async {
     final fields = await dataProvider.getUserFields(id);
     return fields;
   }
@@ -66,7 +62,6 @@ class DataRepository {
     await dataProvider.updateProfileFields(id, data);
   }
 
-
   Future<List<ProfileInfoFields>> getAllFields() async {
     return dataProvider.getAllFields();
   }
@@ -75,8 +70,7 @@ class DataRepository {
     return dataProvider.getAllSearchFields();
   }
 
-  Future<List<UserFields>> getAllUserFields() async {
+  Future<List<UserModel>> getAllUserFields() async {
     return dataProvider.getAllUserFields();
   }
 }
-

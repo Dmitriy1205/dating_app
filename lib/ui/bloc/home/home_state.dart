@@ -4,7 +4,7 @@ class HomeState extends Equatable {
   final Status? status;
   final List<ProfileInfoFields>? fields;
   final List<SearchPrefFields>? lookingFor;
-  final List<UserFields>? user;
+  final List<UserModel>? user;
 
   const HomeState({
     this.status,
@@ -25,7 +25,7 @@ class HomeState extends Equatable {
     Status? status,
     List<ProfileInfoFields>? fields,
     List<SearchPrefFields>? lookingFor,
-    List<UserFields>? user,
+    List<UserModel>? user,
   }) {
     return HomeState(
       status: status ?? this.status,

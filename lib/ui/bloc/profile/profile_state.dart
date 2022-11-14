@@ -3,7 +3,7 @@ part of 'profile_cubit.dart';
 class ProfileState extends Equatable {
   final Status? status;
   final ProfileInfoFields? profile;
-  final UserFields? user;
+  final UserModel? user;
   final List<String>? images;
   final Map<String,dynamic>? lookingFor;
 
@@ -27,7 +27,7 @@ class ProfileState extends Equatable {
   ProfileState copyWith({
     Status? status,
     ProfileInfoFields? profile,
-    UserFields? user,
+    UserModel? user,
     List<String>? images,
     Map<String,dynamic>? lookingFor,
   }) {

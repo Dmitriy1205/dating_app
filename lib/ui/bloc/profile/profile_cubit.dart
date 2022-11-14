@@ -6,8 +6,8 @@ import 'package:dating_app/data/repositories/storage_repository.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../core/exceptions.dart';
-import '../../../data/models/app_user.dart';
 import '../../../data/models/status.dart';
+import '../../../data/models/user_model.dart';
 
 part 'profile_state.dart';
 
