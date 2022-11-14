@@ -1,47 +1,17 @@
-import 'package:dating_app/ui/screens/person_profile.dart';
+import 'package:dating_app/ui/bloc/home/home_cubit.dart';
 import 'package:dating_app/ui/screens/contacts_screen.dart';
 import 'package:dating_app/ui/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../data/models/photo_card.dart';
-import '../widgets/swiper.dart';
+import '../../core/service_locator.dart';
+import '../widgets/home_body.dart';
 import 'filter_screen.dart';
 
-class HomeScreen extends StatefulWidget {
-  HomeScreen({Key? key, }) : super(key: key);
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
+class HomeScreen extends StatelessWidget {
+  HomeScreen({Key? key}) : super(key: key);
 
-class _HomeScreenState extends State<HomeScreen> {
-  final List<PhotoCard> _photos = [
-    PhotoCard(
-        title: 'Michale Barns',
-        location: '2 miles',
-        description: 'A man with million hearts.'
-            '',
-        imagePath: 'assets/images/pic.png',
-        cardId: '1'),
-    PhotoCard(
-        title: 'Tom Farly',
-        location: '2 miles',
-        description: 'An inspiration to many.',
-        imagePath: 'assets/images/pic.png',
-        cardId: '2'),
-    PhotoCard(
-        title: 'Georg Third',
-        location: '2 miles',
-        description: 'Wierd Guy.',
-        imagePath: 'assets/images/baking.png',
-        cardId: '3'),
-    PhotoCard(
-        title: 'Tom Farly',
-        location: '2 miles',
-        description: 'An inspiration to many.',
-        imagePath: 'assets/images/hiking.png',
-        cardId: '4'),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -57,8 +27,10 @@ class _HomeScreenState extends State<HomeScreen> {
               child: GestureDetector(
                 onTap: () {
                   //TODO: navigation to messenger
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ContactsScreen()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ContactsScreen()));
                 },
                 child: SizedBox(
                   height: 50,
@@ -123,55 +95,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         elevation: 0,
       ),
-      body: Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              child: Stack(
-                children: [
-                  Swiper(
-                    photoCards: _photos,
-                    whenCardSwiped: _cardSwiped,
-                    imageScaleType: BoxFit.cover,
-                    imageBackgroundColor: Colors.grey,
-                    leftButtonBackgroundColor: Colors.red[100],
-                    leftButtonIconColor: Colors.red[600],
-                    rightButtonBackgroundColor: Colors.lightGreen[100],
-                    rightButtonIconColor: Colors.lightGreen[700],
-                    leftButtonAction: _leftButtonClicked,
-                    rightButtonAction: _rightButtonClicked,
-                    onCardTap: _onCardTap,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+      body: BlocProvider(
+        create: (context) => sl<HomeCubit>(),
+        child: const HomeBody(),
       ),
     );
-  }
-
-  void _cardSwiped(CardActionDirection _direction, int _index) {
-    print('Swiped Direction ${_direction.toString()} Index $_index');
-    //This is just an example to show how one can load more cards.
-    //you can skip using this method if you have predefined list of photos array.
-    // if (_index == (widget._photos.length - 1)) {
-    //   _loadMorePhotos();
-    // }
-  }
-
-  void _onCardTap(int _index) {
-    print('Card with index $_index is Tapped.');
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => PersonProfile()));
-  }
-
-  void _leftButtonClicked() {
-    print('Left button clicked');
-  }
-
-  void _rightButtonClicked() {
-    print('Right button clicked');
   }
 }

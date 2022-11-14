@@ -24,8 +24,10 @@ class AuthCubit extends Cubit<AuthState> {
         verificationId,
         nav,
       );
-      print('print 2 AuthCubit $verificationId');
-      emit(state.copyWith(status: Status.loaded()));
+
+      print('print 2 $verificationId');
+      emit(state.copyWith(status: Status.loaded(),));
+
     } on Exception catch (e) {
       emit(state.copyWith(status: Status.error(e.toString())));
     }

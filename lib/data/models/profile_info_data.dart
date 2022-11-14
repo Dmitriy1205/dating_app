@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class ProfileInfoFields {
   String? name;
   String? bio;
+  String? image;
   String? gender;
   String? height;
   String? age;
@@ -16,6 +17,7 @@ class ProfileInfoFields {
   ProfileInfoFields(
       {this.name,
       this.bio,
+      this.image,
       this.gender,
       this.height,
       this.age,
@@ -34,6 +36,7 @@ class ProfileInfoFields {
     return ProfileInfoFields(
       name: data?['name'],
       bio: data?['bio'],
+      image: data?['image'],
       gender: data?['gender'],
       height: data?['height'],
       age: data?['age'],
@@ -46,9 +49,27 @@ class ProfileInfoFields {
     );
   }
 
+  factory ProfileInfoFields.fromJson(Map<String, dynamic> json) {
+    return ProfileInfoFields(
+      name: json['name'],
+      bio: json['bio'],
+      image: json['image'],
+      gender: json['gender'],
+      height: json['height'],
+      age: json['age'],
+      university: json['university'],
+      degree: json['degree/major'],
+      company: json['company'],
+      job: json['job'],
+      hobbies: json['hobbies'],
+      interests: json['interests'],
+    );
+  }
+
   Map<String, dynamic> toFirestore() => {
         'name': name,
         'bio': bio,
+    'image':image,
         'gender': gender,
         'height': height,
         'age': age,

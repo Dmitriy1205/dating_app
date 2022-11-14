@@ -24,6 +24,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
   String gender = '';
   String? degree;
   String? job;
+  String? image;
 
   final nameController = TextEditingController();
 
@@ -73,6 +74,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
         hobbies = state.info!.hobbies!;
         interests = state.info!.interests!;
         lookingFor = state.search!.lookingFor!;
+        image = state.info!.image ?? '';
         print('lookingFor 22 $lookingFor');
 
         return SingleChildScrollView(
@@ -86,7 +88,9 @@ class _EditProfileFormState extends State<EditProfileForm> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   ImagePickerList(
-                    userImage: (String s) {},
+                    userImage: (String s) {
+                      image = s;
+                    },
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -283,6 +287,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
                                     ..name = nameController.text
                                     ..bio = bioController.text
                                     ..gender = gender
+                                    ..image = image
                                     ..height = heightController.text
                                     ..age = ageController.text
                                     ..degree = degree
