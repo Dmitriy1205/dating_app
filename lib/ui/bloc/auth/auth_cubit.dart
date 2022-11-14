@@ -16,14 +16,18 @@ class AuthCubit extends Cubit<AuthState> {
     required void Function(String s) nav,
   }) async {
     emit(state.copyWith(status: Status.loading()));
+    print('print 1 AuthCubit $verificationId');
+
     try {
       await authRepository.signupWithPhone(
         phoneNumber,
         verificationId,
         nav,
       );
+
       print('print 2 $verificationId');
       emit(state.copyWith(status: Status.loaded(),));
+
     } on Exception catch (e) {
       emit(state.copyWith(status: Status.error(e.toString())));
     }
@@ -40,7 +44,7 @@ class AuthCubit extends Cubit<AuthState> {
         verificationId,
         nav,
       );
-      print('print 2 $verificationId');
+      print('print 3 AuthCubit $verificationId');
       emit(state.copyWith(status: Status.loaded()));
     } on Exception catch (e) {
       emit(state.copyWith(status: Status.error(e.toString())));

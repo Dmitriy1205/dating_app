@@ -20,7 +20,7 @@ class GoogleAuthCubit extends Cubit<GoogleAuthState> {
       emit(state.copyWith(status: Status.loaded()));
     } on BadRequestException catch (e) {
       emit(state.copyWith(status: Status.error(e.message)));
-      print(e.message);
+      print('class GoogleAuthCubit ${e.message}');
     }
   }
 }

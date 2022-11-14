@@ -8,8 +8,10 @@ import '../../core/service_locator.dart';
 import '../widgets/home_body.dart';
 import 'filter_screen.dart';
 
+
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
