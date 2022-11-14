@@ -21,6 +21,7 @@ class FirebaseDataProvider {
   ) async {
     try {
       await firestore.collection('users').doc(user.uid).set({
+        'id': user.uid,
         'name': name,
         'phone': phone,
         'date': date,
@@ -116,6 +117,39 @@ class FirebaseDataProvider {
           .collection('ProfileInfo')
           .doc(id)
           .set(data, SetOptions(merge: true));
+    } on FirebaseException catch (e) {
+      print(e.message);
+      throw BadRequestException(message: e.message!);
+    }
+  }
+
+  Future<List<ProfileInfoFields>> getAllFields() async {
+    try {
+      final doc = await firestore.collection('ProfileInfo').get();
+
+      return doc.docs.map((e) => ProfileInfoFields.fromJson(e.data())).toList();
+    } on FirebaseException catch (e) {
+      print(e.message);
+      throw BadRequestException(message: e.message!);
+    }
+  }
+
+  Future<List<SearchPrefFields>> getAllSearchFields() async {
+    try {
+      final doc = await firestore.collection('SearchPreferences').get();
+
+      return doc.docs.map((e) => SearchPrefFields.fromJson(e.data())).toList();
+    } on FirebaseException catch (e) {
+      print(e.message);
+      throw BadRequestException(message: e.message!);
+    }
+  }
+
+  Future<List<UserFields>> getAllUserFields() async {
+    try {
+      final doc = await firestore.collection('users').get();
+
+      return doc.docs.map((e) => UserFields.fromJson(e.data())).toList();
     } on FirebaseException catch (e) {
       print(e.message);
       throw BadRequestException(message: e.message!);

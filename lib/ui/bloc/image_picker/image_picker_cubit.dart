@@ -34,7 +34,7 @@ class ImagePickerCubit extends Cubit<ImagePickerState> {
     emit(state.copyWith(status: Status.loading()));
     try {
       var id = auth.currentUser()!.uid;
-      var image = await storage.getAll(id);
+      var image = await storage.getAllById(id);
       emit(state.copyWith(status: Status.loaded(), image: image));
     } catch (e) {
       print(e);

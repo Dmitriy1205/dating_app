@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dating_app/data/data_provider/firestore_data_provider.dart';
 import 'package:dating_app/data/models/app_user.dart';
 import 'package:dating_app/data/models/profile_info_data.dart';
@@ -32,10 +33,22 @@ class DataRepository {
   }
 
   Future<void> updateSearchFields(String id, Map<String, dynamic> data) async {
-    await dataProvider.updateSearchFields(id,data);
+    await dataProvider.updateSearchFields(id, data);
   }
 
   Future<void> updateProfileFields(String id, Map<String, dynamic> data) async {
     await dataProvider.updateProfileFields(id, data);
+  }
+
+  Future<List<ProfileInfoFields>> getAllFields() async {
+    return dataProvider.getAllFields();
+  }
+
+  Future<List<SearchPrefFields>> getAllSearchFields() async {
+    return dataProvider.getAllSearchFields();
+  }
+
+  Future<List<UserFields>> getAllUserFields() async {
+    return dataProvider.getAllUserFields();
   }
 }

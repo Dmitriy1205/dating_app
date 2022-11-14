@@ -101,14 +101,7 @@ class _PhotoCardLayoutWidgetState extends State<PhotoCardLayoutWidget> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5.0),
                 color: widget.imageBackgroundColor,
-                image: widget.photoCard.isLocalImage
-                    ? DecorationImage(
-                        image: AssetImage(
-                          widget.photoCard.imagePath,
-                        ),
-                        fit: widget.imageScaleType,
-                      )
-                    : DecorationImage(
+                image:DecorationImage(
                         image: NetworkImage(
                           widget.photoCard.imagePath,
                         ),
@@ -123,7 +116,7 @@ class _PhotoCardLayoutWidgetState extends State<PhotoCardLayoutWidget> {
                     buttonIconColor: Colors.red[800],
                     buttonIcon: Card(
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(40.0),
+                        borderRadius: BorderRadius.circular(80.0),
                       ),
                       child: Image.asset('assets/icons/red_close.png'),
                     ),
@@ -135,7 +128,7 @@ class _PhotoCardLayoutWidgetState extends State<PhotoCardLayoutWidget> {
                     buttonIconColor: Colors.lightGreen[700],
                     buttonIcon: Card(
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(40.0),
+                        borderRadius: BorderRadius.circular(80.0),
                       ),
                       child: Image.asset('assets/icons/green_mess.png'),
                     ),

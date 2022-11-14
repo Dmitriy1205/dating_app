@@ -59,7 +59,7 @@ class Profile extends StatelessWidget {
                           style: TextStyle(fontSize: 14),
                         ),
                         Text(
-                          state.profile!.name!,
+                          state.profile!.name ?? '',
                           textAlign: TextAlign.start,
                           style: TextStyle(color: Colors.grey, fontSize: 14),
                         ),
@@ -77,7 +77,7 @@ class Profile extends StatelessWidget {
                           style: TextStyle(fontSize: 14),
                         ),
                         Text(
-                          state.user!.birthDate!,
+                          state.user!.birthDate ?? '',
                           textAlign: TextAlign.start,
                           style: TextStyle(color: Colors.grey, fontSize: 14),
                         ),
@@ -95,7 +95,7 @@ class Profile extends StatelessWidget {
                           style: TextStyle(fontSize: 14),
                         ),
                         Text(
-                          state.profile!.gender!,
+                          state.profile!.gender ?? '',
                           textAlign: TextAlign.start,
                           style: TextStyle(color: Colors.grey, fontSize: 14),
                         ),
@@ -122,7 +122,7 @@ class Profile extends StatelessWidget {
                       height: 5,
                     ),
                     Text(
-                      state.profile!.bio!,
+                      state.profile!.bio ?? '',
                       textAlign: TextAlign.start,
                       style: TextStyle(color: Colors.grey, fontSize: 14),
                     ),
@@ -154,7 +154,7 @@ class Profile extends StatelessWidget {
                           style: TextStyle(fontSize: 14),
                         ),
                         Text(
-                          state.profile!.height!,
+                          state.profile!.height ?? '',
                           textAlign: TextAlign.start,
                           style:
                               const TextStyle(color: Colors.grey, fontSize: 14),
@@ -189,7 +189,7 @@ class Profile extends StatelessWidget {
                           style: TextStyle(fontSize: 14),
                         ),
                         Text(
-                          state.user!.joinDate!,
+                          state.user!.joinDate  ?? '',
                           textAlign: TextAlign.start,
                           style: TextStyle(color: Colors.grey, fontSize: 14),
                         ),
@@ -284,14 +284,14 @@ class Profile extends StatelessWidget {
                       children: List<Widget>.generate(
                         state.profile!.interests!.length,
                             (index) =>
-                        state.profile!.hobbies!.values.elementAt(index) ==
+                        state.profile!.interests!.values.elementAt(index) ==
                             false
                             ? const SizedBox()
                             : Padding(
                           padding: const EdgeInsets.only(right: 6),
                           child: Chip(
                             label: Text(
-                              state.profile!.hobbies!.keys
+                              state.profile!.interests!.keys
                                   .elementAt(index),
                               style: TextStyle(
                                 color: Colors.grey.shade800,
@@ -324,16 +324,16 @@ class Profile extends StatelessWidget {
                     ),
                     Wrap(
                       children: List<Widget>.generate(
-                        state.profile!.interests!.length,
+                        state.profile!.hobbies!.length,
                             (index) =>
-                        state.profile!.interests!.values.elementAt(index) ==
+                        state.profile!.hobbies!.values.elementAt(index) ==
                             false
                             ? const SizedBox()
                             : Padding(
                           padding: const EdgeInsets.only(right: 6),
                           child: Chip(
                             label: Text(
-                              state.profile!.interests!.keys
+                              state.profile!.hobbies!.keys
                                   .elementAt(index),
                               style: TextStyle(
                                   color: Colors.grey.shade800,

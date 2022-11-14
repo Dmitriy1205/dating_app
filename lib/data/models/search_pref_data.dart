@@ -26,6 +26,15 @@ class SearchPrefFields {
     );
   }
 
+  factory SearchPrefFields.fromJson(Map<String, dynamic> json) {
+    return SearchPrefFields(
+      yearsRange: json['yearsRange'],
+      distance: json['distance'],
+      lookingFor: json['lookingFor'],
+      gender: json['gender'],
+    );
+  }
+
   Map<String, dynamic> toFirestore() => {
         'yearsRange': yearsRange,
         'distance': distance,

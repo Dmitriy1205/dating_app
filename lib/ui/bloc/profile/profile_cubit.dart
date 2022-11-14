@@ -32,7 +32,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       final profile = await db.getProfileFields(id);
       final user = await db.getUserFields(id);
       final search = await db.getSearchFields(id);
-      final image = await storage.getAll(id);
+      final image = await storage.getAllById(id);
       emit(state.copyWith(
         status: Status.loaded(),
         profile: profile,
