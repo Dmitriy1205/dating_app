@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:dating_app/core/exceptions.dart';
 import 'package:dating_app/data/repositories/auth_repository.dart';
 import 'package:equatable/equatable.dart';
 
@@ -26,12 +27,14 @@ class AuthCubit extends Cubit<AuthState> {
       );
 
       print('print 2 $verificationId');
-      emit(state.copyWith(status: Status.loaded(),));
-
+      emit(state.copyWith(
+        status: Status.loaded(),
+      ));
     } on Exception catch (e) {
       emit(state.copyWith(status: Status.error(e.toString())));
     }
   }
+
   Future<void> login({
     required String phoneNumber,
     required String verificationId,
@@ -46,7 +49,7 @@ class AuthCubit extends Cubit<AuthState> {
       );
       print('print 3 AuthCubit $verificationId');
       emit(state.copyWith(status: Status.loaded()));
-    } on Exception catch (e) {
+    } on BadRequestException catch (e) {
       emit(state.copyWith(status: Status.error(e.toString())));
     }
   }

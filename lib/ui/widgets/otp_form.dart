@@ -6,6 +6,7 @@ import '../bloc/otp_verification/otp_cubit.dart';
 
 class OtpForm extends StatefulWidget {
   final String verId;
+  final int pageId;
   final String? name;
   final String? phone;
   final String? date;
@@ -21,7 +22,7 @@ class OtpForm extends StatefulWidget {
     this.date,
     this.email,
     required this.page,
-    this.joinDate,
+    this.joinDate, required this.pageId,
   }) : super(key: key);
 
   @override
@@ -110,16 +111,22 @@ class _OtpFormState extends State<OtpForm> {
                 onPressed: () {
                   if (!_formKey.currentState!.validate()) return;
                   _formKey.currentState!.save();
-                  context.read<OtpCubit>().verify(
-
+                  if(widget.pageId == 1) {
+                    context.read<OtpCubit>().verifySignUp(
+                          widget.verId,
+                          _numberController.text,
+                          widget.name ?? '',
+                          widget.phone ?? '',
+                          widget.date ?? '',
+                          widget.email ?? '',
+                          widget.joinDate ?? '',
+                        );
+                  }else {
+                    context.read<OtpCubit>().verifyLogin(
                         widget.verId,
-                        _numberController.text,
-                        widget.name ?? '',
-                        widget.phone ?? '',
-                        widget.date ?? '',
-                        widget.email ?? '',
-                        widget.joinDate ?? '',
+                        code,
                       );
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                     primary: Colors.transparent,
