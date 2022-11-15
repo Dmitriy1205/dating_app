@@ -7,6 +7,7 @@ import '../../core/service_locator.dart';
 
 class OtpVerificationScreen extends StatelessWidget {
   final String? verId;
+  final int pageId;
   final String? name;
   final String? phone;
   final String? date;
@@ -22,7 +23,7 @@ class OtpVerificationScreen extends StatelessWidget {
     this.date,
     this.email,
     required this.page,
-    this.joinDate,
+    this.joinDate, required this.pageId,
   }) : super(key: key);
 
   @override
@@ -54,7 +55,7 @@ class OtpVerificationScreen extends StatelessWidget {
           phone: phone,
           date: date,
           joinDate:joinDate,
-          email: email,
+          email: email, pageId: pageId,
         ),
       ),
     );

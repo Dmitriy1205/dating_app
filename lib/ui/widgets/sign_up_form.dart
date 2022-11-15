@@ -8,7 +8,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:jiffy/jiffy.dart';
 import '../../core/functions/validation.dart';
@@ -25,10 +24,10 @@ class SignUpForm extends StatefulWidget {
 class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
   bool isChecked = false;
-  final _nameController = TextEditingController(text: 'Yaroslav');
-  final _phoneController = TextEditingController(text: '932383265');
+  final _nameController = TextEditingController();
+  final _phoneController = TextEditingController();
   final _dateController = TextEditingController();
-  final _emailController = TextEditingController(text: 'yarshau@gmail.com');
+  final _emailController = TextEditingController();
   String verificationId = '';
   DateTime now = DateTime.now();
 
@@ -250,7 +249,7 @@ class _SignUpFormState extends State<SignUpForm> {
                                                   phone: _phoneController.text,
                                                   date: _dateController.text,
                                                   email: _emailController.text,
-                                                  joinDate: Jiffy(now).yMMMMd,
+                                                  joinDate: Jiffy(now).yMMMMd, pageId: 1,
                                                 ),
                                               ),
                                             );

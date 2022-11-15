@@ -35,6 +35,7 @@ class FirebaseDataProvider {
     userModel.joinDate = joinDate;
 
     try {
+      print(userModel.toFirestore());
       await firestore.collection('users').doc(user.uid).set(userModel.toFirestore());
     } on FirebaseException catch (e) {
       throw BadRequestException(message: e.message!);
