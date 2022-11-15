@@ -60,13 +60,13 @@ class FeedbackPhotoCardWidget extends StatelessWidget {
         clipBehavior: Clip.hardEdge,
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(15.0),
+          borderRadius: BorderRadius.circular(20.0),
           boxShadow: [
             BoxShadow(
               color: Colors.grey[350] ?? Colors.black,
-              blurRadius: 0.0,
-              spreadRadius: 0.0,
-              offset: const Offset(2, 3),
+              blurRadius: 3.0,
+              spreadRadius: 1.0,
+              offset: const Offset(0, 0),
             ),
           ],
         ),
@@ -75,9 +75,9 @@ class FeedbackPhotoCardWidget extends StatelessWidget {
             Container(
               height: cardHeight / 1.4,
               width: cardWidth,
-              clipBehavior: Clip.hardEdge,
+              // clipBehavior: Clip.hardEdge,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5.0),
+                // borderRadius: BorderRadius.circular(15.0),
                 color: imageBackgroundColor,
                 image: DecorationImage(
                         image: NetworkImage(
@@ -158,7 +158,7 @@ class FeedbackPhotoCardWidget extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(
-                        height: 20.0,
+                        height: 10.0,
                       ),
                     ],
                   ),
@@ -166,8 +166,8 @@ class FeedbackPhotoCardWidget extends StatelessWidget {
               ],
             ),
             Positioned(
-              bottom: 160,
-              left: 100,
+              bottom: MediaQuery.of(context).size.height/5.3,
+              width: MediaQuery.of(context).size.height/2.25,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

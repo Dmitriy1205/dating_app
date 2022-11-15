@@ -82,13 +82,13 @@ class _PhotoCardLayoutWidgetState extends State<PhotoCardLayoutWidget> {
         clipBehavior: Clip.hardEdge,
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(15.0),
+          borderRadius: BorderRadius.circular(12.0),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey[350] ?? Colors.black,
-              blurRadius: 1.0,
+              color: Colors.grey[300] ?? Colors.black,
+              blurRadius:0.0,
               spreadRadius: 1.0,
-              offset: Offset(2, 3),
+              offset: Offset(0, 5),
             ),
           ],
         ),
@@ -179,8 +179,8 @@ class _PhotoCardLayoutWidgetState extends State<PhotoCardLayoutWidget> {
               ],
             ),
             Positioned(
-              bottom: 160,
-              left: 100,
+              bottom: MediaQuery.of(context).size.height/5.3,
+              width: MediaQuery.of(context).size.height/2.25,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
