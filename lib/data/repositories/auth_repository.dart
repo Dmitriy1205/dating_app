@@ -17,6 +17,8 @@ class AuthRepository {
 
   AuthRepository({required this.db, required this.auth});
 
+  Stream<User?> get authState => auth.authStateChanges();
+
   Future<void> signupWithPhone(
     String phoneNumber,
     String verificationId,

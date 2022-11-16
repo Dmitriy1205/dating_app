@@ -9,7 +9,12 @@ part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit(this.authRepository) : super(AuthState(status: Status.initial()));
+
   final AuthRepository authRepository;
+
+  void getUser() {
+    authRepository.authState;
+  }
 
   Future<void> signUp({
     required String phoneNumber,
