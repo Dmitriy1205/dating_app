@@ -8,7 +8,7 @@ import '../models/user_model.dart';
 
 class DataRepository {
   final FirebaseDataProvider dataProvider;
-
+  late String chatId;
   DataRepository({required this.dataProvider});
 
   Future<void> setProfileFields(String id, Map<String, dynamic> data) async {
@@ -21,19 +21,18 @@ class DataRepository {
   }
 
   Future<MessageModel?> sendMessageToPal(
-      messageModel, recipientId, senderId) async {
-    String chatId = dataProvider.getClearChatId(senderId, recipientId);
+      messageModel, String chatId) async {
     return await dataProvider.sendMessageToPal(messageModel, chatId);
   }
 
-  // Future<List<MessageModel>> getAllChatMessages(
-  //     String senderId, String recipientId) async {
-  //   String chatId = dataProvider.getClearChatId(senderId, recipientId);
-  //   return await dataProvider.getAllChatMessages(chatId);
-  // }
+  String getClearId(recipientId, senderId) {
+    chatId = dataProvider.getClearChatId(senderId, recipientId);
+    return chatId;
+  }
+
   Stream<List<MessageModel>> getAllChatMessagesStream(
       String senderId, String recipientId)  {
-    String chatId = dataProvider.getClearChatId(senderId, recipientId);
+    chatId = dataProvider.getClearChatId(senderId, recipientId);
     return dataProvider.getAllChatMessagesStream(chatId);
   }
 

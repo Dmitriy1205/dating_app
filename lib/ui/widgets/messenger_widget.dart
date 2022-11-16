@@ -1,15 +1,20 @@
+import 'dart:io';
+
 import 'package:dating_app/data/models/message_model.dart';
 import 'package:dating_app/ui/widgets/my_message.dart';
 import 'package:dating_app/ui/widgets/receive_message.dart';
+import 'package:dating_app/ui/widgets/reusable_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/constants.dart';
 import '../../data/models/user_model.dart';
+import '../bloc/image_picker/image_picker_cubit.dart';
 import '../bloc/messenger_cubit.dart';
 
 class MessengerWidget extends StatefulWidget {
-  const MessengerWidget(BuildContext context, {required this.user}) : super();
+  const MessengerWidget(BuildContext context, {super.key, required this.user});
+
   final UserModel user;
 
   @override
@@ -22,19 +27,12 @@ class _MessengerWidgetState extends State<MessengerWidget> {
 
   _MessengerWidgetState();
 
-  // @override
-  // void initState() {
-  //   context.read<MessengerCubit>().messagesStream(widget.user);
-  //   super.initState();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MessengerCubit, MessengerStates>(
       builder: (context, state) {
         print('state ${state}');
         if (state is SendMessageState) {
-          print('state SendMessageState222${state.messagesList.last}');
           return Column(
             children: [
               Expanded(
@@ -103,8 +101,6 @@ class _MessengerWidgetState extends State<MessengerWidget> {
               itemCount: state.messagesList.length,
               itemBuilder: (context, index) {
                 if (index == state.messagesList.length) {
-                  print(
-                      'state.messagesList.length ${state.messagesList.length}');
                   return const SizedBox(
                     height: 70,
                     child: Icon(Icons.access_alarm),
@@ -156,7 +152,24 @@ class _MessengerWidgetState extends State<MessengerWidget> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      ReUsableWidgets().showPicker(
+                        context,
+                        func: (File? f) async {
+                          String? chatId = await context
+                              .read<ImagePickerCubit>()
+                              .uploadMessageImage(
+                                  f!, context.read<MessengerCubit>().getChatId);
+                          MessageModel message = MessageModel(
+                              chatId: chatId,
+                              recipientName: widget.user.firstName,
+                              time: DateTime.now().toString());
+                          context
+                              .read<MessengerCubit>()
+                              .sendMessage(message, widget.user);
+                        },
+                      );
+                    },
                     child: SizedBox(
                         width: 50,
                         height: 50,
@@ -173,9 +186,6 @@ class _MessengerWidgetState extends State<MessengerWidget> {
                       context
                           .read<MessengerCubit>()
                           .sendMessage(message, widget.user);
-                      print('sendMessage ${message}');
-                      print('sendMessage ${widget.user}');
-
                       myMessageController.clear();
                     },
                     child: SizedBox(

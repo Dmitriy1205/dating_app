@@ -60,7 +60,6 @@ class FirebaseDataProvider {
 
   Future<MessageModel?> sendMessageToPal(
       MessageModel messageModel, chatId) async {
-    print("collection('chats/${chatId}/messages')");
     try {
       await firestore
           .collection('chats/${chatId}/messages')

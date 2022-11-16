@@ -1,9 +1,6 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import '../../data/models/message_model.dart';
 import '../../data/models/user_model.dart';
 import '../../data/repositories/data_repository.dart';
@@ -11,12 +8,9 @@ import '../../data/repositories/data_repository.dart';
 class MessengerCubit extends Cubit<MessengerStates> {
   MessengerCubit(this.db, this.auth, this.userModel) : super(MessengerInit()) {
     messagesStream();
-    print('userModel constructor ${userModel.firstName}');
-    print('messagesList length from constructor ${messagesList.length}');
   }
 
   final UserModel userModel;
-
   final FirebaseAuth auth;
   List<MessageModel> messagesList = [];
   final DataRepository db;
@@ -25,49 +19,30 @@ class MessengerCubit extends Cubit<MessengerStates> {
 
   get currentUserName => auth.currentUser!.displayName;
 
-  void sendMessage(MessageModel messageModel, UserModel userModel) async {
-    messageModel.senderName = currentUserName;
-    db.sendMessageToPal(messageModel, userModel.userId, currentUserId);
-    print('sendMessage ${messagesList.last}');
+  get getChatId => db.getClearId(userModel.userId, currentUserId);
 
-    // if (messagesList.isNotEmpty) {
-    //   emit(SendMessageState(messagesList: messagesList));
-    // } else {
-    //   emit(MessengerInit());
-    // }
+  void sendMessage(MessageModel messageModel, UserModel userModel,
+      [bool attachment = false]) async {
+    if (attachment) {
+      messageModel.attachmentUrl = 'chats/$getChatId/${DateTime.now()}';
+    } else {
+      messageModel.senderName = currentUserName;
+    }
+    db.sendMessageToPal(messageModel, getChatId);
   }
 
   void messagesStream() async {
-    print('messagesStream ${userModel.firstName}');
     final messages = db
-        .getAllChatMessagesStream(userModel.userId.toString(), currentUserId)
-        .listen((event) {
-      print('stream used messagesStream  listen ${event}');
-      // for (var element in event) {
-      //   messagesList.add(element);
-      // }
-    });
+        .getAllChatMessagesStream(userModel.userId!, currentUserId)
+        .listen((event) {});
     messages.onData((data) {
-
       if (data.isNotEmpty) {
         emit(SendMessageState(messagesList: data));
       } else {
         emit(MessengerInit());
       }
     });
-    print('messagesList ${messagesList.runtimeType}   ${messagesList.length}');
-
   }
-// Stream loadAllMessagesStream (UserModel userModel) async {
-//   List<MessageModel> messagesList = [];
-//   messagesList.add(messagesStream(userModel));
-//   if (messagesList.isNotEmpty) {
-//     emit(SendMessageState(messagesList: messagesList));
-//   } else {
-//     emit(MessengerInit());
-//   }
-//   return messagesList;
-// }
 }
 
 class MessengerStates extends Equatable {
@@ -80,9 +55,7 @@ class MessengerInit extends MessengerStates {}
 class SendMessageState extends MessengerStates {
   List<MessageModel> messagesList;
 
-  SendMessageState({required this.messagesList}) {
-    print('messages from SendMessageState ${messagesList.length}');
-  }
+  SendMessageState({required this.messagesList});
 
   @override
   List<Object?> get props => [messagesList];

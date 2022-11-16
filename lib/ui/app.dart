@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../core/service_locator.dart';
 import '../core/themes/colors.dart';
+import 'bloc/image_picker/image_picker_cubit.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -21,6 +22,9 @@ class App extends StatelessWidget {
           BlocProvider(
             create: (context) => sl<ProfileInfoCubit>(),
           ),
+          BlocProvider(
+            create: (context) => sl<ImagePickerCubit>(),
+          ),
         ],
         child: MaterialApp(
           theme: ThemeData(
@@ -35,6 +39,4 @@ class App extends StatelessWidget {
       ),
     );
   }
-
-
 }

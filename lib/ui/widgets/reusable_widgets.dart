@@ -516,7 +516,7 @@ class ReUsableWidgets {
                         ListTile(
                             title: const Center(
                               child: Text(
-                                'Image from files',
+                                'Photo',
                                 style: TextStyle(
                                   color: Colors.blue,
                                 ),
@@ -534,7 +534,7 @@ class ReUsableWidgets {
                         ListTile(
                             title: const Center(
                               child: Text(
-                                'Photo',
+                                'Image from files',
                                 style: TextStyle(
                                   color: Colors.blue,
                                 ),

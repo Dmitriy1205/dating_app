@@ -17,7 +17,10 @@ class OwnMessageCard extends StatelessWidget {
       alignment: Alignment.centerRight,
       child: ConstrainedBox(
         constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width - 15,
+          maxWidth: MediaQuery
+              .of(context)
+              .size
+              .width - 15,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -78,7 +81,8 @@ class OwnMessageCard1 extends StatelessWidget {
             right: 55,
             child: Row(
               children: [
-                Text(DateFormat.jm().format((DateTime.parse(messageModel.time!))),
+                Text(DateFormat.jm().format(
+                    (DateTime.parse(messageModel.time!))),
                     style: const TextStyle(color: Colors.black54)),
                 Text(' ${messageModel.senderName}'),
               ],
@@ -91,14 +95,26 @@ class OwnMessageCard1 extends StatelessWidget {
             child: Image.asset(Content.interestsList[3]),
             // fit: BoxFit.fill,
           ),
-        ),
-        Positioned(top: 20,right: 55,
-          child: Text(
-            ' ${messageModel.message}',
-            style: const TextStyle(fontSize: 16, color: Colors.black87),
-          ),
-        ),
+        ), Positioned(
+            top: 20,
+            right: 55,
+            child:
+            messageModel.attachmentUrl == null ? messagePositioned() : attachmentPositioned()),
       ],
     );
   }
+
+  Widget messagePositioned() {
+    return Text(
+      ' ${messageModel.message}',
+      style: const TextStyle(fontSize: 16, color: Colors.black87),
+    );
+  }
+ Widget attachmentPositioned(){
+    return Container(
+      child: Image.network( messageModel.attachmentUrl!),
+    );
+ }
 }
+
+

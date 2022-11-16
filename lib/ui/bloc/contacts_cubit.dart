@@ -17,7 +17,7 @@ class ContactsCubit extends Cubit<ContactsCubitStates> {
     usersList = await db.getPals();
     for (int i = 0; i < usersList.length; i++) {
       print('${usersList[i].firstName}');
-      if (usersList[i].firstName == null) {
+      if (usersList[i].firstName == '') {
         print('delete ${usersList[i].firstName}');
         usersList.removeAt(i);
       }

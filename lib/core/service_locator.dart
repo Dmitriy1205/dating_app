@@ -26,7 +26,8 @@ import '../ui/bloc/profile_info_cubit/profile_info_cubit.dart';
 final sl = GetIt.instance;
 UserModel userModel = UserModel();
 
-get user => userModel;
+get getUser => userModel;
+
 Future<void> boot() async {
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
