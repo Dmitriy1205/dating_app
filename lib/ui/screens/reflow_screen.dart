@@ -1,4 +1,3 @@
-
 import 'package:dating_app/core/constants.dart';
 import 'package:dating_app/ui/screens/sing_up_screen.dart';
 import 'package:dating_app/ui/screens/terms.dart';
@@ -22,7 +21,7 @@ class ReflowScreen extends StatelessWidget {
               fit: BoxFit.fill,
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 50),
+              padding: const EdgeInsets.symmetric(vertical: 50,horizontal: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -45,7 +44,7 @@ class ReflowScreen extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 27,
+                        fontSize: 25,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -53,66 +52,72 @@ class ReflowScreen extends StatelessWidget {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(15, 0, 15, 45),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  const Text(
-                    'Gain free access to the Myness interface'
-                    ' and start meeting people today',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 40),
-                    child: buildTextColumn(context),
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SignUpScreen(),
-                        ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.transparent,
-                      padding: EdgeInsets.zero,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
+            SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(
+                    MediaQuery.of(context).size.width / 17,
+                    MediaQuery.of(context).size.height / 1.95,
+                    MediaQuery.of(context).size.width / 17,
+                   15,),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    const Text(
+                      'Gain free access to the Myness interface'
+                      ' and start meeting people today',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
                       ),
+                      textAlign: TextAlign.center,
                     ),
-                    child: Ink(
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: const Alignment(0.1, 2.1),
-                            colors: [
-                              Colors.orange.withOpacity(0.8),
-                              Colors.purple.withOpacity(0.8),
-                            ],
+                    Padding(
+                      padding:  EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 17,),
+                      child: buildTextColumn(context),
+                    ),
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SignUpScreen(),
                           ),
-                          borderRadius: BorderRadius.circular(50)),
-                      child: Container(
-                        width: 350,
-                        height: 50,
-                        alignment: Alignment.center,
-                        child: const Text(
-                          'LET\'S GO',
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.transparent,
+                        padding: EdgeInsets.zero,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      child: Ink(
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: const Alignment(0.1, 2.1),
+                              colors: [
+                                Colors.orange.withOpacity(0.8),
+                                Colors.purple.withOpacity(0.8),
+                              ],
+                            ),
+                            borderRadius: BorderRadius.circular(50)),
+                        child: Container(
+                          width: 350,
+                          height: 50,
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'LET\'S GO',
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],
@@ -228,13 +233,11 @@ Widget buildTextColumn(BuildContext context) {
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
                     Navigator.push(
-
                       context,
                       MaterialPageRoute(
                         builder: (context) => TermsAndConditions(),
                       ),
                     );
-
                   }),
           ],
         ),

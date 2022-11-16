@@ -42,7 +42,22 @@ class _SignUpFormState extends State<SignUpForm> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthCubit, AuthState>(
+    return BlocConsumer<AuthCubit, AuthState>(
+      listener: (context, state) {
+        if (state.status!.isError) {
+          const snackBar = SnackBar(
+            backgroundColor: Colors.redAccent,
+            content: Text(
+              'User is already exist , you need to login',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }
+      },
       builder: (context, state) {
         return Stack(
           fit: StackFit.expand,
@@ -249,7 +264,8 @@ class _SignUpFormState extends State<SignUpForm> {
                                                   phone: _phoneController.text,
                                                   date: _dateController.text,
                                                   email: _emailController.text,
-                                                  joinDate: Jiffy(now).yMMMMd, pageId: 1,
+                                                  joinDate: Jiffy(now).yMMMMd,
+                                                  pageId: 1,
                                                 ),
                                               ),
                                             );

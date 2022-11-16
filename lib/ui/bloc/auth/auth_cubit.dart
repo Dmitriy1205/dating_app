@@ -30,8 +30,8 @@ class AuthCubit extends Cubit<AuthState> {
       emit(state.copyWith(
         status: Status.loaded(),
       ));
-    } on Exception catch (e) {
-      emit(state.copyWith(status: Status.error(e.toString())));
+    } on BadRequestException catch (e) {
+      emit(state.copyWith(status: Status.error(e.message)));
     }
   }
 

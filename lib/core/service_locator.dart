@@ -10,6 +10,7 @@ import 'package:dating_app/ui/bloc/google_auth/google_auth_cubit.dart';
 import 'package:dating_app/ui/bloc/personal_profile_cubit/personal_profile_cubit.dart';
 
 import 'package:dating_app/ui/bloc/messenger_cubit.dart';
+import 'package:dating_app/ui/bloc/settings/settings_cubit.dart';
 import 'package:dating_app/ui/screens/messenger_screen.dart';
 
 import 'package:dating_app/ui/bloc/profile/profile_cubit.dart';
@@ -32,6 +33,7 @@ final sl = GetIt.instance;
 UserModel userModel = UserModel();
 
 get user => userModel;
+
 Future<void> boot() async {
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -48,7 +50,7 @@ Future<void> boot() async {
 
   //Cubits
   sl.registerFactory(() => GoogleAuthCubit(sl()));
-
+  sl.registerLazySingleton(() => SettingsCubit(sl()));
   sl.registerFactory(() => PersonalProfileCubit(sl()));
   sl.registerFactory(() => HomeCubit(db: sl()));
 
