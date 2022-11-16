@@ -77,7 +77,7 @@ class Profile extends StatelessWidget {
                           style: TextStyle(fontSize: 14),
                         ),
                         Text(
-                          state.user!.birthDate!,
+                          state.user!.birthDate! ?? '',
                           textAlign: TextAlign.start,
                           style: TextStyle(color: Colors.grey, fontSize: 14),
                         ),
