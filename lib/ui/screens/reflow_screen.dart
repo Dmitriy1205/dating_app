@@ -9,119 +9,117 @@ class ReflowScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: Scaffold(
-        body: Stack(
-          fit: StackFit.expand,
-          alignment: Alignment.center,
-          children: [
-            Image.asset(
-              Content.reflow,
-              fit: BoxFit.fill,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 50,horizontal: 10),
+    return Scaffold(
+      body: Stack(
+        fit: StackFit.expand,
+        alignment: Alignment.center,
+        children: [
+          Image.asset(
+            Content.reflow,
+            fit: BoxFit.fill,
+          ),
+
+          SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(
+                  MediaQuery.of(context).size.width / 17,
+                  MediaQuery.of(context).size.height / 1.95,
+                  MediaQuery.of(context).size.width / 17,
+                 15,),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    splashRadius: 0.1,
-                    iconSize: 28,
-                    alignment: Alignment.topLeft,
-                    icon: const Icon(
-                      Icons.close,
-                      color: Colors.white,
+                  const Text(
+                    'Gain free access to the Myness interface'
+                    ' and start meeting people today',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
                     ),
+                    textAlign: TextAlign.center,
                   ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 5),
-                    child: Text(
-                      'Make your Myness account in minutes',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
+                  Padding(
+                    padding:  EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 17,),
+                    child: buildTextColumn(context),
+                  ),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SignUpScreen(),
+                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.transparent,
+                      padding: EdgeInsets.zero,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    child: Ink(
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: const Alignment(0.1, 2.1),
+                            colors: [
+                              Colors.orange.withOpacity(0.8),
+                              Colors.purple.withOpacity(0.8),
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(50)),
+                      child: Container(
+                        width: 350,
+                        height: 50,
+                        alignment: Alignment.center,
+                        child: const Text(
+                          'LET\'S GO',
+                        ),
                       ),
                     ),
                   ),
                 ],
               ),
             ),
-            SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(
-                    MediaQuery.of(context).size.width / 17,
-                    MediaQuery.of(context).size.height / 1.95,
-                    MediaQuery.of(context).size.width / 17,
-                   15,),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    const Text(
-                      'Gain free access to the Myness interface'
-                      ' and start meeting people today',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    Padding(
-                      padding:  EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 17,),
-                      child: buildTextColumn(context),
-                    ),
-                    const SizedBox(
-                      height: 25,
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const SignUpScreen(),
-                          ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.transparent,
-                        padding: EdgeInsets.zero,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                      child: Ink(
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: const Alignment(0.1, 2.1),
-                              colors: [
-                                Colors.orange.withOpacity(0.8),
-                                Colors.purple.withOpacity(0.8),
-                              ],
-                            ),
-                            borderRadius: BorderRadius.circular(50)),
-                        child: Container(
-                          width: 350,
-                          height: 50,
-                          alignment: Alignment.center,
-                          child: const Text(
-                            'LET\'S GO',
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 50,horizontal: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  splashRadius: 0.1,
+                  iconSize: 28,
+                  alignment: Alignment.topLeft,
+                  icon: const Icon(
+                    Icons.close,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 5),
+                  child: Text(
+                    'Make your Myness account in minutes',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

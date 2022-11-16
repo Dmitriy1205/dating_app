@@ -26,7 +26,7 @@ class WelcomeScreen extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push<void>(
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => ReflowScreen(),
