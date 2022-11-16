@@ -1,21 +1,37 @@
 import 'package:dating_app/core/constants.dart';
+import 'package:dating_app/ui/bloc/settings/settings_cubit.dart';
 import 'package:dating_app/ui/screens/blocked_contacts_screen.dart';
 import 'package:dating_app/ui/screens/faq_screen.dart';
 import 'package:dating_app/ui/screens/privacy_screen.dart';
 import 'package:dating_app/ui/screens/terms.dart';
+import 'package:dating_app/ui/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 
+import '../../core/service_locator.dart';
 import 'friend_list_screen.dart';
 
-class SettingsScreen extends StatefulWidget {
-  SettingsScreen({Key? key}) : super(key: key);
+class SettingsScreen extends StatelessWidget {
+  const SettingsScreen({Key? key}) : super(key: key);
 
   @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => sl<SettingsCubit>(),
+      child: Settings(),
+    );
+  }
 }
 
-class _SettingsScreenState extends State<SettingsScreen> {
+class Settings extends StatefulWidget {
+  Settings({Key? key}) : super(key: key);
+
+  @override
+  State<Settings> createState() => _SettingsState();
+}
+
+class _SettingsState extends State<Settings> {
   bool isToggle = true;
 
   @override
@@ -43,79 +59,117 @@ class _SettingsScreenState extends State<SettingsScreen> {
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
-      body: ListView.builder(
-        itemCount: Content.settingNames.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5),
-            child: InkWell(
-              onTap: () {
-                Content.settingNames[index] == Content.settingNames.first
-                    ? const SizedBox()
-                    : Content.settingNames[index] == Content.settingNames.last
-                        ? Container()
-                        : Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => screens[index]));
-              },
-              child: SizedBox(
-                height: 80,
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 25, right: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
+      body: BlocBuilder<SettingsCubit, SettingsState>(
+        builder: (context, state) {
+          return ListView.builder(
+            itemCount: Content.settingNames.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: InkWell(
+                  onTap: () {
+                    Content.settingNames[index] == Content.settingNames.first
+                        ? const SizedBox()
+                        : Content.settingNames[index] ==
+                                Content.settingNames.last
+                            ? showAlertDialog(context,
+                                context.read<SettingsCubit>().logout())
+                            : Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => screens[index]));
+                  },
+                  child: SizedBox(
+                    height: 80,
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 25, right: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            SizedBox(
-                              height: 35,
-                              width: 25,
-                              child: Image.asset(
-                                Content.settingsList[index],
-                              ),
+                            Row(
+                              children: [
+                                SizedBox(
+                                  height: 35,
+                                  width: 25,
+                                  child: Image.asset(
+                                    Content.settingsList[index],
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                Text(
+                                  Content.settingNames[index],
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                              ],
                             ),
-                            const SizedBox(
-                              width: 20,
-                            ),
-                            Text(
-                              Content.settingNames[index],
-                              style: TextStyle(fontSize: 18),
-                            ),
+                            Content.settingNames[index] ==
+                                    Content.settingNames.first
+                                ? FlutterSwitch(
+                                    height: 22,
+                                    width: 40,
+                                    padding: 2,
+                                    toggleSize: 17,
+                                    activeColor: Colors.orange.shade700,
+                                    onToggle: (value) {
+                                      setState(() {
+                                        isToggle = value;
+                                      });
+                                    },
+                                    value: isToggle,
+                                  )
+                                : Content.settingNames[index] ==
+                                        Content.settingNames.last
+                                    ? Container()
+                                    : const Icon(
+                                        Icons.arrow_forward_ios_rounded,
+                                        size: 12,
+                                      ),
                           ],
                         ),
-                        Content.settingNames[index] ==
-                                Content.settingNames.first
-                            ? FlutterSwitch(
-                                height: 22,
-                                width: 40,
-                                padding: 2,
-                                toggleSize: 17,
-                                activeColor: Colors.orange.shade700,
-                                onToggle: (value) {
-                                  setState(() {
-                                    isToggle = value;
-                                  });
-                                },
-                                value: isToggle,
-                              )
-                            : Content.settingNames[index] ==
-                                    Content.settingNames.last
-                                ? Container()
-                                : const Icon(
-                                    Icons.arrow_forward_ios_rounded,
-                                    size: 12,
-                                  ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ),
+              );
+            },
           );
         },
       ),
+    );
+  }
+
+  showAlertDialog(BuildContext context, Future f) {
+    Widget cancelButton = TextButton(
+      child: const Text('Cancel'),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    Widget continueButton = TextButton(
+      child: Text('Logout'),
+      onPressed: () {
+        f.then((value) => Navigator.push(
+            context, MaterialPageRoute(builder: (context) => WelcomeScreen())));
+      },
+    );
+
+    AlertDialog alert = AlertDialog(
+      title: Text('Warning'),
+      content: const Text('Are you sure you want to logout?'),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }

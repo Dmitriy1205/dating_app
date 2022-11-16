@@ -68,18 +68,7 @@ class _HobbiesScreenState extends State<HobbiesScreen> {
                               GestureDetector(
                                 onTap: () {
                                   Navigator.pop(context, widget.hobbies);
-                                  const snackBar = SnackBar(
-                                    backgroundColor: Colors.teal,
-                                    content: Text(
-                                      'Success',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  );
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(snackBar);
+
                                 },
                                 child: SizedBox(
                                   height: 25,

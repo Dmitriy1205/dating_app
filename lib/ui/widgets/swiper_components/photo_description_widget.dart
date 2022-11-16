@@ -14,6 +14,8 @@ class PhotoDescriptionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       photoCard.description,
+      overflow: TextOverflow.ellipsis,
+      maxLines: 3,
       style: TextStyle(
         fontSize: 14.0,
         fontWeight: FontWeight.normal,

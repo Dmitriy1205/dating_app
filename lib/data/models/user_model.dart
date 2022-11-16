@@ -1,47 +1,56 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class UserModel {
   UserModel(
-      {this.firstName,
-      this.lastName,
-      this.email,
-      this.phoneNumber,
+      {this.id,
+      this.firstName,
+      // this.lastName,
+      this.phone,
       this.birthday,
-      this.userId,
-      this.registrationDate});
+      this.email,
+      this.joinDate});
 
+  String? id;
   String? firstName;
-  String? lastName;
-  String? phoneNumber;
-  String? email;
-  String? birthday;
-  String? userId;
-  String? registrationDate;
 
-  factory UserModel.fromJson(Map<String, dynamic> json) {
-    return UserModel(firstName : json['name'],
-    lastName : json['lastName'],
-    phoneNumber : json['phoneNumber'],
-    email : json['email'],
-    birthday : json['birthday'],
-    userId : json['userId'],
-    registrationDate : json['registrationDate'],);
+  // String? lastName;
+  String? phone;
+  String? birthday;
+  String? email;
+  String? joinDate;
+
+  factory UserModel.fromFirestore(
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+    SnapshotOptions? options,
+  ) {
+    final data = snapshot.data();
+    return UserModel(
+      id: data?['id'],
+      birthday: data?['date'],
+      email: data?['email'],
+      joinDate: data?['joinDate'],
+    );
   }
 
-  // factory UserModel.fromJson(Map<String, dynamic> json) {
-  //   return UserModel(
-  //     firstName: json['firstName'],
-  //     lastName: json['lastName'],
-  //     phoneNumber: json['phoneNumber'],
-  //     email: json['email'],
-  //     birthday: json['birthday'],
-  //   );
-  // }
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      id: json['id'],
+      firstName: json['name'],
+      // lastName: json['lastName'],
+      phone: json['phone'],
+      birthday: json['date'],
+      email: json['email'],
+      joinDate: json['joinDate'],
+    );
+  }
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toFirestore() => {
+        'id': id,
         'name': firstName,
-        'lastName': lastName,
-        'phoneNumber': phoneNumber,
+        // 'lastName': lastName,
+        'phone': phone,
+        'date': birthday,
         'email': email,
-        'userId': userId,
-        'registrationDate': registrationDate
+        'joinDate': joinDate
       };
 }

@@ -20,7 +20,7 @@ class StorageDataProvider {
     }
   }
 
-  Future<List<String>> getAll(String id) async {
+  Future<List<String>> getAllById(String id) async {
     try {
       var images = await storage.ref('users/$id').listAll();
       print(images);

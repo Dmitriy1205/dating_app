@@ -1,40 +1,95 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:dating_app/ui/bloc/personal_profile_cubit/personal_profile_cubit.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../core/service_locator.dart';
+import '../../data/models/profile_info_data.dart';
+
+class PersonalProf extends StatelessWidget {
+  final String id;
+  final String name;
+  final String bio;
+  final String height;
+
+  // final String image;
+  final String joinDate;
+
+  // final List<String> pic;
+  final Map<String, dynamic> interests;
+  final Map<String, dynamic> lookingFor;
+
+  const PersonalProf(
+      {Key? key,
+      required this.name,
+      required this.bio,
+      required this.height,
+      // required this.image,
+      required this.joinDate,
+      // required this.pic,
+      required this.interests,
+      required this.lookingFor,
+      required this.id})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => sl<PersonalProfileCubit>(),
+      child: PersonProfile(
+        name: name,
+        bio: bio,
+        height: height,
+        interests: interests,
+        lookingFor: lookingFor,
+        // image: image,
+        joinDate: joinDate,
+        // pic: pic,
+        id: id,
+      ),
+    );
+  }
+}
 
 class PersonProfile extends StatefulWidget {
-  const PersonProfile({Key? key}) : super(key: key);
+  final String id;
+  final String name;
+  final String bio;
+  final String height;
+
+  // final String image;
+  final String joinDate;
+
+  // final List<String> pic;
+  final Map<String, dynamic> interests;
+  final Map<String, dynamic> lookingFor;
+
+  const PersonProfile({
+    Key? key,
+    required this.name,
+    required this.bio,
+    required this.height,
+    required this.interests,
+    required this.lookingFor,
+    // required this.image,
+    required this.joinDate,
+    // required this.pic,
+    required this.id,
+  }) : super(key: key);
 
   @override
   State<PersonProfile> createState() => _PersonProfileState();
 }
 
 class _PersonProfileState extends State<PersonProfile> {
-  final List<Image> images = [
-    Image.asset(
-      'assets/images/pic.png',
-      fit: BoxFit.fill,
-    ),
-    Image.asset(
-      'assets/images/welcome.png',
-      fit: BoxFit.fill,
-    ),
-    Image.asset(
-      'assets/images/pic.png',
-      fit: BoxFit.fill,
-    ),
-  ];
-
   double _currentPosition = 0.0;
 
-  double _validPosition(double position) {
-    if (position >= images.length) return 0;
-    if (position < 0) return images.length - 1.0;
-    return position;
-  }
-
-  void _updatePosition(double position) {
-    setState(() => _currentPosition = _validPosition(position));
+  @override
+  void initState() {
+    context.read<PersonalProfileCubit>().getPics(widget.id);
+    print('current id ${widget.id}');
+    super.initState();
   }
 
   @override
@@ -42,205 +97,294 @@ class _PersonProfileState extends State<PersonProfile> {
     return Scaffold(
       body: SingleChildScrollView(
         physics: ClampingScrollPhysics(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Stack(
+        child: BlocBuilder<PersonalProfileCubit, PersonalProfileState>(
+          builder: (context, state) {
+            if (state.status!.isLoading) {
+              return const Padding(
+                padding: EdgeInsets.only(top: 400),
+                child: Center(child: CircularProgressIndicator()),
+              );
+            }
+            final List<Image> pic = List.generate(
+              state.pic!.length,
+              (index) => Image.network(
+                state.pic![index],
+                fit: BoxFit.fill,
+                height: MediaQuery.of(context).size.height / 1.7,
+                filterQuality: FilterQuality.high,
+              ),
+            );
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height / 1.7,
-                  width: MediaQuery.of(context).size.width,
-                  child: CarouselSlider(
-                    items: images,
-                    options: CarouselOptions(
-                        scrollDirection: Axis.vertical,
-                        scrollPhysics: const ClampingScrollPhysics(),
-                        viewportFraction: 1,
-                        enableInfiniteScroll: false,
-                        onScrolled: (item) {
-                          _updatePosition(item!);
-                        }),
-                  ),
-                  // Image.asset('assets/images/pic.png',fit: BoxFit.fill,),
-                ),
-                Positioned(
-                  child: IconButton(
-                    padding: const EdgeInsets.fromLTRB(23, 70, 8, 8),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    splashRadius: 0.1,
-                    iconSize: 28,
-                    alignment: Alignment.topLeft,
-                    icon: const Icon(
-                      Icons.close,
-                      color: Colors.black,
+                Stack(
+                  children: [
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height / 1.7,
+                      width: MediaQuery.of(context).size.width,
+                      child: CarouselSlider(
+                        items: pic,
+                        options: CarouselOptions(
+                            scrollDirection: Axis.vertical,
+                            scrollPhysics: const ClampingScrollPhysics(),
+                            viewportFraction: 1,
+                            enableInfiniteScroll: false,
+                            onScrolled: (item) {
+                              double _validPosition(double position) {
+                                if (position >= state.pic!.length) return 0;
+                                if (position < 0) {
+                                  return state.pic!.length - 1.0;
+                                }
+                                return position;
+                              }
+
+                              _updatePosition(double position) {
+                                setState(() => _currentPosition =
+                                    _validPosition(position));
+                              }
+
+                              _updatePosition(item!);
+                            }),
+                      ),
+                      // Image.asset('assets/images/pic.png',fit: BoxFit.fill,),
                     ),
+                    Positioned(
+                      child: IconButton(
+                        padding: const EdgeInsets.fromLTRB(23, 70, 8, 8),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        splashRadius: 0.1,
+                        iconSize: 28,
+                        alignment: Alignment.topLeft,
+                        icon: const Icon(
+                          Icons.close,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      right: 20,
+                      top: 70,
+                      child: DotsIndicator(
+                        axis: Axis.vertical,
+                        dotsCount: state.pic!.length,
+                        position: _currentPosition,
+                        decorator: DotsDecorator(
+                            size: Size(15, 12),
+                            activeSize: Size(15, 12),
+                            color: Colors.pink.withOpacity(0.2),
+                            activeColor: Colors.pink.withOpacity(0.6)),
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.name,
+                        textAlign: TextAlign.start,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      const Text(
+                        'Location',
+                        textAlign: TextAlign.start,
+                        style: TextStyle(color: Colors.grey, fontSize: 14),
+                      ),
+                    ],
                   ),
                 ),
-                Positioned(
-                  right: 20,
-                  top: 70,
-                  child: DotsIndicator(
-                    axis: Axis.vertical,
-                    dotsCount: images.length,
-                    position: _currentPosition,
-                    decorator: DotsDecorator(
-                        size: Size(15, 12),
-                        activeSize: Size(15, 12),
-                        color: Colors.pink.withOpacity(0.2),
-                        activeColor: Colors.pink.withOpacity(0.6)),
+                Divider(
+                  color: Colors.grey.shade400,
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'About',
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        widget.bio,
+                        textAlign: TextAlign.start,
+                        style:
+                            const TextStyle(color: Colors.grey, fontSize: 14),
+                      ),
+                    ],
                   ),
+                ),
+                Divider(
+                  color: Colors.grey.shade400,
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 30),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Basic Profile',
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        children: [
+                          const Text(
+                            'Height : ',
+                            textAlign: TextAlign.start,
+                            style: TextStyle(fontSize: 14),
+                          ),
+                          Text(
+                            widget.height,
+                            textAlign: TextAlign.start,
+                            style: TextStyle(color: Colors.grey, fontSize: 14),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        children: const [
+                          Text(
+                            'Relationship Status : ',
+                            textAlign: TextAlign.start,
+                            style: TextStyle(fontSize: 14),
+                          ),
+                          Text(
+                            'Single',
+                            textAlign: TextAlign.start,
+                            style: TextStyle(color: Colors.grey, fontSize: 14),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        children: [
+                          const Text(
+                            'Joined Date : ',
+                            textAlign: TextAlign.start,
+                            style: TextStyle(fontSize: 14),
+                          ),
+                          Text(
+                            widget.joinDate,
+                            textAlign: TextAlign.start,
+                            style: TextStyle(color: Colors.grey, fontSize: 14),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                Divider(
+                  color: Colors.grey.shade400,
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Interests',
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Wrap(
+                        children: List<Widget>.generate(
+                          widget.interests.length,
+                          (index) => widget.interests.values.elementAt(index) ==
+                                  false
+                              ? const SizedBox()
+                              : Padding(
+                                  padding: const EdgeInsets.only(right: 6),
+                                  child: Chip(
+                                    label: Text(
+                                      widget.interests.keys.elementAt(index),
+                                      style: TextStyle(
+                                        color: Colors.grey.shade800,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                        ).toList(),
+                      ),
+                    ],
+                  ),
+                ),
+                Divider(
+                  color: Colors.grey.shade400,
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Looking For',
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Wrap(
+                        children: List<Widget>.generate(
+                          widget.lookingFor.length,
+                          (index) =>
+                              widget.lookingFor.values.elementAt(index) == false
+                                  ? const SizedBox()
+                                  : Padding(
+                                      padding: const EdgeInsets.only(right: 6),
+                                      child: Chip(
+                                        label: Text(
+                                          widget.lookingFor.keys
+                                              .elementAt(index),
+                                          style: TextStyle(
+                                            color: Colors.grey.shade800,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                        ).toList(),
+                      ),
+                      const SizedBox(
+                        height: 35,
+                      ),
+                    ],
+                  ),
+                ),
+                Divider(
+                  color: Colors.grey.shade400,
                 ),
               ],
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
-                    'Name',
-                    textAlign: TextAlign.start,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                  ),
-                  SizedBox(height: 5,),
-                  Text(
-                    'Location',
-                    textAlign: TextAlign.start,
-                    style: TextStyle(color: Colors.grey, fontSize: 14),
-                  ),
-
-                ],
-              ),
-
-            ),
-            Divider(color: Colors.grey.shade400,),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
-                    'About',
-                    textAlign: TextAlign.start,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                  ),
-                  SizedBox(height: 5,),
-                  Text(
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do '
-                        'eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut '
-                        'enim ad minim veniam, quis nostrud exercitation ullamco laboris '
-                        'nisi ut aliquip ex ea .',
-                    textAlign: TextAlign.start,
-                    style: TextStyle(color: Colors.grey, fontSize: 14),
-                  ),
-
-                ],
-              ),
-
-            ),
-            Divider(color: Colors.grey.shade400,),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 10, 20, 30),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children:  [
-                  const Text(
-                    'Basic Profile',
-                    textAlign: TextAlign.start,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                  ),
-                  const SizedBox(height: 5,),
-                  Row(
-                    children: const [
-                      Text(
-                        'Height : ',
-                        textAlign: TextAlign.start,
-                        style: TextStyle( fontSize: 14),
-                      ),
-                      Text(
-                        '164 cm',
-                        textAlign: TextAlign.start,
-                        style: TextStyle(color: Colors.grey, fontSize: 14),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 5,),
-                  Row(
-                    children: const [
-                      Text(
-                        'Relationship Status : ',
-                        textAlign: TextAlign.start,
-                        style: TextStyle( fontSize: 14),
-                      ),
-                      Text(
-                        'single',
-                        textAlign: TextAlign.start,
-                        style: TextStyle(color: Colors.grey, fontSize: 14),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 5,),
-                  Row(
-                    children: const [
-                      Text(
-                        'Joined Date : ',
-                        textAlign: TextAlign.start,
-                        style: TextStyle( fontSize: 14),
-                      ),
-                      Text(
-                        'int cm',
-                        textAlign: TextAlign.start,
-                        style: TextStyle(color: Colors.grey, fontSize: 14),
-                      ),
-                    ],
-                  ),
-
-                ],
-              ),
-
-            ),
-            Divider(color: Colors.grey.shade400,),
-            //TODO: down chips
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
-                    'Interests',
-                    textAlign: TextAlign.start,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                  ),
-                  SizedBox(height: 5,),
-                  //TODO: Chips with Interests
-
-                ],
-              ),
-
-            ),
-            Divider(color: Colors.grey.shade400,),
-            //TODO: down chips
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
-                    'Looking For',
-                    textAlign: TextAlign.start,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                  ),
-                  SizedBox(height: 5,),
-                  //TODO: Chips with Interests
-
-                ],
-              ),
-
-            ),
-            Divider(color: Colors.grey.shade400,),
-          ],
+            );
+          },
         ),
       ),
     );

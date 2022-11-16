@@ -1,5 +1,4 @@
 import 'package:dating_app/data/data_provider/firestore_data_provider.dart';
-import 'package:dating_app/data/models/app_user.dart';
 import 'package:dating_app/data/models/profile_info_data.dart';
 import 'package:dating_app/data/models/search_pref_data.dart';
 
@@ -46,7 +45,7 @@ class DataRepository {
     return fields;
   }
 
-  Future<UserFields?> getUserFields(String id) async {
+  Future<UserModel?> getUserFields(String id) async {
     final fields = await dataProvider.getUserFields(id);
     return fields;
   }
@@ -57,11 +56,22 @@ class DataRepository {
   }
 
   Future<void> updateSearchFields(String id, Map<String, dynamic> data) async {
-    await dataProvider.updateSearchFields(id,data);
+    await dataProvider.updateSearchFields(id, data);
   }
 
   Future<void> updateProfileFields(String id, Map<String, dynamic> data) async {
     await dataProvider.updateProfileFields(id, data);
   }
-}
 
+  Future<List<ProfileInfoFields>> getAllFields() async {
+    return dataProvider.getAllFields();
+  }
+
+  Future<List<SearchPrefFields>> getAllSearchFields() async {
+    return dataProvider.getAllSearchFields();
+  }
+
+  Future<List<UserModel>> getAllUserFields() async {
+    return dataProvider.getAllUserFields();
+  }
+}

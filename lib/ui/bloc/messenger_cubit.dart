@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,7 +21,7 @@ class MessengerCubit extends Cubit<MessengerStates> {
 
   get currentUserName => auth.currentUser!.displayName;
 
-  get getChatId => db.getClearId(userModel.userId, currentUserId);
+  get getChatId => db.getClearId(userModel.id, currentUserId);
 
   void sendMessage(MessageModel messageModel, UserModel userModel,
       [bool attachment = false]) async {
@@ -33,7 +35,7 @@ class MessengerCubit extends Cubit<MessengerStates> {
 
   void messagesStream() async {
     final messages = db
-        .getAllChatMessagesStream(userModel.userId!, currentUserId)
+        .getAllChatMessagesStream(userModel.id!, currentUserId)
         .listen((event) {});
     messages.onData((data) {
       if (data.isNotEmpty) {

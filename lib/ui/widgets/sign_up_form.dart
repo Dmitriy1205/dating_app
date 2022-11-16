@@ -8,7 +8,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:jiffy/jiffy.dart';
 import '../../core/functions/validation.dart';
@@ -26,7 +25,7 @@ class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
   bool isChecked = false;
   final _nameController = TextEditingController(text: 'Yaroslav');
-  final _phoneController = TextEditingController(text: '932383265');
+  final _phoneController = TextEditingController( text: '932383265');
   final _dateController = TextEditingController();
   final _emailController = TextEditingController(text: 'yarshau@gmail.com');
   String verificationId = '';
@@ -43,7 +42,22 @@ class _SignUpFormState extends State<SignUpForm> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthCubit, AuthState>(
+    return BlocConsumer<AuthCubit, AuthState>(
+      listener: (context, state) {
+        if (state.status!.isError) {
+          const snackBar = SnackBar(
+            backgroundColor: Colors.redAccent,
+            content: Text(
+              'User is already exist , you need to login',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }
+      },
       builder: (context, state) {
         return Stack(
           fit: StackFit.expand,
@@ -103,7 +117,7 @@ class _SignUpFormState extends State<SignUpForm> {
                             ),
                             TextFormField(
                               autovalidateMode:
-                              AutovalidateMode.onUserInteraction,
+                                  AutovalidateMode.onUserInteraction,
                               autocorrect: false,
                               controller: _nameController,
                               keyboardType: TextInputType.name,
@@ -124,7 +138,7 @@ class _SignUpFormState extends State<SignUpForm> {
                             InternationalPhoneNumberInput(
                               initialValue: PhoneNumber(isoCode: 'UA'),
                               autoValidateMode:
-                              AutovalidateMode.onUserInteraction,
+                                  AutovalidateMode.onUserInteraction,
                               selectorConfig: const SelectorConfig(
                                 setSelectorButtonAsPrefixIcon: true,
                                 showFlags: false,
@@ -152,7 +166,7 @@ class _SignUpFormState extends State<SignUpForm> {
                             ),
                             TextFormField(
                               autovalidateMode:
-                              AutovalidateMode.onUserInteraction,
+                                  AutovalidateMode.onUserInteraction,
                               controller: _dateController,
                               autocorrect: false,
                               decoration: authFieldDecor('Date of Birth'),
@@ -174,7 +188,7 @@ class _SignUpFormState extends State<SignUpForm> {
                             ),
                             TextFormField(
                               autovalidateMode:
-                              AutovalidateMode.onUserInteraction,
+                                  AutovalidateMode.onUserInteraction,
                               controller: _emailController,
                               keyboardType: TextInputType.emailAddress,
                               decoration: authFieldDecor('Email'),
@@ -215,7 +229,7 @@ class _SignUpFormState extends State<SignUpForm> {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                      const TermsAndConditions()));
+                                                          const TermsAndConditions()));
                                             }),
                                     ],
                                   ),
@@ -229,33 +243,34 @@ class _SignUpFormState extends State<SignUpForm> {
                               onPressed: isChecked == false
                                   ? null
                                   : () {
-                                if (!_formKey.currentState!.validate()) {
-                                  return;
-                                }
-                                _formKey.currentState!.save();
+                                      if (!_formKey.currentState!.validate()) {
+                                        return;
+                                      }
+                                      _formKey.currentState!.save();
 
-                                context.read<AuthCubit>().signUp(
-                                    phoneNumber: _phoneController.text,
-                                    verificationId: verificationId,
-                                    nav: (verId) {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              OtpVerificationScreen(
-                                                page:
-                                                const ProfileInfoScreen(),
-                                                verId: verId,
-                                                name: _nameController.text,
-                                                phone: _phoneController.text,
-                                                date: _dateController.text,
-                                                email: _emailController.text,
-                                                joinDate: Jiffy(now).yMMMMd,
+                                      context.read<AuthCubit>().signUp(
+                                          phoneNumber: _phoneController.text,
+                                          verificationId: verificationId,
+                                          nav: (verId) {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    OtpVerificationScreen(
+                                                  page:
+                                                      const ProfileInfoScreen(),
+                                                  verId: verId,
+                                                  name: _nameController.text,
+                                                  phone: _phoneController.text,
+                                                  date: _dateController.text,
+                                                  email: _emailController.text,
+                                                  joinDate: Jiffy(now).yMMMMd,
+                                                  pageId: 1,
+                                                ),
                                               ),
-                                        ),
-                                      );
-                                    });
-                              },
+                                            );
+                                          });
+                                    },
                               style: ElevatedButton.styleFrom(
                                   primary: Colors.transparent,
                                   padding: EdgeInsets.zero,
@@ -285,7 +300,7 @@ class _SignUpFormState extends State<SignUpForm> {
                             Center(
                               child: Padding(
                                 padding:
-                                const EdgeInsets.fromLTRB(0, 105, 0, 0),
+                                    const EdgeInsets.fromLTRB(0, 105, 0, 0),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
@@ -334,3 +349,4 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 }
+

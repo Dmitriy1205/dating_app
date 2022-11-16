@@ -6,8 +6,8 @@ import 'package:dating_app/data/repositories/storage_repository.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../core/exceptions.dart';
-import '../../../data/models/app_user.dart';
 import '../../../data/models/status.dart';
+import '../../../data/models/user_model.dart';
 
 part 'profile_state.dart';
 
@@ -32,7 +32,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       final profile = await db.getProfileFields(id);
       final user = await db.getUserFields(id);
       final search = await db.getSearchFields(id);
-      final image = await storage.getAll(id);
+      final image = await storage.getAllById(id);
       emit(state.copyWith(
         status: Status.loaded(),
         profile: profile,

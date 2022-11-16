@@ -1,4 +1,3 @@
-
 import 'package:dating_app/core/constants.dart';
 import 'package:dating_app/ui/screens/sing_up_screen.dart';
 import 'package:dating_app/ui/screens/terms.dart';
@@ -10,51 +9,23 @@ class ReflowScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: Scaffold(
-        body: Stack(
-          fit: StackFit.expand,
-          alignment: Alignment.center,
-          children: [
-            Image.asset(
-              Content.reflow,
-              fit: BoxFit.fill,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 50),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    splashRadius: 0.1,
-                    iconSize: 28,
-                    alignment: Alignment.topLeft,
-                    icon: const Icon(
-                      Icons.close,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 5),
-                    child: Text(
-                      'Make your Myness account in minutes',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 27,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(15, 0, 15, 45),
+    return Scaffold(
+      body: Stack(
+        fit: StackFit.expand,
+        alignment: Alignment.center,
+        children: [
+          Image.asset(
+            Content.reflow,
+            fit: BoxFit.fill,
+          ),
+
+          SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(
+                  MediaQuery.of(context).size.width / 17,
+                  MediaQuery.of(context).size.height / 1.95,
+                  MediaQuery.of(context).size.width / 17,
+                 15,),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -69,7 +40,7 @@ class ReflowScreen extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    padding:  EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 17,),
                     child: buildTextColumn(context),
                   ),
                   const SizedBox(
@@ -115,8 +86,40 @@ class ReflowScreen extends StatelessWidget {
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 50,horizontal: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  splashRadius: 0.1,
+                  iconSize: 28,
+                  alignment: Alignment.topLeft,
+                  icon: const Icon(
+                    Icons.close,
+                    color: Colors.white,
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 5),
+                  child: Text(
+                    'Make your Myness account in minutes',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -228,13 +231,11 @@ Widget buildTextColumn(BuildContext context) {
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
                     Navigator.push(
-
                       context,
                       MaterialPageRoute(
                         builder: (context) => TermsAndConditions(),
                       ),
                     );
-
                   }),
           ],
         ),

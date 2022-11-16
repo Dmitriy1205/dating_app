@@ -9,8 +9,7 @@ class OtpCubit extends Cubit<OtpState> {
   OtpCubit(this.repository) : super(OtpState(status: Status.initial()));
   final AuthRepository repository;
 
-  Future<void> verify(
-
+  Future<void> verifySignUp(
     String verId,
     String code,
     String name,
@@ -19,8 +18,7 @@ class OtpCubit extends Cubit<OtpState> {
     String email,
     String joinDate,
   ) async {
-
-    await repository.phoneVerification(
+    await repository.verificationAfterSignUp(
       verId,
       code,
       name,
@@ -28,6 +26,17 @@ class OtpCubit extends Cubit<OtpState> {
       date,
       email,
       joinDate,
+    );
+    emit(state.copyWith(status: Status.loaded()));
+  }
+
+  Future<void> verifyLogin(
+    String verId,
+    String code,
+  ) async {
+    await repository.verificationAfterLogIn(
+      verId,
+      code,
     );
     emit(state.copyWith(status: Status.loaded()));
   }

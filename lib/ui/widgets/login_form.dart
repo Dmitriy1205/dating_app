@@ -36,7 +36,23 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthCubit, AuthState>(
+    return BlocConsumer<AuthCubit, AuthState>(
+      listener: (context,state){
+        if (state.status!.isError){
+          const snackBar = SnackBar(
+            backgroundColor: Colors.redAccent,
+            content: Text(
+              'No Match User. You Need To Sign up',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          );
+          ScaffoldMessenger.of(context)
+              .showSnackBar(snackBar);
+        }
+      },
       builder: (context, state) {
         return Scaffold(
           resizeToAvoidBottomInset: false,
@@ -146,6 +162,7 @@ class _LoginFormState extends State<LoginForm> {
                                                   OtpVerificationScreen(
                                                     verId: verId,
                                                     page: HomeScreen(),
+                                                    pageId: 2,
                                                   )));
                                     });
                               },

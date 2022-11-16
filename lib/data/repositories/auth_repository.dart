@@ -17,29 +17,23 @@ class AuthRepository {
 
   AuthRepository({required this.db, required this.auth});
 
+  Stream<User?> get authState => auth.authStateChanges();
+
   Future<void> signupWithPhone(
     String phoneNumber,
     String verificationId,
     void Function(String s) nav,
   ) async {
     try {
-      print('phoneNumber  TRYYY signupWithPhone ${phoneNumber}');
+      print('phoneNumber  TRYYY signupWithPhone $phoneNumber');
+
       await auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
-        verificationCompleted: (_) {
-          print(
-              'currentUser()!.phoneNumber --- CurrentUserId   ${currentUser()!.phoneNumber}');
-          print('phoneNumber   ${phoneNumber}');
-        },
+        verificationCompleted: (_) {},
         verificationFailed: (FirebaseAuthException e) {
           print(e.message);
         },
         codeSent: (verId, _) {
-          //TODO: uncomment below code in end for signup first user
-          // if(phoneNumber == currentUser()!.phoneNumber){
-          //   print(' User is already exist , you need to login');
-          //   return;
-          // }
           verificationId = verId;
           nav(verificationId);
           print('print 1 $verificationId');
@@ -60,32 +54,25 @@ class AuthRepository {
     void Function(String s) nav,
   ) async {
     try {
-      print(
-          'print 1 TRY');
-      await auth.verifyPhoneNumber(
-        phoneNumber: phoneNumber,
-        verificationCompleted: (_) {
-          // print(
-          //     'print 1 verificationCompleted --- CurrentUserId   ${auth.currentUser!.uid}');
-        },
-        verificationFailed: (FirebaseAuthException e) {
-          print('print  2 auth_repository login failed ${e.message}');
-        },
-        codeSent: (verId, _) {
-
-          verificationId = verId;
-          nav(verificationId);
-          // if (phoneNumber == currentUser()!.phoneNumber) {
-          //   verificationId = verId;
-          //   nav(verificationId);
-          //   print('print 1 $verificationId');
-
-          // } else {
-          //   print(' no match user');
-          // }
-        },
-        codeAutoRetrievalTimeout: (value) {},
-      );
+      List<UserModel> allUsers = await db.getAllUserFields();
+      final userPhone = allUsers.map((e) => e.phone);
+      if (userPhone.contains(phoneNumber)) {
+        await auth.verifyPhoneNumber(
+          phoneNumber: phoneNumber,
+          verificationCompleted: (_) {},
+          verificationFailed: (FirebaseAuthException e) {
+            print('print  2 auth_repository login failed ${e.message}');
+          },
+          codeSent: (verId, _) {
+            verificationId = verId;
+            nav(verificationId);
+            print('print 1 $verificationId');
+          },
+          codeAutoRetrievalTimeout: (value) {},
+        );
+      } else {
+        throw Exception();
+      }
     } on FirebaseAuthException catch (e) {
       throw BadRequestException(message: e.message!);
     } catch (e) {
@@ -93,7 +80,7 @@ class AuthRepository {
     }
   }
 
-  Future<void> phoneVerification(
+  Future<void> verificationAfterSignUp(
     String verId,
     String code,
     String name,
@@ -107,13 +94,29 @@ class AuthRepository {
           PhoneAuthProvider.credential(verificationId: verId, smsCode: code);
       var signIn = await auth.signInWithCredential(credential);
       signIn;
-      await db.createUser(signIn.user!, name, phone, date, email,joinDate,);
-      //TODO: uncomment below code in end for signup first user
-      // if (currentUser()!.uid.isEmpty) {
-      //   signIn;
-      //   await db.createUser(signIn.user!, name, phone, date, email);
-      // }
-      // signIn;
+      await db.createUser(
+        signIn.user!,
+        name,
+        phone,
+        date,
+        email,
+        joinDate,
+      );
+    } on FirebaseAuthException catch (e) {
+      throw BadRequestException(message: e.message!);
+    } catch (e) {
+      throw BadRequestException(message: e.toString());
+    }
+  }
+
+  Future<void> verificationAfterLogIn(
+    String verId,
+    String code,
+  ) async {
+    try {
+      PhoneAuthCredential credential =
+          PhoneAuthProvider.credential(verificationId: verId, smsCode: code);
+      await auth.signInWithCredential(credential);
     } on FirebaseAuthException catch (e) {
       throw BadRequestException(message: e.message!);
     } catch (e) {
@@ -133,7 +136,6 @@ class AuthRepository {
         ],
         nonce: nonce,
       );
-
       final oauthCredential = OAuthProvider("apple.com").credential(
         idToken: appleCredential.identityToken,
         rawNonce: rawNonce,
@@ -190,8 +192,14 @@ class AuthRepository {
     return auth.currentUser;
   }
 
+  Stream<User?> getUserStatus() {
+    return auth.userChanges();
+  }
+
   Future<void> logout() async {
     await auth.signOut();
+    await GoogleSignIn().signOut();
+    await FacebookAuth.instance.logOut();
   }
 
   String _sha256ofString(String input) {
