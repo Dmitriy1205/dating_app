@@ -15,89 +15,92 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white24,
-        automaticallyImplyLeading: false,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: GestureDetector(
-                onTap: () {
-                  //TODO: navigation to messenger
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ContactsScreen()));
-                },
-                child: SizedBox(
-                  height: 50,
-                  width: 50,
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white24,
+          automaticallyImplyLeading: false,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: GestureDetector(
+                  onTap: () {
+                    //TODO: navigation to messenger
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ContactsScreen()));
+                  },
+                  child: SizedBox(
+                    height: 50,
+                    width: 50,
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      child: Image.asset('assets/icons/messenger.png'),
                     ),
-                    child: Image.asset('assets/icons/messenger.png'),
                   ),
                 ),
               ),
-            ),
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      //TODO: navigation to profile
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ProfileScreen()));
-                    },
-                    child: SizedBox(
-                      height: 50,
-                      width: 50,
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        child: Image.asset(
-                          'assets/icons/profile.png',
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: GestureDetector(
+                      onTap: () {
+                        //TODO: navigation to profile
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ProfileScreen()));
+                      },
+                      child: SizedBox(
+                        height: 50,
+                        width: 50,
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                          child: Image.asset(
+                            'assets/icons/profile.png',
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: GestureDetector(
-                      onTap: () {
-                        //TODO: navigation to filter_screen
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => FilterScreen()));
-                      },
-                      child: SizedBox(
-                          height: 50,
-                          width: 50,
-                          child: Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                              child: Image.asset('assets/icons/menu.png')))),
-                ),
-              ],
-            ),
-          ],
+                  Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: GestureDetector(
+                        onTap: () {
+                          //TODO: navigation to filter_screen
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => FilterScreen()));
+                        },
+                        child: SizedBox(
+                            height: 50,
+                            width: 50,
+                            child: Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+                                child: Image.asset('assets/icons/menu.png')))),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          elevation: 0,
         ),
-        elevation: 0,
-      ),
-      body: BlocProvider(
-        create: (context) => sl<HomeCubit>(),
-        child: const HomeBody(),
+        body: BlocProvider(
+          create: (context) => sl<HomeCubit>(),
+          child: const HomeBody(),
+        ),
       ),
     );
   }

@@ -26,23 +26,20 @@ class AuthRepository {
   ) async {
     try {
       print('phoneNumber  TRYYY signupWithPhone $phoneNumber');
-      if (phoneNumber != currentUser()!.phoneNumber) {
-        await auth.verifyPhoneNumber(
-          phoneNumber: phoneNumber,
-          verificationCompleted: (_) {},
-          verificationFailed: (FirebaseAuthException e) {
-            print(e.message);
-          },
-          codeSent: (verId, _) {
-            verificationId = verId;
-            nav(verificationId);
-            print('print 1 $verificationId');
-          },
-          codeAutoRetrievalTimeout: (value) {},
-        );
-      } else {
-        throw Exception('User is already exist , you need to login');
-      }
+
+      await auth.verifyPhoneNumber(
+        phoneNumber: phoneNumber,
+        verificationCompleted: (_) {},
+        verificationFailed: (FirebaseAuthException e) {
+          print(e.message);
+        },
+        codeSent: (verId, _) {
+          verificationId = verId;
+          nav(verificationId);
+          print('print 1 $verificationId');
+        },
+        codeAutoRetrievalTimeout: (value) {},
+      );
     } on FirebaseAuthException catch (e) {
       print('print 1 ${e.message.toString()}');
       throw BadRequestException(message: e.message!);
