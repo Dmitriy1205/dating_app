@@ -50,7 +50,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
           ),
           body: BlocBuilder<ContactsCubit, ContactsCubitStates>(
               builder: (context, state) {
-            if (state is ContactsCubitInitState) {
+            if (state.status!.isLoaded) {
               return ListView(
                 children: [
                   const Divider(
@@ -77,7 +77,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
                     height: 120,
                     child: ListView.builder(
                         shrinkWrap: true,
-                        itemCount: state.usersList.length,
+                        itemCount: state.usersList!.length,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
                           return Padding(
@@ -90,8 +90,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
                                   width: 70,
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(50),
-                                    child: Image.asset(
-                                      Content.hobbiesList[index],
+                                    child: Image.network(state.image![index],
                                       fit: BoxFit.fill,
                                     ),
                                   ),
@@ -99,7 +98,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
                                 const SizedBox(
                                   height: 5,
                                 ),
-                                Text(state.usersList[index].firstName!),
+                                Text(state.usersList![index].firstName!),
                               ],
                             ),
                           );
@@ -112,12 +111,13 @@ class _ContactsScreenState extends State<ContactsScreen> {
                     height: MediaQuery.of(context).size.height / 1.6,
                     child: ListView.builder(
                         shrinkWrap: true,
-                        itemCount: state.usersList.length,
+                        itemCount: state.usersList!.length,
                         itemBuilder: (context, index) {
+                          context.read<ContactsCubit>().getUrlImage(state.usersList![index].id!);
                           return GestureDetector(
                             onTap: () {
-                              bloc.palUser = state.usersList[index];
-                              MessengerScreen(user: state.usersList[index]);
+                              bloc.palUser = state.usersList![index];
+                              MessengerScreen(user: state.usersList![index]);
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -150,10 +150,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
                                             child: ClipRRect(
                                               borderRadius:
                                                   BorderRadius.circular(50),
-                                              child: Image.asset(
-                                                Content.hobbiesList[index],
-                                                fit: BoxFit.fill,
-                                              ),
+                                              child: Image.network(state.image![index])
                                             ),
                                           ),
                                         ),
@@ -165,7 +162,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                state.usersList[index]
+                                                state.usersList![index]
                                                     .firstName!,
                                                 style: const TextStyle(
                                                     fontWeight:
