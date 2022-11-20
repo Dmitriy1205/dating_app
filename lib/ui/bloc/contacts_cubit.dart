@@ -1,23 +1,26 @@
 import 'package:bloc/bloc.dart';
 import 'package:dating_app/data/models/user_model.dart';
+import 'package:dating_app/data/repositories/auth_repository.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../core/service_locator.dart';
 import '../../data/repositories/data_repository.dart';
 
 class ContactsCubit extends Cubit<ContactsCubitStates> {
-  ContactsCubit() : super(ContactsEmptyListState()) {
+  ContactsCubit( {required this.authRepository}) : super(ContactsEmptyListState()) {
     updateConnections();
   }
 
+  late UserModel palUser;
   DataRepository db = sl();
-  late final List<UserModel> usersList;
+  final AuthRepository authRepository;
+  List<UserModel> usersList = [];
 
   Future<void> updateConnections() async {
     usersList = await db.getPals();
     for (int i = 0; i < usersList.length; i++) {
       print('${usersList[i].firstName}');
-      if (usersList[i].firstName == '') {
+      if (usersList[i].id == authRepository.currentUser()!.uid) {
         print('delete ${usersList[i].firstName}');
         usersList.removeAt(i);
       }

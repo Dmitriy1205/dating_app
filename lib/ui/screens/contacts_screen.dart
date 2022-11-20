@@ -3,7 +3,7 @@ import 'package:dating_app/ui/bloc/contacts_cubit.dart';
 import 'package:dating_app/ui/screens/messenger_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:dating_app/core/service_locator.dart' as sl;
+import 'package:dating_app/core/service_locator.dart';
 
 class ContactsScreen extends StatefulWidget {
   ContactsScreen({Key? key}) : super(key: key);
@@ -17,7 +17,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
 
   @override
   void initState() {
-    bloc = ContactsCubit();
+    bloc = sl<ContactsCubit>();
     super.initState();
   }
 
@@ -116,15 +116,15 @@ class _ContactsScreenState extends State<ContactsScreen> {
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
-                              sl.userModel = state.usersList[index];
-                              // MessengerScreen(user: state.usersList[index]);
+                              bloc.palUser = state.usersList[index];
+                              MessengerScreen(user: state.usersList[index]);
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => BlocProvider.value(
                                             value: bloc,
                                             child: MessengerScreen(
-                                                user: state.usersList[index]),
+                                                user: bloc.palUser),
                                           )));
                             },
                             child: Container(

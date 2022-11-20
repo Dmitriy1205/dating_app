@@ -36,7 +36,10 @@ class FirebaseDataProvider {
 
     try {
       print(userModel.toFirestore());
-      await firestore.collection('users').doc(user.uid).set(userModel.toFirestore());
+      await firestore
+          .collection('users')
+          .doc(user.uid)
+          .set(userModel.toFirestore());
     } on FirebaseException catch (e) {
       throw BadRequestException(message: e.message!);
     }
@@ -73,50 +76,30 @@ class FirebaseDataProvider {
     }
   }
 
+  Future<void> getLoggedUser() async {
+    try {
+      print('userModel.id  ${userModel.id}');
+      Map<String, dynamic> user;
+      await firestore
+          .collection('Users')
+          .doc(userModel.id)
+          .snapshots()
+          .forEach((element) {
+        print('FirebaseDataProvider element ${element.data()}');
+      });
+    } on FirebaseException catch (e) {
+      print(e.message);
+      throw BadRequestException(message: e.message!);
+    }
+  }
+
   String getClearChatId(String senderId, String recipientId) {
     int compareInt = senderId.compareTo(recipientId);
-    // print('str STR : $compareInt');
-    // print('str senderId : ${senderId.length}');
-    // print('str recipientId : ${recipientId.length}');
-
-    List<int> a = senderId.codeUnits;
-    List<int> b = recipientId.codeUnits;
-    //
-    // int c = 0;
-    // int d = 0;
-    // for (int i in b) {
-    //   print('int D = $d');
-    //   d = d + i;
-    // }
-    // for (int i in a) {
-    //   print('bbbb $c');
-    //   c = c + i;
-    // }
     String clearId = compareInt >= 0
         ? '${senderId}_$recipientId'
         : '${recipientId}_$senderId';
     return clearId;
   }
-
-  // Future<List<MessageModel>> getAllChatMessages(String chatId) async {
-  //   try {
-  //     List<MessageModel> queryListMessages = await firestore
-  //         .collection('chats/$chatId/messages')
-  //         .orderBy('time', descending: false)
-  //         .get()
-  //         .then((QuerySnapshot querySnapshot) {
-  //       return querySnapshot.docs.map((e) {
-  //         return MessageModel.fromJson(e.data() as Map<String, dynamic>);
-  //       }).toList();
-  //     });
-  //     queryListMessages.forEach((element) {
-  //     });
-  //
-  //     return queryListMessages;
-  //   } on FirebaseException catch (e) {
-  //     throw BadRequestException(message: e.message!);
-  //   }
-  // }
 
   Stream<List<MessageModel>> getAllChatMessagesStream(String chatId) =>
       firestore

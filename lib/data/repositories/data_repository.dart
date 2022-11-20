@@ -25,6 +25,7 @@ class DataRepository {
   }
 
   String getClearId(recipientId, senderId) {
+    print('recipientId $recipientId senderId $senderId');
     chatId = dataProvider.getClearChatId(senderId, recipientId);
     return chatId;
   }
@@ -35,6 +36,9 @@ class DataRepository {
     return dataProvider.getAllChatMessagesStream(chatId);
   }
 
+  void getLoggedUser (){
+    dataProvider.getLoggedUser();
+  }
 
   Future<void> setSearchFields(String id, Map<String, dynamic> data) async {
     return dataProvider.setSearchPreference(id, data);

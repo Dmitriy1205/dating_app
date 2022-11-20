@@ -12,6 +12,7 @@ class MessengerScreen extends StatelessWidget {
   final UserModel user;
   @override
   Widget build(BuildContext context) {
+    print('user $user');
     return BlocProvider(
         create: (BuildContext context) => sl<MessengerCubit>(),
         child: Scaffold(
