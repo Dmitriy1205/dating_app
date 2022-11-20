@@ -55,14 +55,13 @@ class OwnMessageCard1 extends StatelessWidget {
   Widget messagePositioned() {
     return Text(
       ' ${messageModel.message}',
+      overflow: TextOverflow.ellipsis,
+      textAlign: TextAlign.justify,
       style: const TextStyle(fontSize: 16, color: Colors.black87),
     );
   }
 
   Widget attachmentPositioned() {
-    return Container(
-      // height: 500,width: 100,
-      child: Image.network(messageModel.message!),
-    );
+    return Image.network(messageModel.message!);
   }
 }

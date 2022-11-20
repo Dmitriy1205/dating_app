@@ -34,17 +34,34 @@ class ReplyCard extends StatelessWidget {
           ],
         ),
       ),
+      Padding(
+          padding: const EdgeInsets.only(top: 20,
+            left: 55),
+          child: messageModel.attachmentUrl == null
+              ? messagePositioned()
+              : attachmentPositioned()),
       Positioned(
-        top: 20,
-        left: 55,
-        child: Text(
-          messageModel.message!,
-          style: const TextStyle(
-            fontSize: 16,
-          ),
-        ),
-      ),
+          height: 200,
+          top: 20,
+          left: 55,
+          child: messageModel.attachmentUrl == null
+              ? messagePositioned()
+              : attachmentPositioned()),
+
       SizedBox(width: 10),
     ]);
+  }
+
+  Widget messagePositioned() {
+    return Text(
+      ' ${messageModel.message}',
+      overflow: TextOverflow.ellipsis,
+      textAlign: TextAlign.justify,
+      style: const TextStyle(fontSize: 16, color: Colors.black87),
+    );
+  }
+
+  Widget attachmentPositioned() {
+    return Image.network(messageModel.message!);
   }
 }
