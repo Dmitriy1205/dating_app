@@ -5,12 +5,16 @@ class SearchPrefFields {
   int? distance;
   Map<String, dynamic>? lookingFor;
   String? gender;
+  Map<String, dynamic>? hobbies;
+  Map<String, dynamic>? interests;
 
   SearchPrefFields({
     this.yearsRange,
     this.distance,
     this.lookingFor,
     this.gender,
+    this.hobbies,
+    this.interests,
   });
 
   factory SearchPrefFields.fromFirestore(
@@ -23,6 +27,8 @@ class SearchPrefFields {
       distance: data?['distance'],
       lookingFor: data?['lookingFor'],
       gender: data?['gender'],
+      hobbies: data?['hobbies'],
+      interests: data?['interests'],
     );
   }
 
@@ -32,6 +38,8 @@ class SearchPrefFields {
       distance: json['distance'],
       lookingFor: json['lookingFor'],
       gender: json['gender'],
+      hobbies: json['hobbies'],
+      interests: json['interests'],
     );
   }
 
@@ -40,5 +48,7 @@ class SearchPrefFields {
         'distance': distance,
         'lookingFor': lookingFor,
         'gender': gender,
+        'hobbies': hobbies,
+        'interests': interests,
       };
 }

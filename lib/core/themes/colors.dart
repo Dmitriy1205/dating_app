@@ -7,6 +7,7 @@ class CustomColors {
       trackShape: GradientRectSliderTrackShape(),
       thumbColor: Colors.white,
       rangeTrackShape: const GradientRectRangeSliderTrackShape(),
+      inactiveTrackColor: Colors.grey.shade200,
     );
   }
 }

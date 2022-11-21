@@ -14,7 +14,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     required this.auth,
     required this.storage,
     required this.db,
-  }) : super(EditProfileState(
+  }) : super(const EditProfileState(
           selectedLookingForList: [],
         )) {
     getFields();
