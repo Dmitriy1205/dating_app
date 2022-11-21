@@ -1,6 +1,9 @@
+import 'package:dating_app/ui/bloc/filter/filter_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../core/service_locator.dart';
 import '../widgets/filter_form.dart';
 
 class FilterScreen extends StatelessWidget {
@@ -19,7 +22,7 @@ class FilterScreen extends StatelessWidget {
           },
           splashRadius: 0.1,
           iconSize: 28,
-          alignment: Alignment.topLeft,
+          alignment: Alignment.center,
           icon: const Icon(
             Icons.close,
             color: Colors.black,
@@ -30,9 +33,10 @@ class FilterScreen extends StatelessWidget {
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
-      body: FilterForm(),
+      body: BlocProvider(
+        create: (context) => sl<FilterCubit>(),
+        child: FilterForm(),
+      ),
     );
   }
 }
-
-

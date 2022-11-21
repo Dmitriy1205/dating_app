@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../bloc/filter/filter_cubit.dart';
+
 InputDecoration authFieldDecor(String hintText) {
   return InputDecoration(
     border: OutlineInputBorder(

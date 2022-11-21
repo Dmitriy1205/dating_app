@@ -29,6 +29,10 @@ class App extends StatelessWidget {
             chipTheme: chipTheme(),
             sliderTheme: CustomColors.customGradient(),
             unselectedWidgetColor: Colors.orange,
+            expansionTileTheme: const ExpansionTileThemeData(
+              textColor: Colors.orangeAccent,
+              iconColor: Colors.orangeAccent,
+            ),
           ),
           debugShowCheckedModeBanner: false,
           title: 'Dating App',
