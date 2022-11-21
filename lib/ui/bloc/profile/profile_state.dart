@@ -5,7 +5,7 @@ class ProfileState extends Equatable {
   final ProfileInfoFields? profile;
   final UserModel? user;
   final List<String>? images;
-  final Map<String,dynamic>? lookingFor;
+  final Map<String, dynamic>? lookingFor;
 
   const ProfileState({
     this.status,
@@ -29,7 +29,7 @@ class ProfileState extends Equatable {
     ProfileInfoFields? profile,
     UserModel? user,
     List<String>? images,
-    Map<String,dynamic>? lookingFor,
+    Map<String, dynamic>? lookingFor,
   }) {
     return ProfileState(
       status: status ?? this.status,
@@ -39,4 +39,5 @@ class ProfileState extends Equatable {
       lookingFor: lookingFor ?? this.lookingFor,
     );
   }
+
 }
