@@ -1,4 +1,3 @@
-import 'package:dating_app/data/models/profile_info_data.dart';
 import 'package:dating_app/data/models/search_pref_data.dart';
 import 'package:dating_app/ui/widgets/reusable_widgets.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +7,7 @@ import '../bloc/filter/filter_cubit.dart';
 import 'field_decor.dart';
 
 class FilterForm extends StatefulWidget {
-  FilterForm({Key? key}) : super(key: key);
+  const FilterForm({Key? key}) : super(key: key);
 
   @override
   State<FilterForm> createState() => _FilterFormState();
@@ -34,10 +33,11 @@ class _FilterFormState extends State<FilterForm> {
             child: CircularProgressIndicator(),
           );
         }
+        final id = state.searchFields!.id;
         lookingFor = state.lookingFor!;
         hobbies = state.hobbies!;
         interest = state.interests!;
-        yearsRange =state.searchFields!.yearsRange!;
+        // yearsRange = state.searchFields!.yearsRange!;
         distance = state.distance!;
         gender = state.gender!;
         return SingleChildScrollView(
@@ -90,7 +90,7 @@ class _FilterFormState extends State<FilterForm> {
                 Padding(
                   padding: const EdgeInsets.only(
                     top: 10,
-                    bottom: 30,
+                    bottom: 40,
                   ),
                   child: TextFormField(
                     autocorrect: false,
@@ -127,13 +127,16 @@ class _FilterFormState extends State<FilterForm> {
                     },
                     min: 15,
                     max: 55),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text('Distance'),
-                    Text('${state.distance.toString()} miles',
-                        style: const TextStyle(color: Colors.black45)),
-                  ],
+                Padding(
+                  padding: const EdgeInsets.only(top: 15, bottom: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text('Distance'),
+                      Text('${state.distance.toString()} miles',
+                          style: const TextStyle(color: Colors.black45)),
+                    ],
+                  ),
                 ),
                 Slider(
                     value: state.distance!.toDouble(),
@@ -145,14 +148,17 @@ class _FilterFormState extends State<FilterForm> {
                     },
                     min: 0,
                     max: 70),
-                const Text(
-                  'Gender',
-                  style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
+                const Padding(
+                  padding: EdgeInsets.only(top: 15),
+                  child: Text(
+                    'Gender',
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
-                    top: 10,
+                    top: 15,
                     bottom: 50,
                   ),
                   child: Ink(
@@ -216,9 +222,10 @@ class _FilterFormState extends State<FilterForm> {
                                 ..interests = interest
                                 ..yearsRange = yearsRange
                                 ..distance = distance
-                                ..gender = gender,
+                                ..gender = gender
+                                ..id = id,
                             )
-                            .then((value) => Navigator.pop(context)).then((value) => context.read<FilterCubit>().getData());
+                            .then((value) => Navigator.of(context).popAndPushNamed('home'));
                       },
                       style: ElevatedButton.styleFrom(
                           primary: Colors.transparent,

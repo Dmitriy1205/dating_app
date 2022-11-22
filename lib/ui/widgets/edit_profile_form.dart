@@ -22,6 +22,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
   String userImage = '';
 
   String gender = '';
+  String id = '';
   String? degree;
   String? job;
   String? image;
@@ -62,6 +63,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
             child: CircularProgressIndicator(),
           );
         }
+        id = state.info!.id!;
         nameController.text = state.info!.name!;
         bioController.text = state.info!.bio!;
         heightController.text = state.info!.height!;
@@ -284,6 +286,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
                                 .read<EditProfileCubit>()
                                 .updateFields(
                                   ProfileInfoFields()
+                                    ..id = id
                                     ..name = nameController.text
                                     ..bio = bioController.text
                                     ..gender = gender

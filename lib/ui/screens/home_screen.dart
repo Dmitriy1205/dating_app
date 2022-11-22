@@ -10,6 +10,7 @@ import 'filter_screen.dart';
 
 
 class HomeScreen extends StatelessWidget {
+  static const String id = 'home';
   HomeScreen({Key? key}) : super(key: key);
 
 

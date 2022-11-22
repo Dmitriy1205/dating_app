@@ -3,7 +3,6 @@ import 'package:dating_app/data/models/search_pref_data.dart';
 import 'package:dating_app/data/repositories/auth_repository.dart';
 import 'package:dating_app/data/repositories/data_repository.dart';
 import 'package:equatable/equatable.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../../data/models/status.dart';
@@ -23,10 +22,10 @@ class FilterCubit extends Cubit<FilterState> {
 
   String get id => auth.currentUser()!.uid;
 
-  Future<void> setAge(RangeValues rangeValues) async =>
+  void setAge(RangeValues rangeValues) async =>
       emit(state.copyWith(age: rangeValues));
 
-  Future<void> setDistance(int distance) async =>
+  void setDistance(int distance) async =>
       emit(state.copyWith(distance: distance));
   List<String> selectedLookingForList = [];
   List<String> selectedHobbieList = [];

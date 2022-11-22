@@ -21,8 +21,9 @@ class _HomeBodyState extends State<HomeBody> {
         if (state.status!.isLoading) {
           return const Center(child: CircularProgressIndicator());
         }
+
         List<PhotoCard> card = List.generate(
-          state.fields!.length,
+          state.fields!.length ,
           (index) => PhotoCard(
             cardId: index.toString(),
             title: state.fields![index].name ?? '',
