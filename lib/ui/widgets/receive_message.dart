@@ -38,26 +38,28 @@ class ReplyCard extends StatelessWidget {
           padding: const EdgeInsets.only(top: 20,
             left: 55),
           child: messageModel.attachmentUrl == null
-              ? messagePositioned()
+              ? messagePositioned(context)
               : attachmentPositioned()),
       Positioned(
           height: 200,
           top: 20,
           left: 55,
           child: messageModel.attachmentUrl == null
-              ? messagePositioned()
+              ? messagePositioned(context)
               : attachmentPositioned()),
 
       SizedBox(width: 10),
     ]);
   }
 
-  Widget messagePositioned() {
-    return Text(
-      ' ${messageModel.message}',
-      overflow: TextOverflow.ellipsis,
-      textAlign: TextAlign.justify,
-      style: const TextStyle(fontSize: 16, color: Colors.black87),
+  Widget messagePositioned(BuildContext context) {
+    return SizedBox(width: MediaQuery.of(context).size.width - 150,
+      child: Text(maxLines: 20,
+        ' ${messageModel.message}',
+        overflow: TextOverflow.ellipsis,
+        textAlign: TextAlign.justify,
+        style: const TextStyle(fontSize: 16, color: Colors.black87),
+      ),
     );
   }
 

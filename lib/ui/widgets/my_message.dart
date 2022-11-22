@@ -39,29 +39,30 @@ class OwnMessageCard1 extends StatelessWidget {
         Padding(
             padding: const EdgeInsets.only(top: 20.0, right: 55),
             child: messageModel.attachmentUrl == null
-                ? messagePositioned()
-                : attachmentPositioned()),
-        Positioned(
-            height: 200,
-            top: 20,
-            right: 55,
-            child: messageModel.attachmentUrl == null
-                ? messagePositioned()
-                : attachmentPositioned()),
+                ? messagePositioned(context)
+                : attachmentPositioned(context)),
+
       ],
     );
   }
 
-  Widget messagePositioned() {
-    return Text(
-      ' ${messageModel.message}',
-      overflow: TextOverflow.ellipsis,
-      textAlign: TextAlign.justify,
-      style: const TextStyle(fontSize: 16, color: Colors.black87),
+  Widget messagePositioned(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width - 150,
+      child: Align(
+        alignment: Alignment.topRight,
+        child: Text(
+          ' ${messageModel.message}',
+          overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.justify,
+          style: const TextStyle(fontSize: 16, color: Colors.black87),
+          maxLines: 20,
+        ),
+      ),
     );
   }
 
-  Widget attachmentPositioned() {
+  Widget attachmentPositioned(BuildContext context) {
     return Image.network(messageModel.message!);
   }
 }

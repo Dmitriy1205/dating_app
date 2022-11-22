@@ -138,7 +138,7 @@ class _MessengerWidgetState extends State<MessengerWidget> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(25),
         ),
-        child: TextFormField(
+        child: TextFormField(maxLines: 5,minLines: 1 ,
           controller: myMessageController,
           decoration: InputDecoration(
             border: InputBorder.none,
