@@ -8,7 +8,6 @@ import 'package:image_picker/image_picker.dart';
 import '../../core/functions/validation.dart';
 import '../../core/themes/checkboxes.dart';
 import '../../core/themes/text_styles.dart';
-import '../bloc/filter/filter_cubit.dart';
 import '../screens/interests_screen.dart';
 import 'field_decor.dart';
 
@@ -647,6 +646,14 @@ class ReUsableWidgets {
                           },
                           child: SizedBox(
                             child: Card(
+                              shape: RoundedRectangleBorder(
+                                side: BorderSide(
+                                  color: inputFields.values.elementAt(index)
+                                      ? Colors.orangeAccent
+                                      : Colors.grey.shade200,
+                                ),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
                               shadowColor: Colors.transparent,
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(

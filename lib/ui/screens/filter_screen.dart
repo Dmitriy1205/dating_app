@@ -15,8 +15,23 @@ class FilterScreen extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.grey.shade50,
+        centerTitle: true,
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: 25),
+            child: Center(
+              child: GestureDetector(
+                onTap: (){
+                  Navigator.pop(context);
+                },
+                child: const Text('Reset',
+                  style: TextStyle(color: Colors.deepOrangeAccent, fontWeight: FontWeight.bold,fontSize: 15),),
+              ),
+            ),
+          ),
+        ],
         leading: IconButton(
-          padding: const EdgeInsets.fromLTRB(23, 8, 8, 8),
+          padding: const EdgeInsets.fromLTRB(15, 8, 8, 8),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -30,7 +45,7 @@ class FilterScreen extends StatelessWidget {
         ),
         title: const Text(
           'Filter',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,fontSize: 25),
         ),
       ),
       body: BlocProvider(
