@@ -90,7 +90,8 @@ class _ContactsScreenState extends State<ContactsScreen> {
                                   width: 70,
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(50),
-                                    child: Image.network(state.image![index],
+                                    child: Image.network(
+                                      state.image![index],
                                       fit: BoxFit.fill,
                                     ),
                                   ),
@@ -113,18 +114,24 @@ class _ContactsScreenState extends State<ContactsScreen> {
                         shrinkWrap: true,
                         itemCount: state.usersList!.length,
                         itemBuilder: (context, index) {
-                          context.read<ContactsCubit>().getUrlImage(state.usersList![index].id!);
+                          context
+                              .read<ContactsCubit>()
+                              .getUrlImage(state.usersList![index].id!);
                           return GestureDetector(
                             onTap: () {
                               bloc.palUser = state.usersList![index];
-                              MessengerScreen(user: state.usersList![index]);
+                              MessengerScreen(
+                                  user: state.usersList![index],
+                                  userPicture: state.image![index]);
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => BlocProvider.value(
                                             value: bloc,
                                             child: MessengerScreen(
-                                                user: bloc.palUser),
+                                                user: bloc.palUser,
+                                                userPicture:
+                                                    state.image![index]),
                                           )));
                             },
                             child: Container(
@@ -148,10 +155,10 @@ class _ContactsScreenState extends State<ContactsScreen> {
                                             height: 85,
                                             width: 85,
                                             child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(50),
-                                              child: Image.network(state.image![index])
-                                            ),
+                                                borderRadius:
+                                                    BorderRadius.circular(50),
+                                                child: Image.network(
+                                                    state.image![index])),
                                           ),
                                         ),
                                         Padding(
@@ -194,14 +201,16 @@ class _ContactsScreenState extends State<ContactsScreen> {
               );
             } else {
               return Center(
-                child: SizedBox(width: 300,
+                child: SizedBox(
+                  width: 300,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text('Updating your Contacts..'),
-                      LinearProgressIndicator(minHeight: 15,
-                        valueColor:
-                            AlwaysStoppedAnimation<Color>(Colors.orange.shade900),
+                      LinearProgressIndicator(
+                        minHeight: 15,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                            Colors.orange.shade900),
                         backgroundColor: Colors.orangeAccent,
                       )
                     ],

@@ -19,6 +19,7 @@ class HomeCubit extends Cubit<HomeState> {
         )) {
     UserRepository userRepository = sl<UserRepository>();
     userRepository.userLoginRepo();
+    userRepository.loggedUserPictureMethod();
     getData();
   }
 

@@ -9,18 +9,38 @@ class UserRepository {
   UserRepository({required this.firestore, required this.auth});
 
   UserModel loggedUser = UserModel();
+  late String loggedUserPicture;
 
   get getUserName {
-    print('getter user ${loggedUser.firstName}');
-    return loggedUser.firstName;}
+    return loggedUser.firstName;
+  }
+
+  get getLoggedUserProfilePicture {
+    return loggedUserPicture;
+  }
+
+  Future<void> loggedUserPictureMethod() async {
+    await firestore
+        .collection('ProfileInfo')
+        .doc(auth.currentUser!.uid)
+        .get()
+        .then((value) {
+          print('value loggedUserPicture ${value.data()}');
+      loggedUserPicture = value.data()!['image'];
+    });
+    print('loggedUserPicture 44');
+
+    print('loggedUserPicture $loggedUserPicture');
+  }
 
   Future<void> userLoginRepo() async {
-    print('users/${auth.currentUser!.uid}/');
     await firestore
         .collection('users')
-        .doc('${auth.currentUser!.uid}')
+        .doc(auth.currentUser!.uid)
         .get()
         .then((value) => loggedUser = UserModel.fromJson(value.data()!));
     print(' loggedUser UserRepository ${loggedUser.firstName}');
+    print(' loggedUserid UserRepository ${loggedUser.id}');
+
   }
 }

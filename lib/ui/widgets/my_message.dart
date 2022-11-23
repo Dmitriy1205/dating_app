@@ -1,7 +1,9 @@
+import 'package:dating_app/core/constants.dart';
 import 'package:dating_app/data/models/message_model.dart';
+import 'package:dating_app/ui/bloc/messenger_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import '../../core/constants.dart';
 
 class OwnMessageCard1 extends StatelessWidget {
   const OwnMessageCard1({super.key, required this.messageModel});
@@ -10,8 +12,6 @@ class OwnMessageCard1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('messageModel.senderName ${messageModel.senderName}');
-    print('messageModel.recipientName ${messageModel.recipientName}');
     return Stack(
       alignment: AlignmentDirectional.topEnd,
       children: [
@@ -32,23 +32,31 @@ class OwnMessageCard1 extends StatelessWidget {
           width: 45,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(50),
-            child: Image.asset(Content.interestsList[3]),
+            child: context
+                .read<MessengerCubit>()
+                .loggedUser
+                .loggedUserPicture != '' ? Image.network(context
+                .read<MessengerCubit>()
+                .loggedUser
+                .loggedUserPicture) : Image.asset(CustomIcons.photo),
             // fit: BoxFit.fill,
           ),
         ),
         Padding(
-            padding: const EdgeInsets.only(top: 20.0, right: 55),
+            padding: const EdgeInsets.only(top: 35.0, right: 55),
             child: messageModel.attachmentUrl == null
                 ? messagePositioned(context)
                 : attachmentPositioned(context)),
-
       ],
     );
   }
 
   Widget messagePositioned(BuildContext context) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width - 150,
+      width: MediaQuery
+          .of(context)
+          .size
+          .width - 150,
       child: Align(
         alignment: Alignment.topRight,
         child: Text(

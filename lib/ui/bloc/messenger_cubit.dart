@@ -11,9 +11,9 @@ import '../../data/repositories/data_repository.dart';
 class MessengerCubit extends Cubit<MessengerStates> {
   MessengerCubit(this.db, this.auth)
       : super(MessengerStates(
-            messagesList: [],
-            status: Status.initial(),
-            )) {
+          messagesList: [],
+          status: Status.initial(),
+        )) {
     // messagesStream();
   }
 
@@ -21,19 +21,23 @@ class MessengerCubit extends Cubit<MessengerStates> {
   List<MessageModel> messagesList = [];
   final DataRepository db;
   UserRepository loggedUser = sl<UserRepository>();
-  get loggedUserId => auth.currentUser!.uid;
-
-  // get getChatId => db.getClearId(loggedUserId, openedChatUserId);
   String getChatId = '';
+  String loggedUserPicture = '';
+  get getLoggedUserId => auth.currentUser!.uid;
+  get getLoggedUserPictureUrl => loggedUserPicture;
+
+  Future<void> loggedUserPictureUrl()async {
+    await db.getProfileFields(getLoggedUserId).then((value) => loggedUserPicture = value!.image!);
+  }
+  // get getChatId => db.getClearId(loggedUserId, openedChatUserId);
 
   void getChatId2(String openedChatUserId) {
-    getChatId = db.getClearId(loggedUserId, openedChatUserId);
+    getChatId = db.getClearId(getLoggedUserId, openedChatUserId);
   }
 
   void sendMessage(MessageModel messageModel, UserModel userModel,
       [bool attachment = false]) async {
     messageModel.senderName = loggedUser.getUserName;
-    // print('auth.currentUser!.displayName ${auth.currentUser!.}');
     if (attachment) {
       messageModel.attachmentUrl = 'chats/$getChatId/${DateTime.now()}';
     }
@@ -42,9 +46,8 @@ class MessengerCubit extends Cubit<MessengerStates> {
 
   void messagesStream(String openedChatUserId) async {
     // final user = await db.getUserFields(openedChatUserId);
-
     final messages = db
-        .getAllChatMessagesStream(loggedUserId, openedChatUserId)
+        .getAllChatMessagesStream(getLoggedUserId, openedChatUserId)
         .listen((event) {});
     messages.onData((data) {
       if (data.isNotEmpty) {
@@ -61,8 +64,7 @@ class MessengerStates extends Equatable {
   final List<MessageModel> messagesList;
   final UserModel? palUser;
 
-  MessengerStates(
-      {this.status, required this.messagesList, this.palUser});
+  MessengerStates({this.status, required this.messagesList, this.palUser});
 
   MessengerStates copyWith(
       {Status? status, List<MessageModel>? messagesList, UserModel? palUser}) {

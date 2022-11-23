@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:dating_app/data/models/message_model.dart';
 import 'package:dating_app/ui/widgets/my_message.dart';
 import 'package:dating_app/ui/widgets/receive_message.dart';
@@ -12,9 +11,12 @@ import '../bloc/image_picker/image_picker_cubit.dart';
 import '../bloc/messenger_cubit.dart';
 
 class MessengerWidget extends StatefulWidget {
-  const MessengerWidget(BuildContext context, {super.key, required this.user});
+  const MessengerWidget(BuildContext context,
+      {super.key, required this.user, required this.userPicture});
 
   final UserModel user;
+  final String userPicture;
+
   @override
   State<MessengerWidget> createState() => _MessengerWidgetState();
 }
@@ -25,18 +27,17 @@ class _MessengerWidgetState extends State<MessengerWidget> {
 
   _MessengerWidgetState();
 
-
   @override
   void initState() {
+    print ('userPicture MessengerWidget ${widget.userPicture}');
+
     context.read<MessengerCubit>().messagesStream(widget.user.id!);
     context.read<MessengerCubit>().getChatId2(widget.user.id!);
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-    print('user Messenger widget build ${widget.user.firstName}');
-    print('user Messenger widget build ${widget.user.id}');
-
     return BlocBuilder<MessengerCubit, MessengerStates>(
       builder: (context, state) {
         print('state ${state}');
@@ -77,7 +78,7 @@ class _MessengerWidgetState extends State<MessengerWidget> {
 
   Widget messages(BuildContext context, state) {
     return SingleChildScrollView(
-      // controller: _scrollController,
+      controller: _scrollController,
       child: Column(
         children: [
           Row(
@@ -120,9 +121,9 @@ class _MessengerWidgetState extends State<MessengerWidget> {
                   return Padding(
                     padding: const EdgeInsets.fromLTRB(20, 5, 20, 10),
                     child: ReplyCard(
-                      messageModel: state.messagesList[index],
-                      time: state.messagesList[index].time!,
-                    ),
+                        messageModel: state.messagesList[index],
+                        time: state.messagesList[index].time!,
+                        userPicture: widget.userPicture),
                   );
                 }
               }),
@@ -138,7 +139,9 @@ class _MessengerWidgetState extends State<MessengerWidget> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(25),
         ),
-        child: TextFormField(maxLines: 5,minLines: 1 ,
+        child: TextFormField(
+          maxLines: 5,
+          minLines: 1,
           controller: myMessageController,
           decoration: InputDecoration(
             border: InputBorder.none,
