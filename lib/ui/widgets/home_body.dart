@@ -23,13 +23,13 @@ class _HomeBodyState extends State<HomeBody> {
         }
 
         List<PhotoCard> card = List.generate(
-          state.fields!.length ,
+          state.fields!.length,
           (index) => PhotoCard(
             cardId: index.toString(),
             title: state.fields![index].name ?? '',
             description: state.fields![index].bio ?? '',
             imagePath: state.fields![index].image ?? '',
-            location: '24 miles',
+            location: '${state.lookingFor![index].distance.toString()} miles',
           ),
         );
         return Column(

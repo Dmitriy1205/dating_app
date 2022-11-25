@@ -25,6 +25,9 @@ class FilterCubit extends Cubit<FilterState> {
   void setAge(RangeValues rangeValues) async =>
       emit(state.copyWith(age: rangeValues));
 
+  void setGender(String gender) async =>
+      emit(state.copyWith(gender: gender));
+
   void setDistance(int distance) async =>
       emit(state.copyWith(distance: distance));
   List<String> selectedLookingForList = [];
@@ -80,6 +83,7 @@ class FilterCubit extends Cubit<FilterState> {
         interests: fields.interests,
       ));
     } on Exception catch (e) {
+      print(e.toString());
       emit(state.copyWith(status: Status.error(e.toString())));
     }
   }
