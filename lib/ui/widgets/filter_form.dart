@@ -6,15 +6,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/filter/filter_cubit.dart';
 import 'field_decor.dart';
 
-class FilterForm extends StatefulWidget {
-  const FilterForm({Key? key}) : super(key: key);
+class FilterForm extends StatelessWidget {
+  FilterForm({Key? key}) : super(key: key);
 
-  @override
-  State<FilterForm> createState() => _FilterFormState();
-}
-
-class _FilterFormState extends State<FilterForm> {
-  Map<String, dynamic> yearsRange = {};
+  RangeValues yearsRange = RangeValues(0, 0);
 
   int distance = 0;
 
@@ -37,7 +32,7 @@ class _FilterFormState extends State<FilterForm> {
         lookingFor = state.lookingFor!;
         hobbies = state.hobbies!;
         interest = state.interests!;
-        // yearsRange = state.searchFields!.yearsRange!;
+        yearsRange = state.age!;
         distance = state.distance!;
         gender = state.gender!;
         return SingleChildScrollView(
@@ -120,10 +115,10 @@ class _FilterFormState extends State<FilterForm> {
                     values: state.age!,
                     onChanged: (newYears) {
                       context.read<FilterCubit>().setAge(newYears);
-                      yearsRange = {
-                        'start': state.age!.start.round(),
-                        'end': state.age!.end.round()
-                      };
+                      // yearsRange = {
+                      //   'start': state.age!.start.round(),
+                      //   'end': state.age!.end.round()
+                      // };
                     },
                     min: 15,
                     max: 55),
@@ -180,6 +175,9 @@ class _FilterFormState extends State<FilterForm> {
                               color: Colors.grey[500],
                             ),
                             onChanged: (v) {
+                              context
+                                  .read<FilterCubit>()
+                                  .setGender(v.toString());
                               gender = v.toString();
                             },
                             decoration: const InputDecoration(
@@ -220,12 +218,16 @@ class _FilterFormState extends State<FilterForm> {
                                 ..lookingFor = lookingFor
                                 ..hobbies = hobbies
                                 ..interests = interest
-                                ..yearsRange = yearsRange
+                                ..yearsRange = {
+                                  'start': state.age!.start.round(),
+                                  'end': state.age!.end.round()
+                                }
                                 ..distance = distance
                                 ..gender = gender
                                 ..id = id,
                             )
-                            .then((value) => Navigator.of(context).popAndPushNamed('home'));
+                            .then((value) =>
+                                Navigator.of(context).popAndPushNamed('home'));
                       },
                       style: ElevatedButton.styleFrom(
                           primary: Colors.transparent,

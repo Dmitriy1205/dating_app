@@ -29,11 +29,11 @@ class HomeCubit extends Cubit<HomeState> {
     ));
     try {
       final id = auth.currentUser()!.uid;
-      final fields = await db.getAllFields();
+      var fields = await db.getAllFields();
       final lookingFor = await db.getAllSearchFields();
       final users = await db.getAllUserFields();
       final searchUser = await db.getSearchFields(id);
-
+      final vs = fields.map((e) => e.interests).toList();
       users.removeWhere((element) => element.id == id);
       lookingFor
         ..removeWhere((element) => element.id == id)
@@ -45,8 +45,26 @@ class HomeCubit extends Cubit<HomeState> {
                 searchUser?.yearsRange?.values.elementAt(0) ||
             int.parse(element.age!) >
                 searchUser?.yearsRange?.values.elementAt(1))
-        ..removeWhere((element) => element.gender != searchUser?.gender);
+        ..removeWhere((element) => element.gender != searchUser?.gender)
+      ..removeWhere((element) => element == null && element.interests!.values.contains(searchUser!.interests!.values));
 
+      for (var i = 0 ; i<= vs.length; i++) {
+        for (bool a in searchUser!.interests!.values) {
+          if (i == null) {
+            fields.removeWhere((element) => element.interests == i);
+          }
+          if(a) {
+            if (vs[i]!.values.contains(a)) {
+              print('============ $i');
+              print('============ ${vs[i]}');
+              vs.removeAt(i);
+              // vs.removeWhere((element) => element?.values == vs[i]);
+            }
+          }
+          print('---------------> ${vs.length}');
+        }
+        return fields.removeWhere((element) => element == i);
+      }
       emit(state.copyWith(
         status: Status.loaded(),
         fields: fields,

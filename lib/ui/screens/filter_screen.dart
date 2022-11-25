@@ -7,6 +7,8 @@ import '../../core/service_locator.dart';
 import '../widgets/filter_form.dart';
 
 class FilterScreen extends StatelessWidget {
+  static const String id = 'filter';
+
   const FilterScreen({Key? key}) : super(key: key);
 
   @override
@@ -21,11 +23,16 @@ class FilterScreen extends StatelessWidget {
             padding: EdgeInsets.only(right: 25),
             child: Center(
               child: GestureDetector(
-                onTap: (){
+                onTap: () {
                   Navigator.pop(context);
                 },
-                child: const Text('Reset',
-                  style: TextStyle(color: Colors.deepOrangeAccent, fontWeight: FontWeight.bold,fontSize: 15),),
+                child: const Text(
+                  'Reset',
+                  style: TextStyle(
+                      color: Colors.deepOrangeAccent,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15),
+                ),
               ),
             ),
           ),
@@ -45,11 +52,12 @@ class FilterScreen extends StatelessWidget {
         ),
         title: const Text(
           'Filter',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,fontSize: 25),
+          style: TextStyle(
+              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 25),
         ),
       ),
-      body: BlocProvider(
-        create: (context) => sl<FilterCubit>(),
+      body: BlocProvider.value(
+        value: sl<FilterCubit>(),
         child: FilterForm(),
       ),
     );

@@ -6,13 +6,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/service_locator.dart';
 import '../widgets/home_body.dart';
-import 'filter_screen.dart';
-
 
 class HomeScreen extends StatelessWidget {
   static const String id = 'home';
-  HomeScreen({Key? key}) : super(key: key);
 
+  HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -78,10 +76,7 @@ class HomeScreen extends StatelessWidget {
                     child: GestureDetector(
                         onTap: () {
                           //TODO: navigation to filter_screen
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => FilterScreen()));
+                          Navigator.pushNamed(context, 'filter');
                         },
                         child: SizedBox(
                             height: 50,
