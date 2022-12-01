@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../core/routes.dart';
 import '../core/service_locator.dart';
 import '../core/themes/colors.dart';
+import 'bloc/image_picker/image_picker_cubit.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -16,7 +17,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async => Future.value(false),
+      onWillPop: () async => false,
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
@@ -24,6 +25,9 @@ class App extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => sl<ProfileInfoCubit>(),
+          ),
+          BlocProvider(
+            create: (context) => sl<ImagePickerCubit>(),
           ),
         ],
         child: MaterialApp(

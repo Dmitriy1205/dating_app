@@ -1,89 +1,86 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
+import 'package:dating_app/data/repositories/user_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import '../../core/service_locator.dart';
 import '../../data/models/message_model.dart';
+import '../../data/models/status.dart';
 import '../../data/models/user_model.dart';
 import '../../data/repositories/data_repository.dart';
 
 class MessengerCubit extends Cubit<MessengerStates> {
-  MessengerCubit(this.db, this.auth, this.userModel) : super(MessengerInit()) {
-    messagesStream();
-    print('userModel constructor ${userModel.firstName}');
-    print('messagesList length from constructor ${messagesList.length}');
+  MessengerCubit(this.db, this.auth)
+      : super(MessengerStates(
+          messagesList: [],
+          status: Status.initial(),
+        )) {
+    // messagesStream();
   }
-
-  final UserModel userModel;
 
   final FirebaseAuth auth;
   List<MessageModel> messagesList = [];
   final DataRepository db;
+  UserRepository loggedUser = sl<UserRepository>();
+  String getChatId = '';
+  String loggedUserPicture = '';
+  get getLoggedUserId => auth.currentUser!.uid;
+  get getLoggedUserPictureUrl => loggedUserPicture;
 
-  get currentUserId => auth.currentUser!.uid;
+  Future<void> loggedUserPictureUrl()async {
+    await db.getProfileFields(getLoggedUserId).then((value) => loggedUserPicture = value!.image!);
+  }
+  // get getChatId => db.getClearId(loggedUserId, openedChatUserId);
 
-  get currentUserName => auth.currentUser!.displayName;
-
-  void sendMessage(MessageModel messageModel, UserModel userModel) async {
-    messageModel.senderName = currentUserName;
-    db.sendMessageToPal(messageModel, userModel.id, currentUserId);
-    print('sendMessage ${messagesList.last}');
-
-    // if (messagesList.isNotEmpty) {
-    //   emit(SendMessageState(messagesList: messagesList));
-    // } else {
-    //   emit(MessengerInit());
-    // }
+  void getChatId2(String openedChatUserId) {
+    getChatId = db.getClearId(getLoggedUserId, openedChatUserId);
   }
 
-  void messagesStream() async {
-    print('messagesStream ${userModel.firstName}');
-    final messages = db
-        .getAllChatMessagesStream(userModel.id.toString(), currentUserId)
-        .listen((event) {
-      print('stream used messagesStream  listen ${event}');
-      // for (var element in event) {
-      //   messagesList.add(element);
-      // }
-    });
-    messages.onData((data) {
+  void sendMessage(MessageModel messageModel, UserModel userModel,
+      [bool attachment = false]) async {
+    messageModel.senderName = loggedUser.getUserName;
+    if (attachment) {
+      messageModel.attachmentUrl = 'chats/$getChatId/${DateTime.now()}';
+    }
+    db.sendMessageToPal(messageModel, getChatId);
+  }
 
+  void messagesStream(String openedChatUserId) async {
+    // final user = await db.getUserFields(openedChatUserId);
+    final messages = db
+        .getAllChatMessagesStream(getLoggedUserId, openedChatUserId)
+        .listen((event) {});
+    messages.onData((data) {
       if (data.isNotEmpty) {
-        emit(SendMessageState(messagesList: data));
+        emit(state.copyWith(messagesList: data, status: Status.loaded()));
       } else {
-        emit(MessengerInit());
+        emit(state.copyWith(status: Status.initial()));
       }
     });
-    print('messagesList ${messagesList.runtimeType}   ${messagesList.length}');
+  }
+
+  void clearChat() async {
+    print('clearChat $getChatId');
+
+    db.clearChat(getChatId);
 
   }
-// Stream loadAllMessagesStream (UserModel userModel) async {
-//   List<MessageModel> messagesList = [];
-//   messagesList.add(messagesStream(userModel));
-//   if (messagesList.isNotEmpty) {
-//     emit(SendMessageState(messagesList: messagesList));
-//   } else {
-//     emit(MessengerInit());
-//   }
-//   return messagesList;
-// }
 }
 
 class MessengerStates extends Equatable {
-  @override
-  List<Object?> get props => [];
-}
+  final Status? status;
+  final List<MessageModel> messagesList;
+  final UserModel? palUser;
 
-class MessengerInit extends MessengerStates {}
+  MessengerStates({this.status, required this.messagesList, this.palUser});
 
-class SendMessageState extends MessengerStates {
-  List<MessageModel> messagesList;
-
-  SendMessageState({required this.messagesList}) {
-    print('messages from SendMessageState ${messagesList.length}');
+  MessengerStates copyWith(
+      {Status? status, List<MessageModel>? messagesList, UserModel? palUser}) {
+    return MessengerStates(
+        status: status ?? this.status,
+        messagesList: messagesList ?? this.messagesList,
+        palUser: palUser ?? this.palUser);
   }
 
   @override
-  List<Object?> get props => [messagesList];
+  List<Object?> get props => [status, messagesList];
 }

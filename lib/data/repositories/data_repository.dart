@@ -7,32 +7,40 @@ import '../models/user_model.dart';
 
 class DataRepository {
   final FirebaseDataProvider dataProvider;
-
+  late String chatId;
   DataRepository({required this.dataProvider});
 
   Future<void> setProfileFields(String id, Map<String, dynamic> data) async {
     return dataProvider.setProfileFields(id, data);
   }
 
+
   Future<List<UserModel>> getPals() async {
     return await dataProvider.getUsers();
   }
 
   Future<MessageModel?> sendMessageToPal(
-      messageModel, recipientId, senderId) async {
-    String chatId = dataProvider.getClearChatId(senderId, recipientId);
+      messageModel, String chatId) async {
     return await dataProvider.sendMessageToPal(messageModel, chatId);
   }
 
-  // Future<List<MessageModel>> getAllChatMessages(
-  //     String senderId, String recipientId) async {
-  //   String chatId = dataProvider.getClearChatId(senderId, recipientId);
-  //   return await dataProvider.getAllChatMessages(chatId);
-  // }
+  String getClearId(recipientId, senderId) {
+    print('recipientId $recipientId senderId $senderId');
+    chatId = dataProvider.getClearChatId(senderId, recipientId);
+    return chatId;
+  }
+  void clearChat(String chatId) {
+    dataProvider.clearChat(chatId);
+  }
+
   Stream<List<MessageModel>> getAllChatMessagesStream(
-      String senderId, String recipientId) {
-    String chatId = dataProvider.getClearChatId(senderId, recipientId);
+      String senderId, String recipientId)  {
+    chatId = dataProvider.getClearChatId(senderId, recipientId);
     return dataProvider.getAllChatMessagesStream(chatId);
+  }
+
+  void getLoggedUser (){
+    dataProvider.getLoggedUser();
   }
 
   Future<void> setSearchFields(String id, Map<String, dynamic> data) async {
