@@ -6,6 +6,7 @@ import 'package:dating_app/data/repositories/user_repository.dart';
 import 'package:dating_app/ui/bloc/auth/auth_cubit.dart';
 import 'package:dating_app/ui/bloc/contacts_cubit.dart';
 import 'package:dating_app/ui/bloc/facebook_auth/facebook_auth_cubit.dart';
+import 'package:dating_app/ui/bloc/filter/filter_cubit.dart';
 import 'package:dating_app/ui/bloc/google_auth/google_auth_cubit.dart';
 import 'package:dating_app/ui/bloc/personal_profile_cubit/personal_profile_cubit.dart';
 import 'package:dating_app/ui/bloc/messenger_cubit.dart';
@@ -48,8 +49,8 @@ Future<void> boot() async {
   sl.registerFactory(() => GoogleAuthCubit(sl()));
   sl.registerLazySingleton(() => SettingsCubit(sl()));
   sl.registerFactory(() => PersonalProfileCubit(sl()));
-  sl.registerFactory(() => HomeCubit(db: sl()));
-
+  sl.registerFactory(() => HomeCubit(db: sl(), auth: sl()));
+  sl.registerLazySingleton(() => FilterCubit(db: sl(), auth: sl()));
   sl.registerFactory(() => ProfileCubit(auth: sl(), db: sl(), storage: sl()));
   sl.registerFactory(
       () => EditProfileCubit(auth: sl(), db: sl(), storage: sl()));

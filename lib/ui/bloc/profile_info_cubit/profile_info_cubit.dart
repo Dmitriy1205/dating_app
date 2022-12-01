@@ -25,6 +25,7 @@ class ProfileInfoCubit extends Cubit<ProfileInfoState> {
     emit(state.copyWith(status: Status.loading()));
 
     try {
+      // data.addAll({'id':id});
       await db.setProfileFields(id, data);
       emit(state.copyWith(status: Status.loaded()));
     } catch (e) {

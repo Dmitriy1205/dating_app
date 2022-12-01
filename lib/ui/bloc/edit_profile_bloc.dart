@@ -17,7 +17,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   }) : super(const EditProfileState(
           selectedLookingForList: [],
         )) {
-    getFields();
+    // getFields();
+    init();
   }
 
   final AuthRepository auth;
@@ -38,18 +39,16 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         selectedLookingForList: selectedLookingForList));
   }
 
-  Future<void> getFields() async {
+  Future<void> init() async {
     emit(state.copyWith(
       status: Status.loading(),
     ));
     try {
-      final sField = await db.getSearchFields(id);
-      final inField = await db.getProfileFields(id);
+      final userField = await db.getUserFields(id);
 
       emit(state.copyWith(
         status: Status.loaded(),
-        search: sField,
-        info: inField,
+        userModel: userField,
       ));
     } on BadRequestException catch (e) {
       print(e.message);
@@ -57,10 +56,9 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     }
   }
 
-  Future<void> updateFields(ProfileInfoFields p, SearchPrefFields s) async {
+  Future<void> update(ProfileInfoFields p, Map<String,dynamic> s) async {
     try {
-      await db.updateProfileFields(id, p.toFirestore());
-      await db.updateSearchFields(id, s.toFirestore());
+      await db.updateFields(id, p.toFirestore(), s);
       emit(state.copyWith(status: Status.loaded()));
     } on BadRequestException catch (e) {
       print('prof edit $e');
@@ -68,4 +66,35 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       emit(state.copyWith(status: Status.error(e.message)));
     }
   }
+
+// Future<void> getFields() async {
+//   emit(state.copyWith(
+//     status: Status.loading(),
+//   ));
+//   try {
+//     final sField = await db.getSearchFields(id);
+//     final inField = await db.getProfileFields(id);
+//
+//     emit(state.copyWith(
+//       status: Status.loaded(),
+//       searchPref: sField,
+//       profileInfo: inField,
+//     ));
+//   } on BadRequestException catch (e) {
+//     print(e.message);
+//     emit(state.copyWith(status: Status.error(e.message)));
+//   }
+// }
+
+// Future<void> updateFields(ProfileInfoFields p, SearchPrefFields s) async {
+//   try {
+//     await db.updateProfileFields(id, p.toFirestore());
+//     await db.updateSearchFields(id, s.toFirestore());
+//     emit(state.copyWith(status: Status.loaded()));
+//   } on BadRequestException catch (e) {
+//     print('prof edit $e');
+//     print(e.message);
+//     emit(state.copyWith(status: Status.error(e.message)));
+//   }
+// }
 }

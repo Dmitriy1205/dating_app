@@ -43,7 +43,7 @@ class FirebaseDataProvider {
 
   Future<void> setProfileFields(String id, Map<String, dynamic> data) async {
     try {
-      await firestore.collection('ProfileInfo').doc(id).set(data);
+      await firestore.collection('users').doc(id).update({'ProfileInfo': data});
     } on FirebaseException catch (e) {
       print(e.message);
       throw BadRequestException(message: e.message!);
@@ -78,7 +78,10 @@ class FirebaseDataProvider {
 
   Future<void> setSearchPreference(String id, Map<String, dynamic> data) async {
     try {
-      await firestore.collection('SearchPreferences').doc(id).set(data);
+      await firestore
+          .collection('users')
+          .doc(id)
+          .update({'SearchPreferences': data});
     } on FirebaseException catch (e) {
       print(e.message);
       throw BadRequestException(message: e.message!);
@@ -166,7 +169,7 @@ class FirebaseDataProvider {
   Future<SearchPrefFields?> getSearchFields(String id) async {
     try {
       final doc = await firestore
-          .collection('SearchPreferences')
+          .collection('users')
           .doc(id)
           .withConverter(
               fromFirestore: SearchPrefFields.fromFirestore,
@@ -182,7 +185,31 @@ class FirebaseDataProvider {
   Future<void> updateSearchFields(String id, Map<String, dynamic> data) async {
     try {
       await firestore
-          .collection('SearchPreferences')
+          .collection('users')
+          .doc(id)
+          .update({'SearchPreferences': data});
+    } on FirebaseException catch (e) {
+      print(e.message);
+      throw BadRequestException(message: e.message!);
+    }
+  }
+
+  // Future<void> updateSearchFields(String id, Map<String, dynamic> data) async {
+  //   try {
+  //     await firestore
+  //         .collection('SearchPreferences')
+  //         .doc(id)
+  //         .set(data, SetOptions(merge: true));
+  //   } on FirebaseException catch (e) {
+  //     print(e.message);
+  //     throw BadRequestException(message: e.message!);
+  //   }
+  // }
+
+  Future<void> updateProfileFields(String id, Map<String, dynamic> data) async {
+    try {
+      await firestore
+          .collection('ProfileInfo')
           .doc(id)
           .set(data, SetOptions(merge: true));
     } on FirebaseException catch (e) {
@@ -191,12 +218,13 @@ class FirebaseDataProvider {
     }
   }
 
-  Future<void> updateProfileFields(String id, Map<String, dynamic> data) async {
+  Future<void> updateFields(
+      String id, Map<String, dynamic> prof, Map<String, dynamic> look) async {
     try {
-      await firestore
-          .collection('ProfileInfo')
-          .doc(id)
-          .set(data, SetOptions(merge: true));
+      await firestore.collection('users').doc(id).update({
+        'ProfileInfo': prof,
+        'SearchPreferences.lookingFor': look,
+      });
     } on FirebaseException catch (e) {
       print(e.message);
       throw BadRequestException(message: e.message!);

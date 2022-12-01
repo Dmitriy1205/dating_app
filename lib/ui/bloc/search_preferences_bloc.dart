@@ -41,11 +41,15 @@ class SearchPreferencesCubit extends Cubit<SearchPreferencesState> {
       emit(state.copyWith(distance: distance));
 
   Future<void> saveData({required SearchPrefFields data}) async {
+    var id = auth.currentUser()!.uid;
     searchData.distance = data.distance;
     searchData.yearsRange = data.yearsRange;
     searchData.lookingFor = data.lookingFor;
     searchData.gender = data.gender;
-    var id = auth.currentUser()!.uid;
+    searchData.hobbies = data.hobbies;
+    searchData.interests = data.interests;
+    // searchData.id = id;
+
     await db.setSearchFields(id, searchData.toFirestore());
     emit(state.copyWith(status: Status.loaded()));
   }

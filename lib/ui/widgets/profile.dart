@@ -25,25 +25,46 @@ class Profile extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: GridView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: state.images!.length,
-                  shrinkWrap: true,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2),
-                  itemBuilder: (BuildContext context, int index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(5),
-                        child: Image.network(
-                          state.images![index],
-                          fit: BoxFit.cover,
-                        ),
+                child: state.images!.isEmpty
+                    ? GridView(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 1),
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(5),
+                              child: Image.asset(
+                                'assets/images/empty.png',
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    : GridView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: state.images!.length,
+                        shrinkWrap: true,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2),
+                        itemBuilder: (BuildContext context, int index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(5),
+                              child: Image.network(
+                                state.images![index],
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                    );
-                  },
-                ),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 40, 20, 10),
@@ -59,7 +80,7 @@ class Profile extends StatelessWidget {
                           style: TextStyle(fontSize: 14),
                         ),
                         Text(
-                          state.profile!.name ?? '',
+                          state.user!.profileInfo!.name ?? '',
                           textAlign: TextAlign.start,
                           style: TextStyle(color: Colors.grey, fontSize: 14),
                         ),
@@ -95,7 +116,7 @@ class Profile extends StatelessWidget {
                           style: TextStyle(fontSize: 14),
                         ),
                         Text(
-                          state.profile!.gender ?? '',
+                          state.user!.profileInfo!.gender ?? '',
                           textAlign: TextAlign.start,
                           style: TextStyle(color: Colors.grey, fontSize: 14),
                         ),
@@ -122,7 +143,7 @@ class Profile extends StatelessWidget {
                       height: 5,
                     ),
                     Text(
-                      state.profile!.bio ?? '',
+                      state.user!.profileInfo!.bio ?? '',
                       textAlign: TextAlign.start,
                       style: TextStyle(color: Colors.grey, fontSize: 14),
                     ),
@@ -154,7 +175,7 @@ class Profile extends StatelessWidget {
                           style: TextStyle(fontSize: 14),
                         ),
                         Text(
-                          state.profile!.height ?? '',
+                          state.user!.profileInfo!.height ?? '',
                           textAlign: TextAlign.start,
                           style:
                               const TextStyle(color: Colors.grey, fontSize: 14),
@@ -165,14 +186,14 @@ class Profile extends StatelessWidget {
                       height: 8,
                     ),
                     Row(
-                      children: const [
-                        Text(
+                      children: [
+                        const Text(
                           'Relationship Status : ',
                           textAlign: TextAlign.start,
                           style: TextStyle(fontSize: 14),
                         ),
                         Text(
-                          'Single',
+                          state.user!.profileInfo!.status ?? '',
                           textAlign: TextAlign.start,
                           style: TextStyle(color: Colors.grey, fontSize: 14),
                         ),
@@ -189,7 +210,7 @@ class Profile extends StatelessWidget {
                           style: TextStyle(fontSize: 14),
                         ),
                         Text(
-                          state.user!.joinDate  ?? '',
+                          state.user!.joinDate ?? '',
                           textAlign: TextAlign.start,
                           style: TextStyle(color: Colors.grey, fontSize: 14),
                         ),
@@ -210,17 +231,18 @@ class Profile extends StatelessWidget {
                           child: Wrap(
                             crossAxisAlignment: WrapCrossAlignment.end,
                             children: List<Widget>.generate(
-                              state.lookingFor!.length,
-                              (index) =>
-                                  state.lookingFor!.values.elementAt(index) ==
-                                          false
-                                      ? const SizedBox()
-                                      : Text(
-                                          '${state.lookingFor!.keys.elementAt(index)}, ',
-                                          textAlign: TextAlign.start,
-                                          style: const TextStyle(
-                                              color: Colors.grey, fontSize: 14),
-                                        ),
+                              state.user!.searchPref!.lookingFor!.length,
+                              (index) => state
+                                          .user!.searchPref!.lookingFor!.values
+                                          .elementAt(index) ==
+                                      false
+                                  ? const SizedBox()
+                                  : Text(
+                                      '${state.user!.searchPref!.lookingFor!.keys.elementAt(index)}, ',
+                                      textAlign: TextAlign.start,
+                                      style: const TextStyle(
+                                          color: Colors.grey, fontSize: 14),
+                                    ),
                             ).toList(),
                           ),
                         ),
@@ -282,24 +304,24 @@ class Profile extends StatelessWidget {
                     ),
                     Wrap(
                       children: List<Widget>.generate(
-                        state.profile!.interests!.length,
-                            (index) =>
-                        state.profile!.interests!.values.elementAt(index) ==
-                            false
+                        state.user!.profileInfo!.interests!.length,
+                        (index) => state.user!.profileInfo!.interests!.values
+                                    .elementAt(index) ==
+                                false
                             ? const SizedBox()
                             : Padding(
-                          padding: const EdgeInsets.only(right: 6),
-                          child: Chip(
-                            label: Text(
-                              state.profile!.interests!.keys
-                                  .elementAt(index),
-                              style: TextStyle(
-                                color: Colors.grey.shade800,
-                                fontSize: 14,
+                                padding: const EdgeInsets.only(right: 6),
+                                child: Chip(
+                                  label: Text(
+                                    state.user!.profileInfo!.interests!.keys
+                                        .elementAt(index),
+                                    style: TextStyle(
+                                      color: Colors.grey.shade800,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        ),
                       ).toList(),
                     ),
                   ],
@@ -324,23 +346,23 @@ class Profile extends StatelessWidget {
                     ),
                     Wrap(
                       children: List<Widget>.generate(
-                        state.profile!.hobbies!.length,
-                            (index) =>
-                        state.profile!.hobbies!.values.elementAt(index) ==
-                            false
+                        state.user!.profileInfo!.hobbies!.length,
+                        (index) => state.user!.profileInfo!.hobbies!.values
+                                    .elementAt(index) ==
+                                false
                             ? const SizedBox()
                             : Padding(
-                          padding: const EdgeInsets.only(right: 6),
-                          child: Chip(
-                            label: Text(
-                              state.profile!.hobbies!.keys
-                                  .elementAt(index),
-                              style: TextStyle(
-                                  color: Colors.grey.shade800,
-                                  fontSize: 14),
-                            ),
-                          ),
-                        ),
+                                padding: const EdgeInsets.only(right: 6),
+                                child: Chip(
+                                  label: Text(
+                                    state.user!.profileInfo!.hobbies!.keys
+                                        .elementAt(index),
+                                    style: TextStyle(
+                                        color: Colors.grey.shade800,
+                                        fontSize: 14),
+                                  ),
+                                ),
+                              ),
                       ).toList(),
                     ),
                   ],
@@ -357,8 +379,7 @@ class Profile extends StatelessWidget {
                       Navigator.of(context)
                           .push(MaterialPageRoute(
                               builder: (context) => const EditProfileScreen()))
-                          .then((value) =>
-                              context.read<ProfileCubit>().getData());
+                          .then((value) => context.read<ProfileCubit>().init());
                     },
                     style: ElevatedButton.styleFrom(
                         primary: Colors.transparent,

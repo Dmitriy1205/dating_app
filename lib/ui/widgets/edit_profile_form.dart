@@ -22,9 +22,11 @@ class _EditProfileFormState extends State<EditProfileForm> {
   String userImage = '';
 
   String gender = '';
+  String id = '';
   String? degree;
   String? job;
   String? image;
+  String? status;
 
   final nameController = TextEditingController();
 
@@ -35,8 +37,6 @@ class _EditProfileFormState extends State<EditProfileForm> {
   final ageController = TextEditingController();
 
   final universityController = TextEditingController();
-
-  final degreeController = TextEditingController();
 
   final companyController = TextEditingController();
 
@@ -62,19 +62,37 @@ class _EditProfileFormState extends State<EditProfileForm> {
             child: CircularProgressIndicator(),
           );
         }
-        nameController.text = state.info!.name!;
-        bioController.text = state.info!.bio!;
-        heightController.text = state.info!.height!;
-        ageController.text = state.info!.age!;
-        gender = state.info!.gender!;
-        job = state.info!.job!;
-        degree = state.info!.degree!;
-        universityController.text = state.info!.university!;
-        companyController.text = state.info!.company!;
-        hobbies = state.info!.hobbies!;
-        interests = state.info!.interests!;
-        lookingFor = state.search!.lookingFor!;
-        image = state.info!.image ?? '';
+        var search = state.userModel!.searchPref!;
+        var profile = state.userModel!.profileInfo!;
+        nameController.text = profile.name!;
+        bioController.text = profile.bio!;
+        heightController.text = profile.height!;
+        ageController.text = profile.age!;
+        gender = profile.gender!;
+        jobController.text = profile.job!;
+        degree = profile.degree!;
+        job = profile.job!;
+        status = profile.status!;
+        universityController.text = profile.university!;
+        companyController.text = profile.company!;
+        hobbies = profile.hobbies!;
+        interests = profile.interests!;
+        image = profile.image!;
+        lookingFor = search.lookingFor!;
+        // id = state.info!.id!;
+        // nameController.text = state.profileInfo!.name!;
+        // bioController.text = state.profileInfo!.bio!;
+        // heightController.text = state.profileInfo!.height!;
+        // ageController.text = state.profileInfo!.age!;
+        // gender = state.profileInfo!.gender!;
+        // job = state.profileInfo!.job!;
+        // degree = state.profileInfo!.degree!;
+        // universityController.text = state.profileInfo!.university!;
+        // companyController.text = state.profileInfo!.company!;
+        // hobbies = state.profileInfo!.hobbies!;
+        // interests = state.profileInfo!.interests!;
+        // lookingFor = state.searchPref!.lookingFor!;
+        // image = state.profileInfo!.image ?? '';
         print('lookingFor 22 $lookingFor');
 
         return SingleChildScrollView(
@@ -89,7 +107,8 @@ class _EditProfileFormState extends State<EditProfileForm> {
                 children: [
                   ImagePickerList(
                     userImage: (String s) {
-                      image = s;
+                      return image = s;
+                      // print(image);
                     },
                   ),
                   Column(
@@ -264,6 +283,9 @@ class _EditProfileFormState extends State<EditProfileForm> {
                       },
                       // selected: state.selectedLookingForList!,
                       lookingForMap: lookingFor),
+                  SizedBox(
+                    height: 20,
+                  ),
                   reUsableWidgets.badgeForm(
                     isRegisterForm: false,
                     isProfileInfoForm: true,
@@ -282,22 +304,22 @@ class _EditProfileFormState extends State<EditProfileForm> {
                             _formKey.currentState!.save();
                             context
                                 .read<EditProfileCubit>()
-                                .updateFields(
-                                  ProfileInfoFields()
-                                    ..name = nameController.text
-                                    ..bio = bioController.text
-                                    ..gender = gender
-                                    ..image = image
-                                    ..height = heightController.text
-                                    ..age = ageController.text
-                                    ..degree = degree
-                                    ..job = job
-                                    ..hobbies = hobbies
-                                    ..interests = interests
-                                    ..university = universityController.text
-                                    ..company = companyController.text,
-                                  SearchPrefFields()..lookingFor = lookingFor,
-                                )
+                                .update(
+                                    ProfileInfoFields()
+                                      ..name = nameController.text
+                                      ..bio = bioController.text
+                                      ..gender = gender
+                                      ..image = image
+                                      ..height = heightController.text
+                                      ..age = ageController.text
+                                      ..degree = degree
+                                      ..status = status
+                                      ..job = job
+                                      ..hobbies = hobbies
+                                      ..interests = interests
+                                      ..university = universityController.text
+                                      ..company = companyController.text,
+                                    lookingFor = lookingFor)
                                 .then((value) => Navigator.pop(context));
 
                             print('saved');

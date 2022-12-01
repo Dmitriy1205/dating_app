@@ -26,8 +26,6 @@ class ReUsableWidgets {
   final jobController = TextEditingController();
   final locationController = TextEditingController();
 
-
-
   Widget customGradientButton(BuildContext context, {required String text}) {
     return Column(
       children: [
@@ -43,9 +41,7 @@ class ReUsableWidgets {
                 }
                 break;
               case 'SAVE':
-                {
-
-                }
+                {}
             }
 
             text == 'SIGN IN' ? submit(context) : null;
@@ -153,8 +149,7 @@ class ReUsableWidgets {
                                       letterSpacing: 0.5,
                                       color: Colors.black54),
                                 ),
-                                trailing:
-                                        lookingForMap.values.elementAt(index)
+                                trailing: lookingForMap.values.elementAt(index)
                                     ? CustomCheckbox.checked()
                                     : const SizedBox(),
                                 onTap: () {
@@ -503,22 +498,25 @@ class ReUsableWidgets {
                     child: Column(
                       children: [
                         const ListTile(
-                          title: Center(
-                            child: Text(
-                              'Choose your image',
-                              style: TextStyle(fontSize: 12),
+                          title: Padding(
+                            padding: EdgeInsets.only(top: 15.0),
+                            child: Center(
+                              child: Text(
+                                'Choose your image',
+                                style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
+                              ),
                             ),
                           ),
                         ),
                         const Divider(
-                          thickness: 2,
+                          thickness: 1,
                         ),
                         ListTile(
                             title: const Center(
                               child: Text(
                                 'Photo',
                                 style: TextStyle(
-                                  color: Colors.blue,
+                                  color: Colors.orangeAccent,
                                 ),
                               ),
                             ),
@@ -529,14 +527,14 @@ class ReUsableWidgets {
                               Navigator.of(context).pop();
                             }),
                         const Divider(
-                          thickness: 2,
+                          thickness: 1,
                         ),
                         ListTile(
                             title: const Center(
                               child: Text(
                                 'Image from files',
                                 style: TextStyle(
-                                  color: Colors.blue,
+                                  color: Colors.orangeAccent,
                                 ),
                               ),
                             ),
@@ -563,7 +561,7 @@ class ReUsableWidgets {
                                 child: Text(
                               'Cancel',
                               style: TextStyle(
-                                  color: Colors.redAccent,
+                                  color: Colors.orange,
                                   fontWeight: FontWeight.bold),
                             )),
                             onTap: () {
@@ -609,5 +607,128 @@ class ReUsableWidgets {
     } else {
       // print('No image selected.');
     }
+  }
+
+  static Padding buildExpansionList(
+      BuildContext context,
+      Map<String, dynamic>? inputFields,
+      {required Function(String?) onTap, Function(Map<String, dynamic>)? set}) {
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: 10,
+        bottom: 20,
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(color: Colors.grey[300]!),
+            borderRadius: BorderRadius.circular(10.0)),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 0),
+          child: Center(
+            child: Theme(
+              data: Theme.of(context).copyWith(
+                dividerColor: Colors.transparent,
+              ),
+              child: ExpansionTile(
+                title: const Text('Select',style: TextStyle(color: Colors.grey),),
+                children: [
+                  ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: inputFields!.length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            onTap(inputFields.keys.elementAt(index));
+
+                            inputFields.update(
+                                inputFields.keys.elementAt(index),
+                                (value) => !value);
+                            print(inputFields.values);
+                            set!(inputFields);
+                          },
+                          child: SizedBox(
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                side: BorderSide(
+                                  color: inputFields.values.elementAt(index)
+                                      ? Colors.orangeAccent
+                                      : Colors.grey.shade200,
+                                ),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              shadowColor: Colors.transparent,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 16,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      inputFields.keys.elementAt(index),
+                                      style: TextStyle(
+                                          color:
+                                              inputFields.values.elementAt(index) ==
+                                                      false
+                                                  ? Colors.black
+                                                  : Colors.orange),
+                                    ),
+                                    SizedBox(
+                                        height: 15,
+                                        width: 15,
+                                        child:
+                                            inputFields.values.elementAt(index) ==
+                                                    false
+                                                ? const SizedBox()
+                                                : Image.asset(
+                                                    'assets/icons/check.png')),
+                                  ],
+                                ),
+
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
+                ],
+              ),
+            ),
+            // DropdownButtonFormField(
+            //   // value: lookingFor.length,
+            //   hint: const Text('Select'),
+            //
+            //   icon: Icon(
+            //     Icons.keyboard_arrow_down_sharp,
+            //     color: Colors.grey[500],
+            //   ),
+            //   onChanged: (v) {},
+            //   decoration: const InputDecoration(
+            //     enabledBorder: InputBorder.none,
+            //     focusedBorder: InputBorder.none,
+            //     fillColor: Colors.white,
+            //   ),
+            //   // decoration: profileFieldDecor('Gender'),
+            //   items: List.generate(
+            //       lookingFor.length,
+            //       (index) => DropdownMenuItem(
+            //             value: lookingFor.keys.elementAt(index),
+            //             child: Row(
+            //               mainAxisAlignment:
+            //                   MainAxisAlignment.spaceBetween,
+            //               children: [
+            //                 Text(
+            //                   lookingFor.keys.elementAt(index),
+            //                 ),
+            //                 Icon(Icons.add),
+            //               ],
+            //             ),
+            //           )),
+            // ),
+          ),
+        ),
+      ),
+    );
   }
 }

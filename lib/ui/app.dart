@@ -5,6 +5,7 @@ import 'package:dating_app/ui/screens/welcome_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../core/routes.dart';
 import '../core/service_locator.dart';
 import '../core/themes/colors.dart';
 import 'bloc/image_picker/image_picker_cubit.dart';
@@ -30,10 +31,16 @@ class App extends StatelessWidget {
         ],
         child: MaterialApp(
           theme: ThemeData(
+
             chipTheme: chipTheme(),
             sliderTheme: CustomColors.customGradient(),
             unselectedWidgetColor: Colors.orange,
+            expansionTileTheme: const ExpansionTileThemeData(
+              textColor: Colors.orangeAccent,
+              iconColor: Colors.orangeAccent,
+            ),
           ),
+          routes: routes,
           debugShowCheckedModeBanner: false,
           title: 'Dating App',
           home: _buildHomeScreen(),

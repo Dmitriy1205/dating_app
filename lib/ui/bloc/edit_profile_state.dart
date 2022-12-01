@@ -1,42 +1,49 @@
 import 'package:dating_app/data/models/profile_info_data.dart';
 import 'package:dating_app/data/models/search_pref_data.dart';
+import 'package:dating_app/data/models/user_model.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../data/models/status.dart';
 
 class EditProfileState extends Equatable {
   final List<String>? selectedLookingForList;
   final Status? status;
-  final SearchPrefFields? search;
-  final ProfileInfoFields? info;
+  final SearchPrefFields? searchPref;
+  final ProfileInfoFields? profileInfo;
+  final UserModel? userModel;
 
   const EditProfileState({
     this.selectedLookingForList,
     this.status,
-    this.search,
-    this.info,
+    this.searchPref,
+    this.profileInfo,
+    this.userModel,
   });
 
   @override
   List<Object?> get props => [
         selectedLookingForList,
         status,
-        search,
-        info,
+        searchPref,
+        profileInfo,
+        userModel,
       ];
 
   EditProfileState copyWith({
     List<String>? selectedLookingForList,
     Status? status,
-    SearchPrefFields? search,
-    ProfileInfoFields? info,
+    SearchPrefFields? searchPref,
+    ProfileInfoFields? profileInfo,
+    UserModel? userModel,
   }) {
     return EditProfileState(
       selectedLookingForList:
           selectedLookingForList ?? this.selectedLookingForList,
       status: status ?? this.status,
-      search: search ?? this.search,
-      info: info ?? this.info,
+      searchPref: searchPref ?? this.searchPref,
+      profileInfo: profileInfo ?? this.profileInfo,
+      userModel: userModel ?? this.userModel,
     );
   }
 }

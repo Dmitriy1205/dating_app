@@ -2,22 +2,22 @@ part of 'home_cubit.dart';
 
 class HomeState extends Equatable {
   final Status? status;
-  final List<ProfileInfoFields>? fields;
-  final List<SearchPrefFields>? lookingFor;
+  // final List<ProfileInfoFields>? fields;
+  // final List<SearchPrefFields>? lookingFor;
   final List<UserModel>? user;
 
   const HomeState({
     this.status,
-    this.fields,
-    this.lookingFor,
+    // this.fields,
+    // this.lookingFor,
     this.user,
   });
 
   @override
   List<Object?> get props => [
         status,
-        fields,
-        lookingFor,
+        // fields,
+        // lookingFor,
         user,
       ];
 
@@ -29,8 +29,8 @@ class HomeState extends Equatable {
   }) {
     return HomeState(
       status: status ?? this.status,
-      fields: fields ?? this.fields,
-      lookingFor: lookingFor ?? this.lookingFor,
+      // fields: fields ?? this.fields,
+      // lookingFor: lookingFor ?? this.lookingFor,
       user: user ?? this.user,
     );
   }

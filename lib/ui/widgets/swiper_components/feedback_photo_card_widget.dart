@@ -79,7 +79,12 @@ class FeedbackPhotoCardWidget extends StatelessWidget {
               decoration: BoxDecoration(
                 // borderRadius: BorderRadius.circular(15.0),
                 color: imageBackgroundColor,
-                image: DecorationImage(
+                image: photoCard.imagePath == '' ? DecorationImage(
+                  image: AssetImage(
+                    'assets/images/empty.png',
+                  ),
+                  fit: BoxFit.cover,
+                ) : DecorationImage(
                         image: NetworkImage(
                           photoCard.imagePath,
                         ),

@@ -24,4 +24,5 @@ class AuthState extends Equatable {
       verId: verId ?? this.verId,
     );
   }
+
 }

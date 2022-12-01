@@ -20,18 +20,19 @@ class PersonalProf extends StatelessWidget {
   final Map<String, dynamic> interests;
   final Map<String, dynamic> lookingFor;
 
-  const PersonalProf(
-      {Key? key,
-      required this.name,
-      required this.bio,
-      required this.height,
-      // required this.image,
-      required this.joinDate,
-      // required this.pic,
-      required this.interests,
-      required this.lookingFor,
-      required this.id})
-      : super(key: key);
+  const PersonalProf({
+    Key? key,
+    required this.name,
+    required this.bio,
+    required this.height,
+    // required this.image,
+    required this.joinDate,
+    // required this.pic,
+    required this.interests,
+    required this.lookingFor,
+    required this.id,
+    // required this.id,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +44,7 @@ class PersonalProf extends StatelessWidget {
         height: height,
         interests: interests,
         lookingFor: lookingFor,
-        // image: image,
         joinDate: joinDate,
-        // pic: pic,
         id: id,
       ),
     );
@@ -122,30 +121,42 @@ class _PersonProfileState extends State<PersonProfile> {
                     SizedBox(
                       height: MediaQuery.of(context).size.height / 1.7,
                       width: MediaQuery.of(context).size.width,
-                      child: CarouselSlider(
-                        items: pic,
-                        options: CarouselOptions(
-                            scrollDirection: Axis.vertical,
-                            scrollPhysics: const ClampingScrollPhysics(),
-                            viewportFraction: 1,
-                            enableInfiniteScroll: false,
-                            onScrolled: (item) {
-                              double _validPosition(double position) {
-                                if (position >= state.pic!.length) return 0;
-                                if (position < 0) {
-                                  return state.pic!.length - 1.0;
-                                }
-                                return position;
-                              }
+                      child: state.pic!.length == 0
+                          ? Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(5),
+                                child: Image.asset(
+                                  'assets/images/empty.png',
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            )
+                          : CarouselSlider(
+                              items: pic,
+                              options: CarouselOptions(
+                                  scrollDirection: Axis.vertical,
+                                  scrollPhysics: const ClampingScrollPhysics(),
+                                  viewportFraction: 1,
+                                  enableInfiniteScroll: false,
+                                  onScrolled: (item) {
+                                    double _validPosition(double position) {
+                                      if (position >= state.pic!.length)
+                                        return 0;
+                                      if (position < 0) {
+                                        return state.pic!.length - 1.0;
+                                      }
+                                      return position;
+                                    }
 
-                              _updatePosition(double position) {
-                                setState(() => _currentPosition =
-                                    _validPosition(position));
-                              }
+                                    _updatePosition(double position) {
+                                      setState(() => _currentPosition =
+                                          _validPosition(position));
+                                    }
 
-                              _updatePosition(item!);
-                            }),
-                      ),
+                                    _updatePosition(item!);
+                                  }),
+                            ),
                       // Image.asset('assets/images/pic.png',fit: BoxFit.fill,),
                     ),
                     Positioned(
@@ -163,20 +174,20 @@ class _PersonProfileState extends State<PersonProfile> {
                         ),
                       ),
                     ),
-                    Positioned(
-                      right: 20,
-                      top: 70,
-                      child: DotsIndicator(
-                        axis: Axis.vertical,
-                        dotsCount: state.pic!.length,
-                        position: _currentPosition,
-                        decorator: DotsDecorator(
-                            size: Size(15, 12),
-                            activeSize: Size(15, 12),
-                            color: Colors.pink.withOpacity(0.2),
-                            activeColor: Colors.pink.withOpacity(0.6)),
-                      ),
-                    ),
+                     Positioned(
+                            right: 20,
+                            top: 70,
+                            child: DotsIndicator(
+                              axis: Axis.vertical,
+                              dotsCount: state.pic!.length <= 0 ? 1 :state.pic!.length,
+                              position: _currentPosition,
+                              decorator: DotsDecorator(
+                                  size: Size(15, 12),
+                                  activeSize: Size(15, 12),
+                                  color: Colors.pink.withOpacity(0.2),
+                                  activeColor: Colors.pink.withOpacity(0.6)),
+                            ),
+                          ),
                   ],
                 ),
                 Padding(
