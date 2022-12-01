@@ -8,13 +8,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/search_preferances_state.dart';
 import '../screens/home_screen.dart';
+import 'field_decor.dart';
 
 class SearchPrefForm extends StatelessWidget {
   SearchPrefForm({Key? key}) : super(key: key);
+  final _formKey = GlobalKey<FormState>();
   ReUsableWidgets reUsableWidgets = ReUsableWidgets();
-  String? gender;
+  String gender = 'Gender';
 
-  int? distance;
+  int distance = 28;
 
   Map<String, dynamic>? lookingFor = {
     'someone to chill with': false,
@@ -24,7 +26,27 @@ class SearchPrefForm extends StatelessWidget {
     'a mentor': false,
     'a mentee': false
   };
-  Map<String, int>? yearsRange;
+  Map<String, dynamic> hobbies = {
+    'WorkingOut': true,
+    'Hiking': true,
+    'Biking': true,
+    'Shopping': true,
+    'Cooking': true,
+    'Baking': true,
+    'Drinking': true,
+    'Reading': true,
+  };
+  Map<String, dynamic> interests = {
+    'Politics': true,
+    'Fashion': true,
+    'FinArt': true,
+    'Music': true,
+    'Dance': true,
+    'Film': true,
+    'Photography': true,
+    'Acting': true,
+  };
+  Map<String, int>? yearsRange = {'start': 20, 'end': 30};
 
   @override
   Widget build(BuildContext context) {
@@ -32,206 +54,211 @@ class SearchPrefForm extends StatelessWidget {
       builder: (context, state) {
         return SingleChildScrollView(
           physics: const ClampingScrollPhysics(),
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 25),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  IconButton(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(0, 10, 10, 0),
-                                    onPressed: () {
-                                      Navigator.pop(context);
+          child: Form(
+            key: _formKey,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 25),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    IconButton(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          0, 10, 10, 0),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      splashRadius: 0.1,
+                                      iconSize: 28,
+                                      alignment: Alignment.topLeft,
+                                      icon: const Icon(
+                                        Icons.close,
+                                      ),
+                                    ),
+                                    const Text(
+                                      'Search Preferences',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 23,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                GestureDetector(
+                                    onTap: () {
+                                      if (!_formKey.currentState!.validate()) {
+                                        return;
+                                      }
+                                      _formKey.currentState!.save();
+                                      context
+                                          .read<SearchPreferencesCubit>()
+                                          .saveData(
+                                              data: SearchPrefFields()
+                                                ..yearsRange = yearsRange
+                                                ..distance = distance
+                                                ..lookingFor = lookingFor
+                                                ..gender = gender
+                                                ..hobbies = hobbies
+                                                ..interests = interests)
+                                          .then((value) => Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      HomeScreen())));
                                     },
-                                    splashRadius: 0.1,
-                                    iconSize: 28,
-                                    alignment: Alignment.topLeft,
-                                    icon: const Icon(
-                                      Icons.close,
-                                    ),
-                                  ),
-                                  const Text(
-                                    'Search Preferences',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 23,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              GestureDetector(
-                                  onTap: () {
-                                    context
-                                        .read<SearchPreferencesCubit>()
-                                        .saveData(
-                                            data: SearchPrefFields()
-                                              ..yearsRange = yearsRange
-                                              ..distance = distance
-                                              ..lookingFor = lookingFor
-                                              ..gender = gender)
-                                        .then((value) => Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    HomeScreen())));
+                                    child: SizedBox(
+                                        height: 25,
+                                        width: 25,
+                                        child:
+                                            Image.asset(CustomIcons.checkbox))),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            const Text(
+                                'We\'ll use this information to show you people with similar interests and hobbies as you!',
+                                style: TextStyle(color: Colors.black38)),
+                            const SizedBox(
+                              height: 30,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text('Age'),
+                                Text(
+                                    '${state.age!.start.round().toString()} - ${state.age!.end.round().toString()}',
+                                    style:
+                                        const TextStyle(color: Colors.black45)),
+                              ],
+                            ),
+                            RangeSlider(
+                                values: state.age!,
+                                onChanged: (newYears) {
+                                  context
+                                      .read<SearchPreferencesCubit>()
+                                      .setAge(newYears);
+                                  yearsRange = {
+                                    'start': state.age!.start.round(),
+                                    'end': state.age!.end.round()
+                                  };
+                                },
+                                min: 15,
+                                max: 55),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text('Distance'),
+                                Text('${state.distance!.toString()} miles',
+                                    style:
+                                        const TextStyle(color: Colors.black45)),
+                              ],
+                            ),
+                            Slider(
+                                value: state.distance!.toDouble(),
+                                onChanged: (newDistance) {
+                                  // bloc.changeDistance(newDistance.toInt());
+                                  context
+                                      .read<SearchPreferencesCubit>()
+                                      .setDistance(newDistance.toInt());
+                                  distance = newDistance.toInt();
+                                },
+                                min: 0,
+                                max: 70),
+                            reUsableWidgets.lookingForWidget(
+                              context,
+                              onTap: (value) {
+                                context
+                                    .read<SearchPreferencesCubit>()
+                                    .setLookingForFields(value!);
+                              },
+                              lookingFor: (v) {
+                                lookingFor = v;
+                              },
+                              // selected: state.selectedLookingForList!,
+                              lookingForMap: lookingFor!,
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            CustomTextStyle.bigText('Gender',
+                                additionalText: '(select one or more:)'),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Ink(
+                              child: Center(
+                                child: DropdownButtonFormField(
+                                  value: gender,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  validator: (v) {
+                                    if (v == 'Gender') {
+                                      return 'CHOOSE GENDER';
+                                    }
+                                    return null;
                                   },
-                                  child: SizedBox(
-                                      height: 25,
-                                      width: 25,
-                                      child:
-                                          Image.asset(CustomIcons.checkbox))),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          const Text(
-                              'We\'ll use this information to show you people with similar interests and hobbies as you!',
-                              style: TextStyle(color: Colors.black38)),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text('Age'),
-                              Text(
-                                  '${state.age!.start.round().toString()} - ${state.age!.end.round().toString()}',
-                                  style:
-                                      const TextStyle(color: Colors.black45)),
-                            ],
-                          ),
-                          RangeSlider(
-                              values: state.age!,
-                              onChanged: (newYears) {
-                                context
-                                    .read<SearchPreferencesCubit>()
-                                    .setAge(newYears);
-                                yearsRange = {
-                                  'start': state.age!.start.round(),
-                                  'end': state.age!.end.round()
-                                };
-                              },
-                              min: 15,
-                              max: 55),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text('Distance'),
-                              Text('${state.distance!.toString()} miles',
-                                  style:
-                                      const TextStyle(color: Colors.black45)),
-                            ],
-                          ),
-                          Slider(
-                              value: state.distance!.toDouble(),
-                              onChanged: (newDistance) {
-                                // bloc.changeDistance(newDistance.toInt());
-                                context
-                                    .read<SearchPreferencesCubit>()
-                                    .setDistance(newDistance.toInt());
-                                distance = newDistance.toInt();
-                              },
-                              min: 0,
-                              max: 70),
-                          reUsableWidgets.lookingForWidget(
-                            context,
-                            onTap: (value) {
-                              context
-                                  .read<SearchPreferencesCubit>()
-                                  .setLookingForFields(value!);
-                            },
-                            lookingFor: (v) {
-                              lookingFor = v;
-                            },
-                            // selected: state.selectedLookingForList!,
-                            lookingForMap: lookingFor!,
-                          ),
-                          CustomTextStyle.bigText('Gender',
-                              additionalText: '(select one or more:)'),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Ink(
-                            child: Container(
-                              height: 57,
-                              width: 350,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border.all(color: Colors.grey[300]!),
-                                  borderRadius: BorderRadius.circular(10.0)),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 19),
-                                child: Center(
-                                  child: DropdownButtonFormField(
-                                    // value: gender,
-                                    // validator: (v) {
-                                    //   if (v == null) {
-                                    //     return 'Choose your gender';
-                                    //   }
-                                    //   return null;
-                                    // },
-                                    hint: const Text('Gender'),
-                                    icon: const Icon(
-                                        Icons.keyboard_arrow_down_sharp),
-                                    onChanged: (v) {
-                                      gender = v.toString();
-                                    },
-
-                                    decoration: const InputDecoration(
-                                      enabledBorder: InputBorder.none,
-                                      focusedBorder: InputBorder.none,
-                                      fillColor: Colors.white,
+                                  hint: const Text('Gender'),
+                                  icon: const Icon(
+                                      Icons.keyboard_arrow_down_sharp),
+                                  onChanged: (v) {
+                                    gender = v.toString();
+                                  },
+                                  decoration: genderFieldDecor('gender'),
+                                  items: [
+                                    DropdownMenuItem(
+                                      enabled: false,
+                                      value: 'Gender',
+                                      child: Text(
+                                        'Gender',
+                                        style: TextStyle(
+                                            color: Colors.grey.shade600),
+                                      ),
                                     ),
-                                    // decoration: profileFieldDecor('Gender'),
-                                    items: const [
-                                      DropdownMenuItem(
-                                        value: 'Male',
-                                        child: Text(
-                                          'Male',
-                                        ),
+                                    const DropdownMenuItem(
+                                      value: 'Male',
+                                      child: Text(
+                                        'Male',
                                       ),
-                                      DropdownMenuItem(
-                                        value: 'Female',
-                                        child: Text(
-                                          "Female",
-                                        ),
+                                    ),
+                                    const DropdownMenuItem(
+                                      value: 'Female',
+                                      child: Text(
+                                        "Female",
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              )
-            ],
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         );
       },

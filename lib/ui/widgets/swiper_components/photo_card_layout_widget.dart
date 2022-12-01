@@ -86,7 +86,7 @@ class _PhotoCardLayoutWidgetState extends State<PhotoCardLayoutWidget> {
           boxShadow: [
             BoxShadow(
               color: Colors.grey[300] ?? Colors.black,
-              blurRadius:0.0,
+              blurRadius: 0.0,
               spreadRadius: 1.0,
               offset: Offset(0, 5),
             ),
@@ -101,7 +101,14 @@ class _PhotoCardLayoutWidgetState extends State<PhotoCardLayoutWidget> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5.0),
                 color: widget.imageBackgroundColor,
-                image:DecorationImage(
+                image: widget.photoCard.imagePath == '' || widget.photoCard.imagePath == null
+                    ? const DecorationImage(
+                        image: AssetImage(
+                          'assets/images/empty.png',
+                        ),
+                        fit: BoxFit.cover,
+                      )
+                    : DecorationImage(
                         image: NetworkImage(
                           widget.photoCard.imagePath,
                         ),
@@ -179,8 +186,8 @@ class _PhotoCardLayoutWidgetState extends State<PhotoCardLayoutWidget> {
               ],
             ),
             Positioned(
-              bottom: MediaQuery.of(context).size.height/5.3,
-              width: MediaQuery.of(context).size.height/2.25,
+              bottom: MediaQuery.of(context).size.height / 5.3,
+              width: MediaQuery.of(context).size.height / 2.25,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

@@ -498,22 +498,25 @@ class ReUsableWidgets {
                     child: Column(
                       children: [
                         const ListTile(
-                          title: Center(
-                            child: Text(
-                              'Choose your image',
-                              style: TextStyle(fontSize: 12),
+                          title: Padding(
+                            padding: EdgeInsets.only(top: 15.0),
+                            child: Center(
+                              child: Text(
+                                'Choose your image',
+                                style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
+                              ),
                             ),
                           ),
                         ),
                         const Divider(
-                          thickness: 2,
+                          thickness: 1,
                         ),
                         ListTile(
                             title: const Center(
                               child: Text(
                                 'Photo',
                                 style: TextStyle(
-                                  color: Colors.blue,
+                                  color: Colors.orangeAccent,
                                 ),
                               ),
                             ),
@@ -524,14 +527,14 @@ class ReUsableWidgets {
                               Navigator.of(context).pop();
                             }),
                         const Divider(
-                          thickness: 2,
+                          thickness: 1,
                         ),
                         ListTile(
                             title: const Center(
                               child: Text(
                                 'Image from files',
                                 style: TextStyle(
-                                  color: Colors.blue,
+                                  color: Colors.orangeAccent,
                                 ),
                               ),
                             ),
@@ -558,7 +561,7 @@ class ReUsableWidgets {
                                 child: Text(
                               'Cancel',
                               style: TextStyle(
-                                  color: Colors.redAccent,
+                                  color: Colors.orange,
                                   fontWeight: FontWeight.bold),
                             )),
                             onTap: () {

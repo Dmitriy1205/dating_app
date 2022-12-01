@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProfileInfoFields {
-  String? id;
+  // String? id;
   String? name;
   String? bio;
   String? image;
@@ -11,18 +11,20 @@ class ProfileInfoFields {
   String? university;
   String? degree;
   String? company;
+  String? status;
   String? job;
   Map<String, dynamic>? hobbies;
   Map<String, dynamic>? interests;
 
   ProfileInfoFields({
-    this.id,
+    // this.id,
     this.name,
     this.bio,
     this.image,
     this.gender,
     this.height,
     this.age,
+    this.status,
     this.university,
     this.degree,
     this.company,
@@ -37,7 +39,7 @@ class ProfileInfoFields {
   ) {
     final data = snapshot.data();
     return ProfileInfoFields(
-      id: data?['id'],
+      // id: data?['id'],
       name: data?['name'],
       bio: data?['bio'],
       image: data?['image'],
@@ -50,12 +52,13 @@ class ProfileInfoFields {
       job: data?['job'],
       hobbies: data?['hobbies'],
       interests: data?['interests'],
+      status: data?['status'],
     );
   }
 
   factory ProfileInfoFields.fromJson(Map<String, dynamic> json) {
     return ProfileInfoFields(
-      id: json['id'],
+      // id: json['id'],
       name: json['name'],
       bio: json['bio'],
       image: json['image'],
@@ -68,11 +71,12 @@ class ProfileInfoFields {
       job: json['job'],
       hobbies: json['hobbies'],
       interests: json['interests'],
+      status: json['status'],
     );
   }
 
   Map<String, dynamic> toFirestore() => {
-        'id': id,
+        // 'id': id,
         'name': name,
         'bio': bio,
         'image': image,
@@ -85,5 +89,6 @@ class ProfileInfoFields {
         'job': job,
         'hobbies': hobbies,
         'interests': interests,
+        'status': status,
       };
 }
