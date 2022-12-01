@@ -1,13 +1,9 @@
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:dating_app/data/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import '../../core/exceptions.dart';
 import '../models/message_model.dart';
-
 import 'package:dating_app/data/models/profile_info_data.dart';
 import '../models/search_pref_data.dart';
 
@@ -55,14 +51,26 @@ class FirebaseDataProvider {
   }
 
   Future<MessageModel?> sendMessageToPal(
-      MessageModel messageModel, chatId) async {
-    print("collection('chats/${chatId}/messages')");
+      MessageModel messageModel, String chatId) async {
     try {
       await firestore
-          .collection('chats/${chatId}/messages')
+          .collection('chats/$chatId/messages')
           .add(messageModel.toJson());
+    } on FirebaseException catch (e) {
+      throw BadRequestException(message: e.message!);
+    }
+  }
 
-      print(' sendMessageToPal  $chatId');
+  Future<void> clearChat(String chatId) async {
+    try {
+      final batch = firestore.batch();
+      var collection = firestore.collection('chats/$chatId/messages');
+      var snapshots = await collection.get();
+      for (var doc in snapshots.docs) {
+        batch.delete(doc.reference);
+      }
+      await batch.commit();
+      firestore.collection('chats').doc(chatId).set({'deleted': '${DateTime.now()}'});
     } on FirebaseException catch (e) {
       throw BadRequestException(message: e.message!);
     }
@@ -80,50 +88,29 @@ class FirebaseDataProvider {
     }
   }
 
+  Future<void> getLoggedUser() async {
+    try {
+      print('userModel.id  ${userModel.id}');
+      Map<String, dynamic> user;
+      await firestore
+          .collection('Users')
+          .doc(userModel.id)
+          .snapshots()
+          .forEach((element) {
+      });
+    } on FirebaseException catch (e) {
+      print(e.message);
+      throw BadRequestException(message: e.message!);
+    }
+  }
+
   String getClearChatId(String senderId, String recipientId) {
     int compareInt = senderId.compareTo(recipientId);
-    // print('str STR : $compareInt');
-    // print('str senderId : ${senderId.length}');
-    // print('str recipientId : ${recipientId.length}');
-
-    List<int> a = senderId.codeUnits;
-    List<int> b = recipientId.codeUnits;
-    //
-    // int c = 0;
-    // int d = 0;
-    // for (int i in b) {
-    //   print('int D = $d');
-    //   d = d + i;
-    // }
-    // for (int i in a) {
-    //   print('bbbb $c');
-    //   c = c + i;
-    // }
     String clearId = compareInt >= 0
         ? '${senderId}_$recipientId'
         : '${recipientId}_$senderId';
     return clearId;
   }
-
-  // Future<List<MessageModel>> getAllChatMessages(String chatId) async {
-  //   try {
-  //     List<MessageModel> queryListMessages = await firestore
-  //         .collection('chats/$chatId/messages')
-  //         .orderBy('time', descending: false)
-  //         .get()
-  //         .then((QuerySnapshot querySnapshot) {
-  //       return querySnapshot.docs.map((e) {
-  //         return MessageModel.fromJson(e.data() as Map<String, dynamic>);
-  //       }).toList();
-  //     });
-  //     queryListMessages.forEach((element) {
-  //     });
-  //
-  //     return queryListMessages;
-  //   } on FirebaseException catch (e) {
-  //     throw BadRequestException(message: e.message!);
-  //   }
-  // }
 
   Stream<List<MessageModel>> getAllChatMessagesStream(String chatId) =>
       firestore
@@ -141,7 +128,6 @@ class FirebaseDataProvider {
       List<UserModel> palsList =
           users.docs.map((user) => UserModel.fromJson(user.data())).toList();
       print('palls ${users}');
-      print('${palsList.length}  palls ${palsList[0].firstName} ');
       return palsList;
     } on FirebaseException catch (e) {
       throw BadRequestException(message: e.message!);

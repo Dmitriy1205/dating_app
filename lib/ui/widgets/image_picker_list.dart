@@ -14,11 +14,8 @@ class ImagePickerList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => sl<ImagePickerCubit>(),
-      child: _ImagePickerList(
-        userImage: userImage,
-      ),
+    return _ImagePickerList(
+      userImage: userImage,
     );
   }
 }

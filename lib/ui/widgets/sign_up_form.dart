@@ -24,10 +24,10 @@ class SignUpForm extends StatefulWidget {
 class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
   bool isChecked = false;
-  final _nameController = TextEditingController();
-  final _phoneController = TextEditingController();
+  final _nameController = TextEditingController(text: 'Yaroslav');
+  final _phoneController = TextEditingController( text: '932383265');
   final _dateController = TextEditingController();
-  final _emailController = TextEditingController();
+  final _emailController = TextEditingController(text: 'yarshau@gmail.com');
   String verificationId = '';
   DateTime now = DateTime.now();
 
@@ -349,3 +349,4 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 }
+

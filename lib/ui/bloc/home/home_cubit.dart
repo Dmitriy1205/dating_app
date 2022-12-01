@@ -4,9 +4,11 @@ import 'package:dating_app/data/repositories/auth_repository.dart';
 import 'package:dating_app/data/repositories/data_repository.dart';
 import 'package:equatable/equatable.dart';
 
+import '../../../core/service_locator.dart';
 import '../../../data/models/search_pref_data.dart';
 import '../../../data/models/status.dart';
 import '../../../data/models/user_model.dart';
+import '../../../data/repositories/user_repository.dart';
 
 part 'home_state.dart';
 
@@ -17,6 +19,10 @@ class HomeCubit extends Cubit<HomeState> {
   }) : super(HomeState(
           status: Status.initial(),
         )) {
+    UserRepository userRepository = sl<UserRepository>();
+    userRepository.userLoginRepo();
+    userRepository.loggedUserPictureMethod();
+
     // getData();
     init();
   }
@@ -29,6 +35,7 @@ class HomeCubit extends Cubit<HomeState> {
       status: Status.loading(),
     ));
     try {
+
       final id = auth.currentUser()!.uid;
       final searchUser = await db.getUserFields(id);
       final allUsers = await db.getAllUserFields();

@@ -11,6 +11,7 @@ class StorageDataProvider {
 
   Future<String> upload(File file, String destination) async {
     try {
+      print(' StorageDataProvider file $file');
       UploadTask task = storage.ref(destination).putFile(file);
       await task;
       return await task.snapshot.ref.getDownloadURL();

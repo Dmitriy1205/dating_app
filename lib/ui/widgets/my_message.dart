@@ -1,72 +1,14 @@
+import 'package:dating_app/core/constants.dart';
 import 'package:dating_app/data/models/message_model.dart';
+import 'package:dating_app/ui/bloc/messenger_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import '../../core/constants.dart';
-
-class OwnMessageCard extends StatelessWidget {
-  const OwnMessageCard(
-      {super.key, required this.messageModel, required this.time});
-
-  final MessageModel messageModel;
-  final String time;
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerRight,
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width - 15,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Container(
-                  height: 45,
-                  width: 45,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(50),
-                    child: Image.asset(Content.interestsList[3]),
-                    // fit: BoxFit.fill,
-                  ),
-                ),
-                Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const SizedBox(width: 10),
-                        Text(messageModel.time!,
-                            style: const TextStyle(color: Colors.black54)),
-                        Text('${messageModel.senderName} '),
-                      ],
-                    ),
-                    // Text(
-                    //   messageModel.message,
-                    //   style:
-                    //       const TextStyle(fontSize: 16, color: Colors.black87),
-                    // ),
-                  ],
-                )
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class OwnMessageCard1 extends StatelessWidget {
-  const OwnMessageCard1(
-      {super.key, required this.messageModel, required this.time});
+  const OwnMessageCard1({super.key, required this.messageModel});
 
   final MessageModel messageModel;
-  final String time;
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +20,9 @@ class OwnMessageCard1 extends StatelessWidget {
             right: 55,
             child: Row(
               children: [
-                Text(DateFormat.jm().format((DateTime.parse(messageModel.time!))),
+                Text(
+                    DateFormat.jm()
+                        .format((DateTime.parse(messageModel.time!))),
                     style: const TextStyle(color: Colors.black54)),
                 Text(' ${messageModel.senderName}'),
               ],
@@ -88,17 +32,48 @@ class OwnMessageCard1 extends StatelessWidget {
           width: 45,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(50),
-            child: Image.asset(Content.interestsList[3]),
+            child: context
+                .read<MessengerCubit>()
+                .loggedUser
+                .loggedUserPicture != '' ? Image.network(context
+                .read<MessengerCubit>()
+                .loggedUser
+                .loggedUserPicture) : Image.asset(CustomIcons.photo),
             // fit: BoxFit.fill,
           ),
         ),
-        Positioned(top: 20,right: 55,
-          child: Text(
-            ' ${messageModel.message}',
-            style: const TextStyle(fontSize: 16, color: Colors.black87),
-          ),
-        ),
+        Padding(
+            padding: const EdgeInsets.only(top: 35.0, right: 55),
+            child: messageModel.attachmentUrl == null
+                ? messagePositioned(context)
+                : attachmentPositioned(context)),
       ],
     );
   }
+
+  Widget messagePositioned(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery
+          .of(context)
+          .size
+          .width - 150,
+      child: Align(
+        alignment: Alignment.topRight,
+        child: Text(
+          ' ${messageModel.message}',
+          overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.justify,
+          style: const TextStyle(fontSize: 16, color: Colors.black87),
+          maxLines: 20,
+        ),
+      ),
+    );
+  }
+
+  Widget attachmentPositioned(BuildContext context) {
+    return Image.network(messageModel.message!);
+  }
 }
+
+
+

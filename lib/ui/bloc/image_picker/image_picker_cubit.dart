@@ -29,6 +29,17 @@ class ImagePickerCubit extends Cubit<ImagePickerState> {
       emit(state.copyWith(status: Status.error(e.toString())));
     }
   }
+  Future<String?> uploadMessageImage(File source, String chatId) async {
+    emit(state.copyWith(status: Status.loading()));
+    try {
+      String imageUrl = await storage.upload(source, 'chats/$chatId/${DateTime.now()}');
+      emit(state.copyWith(status: Status.loaded()));
+      return imageUrl;
+    } catch (e) {
+      print(e);
+      emit(state.copyWith(status: Status.error(e.toString())));
+    }
+  }
 
   Future<void> getAllImages() async {
     emit(state.copyWith(status: Status.loading()));
