@@ -53,6 +53,12 @@ class MessengerScreen extends StatelessWidget {
                     return {'Block', 'Clear Chat', 'Report User', 'Unfriend'}
                         .map((String choice) {
                       return PopupMenuItem<String>(
+                        onTap: () {
+                          switch (choice) {
+                            case 'Clear Chat':
+                              context.read<MessengerCubit>().clearChat();
+                          }
+                        },
                         value: choice,
                         child: Text(choice),
                       );

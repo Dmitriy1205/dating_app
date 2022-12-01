@@ -29,6 +29,9 @@ class DataRepository {
     chatId = dataProvider.getClearChatId(senderId, recipientId);
     return chatId;
   }
+  void clearChat(String chatId) {
+    dataProvider.clearChat(chatId);
+  }
 
   Stream<List<MessageModel>> getAllChatMessagesStream(
       String senderId, String recipientId)  {

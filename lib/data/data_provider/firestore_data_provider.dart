@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:dating_app/data/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../../core/exceptions.dart';
 import '../models/message_model.dart';
@@ -55,16 +56,52 @@ class FirebaseDataProvider {
   }
 
   Future<MessageModel?> sendMessageToPal(
-      MessageModel messageModel, chatId) async {
+      MessageModel messageModel, String chatId) async {
     try {
       await firestore
-          .collection('chats/${chatId}/messages')
+          .collection('chats/$chatId/messages')
           .add(messageModel.toJson());
 
       print(' sendMessageToPal  $chatId');
     } on FirebaseException catch (e) {
       throw BadRequestException(message: e.message!);
     }
+  }
+
+  Future<void> clearChat(String chatId) async {
+    try {
+      var doc = await firestore.collection('chats').get();
+      print('doc ${doc.docs} ');
+      print('chatId ${chatId}');
+      for(var d in doc.docs){
+        print('d.id ${d.id}');
+        if (d.id == chatId){
+          d.reference.delete();
+          print('deleted $chatId');
+        }
+      }
+
+      var users =
+      await firestore.collection('users').get();
+      print('users ${users.docs}');
+
+
+      // await doc.delete().then((value) => print('success'), onError: (v){ print('error $v');});
+
+      // var doc1= firestore.collection("chats").doc(chatId).snapshots();
+      // print(doc1);
+      // doc1.forEach((element) {print('element${element.id}');});
+
+
+
+// Remove the 'capital' field from the document
+//       doc.update({
+//         'messages': FieldValue.delete()
+//       });
+
+    } on FirebaseException catch (e) {throw BadRequestException(message: e.toString());
+    }
+    print('clearChat2 $chatId');
   }
 
   Future<void> setSearchPreference(String id, Map<String, dynamic> data) async {

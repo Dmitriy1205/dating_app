@@ -74,3 +74,6 @@ class OwnMessageCard1 extends StatelessWidget {
     return Image.network(messageModel.message!);
   }
 }
+
+
+

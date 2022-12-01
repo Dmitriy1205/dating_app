@@ -57,6 +57,13 @@ class MessengerCubit extends Cubit<MessengerStates> {
       }
     });
   }
+
+  void clearChat() async {
+    print('clearChat $getChatId');
+
+    db.clearChat(getChatId);
+
+  }
 }
 
 class MessengerStates extends Equatable {
