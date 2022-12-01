@@ -29,6 +29,7 @@ class _SignUpFormState extends State<SignUpForm> {
   final _dateController = TextEditingController();
   final _emailController = TextEditingController();
   String verificationId = '';
+  String isoCode = '';
   DateTime now = DateTime.now();
 
   @override
@@ -141,7 +142,7 @@ class _SignUpFormState extends State<SignUpForm> {
                                   AutovalidateMode.onUserInteraction,
                               selectorConfig: const SelectorConfig(
                                 setSelectorButtonAsPrefixIcon: true,
-                                showFlags: false,
+                                showFlags: true,
                                 // leadingPadding: 20,
                                 useEmoji: true,
                               ),
@@ -150,7 +151,9 @@ class _SignUpFormState extends State<SignUpForm> {
                                 phone.phoneNumber!;
                               },
                               onSaved: (value) {
-                                _phoneController.text = value.phoneNumber!;
+                                _phoneController.text = value.parseNumber()!;
+                                isoCode = value.dialCode!;
+                                print(isoCode + _phoneController.text);
                               },
                               formatInput: false,
                               inputDecoration: authFieldDecor('Phone Number'),
@@ -261,7 +264,7 @@ class _SignUpFormState extends State<SignUpForm> {
                                                        ProfileInfoScreen(name:_nameController.text ,),
                                                   verId: verId,
                                                   name: _nameController.text,
-                                                  phone: _phoneController.text,
+                                                  phone: isoCode + _phoneController.text,
                                                   date: _dateController.text,
                                                   email: _emailController.text,
                                                   joinDate: Jiffy(now).yMMMMd,
