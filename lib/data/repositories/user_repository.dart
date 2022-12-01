@@ -28,9 +28,7 @@ class UserRepository {
           print('value loggedUserPicture ${value.data()}');
       loggedUserPicture = value.data()!['image'];
     });
-    print('loggedUserPicture 44');
 
-    print('loggedUserPicture $loggedUserPicture');
   }
 
   Future<void> userLoginRepo() async {

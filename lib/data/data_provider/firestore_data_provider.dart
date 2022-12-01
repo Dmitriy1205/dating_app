@@ -87,7 +87,6 @@ class FirebaseDataProvider {
 
   Future<void> getLoggedUser() async {
     try {
-      print('userModel.id  ${userModel.id}');
       Map<String, dynamic> user;
       await firestore
           .collection('Users')
