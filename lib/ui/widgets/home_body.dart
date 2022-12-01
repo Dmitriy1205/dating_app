@@ -21,15 +21,15 @@ class _HomeBodyState extends State<HomeBody> {
         if (state.status!.isLoading) {
           return const Center(child: CircularProgressIndicator());
         }
-
+        var user = state.user!;
         List<PhotoCard> card = List.generate(
-          state.fields!.length ,
+          user.length,
           (index) => PhotoCard(
             cardId: index.toString(),
-            title: state.fields![index].name ?? '',
-            description: state.fields![index].bio ?? '',
-            imagePath: state.fields![index].image ?? '',
-            location: '24 miles',
+            title: user[index].profileInfo!.name ?? '',
+            description: user[index].profileInfo!.bio ?? '',
+            imagePath: user[index].profileInfo!.image ?? '',
+            location: '${user[index].searchPref!.distance.toString()} miles',
           ),
         );
         return Column(
@@ -50,17 +50,14 @@ class _HomeBodyState extends State<HomeBody> {
                     leftButtonAction: _leftButtonClicked,
                     rightButtonAction: _rightButtonClicked,
                     onCardTap: (index) {
-                      print('Card with index $index is Tapped.');
-
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
                         return PersonalProf(
-                          bio: state.fields![index].bio ?? '',
-                          height: state.fields![index].height ?? '',
-                          name: state.fields![index].name ?? '',
-                          interests: state.fields![index].interests ?? {},
-                          lookingFor: state.lookingFor![index].lookingFor ?? {},
-                          // image: state.fields![_index].image ?? '',
+                          bio: user[index].profileInfo!.bio ?? '',
+                          height: user[index].profileInfo!.height ?? '',
+                          name: user[index].profileInfo!.name ?? '',
+                          interests: user[index].profileInfo!.interests ?? {},
+                          lookingFor: user[index].searchPref!.lookingFor ?? {},
                           joinDate: state.user![index].joinDate ?? '',
                           id: state.user![index].id!,
                         );

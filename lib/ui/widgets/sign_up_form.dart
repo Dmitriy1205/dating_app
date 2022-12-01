@@ -126,11 +126,11 @@ class _SignUpFormState extends State<SignUpForm> {
                                 _nameController.text = value!.trim();
                               },
                               validator: validateNameField,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                  RegExp("[a-zA-Z ]"),
-                                ),
-                              ],
+                              // inputFormatters: [
+                              //   FilteringTextInputFormatter.allow(
+                              //     RegExp("[a-zA-Z ]"),
+                              //   ),
+                              // ],
                             ),
                             const SizedBox(
                               height: 20,
@@ -258,7 +258,7 @@ class _SignUpFormState extends State<SignUpForm> {
                                                 builder: (context) =>
                                                     OtpVerificationScreen(
                                                   page:
-                                                      const ProfileInfoScreen(),
+                                                       ProfileInfoScreen(name:_nameController.text ,),
                                                   verId: verId,
                                                   name: _nameController.text,
                                                   phone: _phoneController.text,
