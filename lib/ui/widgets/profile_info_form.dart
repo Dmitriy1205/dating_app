@@ -14,7 +14,9 @@ import '../screens/search_pref_screen.dart';
 import 'field_decor.dart';
 
 class ProfileInfoFrom extends StatefulWidget {
-  const ProfileInfoFrom({Key? key}) : super(key: key);
+  final String name;
+
+  const ProfileInfoFrom({Key? key, required this.name}) : super(key: key);
 
   @override
   State<ProfileInfoFrom> createState() => _ProfileInfoFromState();
@@ -23,7 +25,8 @@ class ProfileInfoFrom extends StatefulWidget {
 class _ProfileInfoFromState extends State<ProfileInfoFrom> {
   final _formKey = GlobalKey<FormState>();
   String userImage = '';
-  String gender = '';
+  String gender = 'Gender';
+  String status = 'status';
   final nameController = TextEditingController();
   final bioController = TextEditingController();
   final heightController = TextEditingController();
@@ -37,8 +40,8 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
 
   Map<String, dynamic> interests = Interests().toMap();
 
-
   ReUsableWidgets reUsableWidgets = ReUsableWidgets();
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ProfileInfoCubit, ProfileInfoState>(
@@ -70,6 +73,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
             child: CircularProgressIndicator(),
           );
         }
+        nameController.text = widget.name;
         return SingleChildScrollView(
           physics: const ClampingScrollPhysics(),
           child: Stack(
@@ -146,6 +150,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                         'gender': gender,
                                         'height': heightController.text,
                                         'age': ageController.text,
+                                        'status':status,
                                         'university': universityController.text,
                                         'degree/major': degreeController.text,
                                         'company': companyController.text,
@@ -200,11 +205,11 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                     nameController.text = value!.trim();
                                   },
                                   validator: validateNameField,
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.allow(
-                                      RegExp("[a-zA-Z ]"),
-                                    ),
-                                  ],
+                                  // inputFormatters: [
+                                  //   FilteringTextInputFormatter.allow(
+                                  //     RegExp("[a-zA-Z ]"),
+                                  //   ),
+                                  // ],
                                 ),
                                 const SizedBox(
                                   height: 20,
@@ -215,7 +220,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                   autocorrect: false,
                                   controller: bioController,
                                   keyboardType: TextInputType.multiline,
-                                  maxLines: 6,
+                                  maxLines: 12,
                                   decoration: profileFieldDecor(
                                       'Tell us about yourself'),
                                   onSaved: (value) {
@@ -227,56 +232,55 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                   height: 20,
                                 ),
                                 Ink(
-                                  child: Container(
-                                    height: 57,
-                                    width: 350,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        border: Border.all(
-                                            color: Colors.grey[300]!),
-                                        borderRadius:
-                                            BorderRadius.circular(10.0)),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 19),
-                                      child: Center(
-                                        child: DropdownButtonFormField(
-                                          // value: gender,
-                                          // validator: (v) {
-                                          //   if (v == null) {
-                                          //     return 'Choose your gender';
-                                          //   }
-                                          //   return null;
-                                          // },
-                                          hint: const Text('Gender'),
-                                          icon: const Icon(
-                                              Icons.keyboard_arrow_down_sharp),
-                                          onChanged: (v) {
-                                            gender = v.toString();
-                                          },
+                                  child: Center(
+                                    child: DropdownButtonFormField(
+                                      value: gender,
+                                      autovalidateMode:
+                                          AutovalidateMode.onUserInteraction,
+                                      validator: (v) {
+                                        if (v == 'Gender') {
+                                          return 'CHOOSE YOUR GENDER';
+                                        }
+                                        return null;
+                                      },
+                                      hint: const Text('Gender'),
+                                      icon: const Icon(
+                                          Icons.keyboard_arrow_down_sharp),
+                                      onChanged: (v) {
+                                        gender = v.toString();
+                                      },
 
-                                          decoration: const InputDecoration(
-                                            enabledBorder: InputBorder.none,
-                                            focusedBorder: InputBorder.none,
-                                            fillColor: Colors.white,
+                                      decoration: genderFieldDecor('gender'),
+                                      // const InputDecoration(
+                                      //   enabledBorder: InputBorder.none,
+                                      //   focusedBorder: InputBorder.none,
+                                      //   fillColor: Colors.white,
+                                      //   // errorBorder: InputBorder(),
+                                      // ),
+                                      // decoration: profileFieldDecor('Gender'),
+                                      items: [
+                                        DropdownMenuItem(
+                                          enabled: false,
+                                          value: 'Gender',
+                                          child: Text(
+                                            'Gender',
+                                            style: TextStyle(
+                                                color: Colors.grey.shade600),
                                           ),
-                                          // decoration: profileFieldDecor('Gender'),
-                                          items: const [
-                                            DropdownMenuItem(
-                                              value: 'Male',
-                                              child: Text(
-                                                'Male',
-                                              ),
-                                            ),
-                                            DropdownMenuItem(
-                                              value: 'Female',
-                                              child: Text(
-                                                "Female",
-                                              ),
-                                            ),
-                                          ],
                                         ),
-                                      ),
+                                        const DropdownMenuItem(
+                                          value: 'Male',
+                                          child: Text(
+                                            'Male',
+                                          ),
+                                        ),
+                                        const DropdownMenuItem(
+                                          value: 'Female',
+                                          child: Text(
+                                            "Female",
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
@@ -305,7 +309,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                           validator: validateNameField,
                                           inputFormatters: [
                                             FilteringTextInputFormatter.allow(
-                                              RegExp("[0-9]"),
+                                              RegExp("[1-9]"),
                                             ),
                                             LengthLimitingTextInputFormatter(3),
                                           ],
@@ -328,7 +332,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                           validator: validateNameField,
                                           inputFormatters: [
                                             FilteringTextInputFormatter.allow(
-                                              RegExp("[0-9]"),
+                                              RegExp("[1-9]"),
                                             ),
                                             LengthLimitingTextInputFormatter(2),
                                           ],
@@ -336,6 +340,36 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                       ),
                                     ),
                                   ],
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Ink(
+                                  child: Center(
+                                    child: DropdownButtonFormField(
+                                      hint: const Text('Relationship Status'),
+                                      icon: const Icon(
+                                          Icons.keyboard_arrow_down_sharp),
+                                      onChanged: (v) {
+                                        status = v.toString();
+                                      },
+                                      decoration: genderFieldDecor('status'),
+                                      items: const [
+                                        DropdownMenuItem(
+                                          value: 'Single',
+                                          child: Text(
+                                            'Single',
+                                          ),
+                                        ),
+                                        DropdownMenuItem(
+                                          value: 'Married',
+                                          child: Text(
+                                            "Married",
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
                                 const SizedBox(
                                   height: 20,
@@ -472,7 +506,6 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
     );
   }
 
-
   Widget registerForm() {
     return Column(
       children: [
@@ -485,7 +518,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
           onSaved: (value) {
             universityController.text = value!.trim();
           },
-          validator: validateNameField,
+          // validator: validateNameField,
         ),
         const SizedBox(
           height: 20,
@@ -499,7 +532,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
           onSaved: (value) {
             degreeController.text = value!.trim();
           },
-          validator: validateNameField,
+          // validator: validateNameField,
         ),
         const SizedBox(
           height: 20,
@@ -513,7 +546,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
           onSaved: (value) {
             companyController.text = value!.trim();
           },
-          validator: validateNameField,
+          // validator: validateNameField,
         ),
         const SizedBox(
           height: 20,
@@ -527,7 +560,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
           onSaved: (value) {
             jobController.text = value!.trim();
           },
-          validator: validateNameField,
+          // validator: validateNameField,
         ),
       ],
     );

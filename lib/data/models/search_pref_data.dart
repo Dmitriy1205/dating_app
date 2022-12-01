@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SearchPrefFields {
-  String? id;
   Map<String, dynamic>? yearsRange;
   int? distance;
   Map<String, dynamic>? lookingFor;
@@ -10,7 +9,6 @@ class SearchPrefFields {
   Map<String, dynamic>? interests;
 
   SearchPrefFields({
-    this.id,
     this.yearsRange,
     this.distance,
     this.lookingFor,
@@ -25,7 +23,6 @@ class SearchPrefFields {
   ) {
     final data = snapshot.data();
     return SearchPrefFields(
-      id: data?['id'],
       yearsRange: data?['yearsRange'],
       distance: data?['distance'],
       lookingFor: data?['lookingFor'],
@@ -37,7 +34,6 @@ class SearchPrefFields {
 
   factory SearchPrefFields.fromJson(Map<String, dynamic> json) {
     return SearchPrefFields(
-      id: json['id'],
       yearsRange: json['yearsRange'],
       distance: json['distance'],
       lookingFor: json['lookingFor'],
@@ -48,7 +44,6 @@ class SearchPrefFields {
   }
 
   Map<String, dynamic> toFirestore() => {
-        'id': id,
         'yearsRange': yearsRange,
         'distance': distance,
         'lookingFor': lookingFor,

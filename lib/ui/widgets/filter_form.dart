@@ -28,7 +28,7 @@ class FilterForm extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         }
-        final id = state.searchFields!.id;
+        // final id = state.searchFields!.id;
         lookingFor = state.lookingFor!;
         hobbies = state.hobbies!;
         interest = state.interests!;
@@ -224,7 +224,7 @@ class FilterForm extends StatelessWidget {
                                 }
                                 ..distance = distance
                                 ..gender = gender
-                                ..id = id,
+                                ,
                             )
                             .then((value) =>
                                 Navigator.of(context).popAndPushNamed('home'));

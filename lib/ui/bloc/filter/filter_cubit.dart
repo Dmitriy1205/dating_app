@@ -14,7 +14,8 @@ class FilterCubit extends Cubit<FilterState> {
     required this.db,
     required this.auth,
   }) : super(FilterState()) {
-    getData();
+    // getData();
+    init();
   }
 
   final DataRepository db;
@@ -25,8 +26,7 @@ class FilterCubit extends Cubit<FilterState> {
   void setAge(RangeValues rangeValues) async =>
       emit(state.copyWith(age: rangeValues));
 
-  void setGender(String gender) async =>
-      emit(state.copyWith(gender: gender));
+  void setGender(String gender) async => emit(state.copyWith(gender: gender));
 
   void setDistance(int distance) async =>
       emit(state.copyWith(distance: distance));
@@ -64,23 +64,25 @@ class FilterCubit extends Cubit<FilterState> {
     ));
   }
 
-  Future<void> getData() async {
+  Future<void> init() async {
     emit(state.copyWith(status: Status.loading()));
     try {
-      final fields = await db.getSearchFields(id);
-      int start = fields!.yearsRange!.values.elementAt(0);
-      int end = fields.yearsRange!.values.elementAt(1);
+      final user = await db.getUserFields(id);
+      final searchPref = user!.searchPref!;
+
+      int start = searchPref.yearsRange!.values.elementAt(0);
+      int end = searchPref.yearsRange!.values.elementAt(1);
       print('start: $start, end: $end');
       final yearsRange = RangeValues(start.toDouble(), end.toDouble());
       emit(state.copyWith(
         status: Status.loaded(),
         age: yearsRange,
-        gender: fields.gender,
-        searchFields: fields,
-        lookingFor: fields.lookingFor,
-        distance: fields.distance,
-        hobbies: fields.hobbies,
-        interests: fields.interests,
+        gender: searchPref.gender,
+        searchFields: searchPref,
+        lookingFor: searchPref.lookingFor,
+        distance: searchPref.distance,
+        hobbies: searchPref.hobbies,
+        interests: searchPref.interests,
       ));
     } on Exception catch (e) {
       print(e.toString());
@@ -97,4 +99,27 @@ class FilterCubit extends Cubit<FilterState> {
       emit(state.copyWith(status: Status.error(e.toString())));
     }
   }
+// Future<void> getData() async {
+//   emit(state.copyWith(status: Status.loading()));
+//   try {
+//     final fields = await db.getSearchFields(id);
+//     int start = fields!.yearsRange!.values.elementAt(0);
+//     int end = fields.yearsRange!.values.elementAt(1);
+//     print('start: $start, end: $end');
+//     final yearsRange = RangeValues(start.toDouble(), end.toDouble());
+//     emit(state.copyWith(
+//       status: Status.loaded(),
+//       age: yearsRange,
+//       gender: fields.gender,
+//       searchFields: fields,
+//       lookingFor: fields.lookingFor,
+//       distance: fields.distance,
+//       hobbies: fields.hobbies,
+//       interests: fields.interests,
+//     ));
+//   } on Exception catch (e) {
+//     print(e.toString());
+//     emit(state.copyWith(status: Status.error(e.toString())));
+//   }
+// }
 }

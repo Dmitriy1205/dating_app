@@ -46,7 +46,9 @@ class SearchPreferencesCubit extends Cubit<SearchPreferencesState> {
     searchData.yearsRange = data.yearsRange;
     searchData.lookingFor = data.lookingFor;
     searchData.gender = data.gender;
-    searchData.id = id;
+    searchData.hobbies = data.hobbies;
+    searchData.interests = data.interests;
+    // searchData.id = id;
 
     await db.setSearchFields(id, searchData.toFirestore());
     emit(state.copyWith(status: Status.loaded()));

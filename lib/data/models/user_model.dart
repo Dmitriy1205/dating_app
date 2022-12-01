@@ -1,14 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dating_app/data/models/profile_info_data.dart';
+import 'package:dating_app/data/models/search_pref_data.dart';
 
 class UserModel {
-  UserModel(
-      {this.id,
-      this.firstName,
-      // this.lastName,
-      this.phone,
-      this.birthday,
-      this.email,
-      this.joinDate});
+  UserModel({
+    this.id,
+    this.firstName,
+    // this.lastName,
+    this.phone,
+    this.birthday,
+    this.email,
+    this.joinDate,
+    this.profileInfo,
+    this.searchPref,
+  });
 
   String? id;
   String? firstName;
@@ -18,6 +23,8 @@ class UserModel {
   String? birthday;
   String? email;
   String? joinDate;
+  ProfileInfoFields? profileInfo;
+  SearchPrefFields? searchPref;
 
   factory UserModel.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -29,6 +36,8 @@ class UserModel {
       birthday: data?['date'],
       email: data?['email'],
       joinDate: data?['joinDate'],
+      profileInfo: ProfileInfoFields.fromJson(data?['ProfileInfo']),
+      searchPref: SearchPrefFields.fromJson(data?['SearchPreferences']),
     );
   }
 
@@ -41,6 +50,8 @@ class UserModel {
       birthday: json['date'],
       email: json['email'],
       joinDate: json['joinDate'],
+      profileInfo: ProfileInfoFields.fromJson(json['ProfileInfo']),
+      searchPref: SearchPrefFields.fromJson(json['SearchPreferences']),
     );
   }
 
@@ -51,6 +62,8 @@ class UserModel {
         'phone': phone,
         'date': birthday,
         'email': email,
-        'joinDate': joinDate
+        'joinDate': joinDate,
+        'ProfileInfo': profileInfo,
+        'SearchPreferences': searchPref,
       };
 }

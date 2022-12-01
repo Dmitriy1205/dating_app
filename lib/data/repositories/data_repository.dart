@@ -39,10 +39,10 @@ class DataRepository {
     return dataProvider.setSearchPreference(id, data);
   }
 
-  Future<ProfileInfoFields?> getProfileFields(String id) async {
-    final fields = await dataProvider.getProfileFields(id);
-    return fields;
-  }
+  // Future<ProfileInfoFields?> getProfileFields(String id) async {
+  //   final fields = await dataProvider.getProfileFields(id);
+  //   return fields;
+  // }
 
   Future<UserModel?> getUserFields(String id) async {
     final fields = await dataProvider.getUserFields(id);
@@ -58,8 +58,13 @@ class DataRepository {
     await dataProvider.updateSearchFields(id, data);
   }
 
-  Future<void> updateProfileFields(String id, Map<String, dynamic> data) async {
-    await dataProvider.updateProfileFields(id, data);
+  // Future<void> updateProfileFields(String id, Map<String, dynamic> data) async {
+  //   await dataProvider.updateProfileFields(id, data);
+  // }
+
+  Future<void> updateFields(String id, Map<String, dynamic> profile,
+      Map<String, dynamic> look) async {
+    await dataProvider.updateFields(id, profile, look);
   }
 
   Future<List<ProfileInfoFields>> getAllFields() async {
