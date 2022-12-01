@@ -11,6 +11,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
 
   cupertino_icons: ^1.0.2
 
@@ -43,6 +45,8 @@ dependencies:
   sign_in_with_apple: ^4.1.0
   crypto: ^3.0.2
   jiffy: ^5.0.0
+  dropdown_button2: ^1.9.1
+
 
 dev_dependencies:
   flutter_test:
@@ -65,6 +69,7 @@ flutter_native_splash:
 
 flutter:
   uses-material-design: true
+  generate: true
 
   assets:
     - assets/images/

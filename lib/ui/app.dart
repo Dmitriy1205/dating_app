@@ -1,3 +1,4 @@
+import 'package:dating_app/l10n/l10n.dart';
 import 'package:dating_app/ui/bloc/auth/auth_cubit.dart';
 import 'package:dating_app/ui/bloc/profile_info_cubit/profile_info_cubit.dart';
 import 'package:dating_app/ui/screens/home_screen.dart';
@@ -30,8 +31,9 @@ class App extends StatelessWidget {
           ),
         ],
         child: MaterialApp(
+          localizationsDelegates: L10n.localizationsDelegates,
+          supportedLocales: L10n.locales,
           theme: ThemeData(
-
             chipTheme: chipTheme(),
             sliderTheme: CustomColors.customGradient(),
             unselectedWidgetColor: Colors.orange,

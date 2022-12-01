@@ -26,7 +26,7 @@ class _LoginFormState extends State<LoginForm> {
   final _phoneController = TextEditingController(text: '932383265');
   ReUsableWidgets reUsableWidgets = ReUsableWidgets();
   String verificationId = '';
-
+  String isoCode = '';
 
   @override
   void dispose() {
@@ -37,8 +37,8 @@ class _LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthCubit, AuthState>(
-      listener: (context,state){
-        if (state.status!.isError){
+      listener: (context, state) {
+        if (state.status!.isError) {
           const snackBar = SnackBar(
             backgroundColor: Colors.redAccent,
             content: Text(
@@ -49,8 +49,7 @@ class _LoginFormState extends State<LoginForm> {
               ),
             ),
           );
-          ScaffoldMessenger.of(context)
-              .showSnackBar(snackBar);
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
         }
       },
       builder: (context, state) {
@@ -124,7 +123,8 @@ class _LoginFormState extends State<LoginForm> {
                                   AutovalidateMode.onUserInteraction,
                               selectorConfig: const SelectorConfig(
                                 setSelectorButtonAsPrefixIcon: true,
-                                showFlags: false,
+
+                                showFlags: true,
                                 // leadingPadding: 20,
                                 useEmoji: true,
                               ),
@@ -133,7 +133,9 @@ class _LoginFormState extends State<LoginForm> {
                                 phone.phoneNumber!;
                               },
                               onSaved: (value) {
-                                _phoneController.text = value.phoneNumber!;
+                                _phoneController.text = value.parseNumber()!;
+                                isoCode = value.dialCode!;
+                                print(isoCode + _phoneController.text);
                               },
                               formatInput: false,
                               inputDecoration: authFieldDecor('Phone Number'),
@@ -152,7 +154,8 @@ class _LoginFormState extends State<LoginForm> {
                                 if (!_formKey.currentState!.validate()) return;
                                 _formKey.currentState!.save();
                                 context.read<AuthCubit>().login(
-                                    phoneNumber: _phoneController.text,
+                                    phoneNumber:
+                                        isoCode + _phoneController.text,
                                     verificationId: verificationId,
                                     nav: (verId) {
                                       Navigator.push(
@@ -195,7 +198,6 @@ class _LoginFormState extends State<LoginForm> {
                             SizedBox(
                               height: 35,
                             ),
-
                             Center(
                               child: RichText(
                                 text: TextSpan(

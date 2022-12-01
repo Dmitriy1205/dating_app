@@ -72,8 +72,7 @@ class _SettingsState extends State<Settings> {
                         ? const SizedBox()
                         : Content.settingNames[index] ==
                                 Content.settingNames.last
-                            ? showAlertDialog(context,
-                                context.read<SettingsCubit>().logout())
+                            ? showAlertDialog(context)
                             : Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -141,7 +140,7 @@ class _SettingsState extends State<Settings> {
     );
   }
 
-  showAlertDialog(BuildContext context, Future f) {
+  showAlertDialog(BuildContext context) {
     Widget cancelButton = TextButton(
       child: const Text('Cancel'),
       onPressed: () {
@@ -151,8 +150,9 @@ class _SettingsState extends State<Settings> {
     Widget continueButton = TextButton(
       child: Text('Logout'),
       onPressed: () {
-        f.then((value) => Navigator.push(
-            context, MaterialPageRoute(builder: (context) => WelcomeScreen())));
+        BlocProvider.of<SettingsCubit>(context).logout().then((value) =>
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => WelcomeScreen())));
       },
     );
 
