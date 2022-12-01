@@ -1,14 +1,9 @@
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:dating_app/data/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
-
 import '../../core/exceptions.dart';
 import '../models/message_model.dart';
-
 import 'package:dating_app/data/models/profile_info_data.dart';
 import '../models/search_pref_data.dart';
 
@@ -61,8 +56,6 @@ class FirebaseDataProvider {
       await firestore
           .collection('chats/$chatId/messages')
           .add(messageModel.toJson());
-
-      print(' sendMessageToPal  $chatId');
     } on FirebaseException catch (e) {
       throw BadRequestException(message: e.message!);
     }
@@ -70,38 +63,17 @@ class FirebaseDataProvider {
 
   Future<void> clearChat(String chatId) async {
     try {
-      var doc = await firestore.collection('chats').get();
-      print('doc ${doc.docs} ');
-      print('chatId ${chatId}');
-      for(var d in doc.docs){
-        print('d.id ${d.id}');
-        if (d.id == chatId){
-          d.reference.delete();
-          print('deleted $chatId');
-        }
+      final batch = firestore.batch();
+      var collection = firestore.collection('chats/$chatId/messages');
+      var snapshots = await collection.get();
+      for (var doc in snapshots.docs) {
+        batch.delete(doc.reference);
       }
-
-      var users =
-      await firestore.collection('users').get();
-      print('users ${users.docs}');
-
-
-      // await doc.delete().then((value) => print('success'), onError: (v){ print('error $v');});
-
-      // var doc1= firestore.collection("chats").doc(chatId).snapshots();
-      // print(doc1);
-      // doc1.forEach((element) {print('element${element.id}');});
-
-
-
-// Remove the 'capital' field from the document
-//       doc.update({
-//         'messages': FieldValue.delete()
-//       });
-
-    } on FirebaseException catch (e) {throw BadRequestException(message: e.toString());
+      await batch.commit();
+      firestore.collection('chats').doc(chatId).set({'deleted': '${DateTime.now()}'});
+    } on FirebaseException catch (e) {
+      throw BadRequestException(message: e.message!);
     }
-    print('clearChat2 $chatId');
   }
 
   Future<void> setSearchPreference(String id, Map<String, dynamic> data) async {
@@ -122,7 +94,6 @@ class FirebaseDataProvider {
           .doc(userModel.id)
           .snapshots()
           .forEach((element) {
-        print('FirebaseDataProvider element ${element.data()}');
       });
     } on FirebaseException catch (e) {
       print(e.message);
@@ -154,7 +125,6 @@ class FirebaseDataProvider {
       List<UserModel> palsList =
           users.docs.map((user) => UserModel.fromJson(user.data())).toList();
       print('palls ${users}');
-      print('${palsList.length}  palls ${palsList[0].firstName} ');
       return palsList;
     } on FirebaseException catch (e) {
       throw BadRequestException(message: e.message!);
