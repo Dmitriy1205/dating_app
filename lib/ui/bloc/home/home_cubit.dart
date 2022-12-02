@@ -33,6 +33,7 @@ class HomeCubit extends Cubit<HomeState> {
       status: Status.loading(),
     ));
     try {
+
       final id = auth.currentUser()!.uid;
       final searchUser = await db.getUserFields(id);
       final allUsers = await db.getAllUserFields();

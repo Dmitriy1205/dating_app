@@ -34,6 +34,7 @@ class App extends StatelessWidget {
           localizationsDelegates: L10n.localizationsDelegates,
           supportedLocales: L10n.locales,
           theme: ThemeData(
+
             chipTheme: chipTheme(),
             sliderTheme: CustomColors.customGradient(),
             unselectedWidgetColor: Colors.orange,
