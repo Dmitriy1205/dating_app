@@ -133,8 +133,9 @@ class _LoginFormState extends State<LoginForm> {
                                 phone.phoneNumber!;
                               },
                               onSaved: (value) {
-                                _phoneController.text = value.parseNumber()!;
                                 isoCode = value.dialCode!;
+                                _phoneController.text = value.parseNumber()!;
+
                                 print(isoCode + _phoneController.text);
                               },
                               formatInput: false,

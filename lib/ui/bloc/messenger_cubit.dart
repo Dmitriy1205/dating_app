@@ -27,7 +27,7 @@ class MessengerCubit extends Cubit<MessengerStates> {
   get getLoggedUserPictureUrl => loggedUserPicture;
 
   Future<void> loggedUserPictureUrl()async {
-    await db.getProfileFields(getLoggedUserId).then((value) => loggedUserPicture = value!.image!);
+    await db.getUserFields(getLoggedUserId).then((value) => loggedUserPicture = value!.profileInfo!.image!);
   }
   // get getChatId => db.getClearId(loggedUserId, openedChatUserId);
 
