@@ -21,12 +21,13 @@ class UserRepository {
 
   Future<void> loggedUserPictureMethod() async {
     await firestore
-        .collection('ProfileInfo')
+        .collection('users')
         .doc(auth.currentUser!.uid)
         .get()
         .then((value) {
           print('value loggedUserPicture ${value.data()}');
-      loggedUserPicture = value.data()!['image'];
+      loggedUserPicture = value.data()!['ProfileInfo']['image'];
+      print('loggedUserPicture3 $loggedUserPicture');
     });
 
   }

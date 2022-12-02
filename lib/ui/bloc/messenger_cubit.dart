@@ -9,11 +9,11 @@ import '../../data/models/user_model.dart';
 import '../../data/repositories/data_repository.dart';
 
 class MessengerCubit extends Cubit<MessengerStates> {
-  MessengerCubit(this.db, this.auth)
+  MessengerCubit(this.db, this.auth, UserModel userModel)
       : super(MessengerStates(
-          messagesList: [],
-          status: Status.initial(),
-        )) {
+    messagesList: [],
+    status: Status.initial(),
+  )) {
     // messagesStream();
   }
 
@@ -23,12 +23,18 @@ class MessengerCubit extends Cubit<MessengerStates> {
   UserRepository loggedUser = sl<UserRepository>();
   String getChatId = '';
   String loggedUserPicture = '';
+
   get getLoggedUserId => auth.currentUser!.uid;
+
   get getLoggedUserPictureUrl => loggedUserPicture;
 
-  Future<void> loggedUserPictureUrl()async {
-    await db.getProfileFields(getLoggedUserId).then((value) => loggedUserPicture = value!.image!);
+  Future<void> loggedUserPictureUrl() async {
+    await db.getUserFields(getLoggedUserId).then((value) =>
+    loggedUserPicture = value!.profileInfo!.image ??
+        'https://firebasestorage.googleapis.com/v0/b/dating-app-95830.appspot.com/o/users%2F7kyZ3iSjKUQyQHNTNpB1gzU8pP33%2Fimage2.png?alt=media&token=968c17f4-46ee-4e0b-a3e7-b6d0a92c3f4c'
+    );
   }
+
   // get getChatId => db.getClearId(loggedUserId, openedChatUserId);
 
   void getChatId2(String openedChatUserId) {
@@ -62,7 +68,6 @@ class MessengerCubit extends Cubit<MessengerStates> {
     print('clearChat $getChatId');
 
     db.clearChat(getChatId);
-
   }
 }
 

@@ -32,13 +32,15 @@ class OwnMessageCard1 extends StatelessWidget {
           width: 45,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(50),
-            child: context
+            child:
+            context
                 .read<MessengerCubit>()
                 .loggedUser
                 .loggedUserPicture != '' ? Image.network(context
                 .read<MessengerCubit>()
                 .loggedUser
-                .loggedUserPicture) : Image.asset(CustomIcons.photo),
+                .loggedUserPicture) :
+            Image.asset(CustomIcons.photo),
             // fit: BoxFit.fill,
           ),
         ),
