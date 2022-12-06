@@ -4,6 +4,7 @@ import 'package:dating_app/ui/screens/hobbies_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../core/functions/validation.dart';
 import '../../core/themes/checkboxes.dart';
@@ -44,7 +45,9 @@ class ReUsableWidgets {
                 {}
             }
 
-            text == 'SIGN IN' ? submit(context) : null;
+            text == AppLocalizations.of(context)!.signInButton
+                ? submit(context)
+                : null;
             //TODO: navigation to profile
           },
           style: ElevatedButton.styleFrom(
@@ -110,8 +113,9 @@ class ReUsableWidgets {
         const SizedBox(
           height: 20,
         ),
-        CustomTextStyle.bigText('Looking For',
-            additionalText: '(select one or more:)'),
+        CustomTextStyle.bigText(AppLocalizations.of(context)!.lookingFor,
+            additionalText:
+                '(${AppLocalizations.of(context)!.selectOneOrMore}:)'),
         const SizedBox(
           height: 20,
         ),
@@ -173,7 +177,8 @@ class ReUsableWidgets {
     );
   }
 
-  Widget generalInfoEditWidget(String registerOrEditInfo) {
+  Widget generalInfoEditWidget(
+      BuildContext context, String registerOrEditInfo) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -319,22 +324,24 @@ class ReUsableWidgets {
         const SizedBox(
           height: 20,
         ),
-        switchCase(registerOrEditInfo)
+        switchCase(context, registerOrEditInfo)
       ],
     );
   }
 
-  switchCase(registerOrEditInfo) {
+  switchCase(BuildContext context, registerOrEditInfo) {
     switch (registerOrEditInfo) {
       case 'register':
         return badgeForm(
+          context,
           isRegisterForm: true,
           isProfileInfoForm: false,
         );
       case 'edit':
         return editForm();
       case 'profile info':
-        return badgeForm(isRegisterForm: true, isProfileInfoForm: false);
+        return badgeForm(context,
+            isRegisterForm: true, isProfileInfoForm: false);
     }
   }
 
@@ -352,7 +359,8 @@ class ReUsableWidgets {
     );
   }
 
-  Widget badgeForm({
+  Widget badgeForm(
+    BuildContext context, {
     required bool isRegisterForm,
     required bool isProfileInfoForm,
     TextEditingController? university,
@@ -362,7 +370,7 @@ class ReUsableWidgets {
       children: [
         if (isProfileInfoForm)
           Column(children: [
-            CustomTextStyle.bigText('Badge'),
+            CustomTextStyle.bigText(AppLocalizations.of(context)!.badge),
             const SizedBox(
               height: 20,
             ),
@@ -372,7 +380,8 @@ class ReUsableWidgets {
           autocorrect: false,
           controller: university,
           keyboardType: TextInputType.name,
-          decoration: profileFieldDecor('University'),
+          decoration:
+              profileFieldDecor(AppLocalizations.of(context)!.university),
           onSaved: (value) {
             universityController.text = value!.trim();
           },
@@ -387,7 +396,7 @@ class ReUsableWidgets {
             autocorrect: false,
             controller: degreeController,
             keyboardType: TextInputType.name,
-            decoration: profileFieldDecor('Degree/Major'),
+            decoration: profileFieldDecor(AppLocalizations.of(context)!.degree),
             onSaved: (value) {
               degreeController.text = value!.trim();
             },
@@ -401,7 +410,7 @@ class ReUsableWidgets {
           autocorrect: false,
           controller: company,
           keyboardType: TextInputType.name,
-          decoration: profileFieldDecor('Company'),
+          decoration: profileFieldDecor(AppLocalizations.of(context)!.company),
           onSaved: (value) {
             companyController.text = value!.trim();
           },
@@ -416,7 +425,7 @@ class ReUsableWidgets {
             autocorrect: false,
             controller: jobController,
             keyboardType: TextInputType.name,
-            decoration: profileFieldDecor('Job Title'),
+            decoration: profileFieldDecor(AppLocalizations.of(context)!.job),
             onSaved: (value) {
               jobController.text = value!.trim();
             },
@@ -444,7 +453,10 @@ class ReUsableWidgets {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => component == 'Interests'
+                    builder: (context) => component == 'Interests' ||
+                            component == 'Intereses' ||
+                            component == 'Intérêts' ||
+                            component == 'Interesses'
                         ? InterestsScreen(
                             interests: fields,
                           )
@@ -465,10 +477,11 @@ class ReUsableWidgets {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
+                  children: [
                     Text(
-                      'Select',
-                      style: TextStyle(fontSize: 16, color: Colors.black54),
+                      AppLocalizations.of(context)!.selects,
+                      style:
+                          const TextStyle(fontSize: 16, color: Colors.black54),
                     ),
                   ],
                 ),
@@ -497,13 +510,14 @@ class ReUsableWidgets {
                     ),
                     child: Column(
                       children: [
-                        const ListTile(
+                        ListTile(
                           title: Padding(
-                            padding: EdgeInsets.only(top: 15.0),
+                            padding: const EdgeInsets.only(top: 15.0),
                             child: Center(
                               child: Text(
-                                'Choose your image',
-                                style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
+                                AppLocalizations.of(context)!.chooseYourImage,
+                                style: const TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.bold),
                               ),
                             ),
                           ),
@@ -512,10 +526,10 @@ class ReUsableWidgets {
                           thickness: 1,
                         ),
                         ListTile(
-                            title: const Center(
+                            title: Center(
                               child: Text(
-                                'Photo',
-                                style: TextStyle(
+                                AppLocalizations.of(context)!.photo,
+                                style: const TextStyle(
                                   color: Colors.orangeAccent,
                                 ),
                               ),
@@ -530,10 +544,10 @@ class ReUsableWidgets {
                           thickness: 1,
                         ),
                         ListTile(
-                            title: const Center(
+                            title: Center(
                               child: Text(
-                                'Image from files',
-                                style: TextStyle(
+                                AppLocalizations.of(context)!.imageFromFiles,
+                                style: const TextStyle(
                                   color: Colors.orangeAccent,
                                 ),
                               ),
@@ -557,10 +571,10 @@ class ReUsableWidgets {
                     child: Column(
                       children: [
                         ListTile(
-                            title: const Center(
+                            title: Center(
                                 child: Text(
-                              'Cancel',
-                              style: TextStyle(
+                              AppLocalizations.of(context)!.cancel,
+                              style: const TextStyle(
                                   color: Colors.orange,
                                   fontWeight: FontWeight.bold),
                             )),
@@ -610,8 +624,7 @@ class ReUsableWidgets {
   }
 
   static Padding buildExpansionList(
-      BuildContext context,
-      Map<String, dynamic>? inputFields,
+      BuildContext context, Map<String, dynamic>? inputFields,
       {required Function(String?) onTap, Function(Map<String, dynamic>)? set}) {
     return Padding(
       padding: const EdgeInsets.only(
@@ -631,7 +644,10 @@ class ReUsableWidgets {
                 dividerColor: Colors.transparent,
               ),
               child: ExpansionTile(
-                title: const Text('Select',style: TextStyle(color: Colors.grey),),
+                title: Text(
+                  AppLocalizations.of(context)!.selects,
+                  style: TextStyle(color: Colors.grey),
+                ),
                 children: [
                   ListView.builder(
                       shrinkWrap: true,
@@ -664,29 +680,29 @@ class ReUsableWidgets {
                                   vertical: 16,
                                 ),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       inputFields.keys.elementAt(index),
                                       style: TextStyle(
-                                          color:
-                                              inputFields.values.elementAt(index) ==
-                                                      false
-                                                  ? Colors.black
-                                                  : Colors.orange),
+                                          color: inputFields.values
+                                                      .elementAt(index) ==
+                                                  false
+                                              ? Colors.black
+                                              : Colors.orange),
                                     ),
                                     SizedBox(
                                         height: 15,
                                         width: 15,
-                                        child:
-                                            inputFields.values.elementAt(index) ==
-                                                    false
-                                                ? const SizedBox()
-                                                : Image.asset(
-                                                    'assets/icons/check.png')),
+                                        child: inputFields.values
+                                                    .elementAt(index) ==
+                                                false
+                                            ? const SizedBox()
+                                            : Image.asset(
+                                                'assets/icons/check.png')),
                                   ],
                                 ),
-
                               ),
                             ),
                           ),

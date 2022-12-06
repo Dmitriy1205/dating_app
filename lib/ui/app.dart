@@ -10,6 +10,7 @@ import '../core/routes.dart';
 import '../core/service_locator.dart';
 import '../core/themes/colors.dart';
 import 'bloc/image_picker/image_picker_cubit.dart';
+import 'bloc/localization/localization_cubit.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -29,23 +30,31 @@ class App extends StatelessWidget {
           BlocProvider(
             create: (context) => sl<ImagePickerCubit>(),
           ),
-        ],
-        child: MaterialApp(
-          localizationsDelegates: L10n.localizationsDelegates,
-          supportedLocales: L10n.locales,
-          theme: ThemeData(
-            chipTheme: chipTheme(),
-            sliderTheme: CustomColors.customGradient(),
-            unselectedWidgetColor: Colors.orange,
-            expansionTileTheme: const ExpansionTileThemeData(
-              textColor: Colors.orangeAccent,
-              iconColor: Colors.orangeAccent,
-            ),
+          BlocProvider(
+            create: (context) => sl<LocalizationCubit>(),
           ),
-          routes: routes,
-          debugShowCheckedModeBanner: false,
-          title: 'Dating App',
-          home: _buildHomeScreen(),
+        ],
+        child: BlocBuilder<LocalizationCubit, LocalizationState>(
+          builder: (context, state) {
+            return MaterialApp(
+              localizationsDelegates: L10n.localizationsDelegates,
+              supportedLocales: L10n.locales,
+              locale: state.locale,
+              theme: ThemeData(
+                chipTheme: chipTheme(),
+                sliderTheme: CustomColors.customGradient(),
+                unselectedWidgetColor: Colors.orange,
+                expansionTileTheme: const ExpansionTileThemeData(
+                  textColor: Colors.orangeAccent,
+                  iconColor: Colors.orangeAccent,
+                ),
+              ),
+              routes: routes,
+              debugShowCheckedModeBanner: false,
+              title: 'Dating App',
+              home: _buildHomeScreen(),
+            );
+          },
         ),
       ),
     );
@@ -56,6 +65,7 @@ class App extends StatelessWidget {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
+          context.read<LocalizationCubit>().init();
           return HomeScreen();
         } else {
           return WelcomeScreen();

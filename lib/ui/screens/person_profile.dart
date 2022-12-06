@@ -3,9 +3,9 @@ import 'package:dating_app/ui/bloc/personal_profile_cubit/personal_profile_cubit
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../core/service_locator.dart';
-import '../../data/models/profile_info_data.dart';
 
 class PersonalProf extends StatelessWidget {
   final String id;
@@ -87,7 +87,7 @@ class _PersonProfileState extends State<PersonProfile> {
   @override
   void initState() {
     context.read<PersonalProfileCubit>().getPics(widget.id);
-    print('current id ${widget.id}');
+
     super.initState();
   }
 
@@ -204,8 +204,8 @@ class _PersonProfileState extends State<PersonProfile> {
                       const SizedBox(
                         height: 5,
                       ),
-                      const Text(
-                        'Location',
+                      Text(
+                        AppLocalizations.of(context)!.location,
                         textAlign: TextAlign.start,
                         style: TextStyle(color: Colors.grey, fontSize: 14),
                       ),
@@ -220,10 +220,10 @@ class _PersonProfileState extends State<PersonProfile> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'About',
+                      Text(
+                        AppLocalizations.of(context)!.about,
                         textAlign: TextAlign.start,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 20),
                       ),
                       const SizedBox(
@@ -246,10 +246,10 @@ class _PersonProfileState extends State<PersonProfile> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Basic Profile',
+                      Text(
+                        AppLocalizations.of(context)!.basicProfile,
                         textAlign: TextAlign.start,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 20),
                       ),
                       const SizedBox(
@@ -257,8 +257,8 @@ class _PersonProfileState extends State<PersonProfile> {
                       ),
                       Row(
                         children: [
-                          const Text(
-                            'Height : ',
+                           Text(
+                            '${AppLocalizations.of(context)!.height} : ',
                             textAlign: TextAlign.start,
                             style: TextStyle(fontSize: 14),
                           ),
@@ -273,11 +273,11 @@ class _PersonProfileState extends State<PersonProfile> {
                         height: 5,
                       ),
                       Row(
-                        children: const [
+                        children: [
                           Text(
-                            'Relationship Status : ',
+                            '${AppLocalizations.of(context)!.relationship} : ',
                             textAlign: TextAlign.start,
-                            style: TextStyle(fontSize: 14),
+                            style: const TextStyle(fontSize: 14),
                           ),
                           Text(
                             'Single',
@@ -291,10 +291,10 @@ class _PersonProfileState extends State<PersonProfile> {
                       ),
                       Row(
                         children: [
-                          const Text(
-                            'Joined Date : ',
+                          Text(
+                            AppLocalizations.of(context)!.joinedDate,
                             textAlign: TextAlign.start,
-                            style: TextStyle(fontSize: 14),
+                            style: const TextStyle(fontSize: 14),
                           ),
                           Text(
                             widget.joinDate,
@@ -314,13 +314,13 @@ class _PersonProfileState extends State<PersonProfile> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Interests',
+                       Text(
+                        AppLocalizations.of(context)!.interests,
                         textAlign: TextAlign.start,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 20),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 15,
                       ),
                       Wrap(
@@ -354,10 +354,10 @@ class _PersonProfileState extends State<PersonProfile> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Looking For',
+                       Text(
+                        AppLocalizations.of(context)!.lookingFor,
                         textAlign: TextAlign.start,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 20),
                       ),
                       const SizedBox(

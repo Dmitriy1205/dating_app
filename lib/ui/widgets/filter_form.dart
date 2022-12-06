@@ -2,6 +2,7 @@ import 'package:dating_app/data/models/search_pref_data.dart';
 import 'package:dating_app/ui/widgets/reusable_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../bloc/filter/filter_cubit.dart';
 import 'field_decor.dart';
@@ -44,9 +45,9 @@ class FilterForm extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Looking For',
-                  style: TextStyle(
+                Text(
+                  AppLocalizations.of(context)!.lookingFor,
+                  style: const TextStyle(
                       color: Colors.black, fontWeight: FontWeight.bold),
                 ),
                 ReUsableWidgets.buildExpansionList(context, state.lookingFor,
@@ -55,9 +56,9 @@ class FilterForm extends StatelessWidget {
                 }, set: (v) {
                   lookingFor = v;
                 }),
-                const Text(
-                  'Shared hobbies',
-                  style: TextStyle(
+                Text(
+                  AppLocalizations.of(context)!.sharedHobbies,
+                  style: const TextStyle(
                       color: Colors.black, fontWeight: FontWeight.bold),
                 ),
                 ReUsableWidgets.buildExpansionList(context, state.hobbies,
@@ -66,9 +67,9 @@ class FilterForm extends StatelessWidget {
                 }, set: (v) {
                   hobbies = v;
                 }),
-                const Text(
-                  'Shared interests',
-                  style: TextStyle(
+                Text(
+                  AppLocalizations.of(context)!.sharedInterests,
+                  style: const TextStyle(
                       color: Colors.black, fontWeight: FontWeight.bold),
                 ),
                 ReUsableWidgets.buildExpansionList(context, state.interests,
@@ -77,9 +78,9 @@ class FilterForm extends StatelessWidget {
                 }, set: (v) {
                   interest = v;
                 }),
-                const Text(
-                  'Location',
-                  style: TextStyle(
+                Text(
+                  AppLocalizations.of(context)!.location,
+                  style: const TextStyle(
                       color: Colors.black, fontWeight: FontWeight.bold),
                 ),
                 Padding(
@@ -90,12 +91,12 @@ class FilterForm extends StatelessWidget {
                   child: TextFormField(
                     autocorrect: false,
                     keyboardType: TextInputType.name,
-                    decoration: profileFieldDecor('Location'),
+                    decoration: profileFieldDecor(AppLocalizations.of(context)!.location),
                   ),
                 ),
-                const Text(
-                  'SEARCH PREFERENCES',
-                  style: TextStyle(
+                Text(
+                  AppLocalizations.of(context)!.searchPreferences,
+                  style: const TextStyle(
                       color: Colors.black, fontWeight: FontWeight.bold),
                   textAlign: TextAlign.start,
                 ),
@@ -105,7 +106,7 @@ class FilterForm extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('Age'),
+                    Text(AppLocalizations.of(context)!.age),
                     Text(
                         '${state.age!.start.round().toString()} - ${state.age!.end.round().toString()}',
                         style: const TextStyle(color: Colors.black45)),
@@ -127,8 +128,8 @@ class FilterForm extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text('Distance'),
-                      Text('${state.distance.toString()} miles',
+                      Text(AppLocalizations.of(context)!.distance),
+                      Text('${state.distance.toString()} ${AppLocalizations.of(context)!.miles}',
                           style: const TextStyle(color: Colors.black45)),
                     ],
                   ),
@@ -143,11 +144,11 @@ class FilterForm extends StatelessWidget {
                     },
                     min: 0,
                     max: 70),
-                const Padding(
-                  padding: EdgeInsets.only(top: 15),
+                 Padding(
+                  padding: const EdgeInsets.only(top: 15),
                   child: Text(
-                    'Gender',
-                    style: TextStyle(
+                    AppLocalizations.of(context)!.gender,
+                    style: const TextStyle(
                         color: Colors.black, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -169,7 +170,7 @@ class FilterForm extends StatelessWidget {
                         child: Center(
                           child: DropdownButtonFormField(
                             value: state.gender,
-                            hint: const Text('Gender'),
+                            hint: Text(AppLocalizations.of(context)!.gender),
                             icon: Icon(
                               Icons.keyboard_arrow_down_sharp,
                               color: Colors.grey[500],
@@ -186,17 +187,17 @@ class FilterForm extends StatelessWidget {
                               fillColor: Colors.white,
                             ),
                             // decoration: profileFieldDecor('Gender'),
-                            items: const [
+                            items: [
                               DropdownMenuItem(
                                 value: "Male",
                                 child: Text(
-                                  "Male",
+                                  AppLocalizations.of(context)!.male,
                                 ),
                               ),
                               DropdownMenuItem(
                                 value: "Female",
                                 child: Text(
-                                  "Female",
+                                  AppLocalizations.of(context)!.female,
                                 ),
                               ),
                             ],
@@ -249,8 +250,8 @@ class FilterForm extends StatelessWidget {
                           width: 340,
                           height: 55,
                           alignment: Alignment.center,
-                          child: const Text(
-                            'APPLY',
+                          child: Text(
+                            AppLocalizations.of(context)!.apply,
                           ),
                         ),
                       ),
