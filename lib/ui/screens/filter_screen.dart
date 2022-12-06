@@ -2,6 +2,7 @@ import 'package:dating_app/ui/bloc/filter/filter_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../core/service_locator.dart';
 import '../widgets/filter_form.dart';
@@ -26,9 +27,9 @@ class FilterScreen extends StatelessWidget {
                 onTap: () {
                   Navigator.pop(context);
                 },
-                child: const Text(
-                  'Reset',
-                  style: TextStyle(
+                child:  Text(
+                  AppLocalizations.of(context)!.reset,
+                  style: const TextStyle(
                       color: Colors.deepOrangeAccent,
                       fontWeight: FontWeight.bold,
                       fontSize: 15),
@@ -50,9 +51,9 @@ class FilterScreen extends StatelessWidget {
             color: Colors.black,
           ),
         ),
-        title: const Text(
-          'Filter',
-          style: TextStyle(
+        title: Text(
+          AppLocalizations.of(context)!.filter,
+          style: const TextStyle(
               color: Colors.black, fontWeight: FontWeight.bold, fontSize: 25),
         ),
       ),

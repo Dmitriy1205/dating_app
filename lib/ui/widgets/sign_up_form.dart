@@ -1,12 +1,14 @@
 import 'package:dating_app/core/constants.dart';
 import 'package:dating_app/ui/bloc/auth/auth_cubit.dart';
+import 'package:dating_app/ui/bloc/localization/localization_cubit.dart';
 import 'package:dating_app/ui/screens/login_screen.dart';
 import 'package:dating_app/ui/screens/terms.dart';
 import 'package:dating_app/ui/widgets/field_decor.dart';
 import 'package:dating_app/ui/widgets/picker.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:jiffy/jiffy.dart';
@@ -24,10 +26,10 @@ class SignUpForm extends StatefulWidget {
 class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
   bool isChecked = false;
-  final _nameController = TextEditingController(text: 'Yaroslav');
-  final _phoneController = TextEditingController( text: '932383265');
+  final _nameController = TextEditingController();
+  final _phoneController = TextEditingController();
   final _dateController = TextEditingController();
-  final _emailController = TextEditingController(text: 'yarshau@gmail.com');
+  final _emailController = TextEditingController();
   String verificationId = '';
   String isoCode = '';
   DateTime now = DateTime.now();
@@ -46,12 +48,12 @@ class _SignUpFormState extends State<SignUpForm> {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state.status!.isError) {
-          const snackBar = SnackBar(
+          final snackBar = SnackBar(
             backgroundColor: Colors.redAccent,
             content: Text(
-              'User is already exist , you need to login',
+              AppLocalizations.of(context)!.userAlreadyExist,
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
               ),
             ),
@@ -94,10 +96,10 @@ class _SignUpFormState extends State<SignUpForm> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              'Sign Up',
+                            Text(
+                              AppLocalizations.of(context)!.signUp,
                               textAlign: TextAlign.center,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 27,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -106,7 +108,7 @@ class _SignUpFormState extends State<SignUpForm> {
                               height: 20,
                             ),
                             Text(
-                              'Let\'s get you started',
+                              AppLocalizations.of(context)!.letsStart,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Colors.grey[600],
@@ -122,7 +124,8 @@ class _SignUpFormState extends State<SignUpForm> {
                               autocorrect: false,
                               controller: _nameController,
                               keyboardType: TextInputType.name,
-                              decoration: authFieldDecor('Full Name'),
+                              decoration: authFieldDecor(
+                                  AppLocalizations.of(context)!.fullName),
                               onSaved: (value) {
                                 _nameController.text = value!.trim();
                               },
@@ -152,12 +155,13 @@ class _SignUpFormState extends State<SignUpForm> {
                               },
                               onSaved: (value) {
                                 isoCode = value.dialCode!;
-                                _phoneController.text = value.parseNumber()!;
+                                _phoneController.text = value.parseNumber();
 
                                 print(isoCode + _phoneController.text);
                               },
                               formatInput: false,
-                              inputDecoration: authFieldDecor('Phone Number'),
+                              inputDecoration: authFieldDecor(
+                                  AppLocalizations.of(context)!.phoneNumber),
                               selectorTextStyle: TextStyle(
                                 color: Colors.grey[700],
                               ),
@@ -173,7 +177,8 @@ class _SignUpFormState extends State<SignUpForm> {
                                   AutovalidateMode.onUserInteraction,
                               controller: _dateController,
                               autocorrect: false,
-                              decoration: authFieldDecor('Date of Birth'),
+                              decoration: authFieldDecor(
+                                  AppLocalizations.of(context)!.dateOfBirth),
                               validator: validateDateField,
                               onTap: () async {
                                 DateTime? date = DateTime(1900);
@@ -220,9 +225,12 @@ class _SignUpFormState extends State<SignUpForm> {
                                       fontSize: 15,
                                     ),
                                     children: [
-                                      const TextSpan(text: 'I accept '),
                                       TextSpan(
-                                          text: 'Terms and Conditions',
+                                          text:
+                                              '${AppLocalizations.of(context)!.iAccept} '),
+                                      TextSpan(
+                                          text: AppLocalizations.of(context)!
+                                              .reflowTermsConditions,
                                           style: TextStyle(
                                             color: Colors.orange[800],
                                             fontSize: 15,
@@ -253,7 +261,8 @@ class _SignUpFormState extends State<SignUpForm> {
                                       _formKey.currentState!.save();
 
                                       context.read<AuthCubit>().signUp(
-                                          phoneNumber: _phoneController.text,
+                                          phoneNumber:
+                                              isoCode + _phoneController.text,
                                           verificationId: verificationId,
                                           nav: (verId) {
                                             Navigator.push(
@@ -261,11 +270,18 @@ class _SignUpFormState extends State<SignUpForm> {
                                               MaterialPageRoute(
                                                 builder: (context) =>
                                                     OtpVerificationScreen(
-                                                  page:
-                                                       ProfileInfoScreen(name:_nameController.text ,),
+                                                  page: ProfileInfoScreen(
+                                                    name: _nameController.text,
+                                                  ),
                                                   verId: verId,
                                                   name: _nameController.text,
-                                                  phone: isoCode + _phoneController.text,
+                                                  language: context
+                                                      .read<LocalizationCubit>()
+                                                      .state
+                                                      .locale
+                                                      .toString(),
+                                                  phone: isoCode +
+                                                      _phoneController.text,
                                                   date: _dateController.text,
                                                   email: _emailController.text,
                                                   joinDate: Jiffy(now).yMMMMd,
@@ -295,16 +311,16 @@ class _SignUpFormState extends State<SignUpForm> {
                                   width: 340,
                                   height: 55,
                                   alignment: Alignment.center,
-                                  child: const Text(
-                                    'CREATE ACCOUNT',
+                                  child: Text(
+                                    AppLocalizations.of(context)!
+                                        .createAccountButton,
                                   ),
                                 ),
                               ),
                             ),
                             Center(
                               child: Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(0, 105, 0, 0),
+                                padding: const EdgeInsets.fromLTRB(0, 80, 0, 0),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
@@ -315,11 +331,14 @@ class _SignUpFormState extends State<SignUpForm> {
                                           fontSize: 15,
                                         ),
                                         children: [
-                                          const TextSpan(
-                                            text: 'Already have an account? ',
+                                          TextSpan(
+                                            text:
+                                                '${AppLocalizations.of(context)!.alreadyHaveAccount} ',
                                           ),
                                           TextSpan(
-                                              text: 'SIGN IN',
+                                              text:
+                                                  AppLocalizations.of(context)!
+                                                      .signInButton,
                                               style: TextStyle(
                                                 color: Colors.orange[800],
                                                 fontWeight: FontWeight.w500,
@@ -329,7 +348,7 @@ class _SignUpFormState extends State<SignUpForm> {
                                                   Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
-                                                          builder: (contect) =>
+                                                          builder: (context) =>
                                                               LoginScreen()));
                                                 }),
                                         ],
@@ -353,4 +372,3 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 }
-

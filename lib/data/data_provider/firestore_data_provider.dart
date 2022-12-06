@@ -22,6 +22,7 @@ class FirebaseDataProvider {
     String date,
     String joinDate,
     String email,
+    String language,
   ) async {
     userModel.id = user.uid;
     userModel.firstName = name;
@@ -29,6 +30,7 @@ class FirebaseDataProvider {
     userModel.birthday = date;
     userModel.email = email;
     userModel.joinDate = joinDate;
+    userModel.language = language;
 
     try {
       print(userModel.toFirestore());
@@ -70,7 +72,10 @@ class FirebaseDataProvider {
         batch.delete(doc.reference);
       }
       await batch.commit();
-      firestore.collection('chats').doc(chatId).set({'deleted': '${DateTime.now()}'});
+      firestore
+          .collection('chats')
+          .doc(chatId)
+          .set({'deleted': '${DateTime.now()}'});
     } on FirebaseException catch (e) {
       throw BadRequestException(message: e.message!);
     }
@@ -96,8 +101,7 @@ class FirebaseDataProvider {
           .collection('Users')
           .doc(userModel.id)
           .snapshots()
-          .forEach((element) {
-      });
+          .forEach((element) {});
     } on FirebaseException catch (e) {
       print(e.message);
       throw BadRequestException(message: e.message!);

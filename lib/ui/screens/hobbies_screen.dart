@@ -1,5 +1,6 @@
 import 'package:dating_app/core/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../core/themes/checkboxes.dart';
 
@@ -55,10 +56,10 @@ class _HobbiesScreenState extends State<HobbiesScreen> {
                                       Icons.close,
                                     ),
                                   ),
-                                  const Text(
-                                    'Hobbies',
+                                  Text(
+                                    AppLocalizations.of(context)!.hobbies,
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 23,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -82,7 +83,7 @@ class _HobbiesScreenState extends State<HobbiesScreen> {
                             padding: const EdgeInsets.symmetric(
                                 vertical: 12, horizontal: 5),
                             child: Text(
-                              'How do you like to spend your free time?',
+                              AppLocalizations.of(context)!.howDoYouLike,
                               style: TextStyle(
                                 color: Colors.grey[700],
                                 fontSize: 16,

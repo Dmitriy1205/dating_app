@@ -1,9 +1,9 @@
-import 'package:dating_app/core/constants.dart';
 import 'package:dating_app/ui/bloc/contacts_cubit.dart';
 import 'package:dating_app/ui/screens/messenger_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dating_app/core/service_locator.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ContactsScreen extends StatefulWidget {
   ContactsScreen({Key? key}) : super(key: key);
@@ -42,10 +42,10 @@ class _ContactsScreenState extends State<ContactsScreen> {
                 color: Colors.black,
               ),
             ),
-            title: const Text(
-              'Connections',
+            title: Text(
+              AppLocalizations.of(context)!.connections,
               style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                  const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
             ),
           ),
           body: BlocBuilder<ContactsCubit, ContactsCubitStates>(
@@ -64,7 +64,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '${state.usersList!.length.toString()} Connections',
+                          '${state.usersList!.length.toString()} ${AppLocalizations.of(context)!.connections}',
                           style: const TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 18),
                         ),

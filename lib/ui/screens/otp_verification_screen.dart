@@ -14,6 +14,7 @@ class OtpVerificationScreen extends StatelessWidget {
   final String? email;
   final String? joinDate;
   final Widget page;
+  final String? language;
 
   const OtpVerificationScreen({
     Key? key,
@@ -23,7 +24,9 @@ class OtpVerificationScreen extends StatelessWidget {
     this.date,
     this.email,
     required this.page,
-    this.joinDate, required this.pageId,
+    this.joinDate,
+    required this.pageId,
+    this.language,
   }) : super(key: key);
 
   @override
@@ -54,8 +57,10 @@ class OtpVerificationScreen extends StatelessWidget {
           name: name,
           phone: phone,
           date: date,
-          joinDate:joinDate,
-          email: email, pageId: pageId,
+          joinDate: joinDate,
+          email: email,
+          pageId: pageId,
+          language: language,
         ),
       ),
     );

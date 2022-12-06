@@ -12,6 +12,7 @@ import '../screens/hobbies_screen.dart';
 import '../screens/interests_screen.dart';
 import '../screens/search_pref_screen.dart';
 import 'field_decor.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfileInfoFrom extends StatefulWidget {
   final String name;
@@ -125,10 +126,10 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                         Icons.close,
                                       ),
                                     ),
-                                    const Text(
-                                      'Profile Info',
+                                     Text(
+                                      AppLocalizations.of(context)!.profileInfo,
                                       textAlign: TextAlign.center,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 27,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -184,9 +185,9 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                 const SizedBox(
                                   height: 40,
                                 ),
-                                const Text(
-                                  'General',
-                                  style: TextStyle(
+                                 Text(
+                                  AppLocalizations.of(context)!.general,
+                                  style: const TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -200,7 +201,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                   autocorrect: false,
                                   controller: nameController,
                                   keyboardType: TextInputType.name,
-                                  decoration: profileFieldDecor('Name'),
+                                  decoration: profileFieldDecor(AppLocalizations.of(context)!.name),
                                   onSaved: (value) {
                                     nameController.text = value!.trim();
                                   },
@@ -222,7 +223,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                   keyboardType: TextInputType.multiline,
                                   maxLines: 12,
                                   decoration: profileFieldDecor(
-                                      'Tell us about yourself'),
+                                      AppLocalizations.of(context)!.tellUsAbout),
                                   onSaved: (value) {
                                     bioController.text = value!.trim();
                                   },
@@ -239,18 +240,18 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                           AutovalidateMode.onUserInteraction,
                                       validator: (v) {
                                         if (v == 'Gender') {
-                                          return 'CHOOSE YOUR GENDER';
+                                          return AppLocalizations.of(context)!.chooseYourGender;
                                         }
                                         return null;
                                       },
-                                      hint: const Text('Gender'),
+                                      hint:  Text(AppLocalizations.of(context)!.gender),
                                       icon: const Icon(
                                           Icons.keyboard_arrow_down_sharp),
                                       onChanged: (v) {
                                         gender = v.toString();
                                       },
 
-                                      decoration: genderFieldDecor('gender'),
+                                      decoration: genderFieldDecor(AppLocalizations.of(context)!.gender),
                                       // const InputDecoration(
                                       //   enabledBorder: InputBorder.none,
                                       //   focusedBorder: InputBorder.none,
@@ -268,16 +269,16 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                                 color: Colors.grey.shade600),
                                           ),
                                         ),
-                                        const DropdownMenuItem(
+                                         DropdownMenuItem(
                                           value: 'Male',
                                           child: Text(
-                                            'Male',
+                                            AppLocalizations.of(context)!.male,
                                           ),
                                         ),
-                                        const DropdownMenuItem(
+                                        DropdownMenuItem(
                                           value: 'Female',
                                           child: Text(
-                                            "Female",
+                                            AppLocalizations.of(context)!.female,
                                           ),
                                         ),
                                       ],
@@ -301,7 +302,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                           controller: heightController,
                                           keyboardType: TextInputType.number,
                                           decoration:
-                                              profileFieldDecor('Height'),
+                                              profileFieldDecor(AppLocalizations.of(context)!.height),
                                           onSaved: (value) {
                                             heightController.text =
                                                 value!.trim();
@@ -325,7 +326,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                           autocorrect: false,
                                           controller: ageController,
                                           keyboardType: TextInputType.number,
-                                          decoration: profileFieldDecor('Age'),
+                                          decoration: profileFieldDecor(AppLocalizations.of(context)!.age),
                                           onSaved: (value) {
                                             ageController.text = value!.trim();
                                           },
@@ -347,24 +348,24 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                 Ink(
                                   child: Center(
                                     child: DropdownButtonFormField(
-                                      hint: const Text('Relationship Status'),
+                                      hint: Text(AppLocalizations.of(context)!.relationship),
                                       icon: const Icon(
                                           Icons.keyboard_arrow_down_sharp),
                                       onChanged: (v) {
                                         status = v.toString();
                                       },
-                                      decoration: genderFieldDecor('status'),
-                                      items: const [
+                                      decoration: genderFieldDecor(AppLocalizations.of(context)!.status),
+                                      items: [
                                         DropdownMenuItem(
                                           value: 'Single',
                                           child: Text(
-                                            'Single',
+                                            AppLocalizations.of(context)!.single,
                                           ),
                                         ),
                                         DropdownMenuItem(
                                           value: 'Married',
                                           child: Text(
-                                            "Married",
+                                            AppLocalizations.of(context)!.married,
                                           ),
                                         ),
                                       ],
@@ -382,7 +383,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                 const SizedBox(
                                   height: 20,
                                 ),
-                                CustomTextStyle.bigText('Hobbies'),
+                                CustomTextStyle.bigText(AppLocalizations.of(context)!.hobbies),
                                 const SizedBox(
                                   height: 20,
                                 ),
@@ -416,10 +417,10 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                               CrossAxisAlignment.start,
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
-                                          children: const [
+                                          children:  [
                                             Text(
-                                              'Select',
-                                              style: TextStyle(
+                                              AppLocalizations.of(context)!.selects,
+                                              style: const TextStyle(
                                                   fontSize: 16,
                                                   color: Colors.black54),
                                             ),
@@ -436,7 +437,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                 const SizedBox(
                                   height: 20,
                                 ),
-                                CustomTextStyle.bigText('Interests'),
+                                CustomTextStyle.bigText(AppLocalizations.of(context)!.interests),
                                 const SizedBox(
                                   height: 20,
                                 ),
@@ -470,10 +471,10 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                               CrossAxisAlignment.start,
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
-                                          children: const [
+                                          children:  [
                                             Text(
-                                              'Select',
-                                              style: TextStyle(
+                                              AppLocalizations.of(context)!.selects,
+                                              style: const TextStyle(
                                                   fontSize: 16,
                                                   color: Colors.black54),
                                             ),
@@ -514,7 +515,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
           autocorrect: false,
           controller: universityController,
           keyboardType: TextInputType.name,
-          decoration: profileFieldDecor('University'),
+          decoration: profileFieldDecor(AppLocalizations.of(context)!.university),
           onSaved: (value) {
             universityController.text = value!.trim();
           },
@@ -528,7 +529,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
           autocorrect: false,
           controller: degreeController,
           keyboardType: TextInputType.name,
-          decoration: profileFieldDecor('Degree/Major'),
+          decoration: profileFieldDecor(AppLocalizations.of(context)!.degree),
           onSaved: (value) {
             degreeController.text = value!.trim();
           },
@@ -542,7 +543,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
           autocorrect: false,
           controller: companyController,
           keyboardType: TextInputType.name,
-          decoration: profileFieldDecor('Company'),
+          decoration: profileFieldDecor(AppLocalizations.of(context)!.company),
           onSaved: (value) {
             companyController.text = value!.trim();
           },
@@ -556,7 +557,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
           autocorrect: false,
           controller: jobController,
           keyboardType: TextInputType.name,
-          decoration: profileFieldDecor('Job Title'),
+          decoration: profileFieldDecor(AppLocalizations.of(context)!.job),
           onSaved: (value) {
             jobController.text = value!.trim();
           },

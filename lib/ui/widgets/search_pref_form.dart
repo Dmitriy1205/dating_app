@@ -5,6 +5,7 @@ import 'package:dating_app/ui/bloc/search_preferences_bloc.dart';
 import 'package:dating_app/ui/widgets/reusable_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../bloc/search_preferances_state.dart';
 import '../screens/home_screen.dart';
@@ -91,10 +92,11 @@ class SearchPrefForm extends StatelessWidget {
                                         Icons.close,
                                       ),
                                     ),
-                                    const Text(
-                                      'Search Preferences',
+                                    Text(
+                                      AppLocalizations.of(context)!
+                                          .searchPreferences,
                                       textAlign: TextAlign.center,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 23,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -133,8 +135,7 @@ class SearchPrefForm extends StatelessWidget {
                             const SizedBox(
                               height: 20,
                             ),
-                            const Text(
-                                'We\'ll use this information to show you people with similar interests and hobbies as you!',
+                            Text(AppLocalizations.of(context)!.weUseThisInfo,
                                 style: TextStyle(color: Colors.black38)),
                             const SizedBox(
                               height: 30,
@@ -142,7 +143,7 @@ class SearchPrefForm extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Text('Age'),
+                                Text(AppLocalizations.of(context)!.age),
                                 Text(
                                     '${state.age!.start.round().toString()} - ${state.age!.end.round().toString()}',
                                     style:
@@ -168,8 +169,9 @@ class SearchPrefForm extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Text('Distance'),
-                                Text('${state.distance!.toString()} miles',
+                                Text(AppLocalizations.of(context)!.distance),
+                                Text(
+                                    '${state.distance!.toString()} ${AppLocalizations.of(context)!.miles}',
                                     style:
                                         const TextStyle(color: Colors.black45)),
                               ],
@@ -201,8 +203,10 @@ class SearchPrefForm extends StatelessWidget {
                             const SizedBox(
                               height: 20,
                             ),
-                            CustomTextStyle.bigText('Gender',
-                                additionalText: '(select one or more:)'),
+                            CustomTextStyle.bigText(
+                                AppLocalizations.of(context)!.gender,
+                                additionalText:
+                                    '(${AppLocalizations.of(context)!.selectOneOrMore}:)'),
                             const SizedBox(
                               height: 20,
                             ),
@@ -214,37 +218,40 @@ class SearchPrefForm extends StatelessWidget {
                                       AutovalidateMode.onUserInteraction,
                                   validator: (v) {
                                     if (v == 'Gender') {
-                                      return 'CHOOSE GENDER';
+                                      return AppLocalizations.of(context)!
+                                          .chooseGender;
                                     }
                                     return null;
                                   },
-                                  hint: const Text('Gender'),
+                                  hint: Text(
+                                      AppLocalizations.of(context)!.gender),
                                   icon: const Icon(
                                       Icons.keyboard_arrow_down_sharp),
                                   onChanged: (v) {
                                     gender = v.toString();
                                   },
-                                  decoration: genderFieldDecor('gender'),
+                                  decoration: genderFieldDecor(
+                                      AppLocalizations.of(context)!.gender),
                                   items: [
                                     DropdownMenuItem(
                                       enabled: false,
                                       value: 'Gender',
                                       child: Text(
-                                        'Gender',
+                                        AppLocalizations.of(context)!.gender,
                                         style: TextStyle(
                                             color: Colors.grey.shade600),
                                       ),
                                     ),
-                                    const DropdownMenuItem(
+                                    DropdownMenuItem(
                                       value: 'Male',
                                       child: Text(
-                                        'Male',
+                                        AppLocalizations.of(context)!.male,
                                       ),
                                     ),
-                                    const DropdownMenuItem(
+                                    DropdownMenuItem(
                                       value: 'Female',
                                       child: Text(
-                                        "Female",
+                                        AppLocalizations.of(context)!.female,
                                       ),
                                     ),
                                   ],

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../core/constants.dart';
 
@@ -26,9 +27,9 @@ class BlockedContactsScreen extends StatelessWidget {
             size: 18,
           ),
         ),
-        title: const Text(
-          'Blocked Contacts',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        title: Text(
+          AppLocalizations.of(context)!.blockedContacts,
+          style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
       body: ListView.builder(
@@ -64,9 +65,9 @@ class BlockedContactsScreen extends StatelessWidget {
                           const SizedBox(
                             width: 20,
                           ),
-                          const Text(
-                            'Name Surname',
-                            style: TextStyle(fontSize: 18),
+                          Text(
+                            AppLocalizations.of(context)!.name,
+                            style: const TextStyle(fontSize: 18),
                           ),
                         ],
                       ),

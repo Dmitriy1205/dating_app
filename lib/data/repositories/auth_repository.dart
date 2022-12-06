@@ -88,6 +88,7 @@ class AuthRepository {
     String date,
     String joinDate,
     String email,
+    String language,
   ) async {
     try {
       PhoneAuthCredential credential =
@@ -101,6 +102,7 @@ class AuthRepository {
         date,
         email,
         joinDate,
+        language,
       );
     } on FirebaseAuthException catch (e) {
       throw BadRequestException(message: e.message!);
