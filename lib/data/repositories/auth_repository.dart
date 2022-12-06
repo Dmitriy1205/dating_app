@@ -13,7 +13,6 @@ import '../models/user_model.dart';
 class AuthRepository {
   final FirebaseAuth auth;
   final FirebaseDataProvider db;
-  late UserModel userModel;
 
   AuthRepository({required this.db, required this.auth});
 

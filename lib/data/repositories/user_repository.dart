@@ -14,10 +14,8 @@ class UserRepository {
   get getUserName {
     return loggedUser.firstName;
   }
+  get getLoggedUser  {return loggedUser;}
 
-  get getLoggedUserProfilePicture {
-    return loggedUserPicture;
-  }
 
   Future<void> loggedUserPictureMethod() async {
     await firestore

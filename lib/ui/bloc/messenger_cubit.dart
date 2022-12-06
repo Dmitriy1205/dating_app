@@ -51,7 +51,6 @@ class MessengerCubit extends Cubit<MessengerStates> {
   }
 
   void messagesStream(String openedChatUserId) async {
-    // final user = await db.getUserFields(openedChatUserId);
     final messages = db
         .getAllChatMessagesStream(getLoggedUserId, openedChatUserId)
         .listen((event) {});
@@ -66,7 +65,6 @@ class MessengerCubit extends Cubit<MessengerStates> {
 
   void clearChat() async {
     print('clearChat $getChatId');
-
     db.clearChat(getChatId);
   }
 }

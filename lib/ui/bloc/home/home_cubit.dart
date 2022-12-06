@@ -17,11 +17,13 @@ class HomeCubit extends Cubit<HomeState> {
     required this.db,
     required this.auth,
   }) : super(HomeState(
-          status: Status.initial(),
-        )) {
+    status: Status.initial(),
+  )) {
+    UserRepository userRepository = sl<UserRepository>();
+    userRepository.userLoginRepo();
+    userRepository.loggedUserPictureMethod();
+
     // getData();
-    sl<UserRepository>().userLoginRepo();
-    sl<UserRepository>().loggedUserPictureMethod();
     init();
   }
 
@@ -35,29 +37,29 @@ class HomeCubit extends Cubit<HomeState> {
     try {
 
       final id = auth.currentUser()!.uid;
-      final searchUser = await db.getUserFields(id);
+      final UserModel? searchUser = await db.getUserFields(id);
       final allUsers = await db.getAllUserFields();
-
+      print('searchUser ${searchUser!.searchPref?.interests}');
       allUsers
         ..removeWhere((element) => element.id == id)
         ..removeWhere((element) =>
-            element.searchPref!.distance! > searchUser!.searchPref!.distance!)
+        element.searchPref!.distance! > searchUser!.searchPref!.distance!)
         ..removeWhere((element) =>
-            int.parse(element.profileInfo!.age!) <
-                searchUser?.searchPref!.yearsRange?.values.elementAt(0) ||
+        int.parse(element.profileInfo!.age!) <
+            searchUser?.searchPref!.yearsRange?.values.elementAt(0) ||
             int.parse(element.profileInfo!.age!) >
                 searchUser?.searchPref!.yearsRange?.values.elementAt(1))
         ..removeWhere((element) =>
-            element.profileInfo!.gender != searchUser?.searchPref!.gender);
+        element.profileInfo!.gender != searchUser?.searchPref!.gender);
 
       List<UserModel> filtered = [];
       for (var i = 0; i < allUsers.length; i++) {
         for (int a = 0; a < searchUser!.searchPref!.interests!.length; a++) {
           if (searchUser.searchPref!.interests!.values.elementAt(a)) {
-            if (allUsers[i].profileInfo!.interests!.values !=
+            if (allUsers[i].profileInfo!.interests!.values ==
                 searchUser.searchPref!.interests!.values) {
               filtered.add(allUsers[i]);
-              print('---------- ${allUsers[i].firstName}');
+              print('allUsers[i].firstName ${allUsers[i].firstName}');
               // allUsers.removeWhere((element) => element.id == allUsers[i].id);
             }
 
