@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../core/constants.dart';
 
@@ -25,8 +26,8 @@ class FriendListScreen extends StatelessWidget {
             size: 18,
           ),
         ),
-        title: const Text(
-          'Friend List',
+        title: Text(
+          AppLocalizations.of(context)!.friendList,
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
@@ -63,9 +64,9 @@ class FriendListScreen extends StatelessWidget {
                           const SizedBox(
                             width: 20,
                           ),
-                          const Text(
-                            'Name Surname',
-                            style: TextStyle(fontSize: 18),
+                          Text(
+                            AppLocalizations.of(context)!.name,
+                            style: const TextStyle(fontSize: 18),
                           ),
                         ],
                       ),

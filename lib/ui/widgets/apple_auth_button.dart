@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../core/service_locator.dart';
 import '../bloc/apple_auth/apple_auth_cubit.dart';
@@ -56,13 +57,15 @@ class _AppleAuthButton extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              FaIcon(FontAwesomeIcons.apple, color: Colors.black),
-              SizedBox(
+            children: [
+              const FaIcon(FontAwesomeIcons.apple, color: Colors.black),
+              const SizedBox(
                 width: 30,
               ),
               Text(
-                'SIGN IN WITH APPLE',
+                state.status!.isLoading == true
+                    ? AppLocalizations.of(context)!.signing
+                    : AppLocalizations.of(context)!.signingApple,
                 style: TextStyle(color: Colors.black),
               ),
             ],

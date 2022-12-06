@@ -11,6 +11,8 @@ import 'package:dating_app/ui/widgets/reusable_widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import '../../core/functions/validation.dart';
 
@@ -23,7 +25,7 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
-  final _phoneController = TextEditingController(text: '932383265');
+  final _phoneController = TextEditingController();
   ReUsableWidgets reUsableWidgets = ReUsableWidgets();
   String verificationId = '';
   String isoCode = '';
@@ -39,10 +41,10 @@ class _LoginFormState extends State<LoginForm> {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state.status!.isError) {
-          const snackBar = SnackBar(
+          final snackBar = SnackBar(
             backgroundColor: Colors.redAccent,
             content: Text(
-              'No Match User. You Need To Sign up',
+              AppLocalizations.of(context)!.noMatchUser,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.white,
@@ -95,8 +97,8 @@ class _LoginFormState extends State<LoginForm> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              'Login',
+                            Text(
+                              AppLocalizations.of(context)!.login,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 27,
@@ -107,7 +109,7 @@ class _LoginFormState extends State<LoginForm> {
                               height: 20,
                             ),
                             Text(
-                              'Welcome back',
+                              AppLocalizations.of(context)!.welcomeBack,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Colors.grey[600],
@@ -133,12 +135,12 @@ class _LoginFormState extends State<LoginForm> {
                                 phone.phoneNumber!;
                               },
                               onSaved: (value) {
-                                _phoneController.text = value.parseNumber()!;
                                 isoCode = value.dialCode!;
+                                _phoneController.text = value.parseNumber();
                                 print(isoCode + _phoneController.text);
                               },
                               formatInput: false,
-                              inputDecoration: authFieldDecor('Phone Number'),
+                              inputDecoration: authFieldDecor(AppLocalizations.of(context)!.phoneNumber),
                               selectorTextStyle: TextStyle(
                                 color: Colors.grey[700],
                               ),
@@ -189,8 +191,8 @@ class _LoginFormState extends State<LoginForm> {
                                   width: 340,
                                   height: 55,
                                   alignment: Alignment.center,
-                                  child: const Text(
-                                    'SIGN IN',
+                                  child: Text(
+                                    AppLocalizations.of(context)!.signInButton,
                                   ),
                                 ),
                               ),
@@ -206,11 +208,11 @@ class _LoginFormState extends State<LoginForm> {
                                     fontSize: 15,
                                   ),
                                   children: [
-                                    const TextSpan(
-                                      text: 'Don\'t have an account? ',
+                                     TextSpan(
+                                      text: '${AppLocalizations.of(context)!.dontHaveaAcount} ',
                                     ),
                                     TextSpan(
-                                        text: 'SIGN UP',
+                                        text: AppLocalizations.of(context)!.signUp,
                                         style: TextStyle(
                                           color: Colors.orange[800],
                                           fontWeight: FontWeight.w500,

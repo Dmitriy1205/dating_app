@@ -23,6 +23,7 @@ import '../ui/bloc/apple_auth/apple_auth_cubit.dart';
 import '../ui/bloc/edit_profile_bloc.dart';
 import '../ui/bloc/home/home_cubit.dart';
 import '../ui/bloc/image_picker/image_picker_cubit.dart';
+import '../ui/bloc/localization/localization_cubit.dart';
 import '../ui/bloc/otp_verification/otp_cubit.dart';
 import '../ui/bloc/profile_info_cubit/profile_info_cubit.dart';
 
@@ -49,6 +50,7 @@ Future<void> boot() async {
 
   //Cubits
   sl.registerFactory(() => GoogleAuthCubit(sl()));
+  sl.registerLazySingleton(() => LocalizationCubit(auth: sl(),db: sl()));
   sl.registerLazySingleton(() => SettingsCubit(sl()));
   sl.registerFactory(() => PersonalProfileCubit(sl()));
   sl.registerFactory(() => HomeCubit(db: sl(), auth: sl()));

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../bloc/otp_verification/otp_cubit.dart';
 
@@ -8,6 +9,7 @@ class OtpForm extends StatefulWidget {
   final String verId;
   final int pageId;
   final String? name;
+  final String? language;
   final String? phone;
   final String? date;
   final String? email;
@@ -18,11 +20,13 @@ class OtpForm extends StatefulWidget {
     Key? key,
     required this.verId,
     this.name,
+    this.language,
     this.phone,
     this.date,
     this.email,
     required this.page,
-    this.joinDate, required this.pageId,
+    this.joinDate,
+    required this.pageId,
   }) : super(key: key);
 
   @override
@@ -58,8 +62,8 @@ class _OtpFormState extends State<OtpForm> {
               const SizedBox(
                 height: 20,
               ),
-              const Text(
-                'Verification',
+              Text(
+                AppLocalizations.of(context)!.verification,
                 textAlign: TextAlign.left,
                 style: TextStyle(
                   fontSize: 27,
@@ -70,7 +74,7 @@ class _OtpFormState extends State<OtpForm> {
                 height: 20,
               ),
               Text(
-                'We\'ve sent a text message to verify your phone number',
+                AppLocalizations.of(context)!.weveSentaText,
                 style: TextStyle(color: Colors.grey[500], fontSize: 16),
               ),
               const SizedBox(
@@ -111,7 +115,7 @@ class _OtpFormState extends State<OtpForm> {
                 onPressed: () {
                   if (!_formKey.currentState!.validate()) return;
                   _formKey.currentState!.save();
-                  if(widget.pageId == 1) {
+                  if (widget.pageId == 1) {
                     context.read<OtpCubit>().verifySignUp(
                           widget.verId,
                           _numberController.text,
@@ -120,12 +124,13 @@ class _OtpFormState extends State<OtpForm> {
                           widget.date ?? '',
                           widget.email ?? '',
                           widget.joinDate ?? '',
+                          widget.language ?? '',
                         );
-                  }else {
+                  } else {
                     context.read<OtpCubit>().verifyLogin(
-                        widget.verId,
-                        code,
-                      );
+                          widget.verId,
+                          code,
+                        );
                   }
                 },
                 style: ElevatedButton.styleFrom(
@@ -148,8 +153,8 @@ class _OtpFormState extends State<OtpForm> {
                     width: 340,
                     height: 55,
                     alignment: Alignment.center,
-                    child: const Text(
-                      'CONTINUE',
+                    child: Text(
+                      AppLocalizations.of(context)!.continueButton,
                     ),
                   ),
                 ),

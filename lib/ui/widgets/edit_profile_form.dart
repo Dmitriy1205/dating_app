@@ -1,11 +1,11 @@
 import 'package:dating_app/data/models/profile_info_data.dart';
-import 'package:dating_app/data/models/search_pref_data.dart';
 import 'package:dating_app/ui/bloc/edit_profile_bloc.dart';
 import 'package:dating_app/ui/widgets/image_picker_list.dart';
 import 'package:dating_app/ui/widgets/reusable_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../core/functions/validation.dart';
 import '../bloc/edit_profile_state.dart';
@@ -117,9 +117,9 @@ class _EditProfileFormState extends State<EditProfileForm> {
                       const SizedBox(
                         height: 40,
                       ),
-                      const Text(
-                        'General',
-                        style: TextStyle(
+                      Text(
+                        AppLocalizations.of(context)!.general,
+                        style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
@@ -132,7 +132,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
                         autocorrect: false,
                         controller: nameController,
                         keyboardType: TextInputType.name,
-                        decoration: profileFieldDecor('Name'),
+                        decoration: profileFieldDecor(AppLocalizations.of(context)!.name),
                         onSaved: (value) {
                           nameController.text = value!.trim();
                         },
@@ -152,7 +152,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
                         controller: bioController,
                         keyboardType: TextInputType.multiline,
                         maxLines: 6,
-                        decoration: profileFieldDecor('Tell us about yourself'),
+                        decoration: profileFieldDecor(AppLocalizations.of(context)!.tellUsAbout),
                         onSaved: (value) {
                           bioController.text = value!.trim();
                         },
@@ -180,7 +180,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
                                 //   }
                                 //   return null;
                                 // },
-                                hint: const Text('Gender'),
+                                hint: Text(AppLocalizations.of(context)!.gender),
                                 icon:
                                     const Icon(Icons.keyboard_arrow_down_sharp),
                                 onChanged: (v) {
@@ -193,17 +193,17 @@ class _EditProfileFormState extends State<EditProfileForm> {
                                   fillColor: Colors.white,
                                 ),
                                 // decoration: profileFieldDecor('Gender'),
-                                items: const [
+                                items:  [
                                   DropdownMenuItem(
                                     value: 'Male',
                                     child: Text(
-                                      'Male',
+                                      AppLocalizations.of(context)!.male,
                                     ),
                                   ),
                                   DropdownMenuItem(
                                     value: 'Female',
                                     child: Text(
-                                      "Female",
+                                      AppLocalizations.of(context)!.female,
                                     ),
                                   ),
                                 ],
@@ -227,7 +227,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
                                 autocorrect: false,
                                 controller: heightController,
                                 keyboardType: TextInputType.number,
-                                decoration: profileFieldDecor('Height'),
+                                decoration: profileFieldDecor(AppLocalizations.of(context)!.height),
                                 onSaved: (value) {
                                   heightController.text = value!.trim();
                                 },
@@ -250,7 +250,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
                                 autocorrect: false,
                                 controller: ageController,
                                 keyboardType: TextInputType.number,
-                                decoration: profileFieldDecor('Age'),
+                                decoration: profileFieldDecor(AppLocalizations.of(context)!.age),
                                 onSaved: (value) {
                                   ageController.text = value!.trim();
                                 },
@@ -272,9 +272,9 @@ class _EditProfileFormState extends State<EditProfileForm> {
                     ],
                   ),
                   reUsableWidgets.openHobbiesOrInterests(
-                      context, 'Interests', hobbies),
+                      context,AppLocalizations.of(context)!.interests, interests),
                   reUsableWidgets.openHobbiesOrInterests(
-                      context, 'Hobbies', interests),
+                      context, AppLocalizations.of(context)!.hobbies, hobbies),
                   reUsableWidgets.lookingForWidget(context,
                       onTap: (value) =>
                           context.read<EditProfileCubit>().changeData(value!),
@@ -283,10 +283,11 @@ class _EditProfileFormState extends State<EditProfileForm> {
                       },
                       // selected: state.selectedLookingForList!,
                       lookingForMap: lookingFor),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   reUsableWidgets.badgeForm(
+                    context,
                     isRegisterForm: false,
                     isProfileInfoForm: true,
                     university: universityController,
@@ -344,8 +345,8 @@ class _EditProfileFormState extends State<EditProfileForm> {
                               width: 340,
                               height: 55,
                               alignment: Alignment.center,
-                              child: const Text(
-                                'SAVE',
+                              child: Text(
+                                AppLocalizations.of(context)!.save,
                               ),
                             ),
                           ),

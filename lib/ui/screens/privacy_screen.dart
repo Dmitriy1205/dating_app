@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PrivacyScreen extends StatelessWidget {
   const PrivacyScreen({Key? key}) : super(key: key);
@@ -24,8 +25,8 @@ class PrivacyScreen extends StatelessWidget {
               size: 18,
             ),
           ),
-          title: const Text(
-            'Privacy Policy',
+          title: Text(
+            AppLocalizations.of(context)!.privacyPolicy,
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           ),
         ),

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../core/service_locator.dart';
 import '../bloc/facebook_auth/facebook_auth_cubit.dart';
@@ -62,8 +63,8 @@ class _FacebookAuthButton extends StatelessWidget {
               ),
               Text(
                 state.status!.isLoading == true
-                    ? 'Signing in ...'
-                    : 'SIGN IN WITH FACEBOOK',
+                    ? AppLocalizations.of(context)!.signing
+                    : AppLocalizations.of(context)!.signingFacebook,
                 style: TextStyle(color: Colors.blue[800]),
               ),
             ],

@@ -1,6 +1,7 @@
 import 'package:dating_app/ui/widgets/swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../core/service_locator.dart';
 import '../../data/models/photo_card.dart';
@@ -31,7 +32,7 @@ class _HomeBodyState extends State<HomeBody> {
             title: user[index].profileInfo!.name ?? '',
             description: user[index].profileInfo!.bio ?? '',
             imagePath: user[index].profileInfo!.image ?? '',
-            location: '${user[index].searchPref!.distance.toString()} miles',
+            location: '${user[index].searchPref!.distance.toString()} ${AppLocalizations.of(context)!.miles}',
           ),
         );
         return Column(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TermsAndConditions extends StatelessWidget {
   const TermsAndConditions({Key? key}) : super(key: key);
@@ -19,8 +20,8 @@ class TermsAndConditions extends StatelessWidget {
                       Icons.arrow_back_ios,
                       color: Colors.deepOrangeAccent,
                     )),
-                const Text(
-                  'Terms & conditions',
+                 Text(
+                  AppLocalizations.of(context)!.reflowTermsConditions,
                   style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox()

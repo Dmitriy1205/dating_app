@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/service_locator.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MessengerScreen extends StatelessWidget {
   const MessengerScreen(
@@ -50,8 +51,12 @@ class MessengerScreen extends StatelessWidget {
                   ),
                   onSelected: handleClick,
                   itemBuilder: (BuildContext context) {
-                    return {'Block', 'Clear Chat', 'Report User', 'Unfriend'}
-                        .map((String choice) {
+                    return {
+                      AppLocalizations.of(context)!.block,
+                      AppLocalizations.of(context)!.clearChat,
+                      AppLocalizations.of(context)!.reportUser,
+                      AppLocalizations.of(context)!.unfriend
+                    }.map((String choice) {
                       return PopupMenuItem<String>(
                         onTap: () {
                           switch (choice) {

@@ -1,8 +1,8 @@
 import 'package:dating_app/core/themes/checkboxes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../core/constants.dart';
-import '../../data/models/interests.dart';
 
 class InterestsScreen extends StatefulWidget {
   final Map<String, dynamic>? interests;
@@ -58,10 +58,10 @@ class _InterestsScreenState extends State<InterestsScreen> {
                                       Icons.close,
                                     ),
                                   ),
-                                  const Text(
-                                    'Interesets',
+                                  Text(
+                                    AppLocalizations.of(context)!.interests,
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 23,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -72,18 +72,18 @@ class _InterestsScreenState extends State<InterestsScreen> {
                                 onTap: () {
                                   //TODO: submit all data and back
                                   Navigator.pop(context, widget.interests);
-                                  const snackBar = SnackBar(
-                                    backgroundColor: Colors.teal,
-                                    content: Text(
-                                      'Success',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  );
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(snackBar);
+                                  // const snackBar = SnackBar(
+                                  //   backgroundColor: Colors.teal,
+                                  //   content: Text(
+                                  //     'Success',
+                                  //     textAlign: TextAlign.center,
+                                  //     style: TextStyle(
+                                  //       color: Colors.white,
+                                  //     ),
+                                  //   ),
+                                  // );
+                                  // ScaffoldMessenger.of(context)
+                                  //     .showSnackBar(snackBar);
                                 },
                                 child: SizedBox(
                                   height: 25,

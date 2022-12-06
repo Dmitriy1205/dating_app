@@ -9,6 +9,8 @@ import '../../core/constants.dart';
 import '../../data/models/user_model.dart';
 import '../bloc/image_picker/image_picker_cubit.dart';
 import '../bloc/messenger_cubit.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class MessengerWidget extends StatefulWidget {
   const MessengerWidget(BuildContext context,
@@ -83,13 +85,14 @@ class _MessengerWidgetState extends State<MessengerWidget> {
             SizedBox(
               width: 15,
             ),
-            Text("today"),
+            Text(AppLocalizations.of(context)!.today),
             SizedBox(
               width: 15,
             ),
             Expanded(
               child: Divider(
                 color: Colors.black54,
+
               ),
             ),
           ],
@@ -139,7 +142,7 @@ class _MessengerWidgetState extends State<MessengerWidget> {
           controller: myMessageController,
           decoration: InputDecoration(
             border: InputBorder.none,
-            hintText: "Type your message...",
+            hintText: AppLocalizations.of(context)!.typeYourMessage,
             hintStyle: const TextStyle(color: Colors.grey),
             prefix: const SizedBox(
               width: 20,

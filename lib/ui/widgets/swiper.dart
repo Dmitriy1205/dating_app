@@ -3,6 +3,7 @@ import 'package:dating_app/ui/widgets/swiper_components/photo_card_layout_widget
 import 'package:flutter/material.dart';
 import '../../core/notifiers/feedback_photo_card_value_notifier.dart';
 import '../../data/models/photo_card.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 enum CardActionDirection {
   cardRightAction,
@@ -119,8 +120,8 @@ class _SwiperState extends State<Swiper> {
           child:
               //TODO: Refresh button for finished List(if empty = no mathes for yo today, if not empty = put list)
               (_updatedPhotos.isEmpty && widget.showLoading)
-                  ? const Center(
-                      child: Text('Sorry, no matches'),
+                  ?  Center(
+                      child: Text(AppLocalizations.of(context)!.sorryNoMatches),
                     )
                   // ?LoadingDataPhotoCardWidget(
                   //         cardHeight: cardHeight,

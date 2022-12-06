@@ -33,6 +33,7 @@ class MessengerCubit extends Cubit<MessengerStates> {
     loggedUserPicture = value!.profileInfo!.image ??
         'https://firebasestorage.googleapis.com/v0/b/dating-app-95830.appspot.com/o/users%2F7kyZ3iSjKUQyQHNTNpB1gzU8pP33%2Fimage2.png?alt=media&token=968c17f4-46ee-4e0b-a3e7-b6d0a92c3f4c'
     );
+
   }
 
   // get getChatId => db.getClearId(loggedUserId, openedChatUserId);
