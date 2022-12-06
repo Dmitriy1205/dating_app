@@ -80,6 +80,7 @@ class _SettingsState extends State<Settings> {
                   onTap: () {
                     settingNames[index] == settingNames.first
                         ? const SizedBox()
+
                         : settingNames[index] ==
                                 settingNames.last
                             ? showAlertDialog(context)

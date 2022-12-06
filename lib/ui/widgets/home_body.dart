@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../core/service_locator.dart';
 import '../../data/models/photo_card.dart';
+import '../../data/repositories/user_repository.dart';
 import '../bloc/home/home_cubit.dart';
 import '../screens/person_profile.dart';
 

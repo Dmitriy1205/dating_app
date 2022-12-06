@@ -55,6 +55,7 @@ class FilterCubit extends Cubit<FilterState> {
   }
 
   Future<void> setInterestFields(String inter) async {
+    print('inter $inter');
     selectedInterestList.contains(inter)
         ? selectedInterestList.remove(inter)
         : selectedInterestList.add(inter);

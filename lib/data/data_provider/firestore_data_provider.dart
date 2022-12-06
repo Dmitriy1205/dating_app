@@ -55,9 +55,11 @@ class FirebaseDataProvider {
   Future<MessageModel?> sendMessageToPal(
       MessageModel messageModel, String chatId) async {
     try {
+      print('irestore.collection(\'chats/chatId/messages\') ${chatId}');
       await firestore
           .collection('chats/$chatId/messages')
           .add(messageModel.toJson());
+
     } on FirebaseException catch (e) {
       throw BadRequestException(message: e.message!);
     }
@@ -95,8 +97,6 @@ class FirebaseDataProvider {
 
   Future<void> getLoggedUser() async {
     try {
-      print('userModel.id  ${userModel.id}');
-      Map<String, dynamic> user;
       await firestore
           .collection('Users')
           .doc(userModel.id)
@@ -119,7 +119,7 @@ class FirebaseDataProvider {
   Stream<List<MessageModel>> getAllChatMessagesStream(String chatId) =>
       firestore
           .collection('chats/$chatId/messages')
-          .orderBy('time', descending: false)
+          .orderBy('time', descending: true)
           .snapshots()
           .map((snapshot) => snapshot.docs
               .map((doc) => MessageModel.fromJson(doc.data()))

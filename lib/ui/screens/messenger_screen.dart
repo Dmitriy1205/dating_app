@@ -17,9 +17,9 @@ class MessengerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('user $user');
-    return BlocProvider(
-        create: (BuildContext context) => sl<MessengerCubit>(),
+    return BlocProvider.value(
+      value: sl<MessengerCubit>(),
+            // create: (BuildContext context) => sl<MessengerCubit>(),
         child: Scaffold(
             appBar: AppBar(
               elevation: 0,

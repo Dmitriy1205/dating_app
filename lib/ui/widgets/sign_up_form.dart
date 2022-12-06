@@ -156,7 +156,6 @@ class _SignUpFormState extends State<SignUpForm> {
                               onSaved: (value) {
                                 isoCode = value.dialCode!;
                                 _phoneController.text = value.parseNumber();
-
                                 print(isoCode + _phoneController.text);
                               },
                               formatInput: false,

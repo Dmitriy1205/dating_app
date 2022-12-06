@@ -28,7 +28,9 @@ import '../ui/bloc/otp_verification/otp_cubit.dart';
 import '../ui/bloc/profile_info_cubit/profile_info_cubit.dart';
 
 final sl = GetIt.instance;
-UserModel loggedUser = UserModel();
+UserModel userModel = UserModel();
+
+get user => userModel;
 
 Future<void> boot() async {
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -44,7 +46,7 @@ Future<void> boot() async {
   sl.registerLazySingleton(() => StorageRepository(storageProvider: sl()));
   sl.registerLazySingleton(() => AuthRepository(auth: auth, db: sl()));
   sl.registerLazySingleton(
-      () => UserRepository(auth: auth, firestore: firestore));
+      () => UserRepository(firestore: firestore, auth: auth));
 
   //Cubits
   sl.registerFactory(() => GoogleAuthCubit(sl()));
@@ -74,7 +76,7 @@ Future<void> boot() async {
   sl.registerFactory(() => FacebookAuthCubit(sl()));
   sl.registerFactory(() => AuthCubit(sl()));
   sl.registerFactory(() => ContactsCubit(authRepository: sl()));
-  sl.registerFactory(() => MessengerCubit(sl(), auth));
+  sl.registerFactory(() => MessengerCubit(sl(), auth, userModel));
 }
 
 Future<void> init() async {}

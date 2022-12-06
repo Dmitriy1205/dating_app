@@ -27,12 +27,8 @@ class _MessengerWidgetState extends State<MessengerWidget> {
   TextEditingController myMessageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
-  _MessengerWidgetState();
-
   @override
   void initState() {
-    print ('userPicture MessengerWidget ${widget.userPicture}');
-
     context.read<MessengerCubit>().messagesStream(widget.user.id!);
     context.read<MessengerCubit>().getChatId2(widget.user.id!);
     super.initState();
@@ -79,36 +75,35 @@ class _MessengerWidgetState extends State<MessengerWidget> {
   }
 
   Widget messages(BuildContext context, state) {
-    return SingleChildScrollView(
-      controller: _scrollController,
-      child: Column(
-        children: [
-          Row(
-            children: [
-              const Expanded(
-                child: Divider(color: Colors.black54),
+    return Column(
+      children: [
+        Row(
+          children: const [
+            Expanded(
+              child: Divider(color: Colors.black54),
+            ),
+            SizedBox(
+              width: 15,
+            ),
+            Text(AppLocalizations.of(context)!.today),
+            SizedBox(
+              width: 15,
+            ),
+            Expanded(
+              child: Divider(
+                color: Colors.black54,
+
               ),
-              const SizedBox(
-                width: 15,
-              ),
-              Text(AppLocalizations.of(context)!.today),
-              const SizedBox(
-                width: 15,
-              ),
-              const Expanded(
-                child: Divider(
-                  color: Colors.black54,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          ListView.builder(
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 30,
+        ),
+        Expanded(
+          child: ListView.builder(
+              reverse: true,
               controller: _scrollController,
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
               itemCount: state.messagesList.length,
               itemBuilder: (context, index) {
                 if (state.messagesList[index].recipientName ==
@@ -129,8 +124,8 @@ class _MessengerWidgetState extends State<MessengerWidget> {
                   );
                 }
               }),
-        ],
-      ),
+        )
+      ],
     );
   }
 
@@ -183,15 +178,23 @@ class _MessengerWidgetState extends State<MessengerWidget> {
                   ),
                   InkWell(
                     onTap: () {
-                      MessageModel message = MessageModel(
-                        message: myMessageController.text,
-                        time: DateTime.now().toString(),
-                        recipientName: widget.user.firstName,
-                      );
-                      context
-                          .read<MessengerCubit>()
-                          .sendMessage(message, widget.user);
-                      myMessageController.clear();
+                      if (myMessageController.text != '') {
+                        if (state.status!.isLoaded) {
+                          _scrollController.animateTo(
+                              _scrollController.position.minScrollExtent,
+                              duration: const Duration(seconds: 1),
+                              curve: Curves.easeInOut);
+                        }
+                        MessageModel message = MessageModel(
+                          message: myMessageController.text,
+                          time: DateTime.now().toString(),
+                          recipientName: widget.user.firstName,
+                        );
+                        context
+                            .read<MessengerCubit>()
+                            .sendMessage(message, widget.user);
+                        myMessageController.clear();
+                      }
                     },
                     child: SizedBox(
                         width: 50,

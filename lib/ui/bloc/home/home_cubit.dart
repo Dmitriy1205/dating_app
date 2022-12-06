@@ -34,12 +34,21 @@ class HomeCubit extends Cubit<HomeState> {
     emit(state.copyWith(
       status: Status.loading(),
     ));
+    List<UserModel> filtered = [];
+    List<UserModel> filteredInterests = [];
+    List<UserModel> filteredHobbies = [];
+    List<UserModel> filteredLookingFor = [];
+
     try {
-
       final id = auth.currentUser()!.uid;
-      final searchUser = await db.getUserFields(id);
-      final allUsers = await db.getAllUserFields();
-
+      final UserModel? searchUser = await db.getUserFields(id);
+      final List<UserModel> allUsers = await db.getPals();
+      for (var user in allUsers) {
+        print(
+            'allUsers ${user.searchPref!.interests} ${user.searchPref!.hobbies} ${user.searchPref!.lookingFor} ${user.id} ${user.firstName}');
+      }
+      print(
+          'searchUser ${searchUser!.searchPref?.interests} ${searchUser!.searchPref?.hobbies} ${searchUser!.searchPref?.lookingFor}');
       allUsers
         ..removeWhere((element) => element.id == id)
         ..removeWhere((element) =>
@@ -51,42 +60,87 @@ class HomeCubit extends Cubit<HomeState> {
                 searchUser?.searchPref!.yearsRange?.values.elementAt(1))
         ..removeWhere((element) =>
             element.profileInfo!.gender != searchUser?.searchPref!.gender);
+      print('allUsers ${allUsers.length}');
 
-      List<UserModel> filtered = [];
-      for (var i = 0; i < allUsers.length; i++) {
-        for (int a = 0; a < searchUser!.searchPref!.interests!.length; a++) {
-          if (searchUser.searchPref!.interests!.values.elementAt(a)) {
-            if (allUsers[i].profileInfo!.interests!.values !=
-                searchUser.searchPref!.interests!.values) {
-              filtered.add(allUsers[i]);
-              print('---------- ${allUsers[i].firstName}');
+      for (int a = 0; a < searchUser!.searchPref!.interests!.length; a++) {
+        if (searchUser.searchPref!.interests!.values.elementAt(a)) {
+          for (var user in allUsers) {
+            bool boolInUser = user.searchPref!.interests![
+                searchUser.searchPref!.interests!.keys.elementAt(a)];
+            if (boolInUser) {
+              print(' added interests ${user.firstName}');
+              filteredInterests.contains(user)
+                  ? null
+                  : filteredInterests.add(user);
               // allUsers.removeWhere((element) => element.id == allUsers[i].id);
             }
-
           }
         }
       }
-      for (var i = 0; i < allUsers.length; i++) {
-        for (int a = 0; a < searchUser!.searchPref!.hobbies!.length; a++) {
-          if (searchUser!.searchPref!.hobbies!.values.elementAt(a)) {
-            if (allUsers[i].profileInfo!.hobbies!.values.elementAt(a) ==
-                searchUser!.searchPref!.hobbies!.values.elementAt(a)) {
-              filtered.add(allUsers[i]);
+      for (int a = 0; a < searchUser!.searchPref!.hobbies!.length; a++) {
+        if (searchUser.searchPref!.hobbies!.values.elementAt(a)) {
+          for (var user in allUsers) {
+            bool boolInUser = user.searchPref!
+                .hobbies![searchUser.searchPref!.hobbies!.keys.elementAt(a)];
+            if (boolInUser) {
+              print(' added hobbies ${user.firstName}');
+              filteredHobbies.contains(user) ? null : filteredHobbies.add(user);
+              print('filteredLookingFor ${filteredHobbies.first}');
+              // allUsers.removeWhere((element) => element.id == allUsers[i].id);
             }
           }
         }
       }
 
-      for (var i = 0; i < allUsers.length; i++) {
-        for (int a = 0; a < searchUser!.searchPref!.lookingFor!.length; a++) {
-          if (searchUser!.searchPref!.lookingFor!.values.elementAt(a)) {
-            if (allUsers[i].searchPref!.lookingFor!.values.elementAt(a) ==
-                searchUser!.searchPref!.lookingFor!.values.elementAt(a)) {
-              filtered.add(allUsers[i]);
+      for (int a = 0; a < searchUser!.searchPref!.lookingFor!.length; a++) {
+        if (searchUser.searchPref!.lookingFor!.values.elementAt(a)) {
+          for (var user in allUsers) {
+            bool boolInUser = user.searchPref!.lookingFor![
+                searchUser.searchPref!.lookingFor!.keys.elementAt(a)];
+            if (boolInUser) {
+              print(' added lookingFor ${user.firstName}');
+
+              filteredLookingFor.contains(user)
+                  ? null
+                  : filteredLookingFor.add(user);
+              print('filteredLookingFor ${filteredLookingFor.first}');
+              // allUsers.removeWhere((element) => element.id == allUsers[i].id);
             }
           }
         }
       }
+      List<UserModel> partiallyfiltered = [];
+      filteredInterests.forEach((element) {
+        filteredHobbies.contains(element)
+            ? partiallyfiltered.add(element)
+            : null;
+      });
+      partiallyfiltered.forEach((element) {
+        filteredLookingFor.contains(element) ? filtered.add(element) : null;
+      });
+
+      // for (var i = 0; i < allUsers.length; i++) {
+      //   for (int a = 0; a < searchUser!.searchPref!.hobbies!.length; a++) {
+      //     if (searchUser!.searchPref!.hobbies!.values.elementAt(a)) {
+      //       if (allUsers[i].profileInfo!.hobbies!.values.elementAt(a) ==
+      //           searchUser!.searchPref!.hobbies!.values.elementAt(a)) {
+      //         filtered.add(allUsers[i]);
+      //       }
+      //     }
+      //   }
+      // }
+
+      // for (var i = 0; i < allUsers.length; i++) {
+      //   for (int a = 0; a < searchUser!.searchPref!.lookingFor!.length; a++) {
+      //     if (searchUser!.searchPref!.lookingFor!.values.elementAt(a)) {
+      //       if (allUsers[i].searchPref!.lookingFor!.values.elementAt(a) ==
+      //           searchUser!.searchPref!.lookingFor!.values.elementAt(a)) {
+      //         filtered.add(allUsers[i]);
+      //       }
+      //     }
+      //   }
+      // }
+
       // print(lookingFor.length);
       // for (var i = 0; i < lookingFor.length; i++) {
       //   print(lookingFor.map((e) => e.id).toList());
@@ -105,7 +159,7 @@ class HomeCubit extends Cubit<HomeState> {
         status: Status.loaded(),
         // fields: filtered,
         // lookingFor: red,
-        user: allUsers,
+        user: filtered,
       ));
     } on Exception catch (e) {
       print(e.toString());

@@ -123,7 +123,6 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      print(context.read<LocalizationCubit>().state.locale);
                       Navigator.push<void>(
                         context,
                         MaterialPageRoute(
@@ -148,6 +147,7 @@ class WelcomeScreen extends StatelessWidget {
             )
           ],
         ),
+
       ),
     );
   }
@@ -217,6 +217,72 @@ class MenuItems {
         break;
       case MenuItems.pt:
         context.read<LocalizationCubit>().toPortugal();
+        break;
+    }
+  }
+}
+class MenuItem {
+  final String text;
+  final String icon;
+
+  const MenuItem({
+    required this.text,
+    required this.icon,
+  });
+}
+
+class MenuItems {
+  static const List<MenuItem> items = [en, es, fr, pt];
+
+  static const en = MenuItem(text: 'English', icon: 'assets/icons/en.png');
+  static const es = MenuItem(text: 'Espanol', icon: 'assets/icons/es.png');
+  static const fr = MenuItem(text: 'Frencais', icon: 'assets/icons/fr.png');
+  static const pt = MenuItem(text: 'Portugese', icon: 'assets/icons/pt.png');
+
+  static Widget buildItem(MenuItem item) {
+    return Wrap(
+        children: [Row(
+          children: [
+            SizedBox(
+              child: ClipRRect(
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                borderRadius: BorderRadius.circular(20),
+                child: Image.asset(
+                  item.icon,
+
+                  height: 35,
+                  width: 35,
+                  fit: BoxFit.fill,
+                ),
+              ),
+            ),
+            const SizedBox(
+              width: 20,
+            ),
+            Text(
+              item.text,
+              style: const TextStyle(
+                color: Colors.black,
+              ),
+            ),
+          ],
+        ),]
+    );
+  }
+
+  static onChanged(BuildContext context, MenuItem item) {
+    switch (item) {
+      case MenuItems.en:
+      //Do something
+        break;
+      case MenuItems.es:
+      //Do something
+        break;
+      case MenuItems.fr:
+      //Do something
+        break;
+      case MenuItems.pt:
+      //Do something
         break;
     }
   }
