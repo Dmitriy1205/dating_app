@@ -44,8 +44,8 @@ Future<void> boot() async {
   sl.registerLazySingleton(() => DataRepository(dataProvider: sl()));
   sl.registerLazySingleton(() => StorageRepository(storageProvider: sl()));
   sl.registerLazySingleton(() => AuthRepository(auth: auth, db: sl()));
-  sl.registerLazySingleton(() => UserRepository(firestore: firestore, auth: auth));
-
+  sl.registerLazySingleton(
+      () => UserRepository(firestore: firestore, auth: auth));
 
   //Cubits
   sl.registerFactory(() => GoogleAuthCubit(sl()));

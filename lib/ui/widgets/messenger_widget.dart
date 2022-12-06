@@ -23,37 +23,17 @@ class MessengerWidget extends StatefulWidget {
 
 class _MessengerWidgetState extends State<MessengerWidget> {
   TextEditingController myMessageController = TextEditingController();
-  late final ScrollController _scrollController = ScrollController();
-  bool _needsScroll = false;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     context.read<MessengerCubit>().messagesStream(widget.user.id!);
     context.read<MessengerCubit>().getChatId2(widget.user.id!);
-    // WidgetsBinding.instance.addPostFrameCallback((_) {_scrollController.jumpTo(_scrollController.position.maxScrollExtent);});
-    // _scrollController = ScrollController(initialScrollOffset: _scrollController.position.maxScrollExtent);
     super.initState();
   }
 
   @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  _scrollToEnd() async {
-    await _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 15),
-        curve: Curves.easeOut);
-  }
-
-  @override
   Widget build(BuildContext context) {
-    if (_needsScroll) {
-      _scrollToEnd();
-      _needsScroll = false;
-    }
     return BlocBuilder<MessengerCubit, MessengerStates>(
       builder: (context, state) {
         print('state ${state}');
@@ -195,21 +175,23 @@ class _MessengerWidgetState extends State<MessengerWidget> {
                   ),
                   InkWell(
                     onTap: () {
-                      if (state.status!.isLoaded) {
-                        _scrollController.animateTo(
-                            _scrollController.position.minScrollExtent,
-                            duration: const Duration(seconds: 1),
-                            curve: Curves.easeInOut);
+                      if (myMessageController.text != '') {
+                        if (state.status!.isLoaded) {
+                          _scrollController.animateTo(
+                              _scrollController.position.minScrollExtent,
+                              duration: const Duration(seconds: 1),
+                              curve: Curves.easeInOut);
+                        }
+                        MessageModel message = MessageModel(
+                          message: myMessageController.text,
+                          time: DateTime.now().toString(),
+                          recipientName: widget.user.firstName,
+                        );
+                        context
+                            .read<MessengerCubit>()
+                            .sendMessage(message, widget.user);
+                        myMessageController.clear();
                       }
-                      MessageModel message = MessageModel(
-                        message: myMessageController.text,
-                        time: DateTime.now().toString(),
-                        recipientName: widget.user.firstName,
-                      );
-                      context
-                          .read<MessengerCubit>()
-                          .sendMessage(message, widget.user);
-                      myMessageController.clear();
                     },
                     child: SizedBox(
                         width: 50,

@@ -42,11 +42,13 @@ class HomeCubit extends Cubit<HomeState> {
     try {
       final id = auth.currentUser()!.uid;
       final UserModel? searchUser = await db.getUserFields(id);
-      final allUsers = await db.getPals();
+      final List<UserModel> allUsers = await db.getPals();
       for (var user in allUsers) {
-        print('allUsers ${user.searchPref!.interests} ${user.id} ${user.firstName}');
+        print(
+            'allUsers ${user.searchPref!.interests} ${user.searchPref!.hobbies} ${user.searchPref!.lookingFor} ${user.id} ${user.firstName}');
       }
-      print('searchUser ${searchUser!.searchPref?.interests}');
+      print(
+          'searchUser ${searchUser!.searchPref?.interests} ${searchUser!.searchPref?.hobbies} ${searchUser!.searchPref?.lookingFor}');
       allUsers
         ..removeWhere((element) => element.id == id)
         ..removeWhere((element) =>
@@ -58,16 +60,18 @@ class HomeCubit extends Cubit<HomeState> {
                 searchUser?.searchPref!.yearsRange?.values.elementAt(1))
         ..removeWhere((element) =>
             element.profileInfo!.gender != searchUser?.searchPref!.gender);
+      print('allUsers ${allUsers.length}');
 
-        for (int a = 0; a < searchUser!.searchPref!.interests!.length; a++) {
-          if (searchUser.searchPref!.interests!.values.elementAt(a)) {
-            for (var user in allUsers) {
+      for (int a = 0; a < searchUser!.searchPref!.interests!.length; a++) {
+        if (searchUser.searchPref!.interests!.values.elementAt(a)) {
+          for (var user in allUsers) {
             bool boolInUser = user.searchPref!.interests![
                 searchUser.searchPref!.interests!.keys.elementAt(a)];
             if (boolInUser) {
-              print( ' added interests ${user.firstName}');
-              filteredInterests.contains(user) ? null :
-              filteredInterests.add(user);
+              print(' added interests ${user.firstName}');
+              filteredInterests.contains(user)
+                  ? null
+                  : filteredInterests.add(user);
               // allUsers.removeWhere((element) => element.id == allUsers[i].id);
             }
           }
@@ -76,15 +80,12 @@ class HomeCubit extends Cubit<HomeState> {
       for (int a = 0; a < searchUser!.searchPref!.hobbies!.length; a++) {
         if (searchUser.searchPref!.hobbies!.values.elementAt(a)) {
           for (var user in allUsers) {
-            bool boolInUser = user.searchPref!.hobbies![
-            searchUser.searchPref!.hobbies!.keys.elementAt(a)];
+            bool boolInUser = user.searchPref!
+                .hobbies![searchUser.searchPref!.hobbies!.keys.elementAt(a)];
             if (boolInUser) {
-              print( ' added hobbies ${user.firstName}');
-
-              filteredHobbies.contains(user) ? null :
-              filteredHobbies.add(user);
+              print(' added hobbies ${user.firstName}');
+              filteredHobbies.contains(user) ? null : filteredHobbies.add(user);
               print('filteredLookingFor ${filteredHobbies.first}');
-
               // allUsers.removeWhere((element) => element.id == allUsers[i].id);
             }
           }
@@ -95,12 +96,13 @@ class HomeCubit extends Cubit<HomeState> {
         if (searchUser.searchPref!.lookingFor!.values.elementAt(a)) {
           for (var user in allUsers) {
             bool boolInUser = user.searchPref!.lookingFor![
-            searchUser.searchPref!.lookingFor!.keys.elementAt(a)];
+                searchUser.searchPref!.lookingFor!.keys.elementAt(a)];
             if (boolInUser) {
-              print( ' added lookingFor ${user.firstName}');
+              print(' added lookingFor ${user.firstName}');
 
-              filteredLookingFor.contains(user) ? null :
-              filteredLookingFor.add(user);
+              filteredLookingFor.contains(user)
+                  ? null
+                  : filteredLookingFor.add(user);
               print('filteredLookingFor ${filteredLookingFor.first}');
               // allUsers.removeWhere((element) => element.id == allUsers[i].id);
             }
@@ -109,12 +111,13 @@ class HomeCubit extends Cubit<HomeState> {
       }
       List<UserModel> partiallyfiltered = [];
       filteredInterests.forEach((element) {
-        filteredHobbies.contains(element) ? partiallyfiltered.add(element) : null;
+        filteredHobbies.contains(element)
+            ? partiallyfiltered.add(element)
+            : null;
       });
       partiallyfiltered.forEach((element) {
         filteredLookingFor.contains(element) ? filtered.add(element) : null;
       });
-      print ('final ${filtered.first.id}');
 
       // for (var i = 0; i < allUsers.length; i++) {
       //   for (int a = 0; a < searchUser!.searchPref!.hobbies!.length; a++) {
@@ -137,8 +140,6 @@ class HomeCubit extends Cubit<HomeState> {
       //     }
       //   }
       // }
-
-
 
       // print(lookingFor.length);
       // for (var i = 0; i < lookingFor.length; i++) {
