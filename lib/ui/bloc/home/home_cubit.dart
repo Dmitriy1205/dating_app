@@ -35,6 +35,9 @@ class HomeCubit extends Cubit<HomeState> {
       status: Status.loading(),
     ));
     List<UserModel> filtered = [];
+    List<UserModel> filteredInterests = [];
+    List<UserModel> filteredHobbies = [];
+    List<UserModel> filteredLookingFor = [];
 
     try {
       final id = auth.currentUser()!.uid;
@@ -56,7 +59,6 @@ class HomeCubit extends Cubit<HomeState> {
         ..removeWhere((element) =>
             element.profileInfo!.gender != searchUser?.searchPref!.gender);
 
-      List<UserModel> filteredInterests = [];
         for (int a = 0; a < searchUser!.searchPref!.interests!.length; a++) {
           if (searchUser.searchPref!.interests!.values.elementAt(a)) {
             for (var user in allUsers) {
@@ -71,7 +73,6 @@ class HomeCubit extends Cubit<HomeState> {
           }
         }
       }
-        List<UserModel> filteredHobbies = [];
       for (int a = 0; a < searchUser!.searchPref!.hobbies!.length; a++) {
         if (searchUser.searchPref!.hobbies!.values.elementAt(a)) {
           for (var user in allUsers) {
@@ -90,8 +91,6 @@ class HomeCubit extends Cubit<HomeState> {
         }
       }
 
-
-      List<UserModel> filteredLookingFor = [];
       for (int a = 0; a < searchUser!.searchPref!.lookingFor!.length; a++) {
         if (searchUser.searchPref!.lookingFor!.values.elementAt(a)) {
           for (var user in allUsers) {
