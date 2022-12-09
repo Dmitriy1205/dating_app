@@ -19,6 +19,34 @@ class Profile extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         }
+        List<String> lookin = [
+          AppLocalizations.of(context)!.aMentee,
+          AppLocalizations.of(context)!.aFriend,
+          AppLocalizations.of(context)!.someoneToChillWith,
+          AppLocalizations.of(context)!.aRomanticPartner,
+          AppLocalizations.of(context)!.aBusinessPartner,
+          AppLocalizations.of(context)!.aMentor,
+        ];
+        List<String> inter = [
+          AppLocalizations.of(context)!.photography,
+          AppLocalizations.of(context)!.acting,
+          AppLocalizations.of(context)!.film,
+          AppLocalizations.of(context)!.finArt,
+          AppLocalizations.of(context)!.music,
+          AppLocalizations.of(context)!.fashion,
+          AppLocalizations.of(context)!.dance,
+          AppLocalizations.of(context)!.politics,
+        ];
+        List<String> hobb = [
+          AppLocalizations.of(context)!.workingOut,
+          AppLocalizations.of(context)!.reading,
+          AppLocalizations.of(context)!.cooking,
+          AppLocalizations.of(context)!.biking,
+          AppLocalizations.of(context)!.drinking,
+          AppLocalizations.of(context)!.shopping,
+          AppLocalizations.of(context)!.hiking,
+          AppLocalizations.of(context)!.baking,
+        ];
         return SingleChildScrollView(
           physics: const ClampingScrollPhysics(),
           child: Column(
@@ -93,7 +121,7 @@ class Profile extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                       Text(
+                        Text(
                           AppLocalizations.of(context)!.birthday,
                           textAlign: TextAlign.start,
                           style: const TextStyle(fontSize: 14),
@@ -101,7 +129,8 @@ class Profile extends StatelessWidget {
                         Text(
                           state.user!.birthday ?? '',
                           textAlign: TextAlign.start,
-                          style: const TextStyle(color: Colors.grey, fontSize: 14),
+                          style:
+                              const TextStyle(color: Colors.grey, fontSize: 14),
                         ),
                       ],
                     ),
@@ -111,13 +140,15 @@ class Profile extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                         Text(
+                        Text(
                           AppLocalizations.of(context)!.gender,
                           textAlign: TextAlign.start,
                           style: TextStyle(fontSize: 14),
                         ),
                         Text(
-                          state.user!.profileInfo!.gender ?? '',
+                          state.user!.profileInfo!.gender == 'Male'
+                              ? AppLocalizations.of(context)!.male
+                              : AppLocalizations.of(context)!.female,
                           textAlign: TextAlign.start,
                           style: TextStyle(color: Colors.grey, fontSize: 14),
                         ),
@@ -137,8 +168,8 @@ class Profile extends StatelessWidget {
                     Text(
                       AppLocalizations.of(context)!.about,
                       textAlign: TextAlign.start,
-                      style:
-                          const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 20),
                     ),
                     const SizedBox(
                       height: 5,
@@ -162,8 +193,8 @@ class Profile extends StatelessWidget {
                     Text(
                       AppLocalizations.of(context)!.basicProfile,
                       textAlign: TextAlign.start,
-                      style:
-                          const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 20),
                     ),
                     const SizedBox(
                       height: 8,
@@ -194,9 +225,14 @@ class Profile extends StatelessWidget {
                           style: const TextStyle(fontSize: 14),
                         ),
                         Text(
-                          state.user!.profileInfo!.status ?? '',
+                          state.user!.profileInfo!.status == 'Married'
+                              ? AppLocalizations.of(context)!.married
+                              : state.user!.profileInfo!.status == ''
+                                  ? ''
+                                  : AppLocalizations.of(context)!.single,
                           textAlign: TextAlign.start,
-                          style: const TextStyle(color: Colors.grey, fontSize: 14),
+                          style:
+                              const TextStyle(color: Colors.grey, fontSize: 14),
                         ),
                       ],
                     ),
@@ -213,7 +249,8 @@ class Profile extends StatelessWidget {
                         Text(
                           state.user!.joinDate ?? '',
                           textAlign: TextAlign.start,
-                          style: const TextStyle(color: Colors.grey, fontSize: 14),
+                          style:
+                              const TextStyle(color: Colors.grey, fontSize: 14),
                         ),
                       ],
                     ),
@@ -239,7 +276,7 @@ class Profile extends StatelessWidget {
                                       false
                                   ? const SizedBox()
                                   : Text(
-                                      '${state.user!.searchPref!.lookingFor!.keys.elementAt(index)}, ',
+                                      '${lookin[index]}, ',
                                       textAlign: TextAlign.start,
                                       style: const TextStyle(
                                           color: Colors.grey, fontSize: 14),
@@ -263,8 +300,8 @@ class Profile extends StatelessWidget {
                     Text(
                       AppLocalizations.of(context)!.location,
                       textAlign: TextAlign.start,
-                      style:
-                          const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 20),
                     ),
                     const SizedBox(
                       height: 8,
@@ -277,7 +314,7 @@ class Profile extends StatelessWidget {
                           style: TextStyle(fontSize: 14),
                         ),
                         Text(
-                          'Kyiv, Ukraine',
+                          state.user!.profileInfo!.location!,
                           textAlign: TextAlign.start,
                           style: TextStyle(color: Colors.grey, fontSize: 14),
                         ),
@@ -297,8 +334,8 @@ class Profile extends StatelessWidget {
                     Text(
                       AppLocalizations.of(context)!.interests,
                       textAlign: TextAlign.start,
-                      style:
-                          const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 20),
                     ),
                     const SizedBox(
                       height: 5,
@@ -314,8 +351,7 @@ class Profile extends StatelessWidget {
                                 padding: const EdgeInsets.only(right: 6),
                                 child: Chip(
                                   label: Text(
-                                    state.user!.profileInfo!.interests!.keys
-                                        .elementAt(index),
+                                    inter[index],
                                     style: TextStyle(
                                       color: Colors.grey.shade800,
                                       fontSize: 14,
@@ -339,8 +375,8 @@ class Profile extends StatelessWidget {
                     Text(
                       AppLocalizations.of(context)!.hobbies,
                       textAlign: TextAlign.start,
-                      style:
-                          const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 20),
                     ),
                     const SizedBox(
                       height: 5,
@@ -356,8 +392,7 @@ class Profile extends StatelessWidget {
                                 padding: const EdgeInsets.only(right: 6),
                                 child: Chip(
                                   label: Text(
-                                    state.user!.profileInfo!.hobbies!.keys
-                                        .elementAt(index),
+                                    hobb[index],
                                     style: TextStyle(
                                         color: Colors.grey.shade800,
                                         fontSize: 14),

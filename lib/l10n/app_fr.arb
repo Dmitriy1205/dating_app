@@ -77,6 +77,7 @@
            "hiking":"Randonnée",
            "biking":"Cyclisme",
            "shopping":"Achats",
+           "cooking":"Cuisine",
            "baking":"Pâtisserie",
            "drinking":"En buvant",
            "reading":"En lisant",
@@ -131,5 +132,8 @@
           "privacyPolicy":"Politique de confidentialité",
           "howDoYouLike":"Comment aimez-vous passer votre temps libre ?",
           "sharedInterests":"Intérêts partagés",
+          "locationServicesAreDes":"Les services de localisation sont désactivés. Veuillez activer les services",
+            "locationPermissionDenied":"Les autorisations de localisation sont refusées",
+            "locationPermissionArePermanently":"Les autorisations de localisation sont définitivement refusées, nous ne pouvons pas demander d'autorisations.",
             "sharedHobbies":"Loisirs partagés"
 }
