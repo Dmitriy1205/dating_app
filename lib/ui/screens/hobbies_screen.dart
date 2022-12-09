@@ -5,7 +5,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../core/themes/checkboxes.dart';
 
 class HobbiesScreen extends StatefulWidget {
-  final Map<String,dynamic>? hobbies;
+  final Map<String, dynamic>? hobbies;
+
   const HobbiesScreen({Key? key, this.hobbies}) : super(key: key);
 
   @override
@@ -13,9 +14,18 @@ class HobbiesScreen extends StatefulWidget {
 }
 
 class _HobbiesScreenState extends State<HobbiesScreen> {
-
   @override
   Widget build(BuildContext context) {
+    List<String> hobbies = [
+      AppLocalizations.of(context)!.workingOut,
+      AppLocalizations.of(context)!.reading,
+      AppLocalizations.of(context)!.cooking,
+      AppLocalizations.of(context)!.biking,
+      AppLocalizations.of(context)!.drinking,
+      AppLocalizations.of(context)!.shopping,
+      AppLocalizations.of(context)!.hiking,
+      AppLocalizations.of(context)!.baking,
+    ];
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -69,12 +79,14 @@ class _HobbiesScreenState extends State<HobbiesScreen> {
                               GestureDetector(
                                 onTap: () {
                                   Navigator.pop(context, widget.hobbies);
-
                                 },
-                                child: SizedBox(
-                                  height: 25,
-                                  width: 65,
-                                  child: Image.asset('assets/icons/done.png'),
+                                child: Text(
+                                  AppLocalizations.of(context)!.done,
+                                  style: const TextStyle(
+                                    color: Colors.orange,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 23,
+                                  ),
                                 ),
                               ),
                             ],
@@ -109,7 +121,8 @@ class _HobbiesScreenState extends State<HobbiesScreen> {
                                 child: InkWell(
                                   onTap: () {
                                     setState(() {
-                                      widget.hobbies!.update(widget.hobbies!.keys.elementAt(i),
+                                      widget.hobbies!.update(
+                                          widget.hobbies!.keys.elementAt(i),
                                           (value) => !value);
                                     });
                                     //
@@ -120,10 +133,16 @@ class _HobbiesScreenState extends State<HobbiesScreen> {
                                     //
                                     // hobbies;
                                   },
-                                  child: SizedBox(
-                                    width: 170,
-                                    height: 168,
-                                    child: Image.asset(Content.hobbiesList[i]),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(2.0),
+                                    child: SizedBox(
+                                      width: 170,
+                                      height: 168,
+                                      child: Image.asset(
+                                        Content.hobbiesList[i],
+                                        fit: BoxFit.fitHeight,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -131,7 +150,7 @@ class _HobbiesScreenState extends State<HobbiesScreen> {
                                 left: 20,
                                 bottom: 16,
                                 child: Text(
-                                  widget.hobbies!.keys.elementAt(i),
+                                  hobbies[i],
                                   style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 14,

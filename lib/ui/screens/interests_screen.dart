@@ -18,6 +18,16 @@ class _InterestsScreenState extends State<InterestsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    List<String> interests = [
+      AppLocalizations.of(context)!.photography,
+      AppLocalizations.of(context)!.acting,
+      AppLocalizations.of(context)!.film,
+      AppLocalizations.of(context)!.finArt,
+      AppLocalizations.of(context)!.music,
+      AppLocalizations.of(context)!.fashion,
+      AppLocalizations.of(context)!.dance,
+      AppLocalizations.of(context)!.politics,
+    ];
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -72,23 +82,14 @@ class _InterestsScreenState extends State<InterestsScreen> {
                                 onTap: () {
                                   //TODO: submit all data and back
                                   Navigator.pop(context, widget.interests);
-                                  // const snackBar = SnackBar(
-                                  //   backgroundColor: Colors.teal,
-                                  //   content: Text(
-                                  //     'Success',
-                                  //     textAlign: TextAlign.center,
-                                  //     style: TextStyle(
-                                  //       color: Colors.white,
-                                  //     ),
-                                  //   ),
-                                  // );
-                                  // ScaffoldMessenger.of(context)
-                                  //     .showSnackBar(snackBar);
                                 },
-                                child: SizedBox(
-                                  height: 25,
-                                  width: 65,
-                                  child: Image.asset('assets/icons/done.png'),
+                                child: Text(
+                                  AppLocalizations.of(context)!.done,
+                                  style: const TextStyle(
+                                    color: Colors.orange,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 23,
+                                  ),
                                 ),
                               ),
                             ],
@@ -118,11 +119,16 @@ class _InterestsScreenState extends State<InterestsScreen> {
                                           (value) => !value);
                                     });
                                   },
-                                  child: SizedBox(
-                                    width: 170,
-                                    height: 168,
-                                    child:
-                                        Image.asset(Content.interestsList[i]),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(2.0),
+                                    child: SizedBox(
+                                      width: 170,
+                                      height: 168,
+                                      child: Image.asset(
+                                        Content.interestsList[i],
+                                        fit: BoxFit.fitHeight,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -130,7 +136,7 @@ class _InterestsScreenState extends State<InterestsScreen> {
                                 left: 20,
                                 bottom: 16,
                                 child: Text(
-                                  widget.interests!.keys.elementAt(i),
+                                  interests[i],
                                   style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 14,

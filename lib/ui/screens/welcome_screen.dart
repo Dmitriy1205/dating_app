@@ -31,12 +31,17 @@ class WelcomeScreen extends StatelessWidget {
                   width: 240,
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton2(
-                      hint: Text(AppLocalizations.of(context)!.selectLanguage,style: TextStyle(color: Colors.white),),
+                      hint: Text(
+                        AppLocalizations.of(context)!.selectLanguage,
+                        style: TextStyle(color: Colors.black),
+                      ),
                       offset: const Offset(0, -18),
                       dropdownDecoration: BoxDecoration(
-                          color: Colors.white38,
+                          border: Border.all(color: Colors.black),
+                          color: Colors.white,
                           borderRadius: BorderRadius.circular(10)),
                       buttonDecoration: BoxDecoration(
+                          border: Border.all(color: Colors.black),
                           color: Colors.white38,
                           borderRadius: BorderRadius.circular(10)),
                       // value: '',
@@ -131,15 +136,29 @@ class WelcomeScreen extends StatelessWidget {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.transparent,
-                      fixedSize: const Size(350, 50),
-                      side: const BorderSide(color: Colors.white),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50),
+                        primary: Colors.transparent,
+                        padding: EdgeInsets.zero,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50))),
+                    child: Ink(
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: const Alignment(0.1, 2.1),
+                            colors: [
+                              Colors.orange.withOpacity(0.8),
+                              Colors.purple.withOpacity(0.8),
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(50)),
+                      child: Container(
+                        width: 350,
+                        height: 50,
+                        alignment: Alignment.center,
+                        child: Text(
+                          AppLocalizations.of(context)!.signInButton,
+                        ),
                       ),
-                    ),
-                    child: Text(
-                      AppLocalizations.of(context)!.signInButton,
                     ),
                   ),
                 ],
@@ -178,10 +197,10 @@ class MenuItems {
           SizedBox(
             child: ClipRRect(
               clipBehavior: Clip.antiAliasWithSaveLayer,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(5),
               child: Image.asset(
                 item.icon,
-                height: 35,
+                height: 25,
                 width: 35,
                 fit: BoxFit.fill,
               ),
