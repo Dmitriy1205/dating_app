@@ -323,8 +323,13 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                           validator: validateNameField,
                                           inputFormatters: [
                                             FilteringTextInputFormatter.allow(
-                                              RegExp("[1-9]"),
+                                              RegExp("[0-9]"),
                                             ),
+                                            FilteringTextInputFormatter.deny(
+                                              RegExp(
+                                                  r'^0+'), //users can't type 0 at 1st position
+                                            ),
+
                                             LengthLimitingTextInputFormatter(3),
                                           ],
                                         ),
@@ -348,7 +353,11 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                           validator: validateNameField,
                                           inputFormatters: [
                                             FilteringTextInputFormatter.allow(
-                                              RegExp("[1-9]"),
+                                              RegExp("[0-9]"),
+                                            ),
+                                            FilteringTextInputFormatter.deny(
+                                              RegExp(
+                                                  r'^0+'), //users can't type 0 at 1st position
                                             ),
                                             LengthLimitingTextInputFormatter(2),
                                           ],

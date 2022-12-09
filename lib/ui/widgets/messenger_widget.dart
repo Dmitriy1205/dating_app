@@ -78,7 +78,7 @@ class _MessengerWidgetState extends State<MessengerWidget> {
     return Column(
       children: [
         Row(
-          children: const [
+          children: [
             Expanded(
               child: Divider(color: Colors.black54),
             ),

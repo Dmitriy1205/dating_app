@@ -120,7 +120,7 @@ class _LoginFormState extends State<LoginForm> {
                               height: 50,
                             ),
                             InternationalPhoneNumberInput(
-                              initialValue: PhoneNumber(isoCode: 'UA'),
+                              // initialValue: PhoneNumber(isoCode: 'UA'),
                               autoValidateMode:
                                   AutovalidateMode.onUserInteraction,
                               selectorConfig: const SelectorConfig(
