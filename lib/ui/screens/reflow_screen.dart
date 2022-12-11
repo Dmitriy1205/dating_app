@@ -1,5 +1,9 @@
+import 'package:dating_app/core/constants.dart';
 import 'package:dating_app/ui/screens/sing_up_screen.dart';
+import 'package:dating_app/ui/screens/terms.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:flutter/material.dart';
 
 class ReflowScreen extends StatelessWidget {
@@ -7,57 +11,28 @@ class ReflowScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: Scaffold(
-        body: Stack(
-          fit: StackFit.expand,
-          alignment: Alignment.center,
-          children: [
-            Image.asset(
-              'assets/images/comm.png',
-              fit: BoxFit.fill,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 50),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    splashRadius: 0.1,
-                    iconSize: 28,
-                    alignment: Alignment.topLeft,
-                    icon: const Icon(
-                      Icons.close,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 5),
-                    child: Text(
-                      'Make your Myness account in minutes',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 27,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
+    return Scaffold(
+      body: Stack(
+        fit: StackFit.expand,
+        alignment: Alignment.center,
+        children: [
+          Image.asset(
+            Content.reflow,
+            fit: BoxFit.fill,
+          ),
+          SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(
+                MediaQuery.of(context).size.width / 17,
+                MediaQuery.of(context).size.height / 1.95,
+                MediaQuery.of(context).size.width / 17,
+                15,
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(15, 0, 15, 45),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  const Text(
-                    'Gain free access to the Myness interface'
-                    ' and start meeting people today',
+                  Text(
+                    AppLocalizations.of(context)!.reflowMiddleText,
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 16,
@@ -66,15 +41,17 @@ class ReflowScreen extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 40),
-                    child: buildTextColumn(),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width / 17,
+                    ),
+                    child: buildTextColumn(context),
                   ),
                   const SizedBox(
                     height: 25,
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pushReplacement(
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const SignUpScreen(),
@@ -103,8 +80,8 @@ class ReflowScreen extends StatelessWidget {
                         width: 350,
                         height: 50,
                         alignment: Alignment.center,
-                        child: const Text(
-                          'LET\'S GO',
+                        child: Text(
+                          AppLocalizations.of(context)!.reflowLetsGoButton,
                         ),
                       ),
                     ),
@@ -112,14 +89,46 @@ class ReflowScreen extends StatelessWidget {
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  splashRadius: 0.1,
+                  iconSize: 28,
+                  alignment: Alignment.topLeft,
+                  icon: const Icon(
+                    Icons.close,
+                    color: Colors.white,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: Text(
+                    AppLocalizations.of(context)!.headerInReflow,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
 }
 
-Widget buildTextColumn() {
+Widget buildTextColumn(BuildContext context) {
   return Column(
     children: [
       const SizedBox(
@@ -140,7 +149,7 @@ Widget buildTextColumn() {
           ),
           Expanded(
             child: Text(
-              'Find people who are looking for same things you are',
+              AppLocalizations.of(context)!.reflow1,
               style: TextStyle(
                 color: Colors.grey[600],
                 fontSize: 14,
@@ -167,7 +176,7 @@ Widget buildTextColumn() {
           ),
           Expanded(
             child: Text(
-              'Create a profile which outlines who you are, socially and professionally',
+              AppLocalizations.of(context)!.reflow2,
               style: TextStyle(
                 color: Colors.grey[600],
                 fontSize: 14,
@@ -194,7 +203,7 @@ Widget buildTextColumn() {
           ),
           Expanded(
             child: Text(
-              'Form meaningful relationships and expand your network',
+              AppLocalizations.of(context)!.reflow3,
               style: TextStyle(
                 color: Colors.grey[600],
                 fontSize: 14,
@@ -214,17 +223,22 @@ Widget buildTextColumn() {
             fontSize: 12,
           ),
           children: [
-            const TextSpan(
-                text: 'By tapping "Let\'s go", you have an accepted our '),
             TextSpan(
-                text: 'Terms and Conditions',
+                text: '${AppLocalizations.of(context)!.reflowUnderText} \n'),
+            TextSpan(
+                text: AppLocalizations.of(context)!.reflowTermsConditions,
                 style: TextStyle(
-                  color: Colors.pinkAccent[200],
+                  color: Colors.orange[800],
                   fontSize: 12,
                 ),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
-                    //TODO: implement terms and condition screen
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TermsAndConditions(),
+                      ),
+                    );
                   }),
           ],
         ),
