@@ -16,7 +16,7 @@ class DataRepository {
     return await dataProvider.getUsers();
   }
 
-  Future<MessageModel?> sendMessageToPal(messageModel, String chatId) async {
+  Future<void> sendMessageToPal(messageModel, String chatId) async {
     return await dataProvider.sendMessageToPal(messageModel, chatId);
   }
 
