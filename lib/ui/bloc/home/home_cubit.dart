@@ -119,6 +119,7 @@ class HomeCubit extends Cubit<HomeState> {
         filteredLookingFor.contains(element) ? filtered.add(element) : null;
       });
 
+
       // for (var i = 0; i < allUsers.length; i++) {
       //   for (int a = 0; a < searchUser!.searchPref!.hobbies!.length; a++) {
       //     if (searchUser!.searchPref!.hobbies!.values.elementAt(a)) {
@@ -167,6 +168,14 @@ class HomeCubit extends Cubit<HomeState> {
         status: Status.error(),
       ));
     }
+  }
+
+
+
+
+  void addUser(String id){
+    db.dataProvider.addedToFriends(id);
+    print('id $id');
   }
 // Future<void> getData() async {
 //   emit(state.copyWith(

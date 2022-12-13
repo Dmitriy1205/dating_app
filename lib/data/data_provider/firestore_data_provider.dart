@@ -3,15 +3,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dating_app/data/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../core/exceptions.dart';
+import '../../core/service_locator.dart';
 import '../models/message_model.dart';
 import 'package:dating_app/data/models/profile_info_data.dart';
 import '../models/search_pref_data.dart';
+import '../repositories/user_repository.dart';
 
 class FirebaseDataProvider {
   final FirebaseFirestore firestore;
   UserModel userModel = UserModel();
   MessageModel? messageModel;
   late String clearId;
+  UserRepository userRepository = sl<UserRepository>();
 
   FirebaseDataProvider({required this.firestore});
 
@@ -52,14 +55,13 @@ class FirebaseDataProvider {
     }
   }
 
-  Future<MessageModel?> sendMessageToPal(
+  Future<void> sendMessageToPal(
       MessageModel messageModel, String chatId) async {
     try {
       print('irestore.collection(\'chats/chatId/messages\') ${chatId}');
       await firestore
           .collection('chats/$chatId/messages')
           .add(messageModel.toJson());
-
     } on FirebaseException catch (e) {
       throw BadRequestException(message: e.message!);
     }
@@ -259,11 +261,25 @@ class FirebaseDataProvider {
 
   Future<List<UserModel>> getAllUserFields() async {
     try {
-      final doc = await firestore.collection('users').get();
+      final allUsers = await firestore.collection('users').get();
 
-      return doc.docs.map((e) => UserModel.fromJson(e.data())).toList();
+      return allUsers.docs.map((e) => UserModel.fromJson(e.data())).toList();
     } on FirebaseException catch (e) {
       print(e.message);
+      throw BadRequestException(message: e.message!);
+    }
+  }
+
+  Future<void> addedToFriends(String addedFriendId) async {
+    Map<String, dynamic> map = {'addedFriends': addedFriendId};
+    try {
+      print('addedFriendId  ${addedFriendId}');
+      print(
+          'userRepository.getLoggedUser.id()  ${userRepository.getLoggedUser.id}');
+
+      await firestore
+          .collection('users/${userRepository.getLoggedUser.id}/addedFriends').doc(addedFriendId).set(UserModel().addedFriendsToFirestore(addedFriendId));
+    } on FirebaseException catch (e) {
       throw BadRequestException(message: e.message!);
     }
   }

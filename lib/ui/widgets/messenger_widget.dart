@@ -78,18 +78,18 @@ class _MessengerWidgetState extends State<MessengerWidget> {
     return Column(
       children: [
         Row(
-          children: const [
-            Expanded(
+          children: [
+            const Expanded(
               child: Divider(color: Colors.black54),
             ),
-            SizedBox(
+            const SizedBox(
               width: 15,
             ),
             Text(AppLocalizations.of(context)!.today),
-            SizedBox(
+            const SizedBox(
               width: 15,
             ),
-            Expanded(
+            const Expanded(
               child: Divider(
                 color: Colors.black54,
 

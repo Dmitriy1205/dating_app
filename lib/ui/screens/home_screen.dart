@@ -95,7 +95,7 @@ class HomeScreen extends StatelessWidget {
         ),
         body: BlocProvider(
           create: (context) => sl<HomeCubit>(),
-          child: const HomeBody(),
+          child: const HomeBody1(),
         ),
       ),
     );
