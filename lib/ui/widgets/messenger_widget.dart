@@ -120,7 +120,7 @@ class _MessengerWidgetState extends State<MessengerWidget> {
                     child: ReplyCard(
                         messageModel: state.messagesList[index],
                         time: state.messagesList[index].time!,
-                        userPicture: widget.userPicture),
+                        userPicture: widget.userPicture   ),
                   );
                 }
               }),

@@ -35,6 +35,7 @@ class _HomeBody1State extends State<HomeBody1> {
           );
         }
         List<UserModel> users = state.user!;
+        print('users ${users.length}');
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -48,14 +49,14 @@ class _HomeBody1State extends State<HomeBody1> {
                   case Direction.right:
                     context.read<HomeCubit>().addUser(users[index].id!);
                     print(
-                        'onLiked ${users[index].id!} ${users[index].firstName} ${dir} $index');
+                        'onLiked ${users[index].id!} ${users[index].id} ${dir} $index');
                     break;
                 }
               },
               cardController: _cardController,
               context: context,
               items: List.generate(users.length, (index) {
-                print('image ${users.first.id}');
+                print('image ${users.length}');
                 return Card(
                   child: GestureDetector(
                     onTap: () {

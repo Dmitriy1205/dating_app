@@ -17,7 +17,8 @@ class ReplyCard extends StatelessWidget {
         width: 45,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(50),
-          child: Image.network(userPicture),
+          child: userPicture != '' ? Image.network(userPicture): Image.asset(
+              'assets/images/empty.png'),
           // fit: BoxFit.fill,
         ),
       ),
