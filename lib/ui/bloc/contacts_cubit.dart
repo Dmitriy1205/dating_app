@@ -29,7 +29,7 @@ class ContactsCubit extends Cubit<ContactsCubitStates> {
   }
 
   Future<void> updateConnections() async {
-    usersList = await db.getPals();
+    usersList = await db.getContacts();
     for (int i = 0; i < usersList.length; i++) {
       print('${usersList[i].firstName}');
       if (usersList[i].id == authRepository.currentUser()!.uid) {

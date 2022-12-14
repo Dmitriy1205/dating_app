@@ -80,7 +80,6 @@ class _ContactsScreenState extends State<ContactsScreen> {
                         itemCount: state.usersList!.length,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
-                          print('state.image?[index] ${state.image?[index]}');
                           return Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 5),
                             child: Column(

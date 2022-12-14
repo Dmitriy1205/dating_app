@@ -128,18 +128,58 @@ class FirebaseDataProvider {
               .toList());
 
   Future<List<UserModel>> getUsers() async {
+    List<String> listAddedToFriends = [];
+    try {
+      QuerySnapshot<Map<String, dynamic>> getAddedFriends = await firestore
+          .collection('users/${userRepository.getLoggedUser.id}/addedFriends')
+          .get().then((value) => value);
+      QuerySnapshot<Map<String, dynamic>> refusedFriends = await firestore
+          .collection('users/${userRepository.getLoggedUser.id}/refusedFriends')
+          .get();
+      for (var element in getAddedFriends.docs) {
+          listAddedToFriends.add(element.data()['addedFriend']);
+      }
+      print('refusedFriends ${refusedFriends.size}');
+
+        for (var element in refusedFriends.docs) {
+        print('element ${element.id}');
+        listAddedToFriends.add(element.data()['addedFriend']);
+      }
+      print('listAddedToFriends ${listAddedToFriends.length}');
+
+      QuerySnapshot<Map<String, dynamic>> users =
+          await firestore.collection('users').get();
+      List<UserModel> palsList = [];
+      users.docs.map((user) {
+        listAddedToFriends.contains(user.id)
+            ? null
+            : palsList.add(UserModel.fromJson(user.data()));
+      }).toList();
+      return palsList;
+    } on FirebaseException catch (e) {
+      throw BadRequestException(message: e.message!);
+    }
+  }
+
+  Future<List<UserModel>> getContacts() async {
+    List<String> listAddedToFriends = [];
     try {
       QuerySnapshot<Map<String, dynamic>> getAddedFriends = await firestore
           .collection('users/${userRepository.getLoggedUser.id}/addedFriends')
           .get();
       getAddedFriends.docs.forEach((element) {
-        print('getAddedFriends ${element.data()}');
+        if (element.data()['blockedFriend'] == false) {
+          listAddedToFriends.add(element.data()['addedFriend']);
+        }
       });
       QuerySnapshot<Map<String, dynamic>> users =
           await firestore.collection('users').get();
-      List<UserModel> palsList =
-          users.docs.map((user) => UserModel.fromJson(user.data())).toList();
-      print('palls ${users}');
+      List<UserModel> palsList = [];
+      users.docs.map((user) {
+        listAddedToFriends.contains(user.id)
+            ? palsList.add(UserModel.fromJson(user.data()))
+            : null;
+      }).toList();
       return palsList;
     } on FirebaseException catch (e) {
       throw BadRequestException(message: e.message!);
