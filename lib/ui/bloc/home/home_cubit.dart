@@ -175,7 +175,11 @@ class HomeCubit extends Cubit<HomeState> {
 
   void addUser(String id){
     db.dataProvider.addedToFriends(id);
-    print('id $id');
+    print('addUser id $id');
+  }
+  void refuseUser(String id){
+    db.dataProvider.refusedFriends(id);
+    print('refusedFriend id $id');
   }
 // Future<void> getData() async {
 //   emit(state.copyWith(

@@ -44,8 +44,8 @@ class _ContactsScreenState extends State<ContactsScreen> {
             ),
             title: Text(
               AppLocalizations.of(context)!.connections,
-              style:
-                  const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                  color: Colors.black, fontWeight: FontWeight.bold),
             ),
           ),
           body: BlocBuilder<ContactsCubit, ContactsCubitStates>(
@@ -80,6 +80,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
                         itemCount: state.usersList!.length,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
+                          print('state.image?[index] ${state.image?[index]}');
                           return Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 5),
                             child: Column(
@@ -90,10 +91,14 @@ class _ContactsScreenState extends State<ContactsScreen> {
                                   width: 70,
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(50),
-                                    child: Image.network(
-                                      state.image![index],
-                                      fit: BoxFit.fill,
-                                    ),
+                                    child:
+                                    state.image?[index] == null || state.image?[index] != ''
+                                        ? Image.network(
+                                            state.image![index],
+                                            fit: BoxFit.fill,
+                                          )
+                                        : Image.asset(
+                                            'assets/images/empty.png'),
                                   ),
                                 ),
                                 const SizedBox(
@@ -157,8 +162,13 @@ class _ContactsScreenState extends State<ContactsScreen> {
                                             child: ClipRRect(
                                                 borderRadius:
                                                     BorderRadius.circular(50),
-                                                child: Image.network(
-                                                    state.image![index])),
+                                                child: state.image?[index] == null || state.image?[index] != ''
+                                                    ? Image.network(
+                                                  state.image![index],
+                                                  fit: BoxFit.fill,
+                                                )
+                                                    : Image.asset(
+                                                    'assets/images/empty.png'),),
                                           ),
                                         ),
                                         Padding(

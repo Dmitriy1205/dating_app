@@ -82,8 +82,11 @@ class UserModel {
         'blockedFriends': blockedFriends
       };
 
-  Map<String, dynamic> addedFriendsToFirestore(String addedFriendId) => {
-    'addedFriends': addedFriends,
-    'blockedFriends': blockedFriends
+  Map<String, dynamic> addedFriendToFirestore(String addedFriendId) => {
+    'addedFriend': addedFriendId,
+    'blockedFriend': false
+  };
+  Map<String, dynamic> blockFriendToFirestore(String addedFriendId) => {
+    'blockedFriend': true
   };
 }
