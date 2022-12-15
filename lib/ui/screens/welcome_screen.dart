@@ -7,8 +7,17 @@ import '../../core/constants.dart';
 import '../bloc/localization/localization_cubit.dart';
 import 'login_screen.dart';
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
+}
+
+class _WelcomeScreenState extends State<WelcomeScreen> {
+  MenuItem item = MenuItem();
+
+  dynamic val;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +40,7 @@ class WelcomeScreen extends StatelessWidget {
                   width: 240,
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton2(
+                      value: val,
                       hint: Text(
                         AppLocalizations.of(context)!.selectLanguage,
                         style: TextStyle(color: Colors.black),
@@ -44,9 +54,13 @@ class WelcomeScreen extends StatelessWidget {
                           border: Border.all(color: Colors.black),
                           color: Colors.white38,
                           borderRadius: BorderRadius.circular(10)),
-                      // value: '',
                       onChanged: (value) {
                         MenuItems.onChanged(context, value as MenuItem);
+                        setState(() {
+                          val = value;
+                        });
+
+                        print(value.text);
                       },
                       items: [
                         ...MenuItems.items.map(
@@ -55,31 +69,9 @@ class WelcomeScreen extends StatelessWidget {
                             child: MenuItems.buildItem(item),
                           ),
                         ),
-                        // const DropdownMenuItem<Divider>(),
-                        // ...MenuItems.secondItems.map(
-                        //   (item) => DropdownMenuItem<MenuItem>(
-                        //     value: item,
-                        //     child: MenuItems.buildItem(item),
-                        //   ),
-                        // ),
                       ],
-                      // items: items,
                     ),
                   ),
-                  // DropdownButtonFormField(
-                  //   items: ['Eng', 'De'],
-                  //   onItemChanged: (String item) async {
-                  //     if (item == 'De') {
-                  //       Locale german =
-                  //       const Locale.fromSubtags(languageCode: 'de');
-                  //       locale.state = german;
-                  //     } else {
-                  //       Locale english =
-                  //       const Locale.fromSubtags(languageCode: 'en');
-                  //       locale.state = english;
-                  //     }
-                  //   },
-                  // )),
                 ),
               ),
             ),
@@ -166,7 +158,6 @@ class WelcomeScreen extends StatelessWidget {
             )
           ],
         ),
-
       ),
     );
   }
@@ -177,8 +168,8 @@ class MenuItem {
   final String icon;
 
   const MenuItem({
-    required this.text,
-    required this.icon,
+    this.text = '',
+    this.icon = '',
   });
 }
 
@@ -186,7 +177,7 @@ class MenuItems {
   static const List<MenuItem> items = [en, es, fr, pt];
 
   static const en = MenuItem(text: 'English', icon: 'assets/icons/en.png');
-  static const es = MenuItem(text: 'Espanol', icon: 'assets/icons/es.png');
+  static const es = MenuItem(text: 'Español', icon: 'assets/icons/es.png');
   static const fr = MenuItem(text: 'Frencais', icon: 'assets/icons/fr.png');
   static const pt = MenuItem(text: 'Portugese', icon: 'assets/icons/pt.png');
 
