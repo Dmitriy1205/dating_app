@@ -133,6 +133,7 @@
   "privacyPolicy":"Privacy Policy",
   "howDoYouLike":"How do you like to spend your free time?",
   "sharedInterests":"Shared interests",
+  "invalidPhone":"Invalid Mobile Number",
   "locationServicesAreDes":"Location services are disabled. Please enable the services",
   "locationPermissionDenied":"Location permissions are denied",
   "locationPermissionArePermanently":"Location permissions are permanently denied, we cannot request permissions.",

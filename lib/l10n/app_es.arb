@@ -131,6 +131,7 @@
             "terms":"Términos y condiciones",
             "privacyPolicy":"Política de privacidad",
             "howDoYouLike":"¿Cómo te gusta pasar tu tiempo libre?",
+            "invalidPhone":"Número de teléfono inválido",
             "sharedInterests":"Intereses compartidos",
             "locationServicesAreDes":"Los servicios de ubicación están deshabilitados. Habilite los servicios",
               "locationPermissionDenied":"Los permisos de ubicación están denegados",

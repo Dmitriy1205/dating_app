@@ -7,10 +7,11 @@ import 'package:dating_app/ui/widgets/field_decor.dart';
 import 'package:dating_app/ui/widgets/picker.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:jiffy/jiffy.dart';
 import '../../core/functions/validation.dart';
 import '../screens/otp_verification_screen.dart';
@@ -139,33 +140,21 @@ class _SignUpFormState extends State<SignUpForm> {
                             const SizedBox(
                               height: 20,
                             ),
-                            InternationalPhoneNumberInput(
-                              // initialValue: PhoneNumber(isoCode: 'UA'),
-                              autoValidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              selectorConfig: const SelectorConfig(
-                                setSelectorButtonAsPrefixIcon: true,
-                                showFlags: true,
-                                // leadingPadding: 20,
-                                useEmoji: true,
-                              ),
-                              textFieldController: _phoneController,
-                              onInputChanged: (phone) {
-                                phone.phoneNumber!;
-                              },
+                            IntlPhoneField(
+                              invalidNumberMessage: AppLocalizations.of(context)!.invalidPhone,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r'^\d+\.?\d{0,1}')),
+                              ],
+                              textAlign: TextAlign.center,
+                              controller: _phoneController,
+                              decoration: authFieldDecor(
+                                  AppLocalizations.of(context)!.phoneNumber),
                               onSaved: (value) {
-                                isoCode = value.dialCode!;
-                                _phoneController.text = value.parseNumber();
+                                isoCode = value!.countryCode;
+                                _phoneController.text = value!.number;
                                 print(isoCode + _phoneController.text);
                               },
-                              formatInput: false,
-                              inputDecoration: authFieldDecor(
-                                  AppLocalizations.of(context)!.phoneNumber),
-                              selectorTextStyle: TextStyle(
-                                color: Colors.grey[700],
-                              ),
-                              textAlign: TextAlign.center,
-                              selectorButtonOnErrorPadding: 0,
                               validator: validatePhoneField,
                             ),
                             const SizedBox(
