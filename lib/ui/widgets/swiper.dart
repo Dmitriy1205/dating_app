@@ -1,13 +1,5 @@
 import 'dart:math';
-
-import 'package:dating_app/ui/bloc/home/home_cubit.dart';
-import 'package:dating_app/ui/widgets/swiper_components/feedback_photo_card_widget.dart';
-import 'package:dating_app/ui/widgets/swiper_components/photo_card_layout_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../core/notifiers/feedback_photo_card_value_notifier.dart';
-import '../../data/models/photo_card.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 const List<Alignment> cardsAlign = [
   Alignment(0.0, 1.0),
@@ -87,9 +79,6 @@ class _CardsSectionState extends State<SwipeableCardsSection>
     }
   }
 
-  void _appendItem(Widget newCard) {
-    appendCard = newCard;
-  }
 
   void _enableSwipe(bool isSwipeEnabled) {
     setState(() {
@@ -104,18 +93,15 @@ class _CardsSectionState extends State<SwipeableCardsSection>
     final cardController = widget.cardController;
     if (cardController != null) {
       cardController.listener = _triggerSwipe;
-      cardController.addItem = _appendItem;
+      // cardController.addItem = _appendItem;
       cardController.enableSwipeListener = _enableSwipe;
     }
 
     // Init cards
-    for (cardsCounter = 0; cardsCounter < 3; cardsCounter++) {
-      if (widget.items.isNotEmpty && cardsCounter < widget.items.length) {
-        cards.add(widget.items[cardsCounter]);
-      } else {
-        cards.add(null);
-      }
+    for (cardsCounter = 0; cardsCounter < widget.items.length; cardsCounter++) {
+      cards.add(widget.items[cardsCounter]);
     }
+
 
     frontCardAlign = cardsAlign[2];
 
@@ -237,10 +223,11 @@ class _CardsSectionState extends State<SwipeableCardsSection>
       // Swap cards (back card becomes the middle card; middle card becomes the front card)
       cards[0] = cards[1];
       cards[1] = cards[2];
-      cards[2] = appendCard;
-      appendCard = null;
-
-      cardsCounter++;
+      if (index + 3 < cardsCounter) {
+        cards[2] = cards[index + 3];
+      } else {
+        cards[2] = null;
+      }
       index++;
       frontCardAlign = defaultFrontCardAlign;
       frontCardRot = 0.0;
