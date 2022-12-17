@@ -1,6 +1,8 @@
 import 'package:dating_app/data/models/hobbies.dart';
+import 'package:dating_app/ui/bloc/localization/localization_cubit.dart';
 import 'package:dating_app/ui/bloc/profile_info_cubit/profile_info_cubit.dart';
 import 'package:dating_app/ui/widgets/image_picker_list.dart';
+import 'package:dating_app/ui/widgets/location_field.dart';
 import 'package:dating_app/ui/widgets/reusable_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,6 +27,8 @@ class ProfileInfoFrom extends StatefulWidget {
 
 class _ProfileInfoFromState extends State<ProfileInfoFrom> {
   final _formKey = GlobalKey<FormState>();
+  double latitude = 40.416775;
+  double longitude = -3.703790;
   String userImage = '';
   String gender = 'Gender';
   String status = 'status';
@@ -74,6 +78,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
             child: CircularProgressIndicator(),
           );
         }
+
         nameController.text = widget.name;
         return SingleChildScrollView(
           physics: const ClampingScrollPhysics(),
@@ -126,7 +131,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                         Icons.close,
                                       ),
                                     ),
-                                     Text(
+                                    Text(
                                       AppLocalizations.of(context)!.profileInfo,
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(
@@ -151,13 +156,14 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                         'gender': gender,
                                         'height': heightController.text,
                                         'age': ageController.text,
-                                        'status':status,
+                                        'status': status,
                                         'university': universityController.text,
                                         'degree/major': degreeController.text,
                                         'company': companyController.text,
                                         'job': jobController.text,
                                         'hobbies': hobbies,
                                         'interests': interests,
+                                        'location':locationController.text,
                                       });
                                     },
                                     child: SizedBox(
@@ -185,7 +191,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                 const SizedBox(
                                   height: 40,
                                 ),
-                                 Text(
+                                Text(
                                   AppLocalizations.of(context)!.general,
                                   style: const TextStyle(
                                     fontSize: 20,
@@ -201,7 +207,8 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                   autocorrect: false,
                                   controller: nameController,
                                   keyboardType: TextInputType.name,
-                                  decoration: profileFieldDecor(AppLocalizations.of(context)!.name),
+                                  decoration: profileFieldDecor(
+                                      AppLocalizations.of(context)!.name),
                                   onSaved: (value) {
                                     nameController.text = value!.trim();
                                   },
@@ -223,7 +230,8 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                   keyboardType: TextInputType.multiline,
                                   maxLines: 12,
                                   decoration: profileFieldDecor(
-                                      AppLocalizations.of(context)!.tellUsAbout),
+                                      AppLocalizations.of(context)!
+                                          .tellUsAbout),
                                   onSaved: (value) {
                                     bioController.text = value!.trim();
                                   },
@@ -240,18 +248,21 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                           AutovalidateMode.onUserInteraction,
                                       validator: (v) {
                                         if (v == 'Gender') {
-                                          return AppLocalizations.of(context)!.chooseYourGender;
+                                          return AppLocalizations.of(context)!
+                                              .chooseYourGender;
                                         }
                                         return null;
                                       },
-                                      hint:  Text(AppLocalizations.of(context)!.gender),
+                                      hint: Text(
+                                          AppLocalizations.of(context)!.gender),
                                       icon: const Icon(
                                           Icons.keyboard_arrow_down_sharp),
                                       onChanged: (v) {
                                         gender = v.toString();
                                       },
 
-                                      decoration: genderFieldDecor(AppLocalizations.of(context)!.gender),
+                                      decoration: genderFieldDecor(
+                                          AppLocalizations.of(context)!.gender),
                                       // const InputDecoration(
                                       //   enabledBorder: InputBorder.none,
                                       //   focusedBorder: InputBorder.none,
@@ -269,7 +280,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                                 color: Colors.grey.shade600),
                                           ),
                                         ),
-                                         DropdownMenuItem(
+                                        DropdownMenuItem(
                                           value: 'Male',
                                           child: Text(
                                             AppLocalizations.of(context)!.male,
@@ -278,7 +289,8 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                         DropdownMenuItem(
                                           value: 'Female',
                                           child: Text(
-                                            AppLocalizations.of(context)!.female,
+                                            AppLocalizations.of(context)!
+                                                .female,
                                           ),
                                         ),
                                       ],
@@ -301,8 +313,9 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                           autocorrect: false,
                                           controller: heightController,
                                           keyboardType: TextInputType.number,
-                                          decoration:
-                                              profileFieldDecor(AppLocalizations.of(context)!.height),
+                                          decoration: profileFieldDecor(
+                                              AppLocalizations.of(context)!
+                                                  .height),
                                           onSaved: (value) {
                                             heightController.text =
                                                 value!.trim();
@@ -310,8 +323,13 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                           validator: validateNameField,
                                           inputFormatters: [
                                             FilteringTextInputFormatter.allow(
-                                              RegExp("[1-9]"),
+                                              RegExp("[0-9]"),
                                             ),
+                                            FilteringTextInputFormatter.deny(
+                                              RegExp(
+                                                  r'^0+'), //users can't type 0 at 1st position
+                                            ),
+
                                             LengthLimitingTextInputFormatter(3),
                                           ],
                                         ),
@@ -326,14 +344,20 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                           autocorrect: false,
                                           controller: ageController,
                                           keyboardType: TextInputType.number,
-                                          decoration: profileFieldDecor(AppLocalizations.of(context)!.age),
+                                          decoration: profileFieldDecor(
+                                              AppLocalizations.of(context)!
+                                                  .age),
                                           onSaved: (value) {
                                             ageController.text = value!.trim();
                                           },
                                           validator: validateNameField,
                                           inputFormatters: [
                                             FilteringTextInputFormatter.allow(
-                                              RegExp("[1-9]"),
+                                              RegExp("[0-9]"),
+                                            ),
+                                            FilteringTextInputFormatter.deny(
+                                              RegExp(
+                                                  r'^0+'), //users can't type 0 at 1st position
                                             ),
                                             LengthLimitingTextInputFormatter(2),
                                           ],
@@ -348,29 +372,49 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                 Ink(
                                   child: Center(
                                     child: DropdownButtonFormField(
-                                      hint: Text(AppLocalizations.of(context)!.relationship),
+                                      hint: Text(AppLocalizations.of(context)!
+                                          .relationship),
                                       icon: const Icon(
                                           Icons.keyboard_arrow_down_sharp),
                                       onChanged: (v) {
                                         status = v.toString();
                                       },
-                                      decoration: genderFieldDecor(AppLocalizations.of(context)!.status),
+                                      decoration: genderFieldDecor(
+                                          AppLocalizations.of(context)!.status),
                                       items: [
                                         DropdownMenuItem(
                                           value: 'Single',
                                           child: Text(
-                                            AppLocalizations.of(context)!.single,
+                                            AppLocalizations.of(context)!
+                                                .single,
                                           ),
                                         ),
                                         DropdownMenuItem(
                                           value: 'Married',
                                           child: Text(
-                                            AppLocalizations.of(context)!.married,
+                                            AppLocalizations.of(context)!
+                                                .married,
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                LocationField(
+                                  locationController: locationController,
+                                  latitude: longitude,
+                                  longitude: longitude,
+                                  func: (value) {
+                                    locationController.text = value;
+                                  },
+                                  language: context
+                                      .read<LocalizationCubit>()
+                                      .state
+                                      .locale
+                                      .toString(),
                                 ),
                                 const SizedBox(
                                   height: 20,
@@ -383,7 +427,8 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                 const SizedBox(
                                   height: 20,
                                 ),
-                                CustomTextStyle.bigText(AppLocalizations.of(context)!.hobbies),
+                                CustomTextStyle.bigText(
+                                    AppLocalizations.of(context)!.hobbies),
                                 const SizedBox(
                                   height: 20,
                                 ),
@@ -417,9 +462,10 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                               CrossAxisAlignment.start,
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
-                                          children:  [
+                                          children: [
                                             Text(
-                                              AppLocalizations.of(context)!.selects,
+                                              AppLocalizations.of(context)!
+                                                  .selects,
                                               style: const TextStyle(
                                                   fontSize: 16,
                                                   color: Colors.black54),
@@ -437,7 +483,8 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                 const SizedBox(
                                   height: 20,
                                 ),
-                                CustomTextStyle.bigText(AppLocalizations.of(context)!.interests),
+                                CustomTextStyle.bigText(
+                                    AppLocalizations.of(context)!.interests),
                                 const SizedBox(
                                   height: 20,
                                 ),
@@ -471,9 +518,10 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                               CrossAxisAlignment.start,
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
-                                          children:  [
+                                          children: [
                                             Text(
-                                              AppLocalizations.of(context)!.selects,
+                                              AppLocalizations.of(context)!
+                                                  .selects,
                                               style: const TextStyle(
                                                   fontSize: 16,
                                                   color: Colors.black54),
@@ -515,7 +563,8 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
           autocorrect: false,
           controller: universityController,
           keyboardType: TextInputType.name,
-          decoration: profileFieldDecor(AppLocalizations.of(context)!.university),
+          decoration:
+              profileFieldDecor(AppLocalizations.of(context)!.university),
           onSaved: (value) {
             universityController.text = value!.trim();
           },

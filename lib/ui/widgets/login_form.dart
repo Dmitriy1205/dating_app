@@ -10,10 +10,11 @@ import 'package:dating_app/ui/widgets/google_auth_button.dart';
 import 'package:dating_app/ui/widgets/reusable_widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import '../../core/functions/validation.dart';
 
 class LoginForm extends StatefulWidget {
@@ -119,33 +120,22 @@ class _LoginFormState extends State<LoginForm> {
                             const SizedBox(
                               height: 50,
                             ),
-                            InternationalPhoneNumberInput(
-                              initialValue: PhoneNumber(isoCode: 'UA'),
-                              autoValidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              selectorConfig: const SelectorConfig(
-                                setSelectorButtonAsPrefixIcon: true,
-
-                                showFlags: true,
-                                // leadingPadding: 20,
-                                useEmoji: true,
-                              ),
-                              textFieldController: _phoneController,
-                              onInputChanged: (phone) {
-                                phone.phoneNumber!;
-                              },
+                            IntlPhoneField(
+                              invalidNumberMessage:
+                                  AppLocalizations.of(context)!.invalidPhone,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r'^\d+\.?\d{0,1}')),
+                              ],
+                              textAlign: TextAlign.center,
+                              controller: _phoneController,
+                              decoration: authFieldDecor(
+                                  AppLocalizations.of(context)!.phoneNumber),
                               onSaved: (value) {
-                                isoCode = value.dialCode!;
-                                _phoneController.text = value.parseNumber();
+                                isoCode = value!.countryCode;
+                                _phoneController.text = value!.number;
                                 print(isoCode + _phoneController.text);
                               },
-                              formatInput: false,
-                              inputDecoration: authFieldDecor(AppLocalizations.of(context)!.phoneNumber),
-                              selectorTextStyle: TextStyle(
-                                color: Colors.grey[700],
-                              ),
-                              textAlign: TextAlign.center,
-                              selectorButtonOnErrorPadding: 0,
                               validator: validatePhoneField,
                             ),
                             const SizedBox(
@@ -208,11 +198,13 @@ class _LoginFormState extends State<LoginForm> {
                                     fontSize: 15,
                                   ),
                                   children: [
-                                     TextSpan(
-                                      text: '${AppLocalizations.of(context)!.dontHaveaAcount} ',
+                                    TextSpan(
+                                      text:
+                                          '${AppLocalizations.of(context)!.dontHaveaAcount} ',
                                     ),
                                     TextSpan(
-                                        text: AppLocalizations.of(context)!.signUp,
+                                        text: AppLocalizations.of(context)!
+                                            .signUp,
                                         style: TextStyle(
                                           color: Colors.orange[800],
                                           fontWeight: FontWeight.w500,

@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../bloc/filter/filter_cubit.dart';
-import 'field_decor.dart';
 
 class FilterForm extends StatelessWidget {
   FilterForm({Key? key}) : super(key: key);
@@ -29,6 +28,34 @@ class FilterForm extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         }
+        List<String> lookin = [
+          AppLocalizations.of(context)!.aMentee,
+          AppLocalizations.of(context)!.aFriend,
+          AppLocalizations.of(context)!.someoneToChillWith,
+          AppLocalizations.of(context)!.aRomanticPartner,
+          AppLocalizations.of(context)!.aBusinessPartner,
+          AppLocalizations.of(context)!.aMentor,
+        ];
+        List<String> inter = [
+          AppLocalizations.of(context)!.photography,
+          AppLocalizations.of(context)!.acting,
+          AppLocalizations.of(context)!.film,
+          AppLocalizations.of(context)!.finArt,
+          AppLocalizations.of(context)!.music,
+          AppLocalizations.of(context)!.fashion,
+          AppLocalizations.of(context)!.dance,
+          AppLocalizations.of(context)!.politics,
+        ];
+        List<String> hobb = [
+          AppLocalizations.of(context)!.workingOut,
+          AppLocalizations.of(context)!.reading,
+          AppLocalizations.of(context)!.cooking,
+          AppLocalizations.of(context)!.biking,
+          AppLocalizations.of(context)!.drinking,
+          AppLocalizations.of(context)!.shopping,
+          AppLocalizations.of(context)!.hiking,
+          AppLocalizations.of(context)!.baking,
+        ];
         // final id = state.searchFields!.id;
         lookingFor = state.lookingFor!;
         hobbies = state.hobbies!;
@@ -55,7 +82,7 @@ class FilterForm extends StatelessWidget {
                   context.read<FilterCubit>().setLookingForFields(s!);
                 }, set: (v) {
                   lookingFor = v;
-                }),
+                }, names: lookin),
                 Text(
                   AppLocalizations.of(context)!.sharedHobbies,
                   style: const TextStyle(
@@ -66,7 +93,7 @@ class FilterForm extends StatelessWidget {
                   context.read<FilterCubit>().setHobbieFields(hobb!);
                 }, set: (v) {
                   hobbies = v;
-                }),
+                }, names: hobb),
                 Text(
                   AppLocalizations.of(context)!.sharedInterests,
                   style: const TextStyle(
@@ -77,23 +104,23 @@ class FilterForm extends StatelessWidget {
                   context.read<FilterCubit>().setInterestFields(inter!);
                 }, set: (v) {
                   interest = v;
-                }),
-                Text(
-                  AppLocalizations.of(context)!.location,
-                  style: const TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    top: 10,
-                    bottom: 40,
-                  ),
-                  child: TextFormField(
-                    autocorrect: false,
-                    keyboardType: TextInputType.name,
-                    decoration: profileFieldDecor(AppLocalizations.of(context)!.location),
-                  ),
-                ),
+                }, names: inter),
+                // Text(
+                //   AppLocalizations.of(context)!.location,
+                //   style: const TextStyle(
+                //       color: Colors.black, fontWeight: FontWeight.bold),
+                // ),
+                // Padding(
+                //   padding: const EdgeInsets.only(
+                //     top: 10,
+                //     bottom: 40,
+                //   ),
+                //   child: TextFormField(
+                //     autocorrect: false,
+                //     keyboardType: TextInputType.name,
+                //     decoration: profileFieldDecor(AppLocalizations.of(context)!.location),
+                //   ),
+                // ),
                 Text(
                   AppLocalizations.of(context)!.searchPreferences,
                   style: const TextStyle(

@@ -70,7 +70,7 @@ class _HomeBody1State extends State<HomeBody1> {
                           lookingFor: users[index].searchPref!.lookingFor ?? {},
                           joinDate: state.user![index].joinDate ?? '',
                           id: state.user![index].id!,
-                          // status: state.user![index].profileInfo!.status ?? '',
+                          status: state.user![index].profileInfo!.status ?? '',
                         );
                       }));
                     },

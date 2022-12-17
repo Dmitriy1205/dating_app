@@ -1,3 +1,4 @@
+
 class Content {
   static const String logo = 'assets/images/logo.png';
   static const String reflow = 'assets/images/comm.png';
@@ -8,23 +9,36 @@ class Content {
 
   static const List<String> hobbiesList = [
     'assets/images/working_out.png',
-    'assets/images/hiking.png',
-    'assets/images/biking.png',
-    'assets/images/shopping.png',
-    'assets/images/cooking.png',
-    'assets/images/baking.png',
-    'assets/images/drinking.png',
     'assets/images/reading.png',
+    'assets/images/cooking.png',
+    'assets/images/biking.png',
+    'assets/images/drinking.png',
+    'assets/images/shopping.png',
+    'assets/images/hiking.png',
+
+
+
+    'assets/images/baking.png',
+
+
   ];
+
   static const List<String> interestsList = [
-    'assets/images/politics.png',
-    'assets/images/fashion.png',
-    'assets/images/fine_arts.png',
-    'assets/images/music.png',
-    'assets/images/dance.png',
-    'assets/images/film.png',
     'assets/images/photography.png',
     'assets/images/acting.png',
+    'assets/images/film.png',
+    'assets/images/fine_arts.png',
+    'assets/images/music.png',
+    'assets/images/fashion.png',
+    'assets/images/dance.png',
+    'assets/images/politics.png',
+
+
+
+
+
+
+
   ];
   static const List<String> settingsList = [
     'assets/icons/notifications.png',
