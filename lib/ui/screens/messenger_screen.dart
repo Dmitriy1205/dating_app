@@ -59,8 +59,7 @@ class MessengerScreen extends StatelessWidget {
                     }.map((String choice) {
                       return PopupMenuItem<String>(
                         onTap: () {
-                          switch (choice) {
-                            case 'Clear Chat':
+                          if (choice == AppLocalizations.of(context)!.clearChat) {
                               context.read<MessengerCubit>().clearChat();
                           }
                         },

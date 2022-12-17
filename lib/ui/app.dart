@@ -30,7 +30,6 @@ class App extends StatelessWidget {
           BlocProvider(
             create: (context) => sl<ImagePickerCubit>(),
           ),
-
           BlocProvider(
             create: (context) => sl<LocalizationCubit>(),
           ),

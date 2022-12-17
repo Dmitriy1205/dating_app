@@ -118,55 +118,68 @@ class HomeCubit extends Cubit<HomeState> {
       partiallyfiltered.forEach((element) {
         filteredLookingFor.contains(element) ? filtered.add(element) : null;
       });
+      if (filtered.isNotEmpty) {
+        // for (var i = 0; i < allUsers.length; i++) {
+        //   for (int a = 0; a < searchUser!.searchPref!.hobbies!.length; a++) {
+        //     if (searchUser!.searchPref!.hobbies!.values.elementAt(a)) {
+        //       if (allUsers[i].profileInfo!.hobbies!.values.elementAt(a) ==
+        //           searchUser!.searchPref!.hobbies!.values.elementAt(a)) {
+        //         filtered.add(allUsers[i]);
+        //       }
+        //     }
+        //   }
+        // }
 
-      // for (var i = 0; i < allUsers.length; i++) {
-      //   for (int a = 0; a < searchUser!.searchPref!.hobbies!.length; a++) {
-      //     if (searchUser!.searchPref!.hobbies!.values.elementAt(a)) {
-      //       if (allUsers[i].profileInfo!.hobbies!.values.elementAt(a) ==
-      //           searchUser!.searchPref!.hobbies!.values.elementAt(a)) {
-      //         filtered.add(allUsers[i]);
-      //       }
-      //     }
-      //   }
-      // }
+        // for (var i = 0; i < allUsers.length; i++) {
+        //   for (int a = 0; a < searchUser!.searchPref!.lookingFor!.length; a++) {
+        //     if (searchUser!.searchPref!.lookingFor!.values.elementAt(a)) {
+        //       if (allUsers[i].searchPref!.lookingFor!.values.elementAt(a) ==
+        //           searchUser!.searchPref!.lookingFor!.values.elementAt(a)) {
+        //         filtered.add(allUsers[i]);
+        //       }
+        //     }
+        //   }
+        // }
 
-      // for (var i = 0; i < allUsers.length; i++) {
-      //   for (int a = 0; a < searchUser!.searchPref!.lookingFor!.length; a++) {
-      //     if (searchUser!.searchPref!.lookingFor!.values.elementAt(a)) {
-      //       if (allUsers[i].searchPref!.lookingFor!.values.elementAt(a) ==
-      //           searchUser!.searchPref!.lookingFor!.values.elementAt(a)) {
-      //         filtered.add(allUsers[i]);
-      //       }
-      //     }
-      //   }
-      // }
+        // print(lookingFor.length);
+        // for (var i = 0; i < lookingFor.length; i++) {
+        //   print(lookingFor.map((e) => e.id).toList());
+        //   print('----------------');
+        //   print(allProfileFields.map((e) => e.id).toList());
+        //   if (lookingFor[i].id != allProfileFields[i].id) {
+        //     lookingFor.removeWhere((element) => element.id == allProfileFields[i].id);
+        //
+        //     print(lookingFor[i].id);
+        //   }
+        //
+        //   red.add(lookingFor[i]);
+        // }
 
-      // print(lookingFor.length);
-      // for (var i = 0; i < lookingFor.length; i++) {
-      //   print(lookingFor.map((e) => e.id).toList());
-      //   print('----------------');
-      //   print(allProfileFields.map((e) => e.id).toList());
-      //   if (lookingFor[i].id != allProfileFields[i].id) {
-      //     lookingFor.removeWhere((element) => element.id == allProfileFields[i].id);
-      //
-      //     print(lookingFor[i].id);
-      //   }
-      //
-      //   red.add(lookingFor[i]);
-      // }
-
-      emit(state.copyWith(
-        status: Status.loaded(),
-        // fields: filtered,
-        // lookingFor: red,
-        user: filtered,
-      ));
+        emit(state.copyWith(
+          status: Status.loaded(),
+          // fields: filtered,
+          // lookingFor: red,
+          user: filtered,
+        ));
+      } else {
+        emit(state.copyWith(status: Status.error()));
+      }
     } on Exception catch (e) {
       print(e.toString());
       emit(state.copyWith(
         status: Status.error(),
       ));
     }
+  }
+
+  void addUser(String id) {
+    db.dataProvider.addedToFriends(id);
+    print('addUser id $id');
+  }
+
+  void refuseUser(String id) {
+    db.dataProvider.refusedFriends(id);
+    print('refusedFriend id $id');
   }
 // Future<void> getData() async {
 //   emit(state.copyWith(

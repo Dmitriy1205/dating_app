@@ -1,353 +1,336 @@
-import 'package:dating_app/ui/widgets/swiper_components/feedback_photo_card_widget.dart';
-import 'package:dating_app/ui/widgets/swiper_components/photo_card_layout_widget.dart';
+import 'dart:math';
 import 'package:flutter/material.dart';
-import '../../core/notifiers/feedback_photo_card_value_notifier.dart';
-import '../../data/models/photo_card.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-enum CardActionDirection {
-  cardRightAction,
-  cardLeftAction,
-  cardCenterAction,
-  cardActionNone
-}
+const List<Alignment> cardsAlign = [
+  Alignment(0.0, 1.0),
+  Alignment(0.0, 0.8),
+  Alignment(0.0, 0.0)
+];
+List<Size> cardsSize = List.filled(3, Size(1, 1));
 
-const String _stackViewKey = 'photo_card_stack_view';
+class SwipeableCardsSection extends StatefulWidget {
+  final SwipeableCardSectionController? cardController;
 
-class Swiper extends StatefulWidget {
-  final List<PhotoCard> photoCards;
-  final Function? whenCardSwiped;
-  final bool showLoading;
-  final bool hideCenterButton;
-  final bool hideTitleText;
-  final bool hideDescriptionText;
-  final BoxFit imageScaleType;
-  final Color? imageBackgroundColor;
-  final IconData? leftButtonIcon;
-  final IconData? centerButtonIcon;
-  final IconData? rightButtonIcon;
-  final Color? leftButtonIconColor;
-  final Color? leftButtonBackgroundColor;
-  final Color? centerButtonIconColor;
-  final Color? centerButtonBackgroundColor;
-  final Color? rightButtonIconColor;
-  final Color? rightButtonBackgroundColor;
-  final Function? leftButtonAction;
-  final Function? centerButtonAction;
-  final Function? rightButtonAction;
-  final Function? onCardTap;
+  //First 3 widgets
+  final List<Widget> items;
+  final Function? onCardSwiped;
+  final double cardWidthTopMul;
+  final double cardWidthMiddleMul;
+  final double cardWidthBottomMul;
+  final double cardHeightTopMul;
+  final double cardHeightMiddleMul;
+  final double cardHeightBottomMul;
+  final Function? appendItemCallback;
 
-  const Swiper({
-    required this.photoCards,
-    this.whenCardSwiped,
-    this.showLoading = true,
-    this.imageScaleType = BoxFit.cover,
-    this.imageBackgroundColor = Colors.black87,
-    this.hideCenterButton = false,
-    this.hideTitleText = false,
-    this.hideDescriptionText = false,
-    this.leftButtonIcon,
-    this.centerButtonIcon,
-    this.rightButtonIcon,
-    this.leftButtonIconColor,
-    this.leftButtonBackgroundColor,
-    this.centerButtonIconColor,
-    this.centerButtonBackgroundColor,
-    this.rightButtonIconColor,
-    this.rightButtonBackgroundColor,
-    this.leftButtonAction,
-    this.centerButtonAction,
-    this.rightButtonAction,
-    this.onCardTap,
-  });
+  SwipeableCardsSection({
+    Key? key,
+    this.cardController,
+    required BuildContext context,
+    required this.items,
+    this.onCardSwiped,
+    this.cardWidthTopMul = 0.9,
+    this.cardWidthMiddleMul = 0.85,
+    this.cardWidthBottomMul = 0.8,
+    this.cardHeightTopMul = 0.9,
+    this.cardHeightMiddleMul = 0.85,
+    this.cardHeightBottomMul = 0.5,
+    this.appendItemCallback,
+  }) {
+    cardsSize[0] = Size(MediaQuery.of(context).size.width * cardWidthTopMul,
+        MediaQuery.of(context).size.height * cardHeightTopMul);
+    cardsSize[1] = Size(MediaQuery.of(context).size.width * cardWidthMiddleMul,
+        MediaQuery.of(context).size.height * cardHeightMiddleMul);
+    cardsSize[2] = Size(MediaQuery.of(context).size.width * cardWidthBottomMul,
+        MediaQuery.of(context).size.height * cardHeightBottomMul);
+  }
 
   @override
-  _SwiperState createState() => _SwiperState();
+  _CardsSectionState createState() => _CardsSectionState();
 }
 
-class _SwiperState extends State<Swiper> {
-  final double _topPadding = 10.0;
-  final double _bottomPadding = 35.0;
-  final double _offset = 6.0;
-  final double _leftPadding = 15.0;
-  final double _rightPadding = 15.0;
-  List<PhotoCard> _updatedPhotos = [];
-  List<PhotoCard> _reversedPhotos = [];
+class _CardsSectionState extends State<SwipeableCardsSection>
+    with SingleTickerProviderStateMixin {
+  int cardsCounter = 0;
+  int index = 0;
+  Widget? appendCard;
 
-  //States for photo card layout widget
-  bool _isPhotoCardLeftOverlayShown = false;
-  bool _isPhotoCardRightOverlayShown = false;
-  bool _isPhotoCardCenterOverlayShown = false;
+  List<Widget?> cards = [];
+  late AnimationController _controller;
+  bool enableSwipe = true;
 
-  final FeedbackPhotoCardValueNotifier _feedbackPhotoCardValueNotifier =
-      FeedbackPhotoCardValueNotifier();
+  final Alignment defaultFrontCardAlign = Alignment(0.0, 0.0);
+  Alignment frontCardAlign = cardsAlign[2];
+  double frontCardRot = 0.0;
+
+  void _triggerSwipe(Direction dir) {
+    final swipedCallback = widget.onCardSwiped ?? (_, __, ___) => true;
+    bool? shouldAnimate = false;
+    if (dir == Direction.left) {
+      shouldAnimate = swipedCallback(Direction.left, index, cards[0]);
+      frontCardAlign = Alignment(-0.001, 0.0);
+    } else if (dir == Direction.right) {
+      shouldAnimate = swipedCallback(Direction.right, index, cards[0]);
+      frontCardAlign = Alignment(0.001, 0.0);
+    }
+    shouldAnimate ??= true;
+
+    if (shouldAnimate) {
+      animateCards();
+    }
+  }
+
+
+  void _enableSwipe(bool isSwipeEnabled) {
+    setState(() {
+      this.enableSwipe = isSwipeEnabled;
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-    _reversedPhotos = widget.photoCards.reversed.toList();
-    _updatedPhotos = _reversedPhotos;
-  }
 
-  @override
-  void didUpdateWidget(covariant Swiper oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    _reversedPhotos = widget.photoCards.reversed.toList();
-    setState(() {
-      _updatedPhotos = _reversedPhotos;
+    final cardController = widget.cardController;
+    if (cardController != null) {
+      cardController.listener = _triggerSwipe;
+      // cardController.addItem = _appendItem;
+      cardController.enableSwipeListener = _enableSwipe;
+    }
+
+    // Init cards
+    for (cardsCounter = 0; cardsCounter < widget.items.length; cardsCounter++) {
+      cards.add(widget.items[cardsCounter]);
+    }
+
+
+    frontCardAlign = cardsAlign[2];
+
+    // Init the animation controller
+    _controller =
+        AnimationController(duration: Duration(milliseconds: 700), vsync: this);
+    _controller.addListener(() => setState(() {}));
+    _controller.addStatusListener((AnimationStatus status) {
+      if (status == AnimationStatus.completed) changeCardsOrder();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final double maxHeight = constraints.maxHeight;
-        final double maxWidth = constraints.maxWidth;
-        final int totalPhotos = _updatedPhotos.length;
-        final double extraOffset = totalPhotos * _offset;
-        final double cardHeight =
-            maxHeight - (_topPadding + _bottomPadding + extraOffset);
-        final double cardWidth = maxWidth - (_leftPadding + _rightPadding);
-        // final center = constraints.smallest.center(Offset.zero);
+    return Expanded(
+        child: IgnorePointer(
+      ignoring: !enableSwipe,
+      child: Stack(
+        children: <Widget>[
+          if (cards[2] != null) backCard(),
+          if (cards[1] != null) middleCard(),
+          if (cards[0] != null) frontCard(),
+          // Prevent swiping if the cards are animating
+          ((_controller.status != AnimationStatus.forward))
+              ? SizedBox.expand(
+                  child: GestureDetector(
+                  // While dragging the first card
+                  onPanUpdate: (DragUpdateDetails details) {
+                    // Add what the user swiped in the last frame to the alignment of the card
+                    setState(() {
+                      frontCardAlign = Alignment(
+                          frontCardAlign.x +
+                              20 *
+                                  details.delta.dx /
+                                  MediaQuery.of(context).size.width,
+                          frontCardAlign.y +
+                              1.5 *
+                                  details.delta.dy /
+                                  MediaQuery.of(context).size.height);
 
-        return Container(
-          padding: EdgeInsets.only(
-              left: 15.0,
-              bottom: _bottomPadding,
-              top: _topPadding,
-              right: 15.0),
-          child:
-              //TODO: Refresh button for finished List(if empty = no mathes for yo today, if not empty = put list)
-              (_updatedPhotos.isEmpty && widget.showLoading)
-                  ?  Center(
-                      child: Text(AppLocalizations.of(context)!.sorryNoMatches),
-                    )
-                  // ?LoadingDataPhotoCardWidget(
-                  //         cardHeight: cardHeight,
-                  //         cardWidth: cardWidth,
-                  //         hideCenterButton: widget.hideCenterButton,
-                  //         isLoading: true)
-                  : Stack(
-                      key: const Key(_stackViewKey),
-                      children: _updatedPhotos.map(
-                        (e) {
-                          final index = _reversedPhotos.indexWhere((photo) {
-                            return photo.cardId.toLowerCase() ==
-                                e.cardId.toLowerCase();
-                          });
+                      frontCardRot =
+                          frontCardAlign.x * 2.5; // * rotation speed;
+                    });
+                  },
+                  // When releasing the first card
+                  onPanEnd: (_) {
+                    // If the front card was swiped far enough to count as swiped
+                    final onCardSwiped =
+                        widget.onCardSwiped ?? (_, __, ___) => true;
+                    bool? shouldAnimate = false;
+                    if (frontCardAlign.x > 3.0) {
+                      shouldAnimate =
+                          onCardSwiped(Direction.right, index, cards[0]);
+                    } else if (frontCardAlign.x < -3.0) {
+                      shouldAnimate =
+                          onCardSwiped(Direction.left, index, cards[0]);
+                    } else {
+                      // Return to the initial rotation and alignment
+                      setState(() {
+                        frontCardAlign = defaultFrontCardAlign;
+                        frontCardRot = 0.0;
+                      });
+                    }
 
-                          final reverseOffset =
-                              (_updatedPhotos.length - 1) - index;
-                          final topOffsetForCard = _offset * reverseOffset;
+                    shouldAnimate ??= true;
 
-                          final updatedCardHeight =
-                              cardHeight + (_offset * (index));
+                    if (shouldAnimate) {
+                      animateCards();
+                    }
+                  },
+                ))
+              : Container(),
+        ],
+      ),
+    ));
+  }
 
-                          final tapIndex =
-                              (widget.photoCards.length - 1) - index;
-                          // final matrix = Matrix4.identity()
-                          //   ..translate(center.dy, center.dx)
-                          //   ..rotateZ(6.0)
-                          //   ..translate(-center.dx, -center.dy);
-                          return Positioned(
-                            top: topOffsetForCard,
-                            child: Draggable(
-                              axis: Axis.horizontal,
-                              childWhenDragging: Container(),
-                              maxSimultaneousDrags: 1,
-                              onDragCompleted: () {
-                                _hideAllPhotoCardOverlayWidgets();
-                              },
-                              onDragStarted: () {},
-                              onDragEnd: (details) {
-                                _hideAllPhotoCardOverlayWidgets();
-                                if (details.offset.dx > 150.0) {
-                                  _updatedPhotos.removeAt(index);
-                                  _likeCard(forIndex: index);
-                                } else if (details.offset.dx < -150.0) {
-                                  _updatedPhotos.removeAt(index);
-                                  _unlikeCard(forIndex: index);
-                                }
-                              },
-                              onDragUpdate: (DragUpdateDetails details) {
-                                if (details.delta.dx < -5) {
-                                  _feedbackPhotoCardValueNotifier
-                                      .updateCardSwipeActionValue(
-                                          value: CardActionDirection
-                                              .cardLeftAction);
-                                } else if (details.delta.dx > 5) {
-                                  _feedbackPhotoCardValueNotifier
-                                      .updateCardSwipeActionValue(
-                                          value: CardActionDirection
-                                              .cardRightAction);
-                                }
-                              },
-                              feedback: FeedbackPhotoCardWidget(
-                                cardHeight: updatedCardHeight,
-                                cardWidth: cardWidth,
-                                photoCard: e,
-                                leftButtonIcon: widget.leftButtonIcon,
-                                rightButtonIcon: widget.rightButtonIcon,
-                                centerButtonIcon: widget.centerButtonIcon,
-                                hideCenterButton: widget.hideCenterButton,
-                                hideTitleText: widget.hideTitleText,
-                                hideDescriptionText: widget.hideDescriptionText,
-                                imageScaleType: widget.imageScaleType,
-                                imageBackgroundColor:
-                                    widget.imageBackgroundColor,
-                                feedbackPhotoCardValueNotifier:
-                                    _feedbackPhotoCardValueNotifier,
-                                leftButtonIconColor: widget.leftButtonIconColor,
-                                leftButtonBackgroundColor:
-                                    widget.leftButtonBackgroundColor,
-                                centerButtonBackgroundColor:
-                                    widget.centerButtonBackgroundColor,
-                                centerButtonIconColor:
-                                    widget.centerButtonIconColor,
-                                rightButtonBackgroundColor:
-                                    widget.rightButtonBackgroundColor,
-                                rightButtonIconColor:
-                                    widget.rightButtonIconColor,
-                              ),
-                              child: PhotoCardLayoutWidget(
-                                cardHeight: updatedCardHeight,
-                                cardWidth: cardWidth,
-                                imageScaleType: widget.imageScaleType,
-                                imageBackgroundColor:
-                                    widget.imageBackgroundColor,
-                                hideCenterButton: widget.hideCenterButton,
-                                hideTitleText: widget.hideTitleText,
-                                hideDescriptionText: widget.hideDescriptionText,
-                                photoCard: e,
-                                leftButtonIcon: widget.leftButtonIcon,
-                                rightButtonIcon: widget.rightButtonIcon,
-                                centerButtonIcon: widget.centerButtonIcon,
-                                isLeftOverlayShown:
-                                    _isPhotoCardLeftOverlayShown,
-                                isCenterOverlayShown:
-                                    _isPhotoCardCenterOverlayShown,
-                                isRightOverlayShown:
-                                    _isPhotoCardRightOverlayShown,
-                                leftButtonIconColor: widget.leftButtonIconColor,
-                                leftButtonBackgroundColor:
-                                    widget.leftButtonBackgroundColor,
-                                centerButtonBackgroundColor:
-                                    widget.centerButtonBackgroundColor,
-                                centerButtonIconColor:
-                                    widget.centerButtonIconColor,
-                                rightButtonBackgroundColor:
-                                    widget.rightButtonBackgroundColor,
-                                rightButtonIconColor:
-                                    widget.rightButtonIconColor,
-                                onCardTap: widget.onCardTap,
-                                photoIndex: tapIndex,
-                                leftButtonAction: () {
-                                  setState(() {
-                                    _showLeftPhotoCardOverlayWidget();
-                                  });
-                                  Future.delayed(Duration(milliseconds: 500),
-                                      () {
-                                    _updatedPhotos.removeAt(index);
-                                    _unlikeCard(forIndex: index);
-                                    _hideAllPhotoCardOverlayWidgets();
-                                    if (widget.leftButtonAction != null) {
-                                      widget.leftButtonAction!();
-                                    }
-                                  });
-                                },
-                                centerButtonAction: () {
-                                  setState(() {
-                                    _showCenterPhotoCardOverlayWidget();
-                                  });
-                                  Future.delayed(Duration(milliseconds: 500),
-                                      () {
-                                    _updatedPhotos.removeAt(index);
-                                    _favoriteCard(forIndex: index);
-
-                                    _hideAllPhotoCardOverlayWidgets();
-                                    if (widget.centerButtonAction != null) {
-                                      widget.centerButtonAction!();
-                                    }
-                                  });
-                                },
-                                rightButtonAction: () {
-                                  setState(() {
-                                    _showRightPhotoCardOverlayWidget();
-                                  });
-                                  Future.delayed(Duration(milliseconds: 500),
-                                      () {
-                                    _updatedPhotos.removeAt(index);
-                                    _likeCard(forIndex: index);
-                                    _hideAllPhotoCardOverlayWidgets();
-                                    if (widget.rightButtonAction != null) {
-                                      widget.rightButtonAction!();
-                                    }
-                                  });
-                                },
-                              ),
-                            ),
-                          );
-                        },
-                      ).toList(),
-                    ),
-        );
-      },
+  Widget backCard() {
+    return Align(
+      alignment: _controller.status == AnimationStatus.forward
+          ? CardsAnimation.backCardAlignmentAnim(_controller).value
+          : cardsAlign[0],
+      child: SizedBox.fromSize(
+          size: _controller.status == AnimationStatus.forward
+              ? CardsAnimation.backCardSizeAnim(_controller).value
+              : cardsSize[2],
+          child: cards[2]),
     );
   }
 
-//Hide show overlay widgets
-  void _hideAllPhotoCardOverlayWidgets() {
-    _isPhotoCardCenterOverlayShown = false;
-    _isPhotoCardRightOverlayShown = false;
-    _isPhotoCardLeftOverlayShown = false;
+  Widget middleCard() {
+    return Align(
+      alignment: _controller.status == AnimationStatus.forward
+          ? CardsAnimation.middleCardAlignmentAnim(_controller).value
+          : cardsAlign[1],
+      child: SizedBox.fromSize(
+          size: _controller.status == AnimationStatus.forward
+              ? CardsAnimation.middleCardSizeAnim(_controller).value
+              : cardsSize[1],
+          child: cards[1]),
+    );
   }
 
-  void _showLeftPhotoCardOverlayWidget() {
-    _isPhotoCardCenterOverlayShown = false;
-    _isPhotoCardRightOverlayShown = false;
-    _isPhotoCardLeftOverlayShown = true;
+  Widget frontCard() {
+    return Align(
+        alignment: _controller.status == AnimationStatus.forward
+            ? CardsAnimation.frontCardDisappearAlignmentAnim(
+                    _controller, frontCardAlign)
+                .value
+            : frontCardAlign,
+        child: Transform.rotate(
+          angle: (pi / 180.0) * frontCardRot,
+          child: SizedBox.fromSize(size: cardsSize[0], child: cards[0]),
+        ));
   }
 
-  void _showRightPhotoCardOverlayWidget() {
-    _isPhotoCardCenterOverlayShown = false;
-    _isPhotoCardRightOverlayShown = true;
-    _isPhotoCardLeftOverlayShown = false;
-  }
-
-  void _showCenterPhotoCardOverlayWidget() {
-    _isPhotoCardCenterOverlayShown = true;
-    _isPhotoCardRightOverlayShown = false;
-    _isPhotoCardLeftOverlayShown = false;
-  }
-
-  void _unlikeCard({required int forIndex}) {
+  void changeCardsOrder() {
     setState(() {
-      if (widget.whenCardSwiped != null) {
-        final _reverseOffset = (widget.photoCards.length - 1) - forIndex;
-        widget.whenCardSwiped!(
-            CardActionDirection.cardLeftAction, _reverseOffset);
+      // Swap cards (back card becomes the middle card; middle card becomes the front card)
+      cards[0] = cards[1];
+      cards[1] = cards[2];
+      if (index + 3 < cardsCounter) {
+        cards[2] = cards[index + 3];
+      } else {
+        cards[2] = null;
       }
+      index++;
+      frontCardAlign = defaultFrontCardAlign;
+      frontCardRot = 0.0;
     });
   }
 
-  void _likeCard({required int forIndex}) {
-    setState(() {
-      if (widget.whenCardSwiped != null) {
-        final _reverseOffset = (widget.photoCards.length - 1) - forIndex;
-        widget.whenCardSwiped!(
-            CardActionDirection.cardRightAction, _reverseOffset);
-      }
-    });
+  void animateCards() {
+    _controller.stop();
+    _controller.value = 0.0;
+    _controller.forward();
+  }
+}
+
+class CardsAnimation {
+  static Animation<Alignment> backCardAlignmentAnim(
+      AnimationController parent) {
+    return AlignmentTween(begin: cardsAlign[0], end: cardsAlign[1]).animate(
+        CurvedAnimation(
+            parent: parent, curve: Interval(0.4, 0.7, curve: Curves.easeIn)));
   }
 
-  void _favoriteCard({required int forIndex}) {
-    setState(() {
-      if (widget.whenCardSwiped != null) {
-        final _reverseOffset = (widget.photoCards.length - 1) - forIndex;
-        widget.whenCardSwiped!(
-            CardActionDirection.cardCenterAction, _reverseOffset);
-      }
-    });
+  static Animation<Size?> backCardSizeAnim(AnimationController parent) {
+    return SizeTween(begin: cardsSize[2], end: cardsSize[1]).animate(
+        CurvedAnimation(
+            parent: parent, curve: Interval(0.4, 0.7, curve: Curves.easeIn)));
   }
+
+  static Animation<Alignment> middleCardAlignmentAnim(
+      AnimationController parent) {
+    return AlignmentTween(begin: cardsAlign[1], end: cardsAlign[2]).animate(
+        CurvedAnimation(
+            parent: parent, curve: Interval(0.2, 0.5, curve: Curves.easeIn)));
+  }
+
+  static Animation<Size?> middleCardSizeAnim(AnimationController parent) {
+    return SizeTween(begin: cardsSize[1], end: cardsSize[0]).animate(
+        CurvedAnimation(
+            parent: parent, curve: Interval(0.2, 0.5, curve: Curves.easeIn)));
+  }
+
+  static Animation<Alignment> frontCardDisappearAlignmentAnim(
+      AnimationController parent, Alignment beginAlign) {
+    if (beginAlign.x == -0.001 ||
+        beginAlign.x == 0.001 ||
+        beginAlign.x > 3.0 ||
+        beginAlign.x < -3.0) {
+      return AlignmentTween(
+              begin: beginAlign,
+              end: Alignment(
+                  beginAlign.x > 0 ? beginAlign.x + 30.0 : beginAlign.x - 30.0,
+                  0.0) // Has swiped to the left or right?
+              )
+          .animate(CurvedAnimation(
+              parent: parent,
+              curve: const Interval(0.0, 0.5, curve: Curves.easeIn)));
+    } else {
+      return AlignmentTween(
+              begin: beginAlign,
+              end: Alignment(
+                  0.0,
+                  beginAlign.y > 0
+                      ? beginAlign.y + 30.0
+                      : beginAlign.y - 30.0) // Has swiped to the top or bottom?
+              )
+          .animate(CurvedAnimation(
+              parent: parent, curve: Interval(0.0, 0.5, curve: Curves.easeIn)));
+    }
+  }
+}
+
+//
+//
+
+//
+//
+
+typedef TriggerListener = void Function(Direction dir);
+typedef AppendItem = void Function(Widget item);
+typedef EnableSwipe = void Function(bool dir);
+
+class SwipeableCardSectionController {
+  late TriggerListener listener;
+  late AppendItem addItem;
+  late EnableSwipe enableSwipeListener;
+
+  void triggerSwipeLeft() {
+    return listener.call(Direction.left);
+  }
+
+  void triggerSwipeRight() {
+    return listener.call(Direction.right);
+  }
+
+  void appendItem(Widget item) {
+    return addItem.call(item);
+  }
+
+  void enableSwipe(bool isSwipeEnabled) {
+    return enableSwipeListener.call(isSwipeEnabled);
+  }
+}
+
+enum Direction {
+  left,
+  right,
 }

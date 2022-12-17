@@ -79,17 +79,17 @@ class _MessengerWidgetState extends State<MessengerWidget> {
       children: [
         Row(
           children: [
-            Expanded(
+            const Expanded(
               child: Divider(color: Colors.black54),
             ),
-            SizedBox(
+            const SizedBox(
               width: 15,
             ),
             Text(AppLocalizations.of(context)!.today),
-            SizedBox(
+            const SizedBox(
               width: 15,
             ),
-            Expanded(
+            const Expanded(
               child: Divider(
                 color: Colors.black54,
 
@@ -120,7 +120,7 @@ class _MessengerWidgetState extends State<MessengerWidget> {
                     child: ReplyCard(
                         messageModel: state.messagesList[index],
                         time: state.messagesList[index].time!,
-                        userPicture: widget.userPicture),
+                        userPicture: widget.userPicture   ),
                   );
                 }
               }),
