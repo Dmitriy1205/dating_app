@@ -40,19 +40,19 @@ class _HomeBody1State extends State<HomeBody1> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             SwipeableCardsSection(
-              // onCardSwiped: (dir, index, widget) {
-              //   switch (dir) {
-              //     case Direction.left:
-              //       context.read<HomeCubit>().refuseUser(users[index].id!);
-              //       print('onDisliked ${users.first.firstName} ${dir} $index');
-              //       break;
-              //     case Direction.right:
-              //       context.read<HomeCubit>().addUser(users[index].id!);
-              //       print(
-              //           'onLiked ${users[index].id!} ${users[index].id} ${dir} $index');
-              //       break;
-              //   }
-              // },
+              onCardSwiped: (dir, index, widget) {
+                switch (dir) {
+                  case Direction.left:
+                    context.read<HomeCubit>().refuseUser(users[index].id!);
+                    print('onDisliked ${users.first.firstName} ${dir} $index');
+                    break;
+                  case Direction.right:
+                    context.read<HomeCubit>().addUser(users[index].id!);
+                    print(
+                        'onLiked ${users[index].id!} ${users[index].id} ${dir} $index');
+                    break;
+                }
+              },
               cardController: _cardController,
               context: context,
               items: List.generate(users.length, (index) {

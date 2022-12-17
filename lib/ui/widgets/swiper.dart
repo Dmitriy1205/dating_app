@@ -79,7 +79,6 @@ class _CardsSectionState extends State<SwipeableCardsSection>
     }
   }
 
-
   void _enableSwipe(bool isSwipeEnabled) {
     setState(() {
       this.enableSwipe = isSwipeEnabled;
@@ -102,7 +101,6 @@ class _CardsSectionState extends State<SwipeableCardsSection>
       cards.add(widget.items[cardsCounter]);
     }
 
-
     frontCardAlign = cardsAlign[2];
 
     // Init the animation controller
@@ -112,6 +110,7 @@ class _CardsSectionState extends State<SwipeableCardsSection>
     _controller.addStatusListener((AnimationStatus status) {
       if (status == AnimationStatus.completed) changeCardsOrder();
     });
+    print('cardsCounter $cardsCounter');
   }
 
   @override
@@ -121,9 +120,8 @@ class _CardsSectionState extends State<SwipeableCardsSection>
       ignoring: !enableSwipe,
       child: Stack(
         children: <Widget>[
-          if (cards[2] != null) backCard(),
-          if (cards[1] != null) middleCard(),
-          if (cards[0] != null) frontCard(),
+          if (cards.length > 1) middleCard(),
+          if (cards.isNotEmpty) frontCard(),
           // Prevent swiping if the cards are animating
           ((_controller.status != AnimationStatus.forward))
               ? SizedBox.expand(
@@ -180,54 +178,66 @@ class _CardsSectionState extends State<SwipeableCardsSection>
   }
 
   Widget backCard() {
-    return Align(
-      alignment: _controller.status == AnimationStatus.forward
-          ? CardsAnimation.backCardAlignmentAnim(_controller).value
-          : cardsAlign[0],
-      child: SizedBox.fromSize(
-          size: _controller.status == AnimationStatus.forward
-              ? CardsAnimation.backCardSizeAnim(_controller).value
-              : cardsSize[2],
-          child: cards[2]),
-    );
+    if (cards[2] != null) {
+      return Align(
+        alignment: _controller.status == AnimationStatus.forward
+            ? CardsAnimation.backCardAlignmentAnim(_controller).value
+            : cardsAlign[0],
+        child: SizedBox.fromSize(
+            size: _controller.status == AnimationStatus.forward
+                ? CardsAnimation.backCardSizeAnim(_controller).value
+                : cardsSize[2],
+            child: cards[2]),
+      );
+    } else {
+      return const SizedBox();
+    }
   }
 
   Widget middleCard() {
-    return Align(
-      alignment: _controller.status == AnimationStatus.forward
-          ? CardsAnimation.middleCardAlignmentAnim(_controller).value
-          : cardsAlign[1],
-      child: SizedBox.fromSize(
-          size: _controller.status == AnimationStatus.forward
-              ? CardsAnimation.middleCardSizeAnim(_controller).value
-              : cardsSize[1],
-          child: cards[1]),
-    );
+    if (cards[1] != null) {
+      return Align(
+        alignment: _controller.status == AnimationStatus.forward
+            ? CardsAnimation.middleCardAlignmentAnim(_controller).value
+            : cardsAlign[1],
+        child: SizedBox.fromSize(
+            size: _controller.status == AnimationStatus.forward
+                ? CardsAnimation.middleCardSizeAnim(_controller).value
+                : cardsSize[1],
+            child: cards[1]),
+      );
+    } else {
+      return const SizedBox();
+    }
   }
 
   Widget frontCard() {
-    return Align(
-        alignment: _controller.status == AnimationStatus.forward
-            ? CardsAnimation.frontCardDisappearAlignmentAnim(
-                    _controller, frontCardAlign)
-                .value
-            : frontCardAlign,
-        child: Transform.rotate(
-          angle: (pi / 180.0) * frontCardRot,
-          child: SizedBox.fromSize(size: cardsSize[0], child: cards[0]),
-        ));
+    if (cards[0] != null) {
+      return Align(
+          alignment: _controller.status == AnimationStatus.forward
+              ? CardsAnimation.frontCardDisappearAlignmentAnim(
+                      _controller, frontCardAlign)
+                  .value
+              : frontCardAlign,
+          child: Transform.rotate(
+            angle: (pi / 180.0) * frontCardRot,
+            child: SizedBox.fromSize(size: cardsSize[0], child: cards[0]),
+          ));
+    } else
+      return SizedBox();
   }
 
   void changeCardsOrder() {
+    cards.removeAt(0);
     setState(() {
       // Swap cards (back card becomes the middle card; middle card becomes the front card)
-      cards[0] = cards[1];
-      cards[1] = cards[2];
-      if (index + 3 < cardsCounter) {
-        cards[2] = cards[index + 3];
-      } else {
-        cards[2] = null;
-      }
+      cards.isNotEmpty ? cards[0] : null;
+      // if (index + 2 < cardsCounter) {
+      //   print('inside if TRUEE');
+      //   cards[1] = cards[index + 2];
+      // } else {
+      //   cards[1] = null;
+      // }
       index++;
       frontCardAlign = defaultFrontCardAlign;
       frontCardRot = 0.0;
@@ -297,12 +307,6 @@ class CardsAnimation {
     }
   }
 }
-
-//
-//
-
-//
-//
 
 typedef TriggerListener = void Function(Direction dir);
 typedef AppendItem = void Function(Widget item);
