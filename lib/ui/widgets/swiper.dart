@@ -111,6 +111,7 @@ class _CardsSectionState extends State<SwipeableCardsSection>
     // Init cards
     for (cardsCounter = 0; cardsCounter < widget.items.length; cardsCounter++) {
       cards.add(widget.items[cardsCounter]);
+      print('--------------${widget.items.length}');
     }
 
     frontCardAlign = cardsAlign[2];
@@ -134,8 +135,10 @@ class _CardsSectionState extends State<SwipeableCardsSection>
       ignoring: !enableSwipe,
       child: Stack(
         children: <Widget>[
+
           if (cards.length > 1) middleCard(),
           if (cards.isNotEmpty) frontCard(),
+
           // Prevent swiping if the cards are animating
           ((_controller.status != AnimationStatus.forward))
               ? SizedBox.expand(

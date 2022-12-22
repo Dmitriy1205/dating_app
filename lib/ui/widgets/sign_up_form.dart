@@ -34,6 +34,7 @@ class _SignUpFormState extends State<SignUpForm> {
   String verificationId = '';
   String isoCode = '';
   DateTime now = DateTime.now();
+  late int age;
 
   @override
   void dispose() {
@@ -141,7 +142,8 @@ class _SignUpFormState extends State<SignUpForm> {
                               height: 20,
                             ),
                             IntlPhoneField(
-                              invalidNumberMessage: AppLocalizations.of(context)!.invalidPhone,
+                              invalidNumberMessage:
+                                  AppLocalizations.of(context)!.invalidPhone,
                               inputFormatters: [
                                 FilteringTextInputFormatter.allow(
                                     RegExp(r'^\d+\.?\d{0,1}')),
@@ -152,7 +154,7 @@ class _SignUpFormState extends State<SignUpForm> {
                                   AppLocalizations.of(context)!.phoneNumber),
                               onSaved: (value) {
                                 isoCode = value!.countryCode;
-                                _phoneController.text = value!.number;
+                                _phoneController.text = value.number;
                                 print(isoCode + _phoneController.text);
                               },
                               validator: validatePhoneField,
@@ -170,10 +172,12 @@ class _SignUpFormState extends State<SignUpForm> {
                               validator: validateDateField,
                               onTap: () async {
                                 DateTime? date = DateTime(1900);
-                                // DateFormat formatter = DateFormat('dd-MM-yyyy');
+
                                 FocusScope.of(context)
                                     .requestFocus(FocusNode());
                                 date = await Picker().birthDatePicker(context);
+                                age = DateTime.now().year - date!.year;
+                                print('===========${age}');
                                 _dateController.text = Jiffy(date).yMMMMd;
                               },
                               onSaved: (value) {
@@ -260,6 +264,7 @@ class _SignUpFormState extends State<SignUpForm> {
                                                     OtpVerificationScreen(
                                                   page: ProfileInfoScreen(
                                                     name: _nameController.text,
+                                                    date: age.toString(),
                                                   ),
                                                   verId: verId,
                                                   name: _nameController.text,
