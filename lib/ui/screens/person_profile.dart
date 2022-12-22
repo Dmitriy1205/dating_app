@@ -19,6 +19,7 @@ class PersonalProf extends StatelessWidget {
   // final List<String> pic;
   final Map<String, dynamic> interests;
   final Map<String, dynamic> lookingFor;
+  final String status;
 
   const PersonalProf({
     Key? key,
@@ -31,6 +32,7 @@ class PersonalProf extends StatelessWidget {
     required this.interests,
     required this.lookingFor,
     required this.id,
+    required this.status,
     // required this.id,
   }) : super(key: key);
 
@@ -46,6 +48,7 @@ class PersonalProf extends StatelessWidget {
         lookingFor: lookingFor,
         joinDate: joinDate,
         id: id,
+        status: status,
       ),
     );
   }
@@ -63,6 +66,7 @@ class PersonProfile extends StatefulWidget {
   // final List<String> pic;
   final Map<String, dynamic> interests;
   final Map<String, dynamic> lookingFor;
+  final String status;
 
   const PersonProfile({
     Key? key,
@@ -75,6 +79,7 @@ class PersonProfile extends StatefulWidget {
     required this.joinDate,
     // required this.pic,
     required this.id,
+    required this.status,
   }) : super(key: key);
 
   @override
@@ -113,6 +118,24 @@ class _PersonProfileState extends State<PersonProfile> {
                 filterQuality: FilterQuality.high,
               ),
             );
+            List<String> lookin = [
+              AppLocalizations.of(context)!.aMentee,
+              AppLocalizations.of(context)!.aFriend,
+              AppLocalizations.of(context)!.someoneToChillWith,
+              AppLocalizations.of(context)!.aRomanticPartner,
+              AppLocalizations.of(context)!.aBusinessPartner,
+              AppLocalizations.of(context)!.aMentor,
+            ];
+            List<String> inter = [
+              AppLocalizations.of(context)!.photography,
+              AppLocalizations.of(context)!.acting,
+              AppLocalizations.of(context)!.film,
+              AppLocalizations.of(context)!.finArt,
+              AppLocalizations.of(context)!.music,
+              AppLocalizations.of(context)!.fashion,
+              AppLocalizations.of(context)!.dance,
+              AppLocalizations.of(context)!.politics,
+            ];
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -174,20 +197,21 @@ class _PersonProfileState extends State<PersonProfile> {
                         ),
                       ),
                     ),
-                     Positioned(
-                            right: 20,
-                            top: 70,
-                            child: DotsIndicator(
-                              axis: Axis.vertical,
-                              dotsCount: state.pic!.length <= 0 ? 1 :state.pic!.length,
-                              position: _currentPosition,
-                              decorator: DotsDecorator(
-                                  size: Size(15, 12),
-                                  activeSize: Size(15, 12),
-                                  color: Colors.pink.withOpacity(0.2),
-                                  activeColor: Colors.pink.withOpacity(0.6)),
-                            ),
-                          ),
+                    Positioned(
+                      right: 20,
+                      top: 70,
+                      child: DotsIndicator(
+                        axis: Axis.vertical,
+                        dotsCount:
+                            state.pic!.length <= 0 ? 1 : state.pic!.length,
+                        position: _currentPosition,
+                        decorator: DotsDecorator(
+                            size: Size(15, 12),
+                            activeSize: Size(15, 12),
+                            color: Colors.pink.withOpacity(0.2),
+                            activeColor: Colors.pink.withOpacity(0.6)),
+                      ),
+                    ),
                   ],
                 ),
                 Padding(
@@ -257,7 +281,7 @@ class _PersonProfileState extends State<PersonProfile> {
                       ),
                       Row(
                         children: [
-                           Text(
+                          Text(
                             '${AppLocalizations.of(context)!.height} : ',
                             textAlign: TextAlign.start,
                             style: TextStyle(fontSize: 14),
@@ -280,7 +304,11 @@ class _PersonProfileState extends State<PersonProfile> {
                             style: const TextStyle(fontSize: 14),
                           ),
                           Text(
-                            'Single',
+                            widget.status == 'Married'
+                                ? AppLocalizations.of(context)!.married
+                                : widget.status == ''
+                                    ? ''
+                                    : AppLocalizations.of(context)!.single,
                             textAlign: TextAlign.start,
                             style: TextStyle(color: Colors.grey, fontSize: 14),
                           ),
@@ -292,7 +320,7 @@ class _PersonProfileState extends State<PersonProfile> {
                       Row(
                         children: [
                           Text(
-                            AppLocalizations.of(context)!.joinedDate,
+                            '${AppLocalizations.of(context)!.joinedDate} : ',
                             textAlign: TextAlign.start,
                             style: const TextStyle(fontSize: 14),
                           ),
@@ -314,7 +342,7 @@ class _PersonProfileState extends State<PersonProfile> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                       Text(
+                      Text(
                         AppLocalizations.of(context)!.interests,
                         textAlign: TextAlign.start,
                         style: const TextStyle(
@@ -326,21 +354,21 @@ class _PersonProfileState extends State<PersonProfile> {
                       Wrap(
                         children: List<Widget>.generate(
                           widget.interests.length,
-                          (index) => widget.interests.values.elementAt(index) ==
-                                  false
-                              ? const SizedBox()
-                              : Padding(
-                                  padding: const EdgeInsets.only(right: 6),
-                                  child: Chip(
-                                    label: Text(
-                                      widget.interests.keys.elementAt(index),
-                                      style: TextStyle(
-                                        color: Colors.grey.shade800,
-                                        fontSize: 14,
+                          (index) =>
+                              widget.interests.values.elementAt(index) == false
+                                  ? const SizedBox()
+                                  : Padding(
+                                      padding: const EdgeInsets.only(right: 6),
+                                      child: Chip(
+                                        label: Text(
+                                          inter[index],
+                                          style: TextStyle(
+                                            color: Colors.grey.shade800,
+                                            fontSize: 14,
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
                         ).toList(),
                       ),
                     ],
@@ -354,7 +382,7 @@ class _PersonProfileState extends State<PersonProfile> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                       Text(
+                      Text(
                         AppLocalizations.of(context)!.lookingFor,
                         textAlign: TextAlign.start,
                         style: const TextStyle(
@@ -373,8 +401,7 @@ class _PersonProfileState extends State<PersonProfile> {
                                       padding: const EdgeInsets.only(right: 6),
                                       child: Chip(
                                         label: Text(
-                                          widget.lookingFor.keys
-                                              .elementAt(index),
+                                          lookin[index],
                                           style: TextStyle(
                                             color: Colors.grey.shade800,
                                             fontSize: 14,

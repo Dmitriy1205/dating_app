@@ -77,6 +77,7 @@
           "hiking":"Caminhada",
           "biking":"Andar de Bicicleta",
           "shopping":"Compras",
+          "cooking":"Cozinhando",
           "baking":"Cozimento",
           "drinking":"Bebendo",
           "reading":"Leitura",
@@ -86,6 +87,7 @@
           "music":"Música",
           "dance":"Dança",
           "film":"Filme",
+          "invalidPhone":"Número de celular inválido",
           "photography":"Fotografia",
           "acting":"Atuando",
 
@@ -132,6 +134,9 @@
             "privacyPolicy":"Política de Privacidade",
             "howDoYouLike":"Como você gosta de passar seu tempo livre?",
             "sharedInterests":"Interesses comuns",
+            "locationServicesAreDes":"Os serviços de localização estão desativados. Ative os serviços",
+              "locationPermissionDenied":"As permissões de localização foram negadas",
+              "locationPermissionArePermanently":"As permissões de localização são permanentemente negadas, não podemos solicitar permissões.",
               "sharedHobbies":"Passatempos compartilhados"
 
 }

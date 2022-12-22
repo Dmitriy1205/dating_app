@@ -1,6 +1,7 @@
 import 'package:dating_app/data/models/profile_info_data.dart';
 import 'package:dating_app/ui/bloc/edit_profile_bloc.dart';
 import 'package:dating_app/ui/widgets/image_picker_list.dart';
+import 'package:dating_app/ui/widgets/location_field.dart';
 import 'package:dating_app/ui/widgets/reusable_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,14 +13,17 @@ import '../bloc/edit_profile_state.dart';
 import 'field_decor.dart';
 
 class EditProfileForm extends StatefulWidget {
-  EditProfileForm({Key? key}) : super(key: key);
+  const EditProfileForm({Key? key}) : super(key: key);
 
   @override
   State<EditProfileForm> createState() => _EditProfileFormState();
 }
 
 class _EditProfileFormState extends State<EditProfileForm> {
+  String address = 's';
   String userImage = '';
+  double latitude = 40.416775;
+  double longitude = -3.703790;
 
   String gender = '';
   String id = '';
@@ -64,6 +68,9 @@ class _EditProfileFormState extends State<EditProfileForm> {
         }
         var search = state.userModel!.searchPref!;
         var profile = state.userModel!.profileInfo!;
+        // longitude = state.userModel.longitude;
+        // latitude = state.userModel.latitude;
+        locationController.text = profile!.location!;
         nameController.text = profile.name!;
         bioController.text = profile.bio!;
         heightController.text = profile.height!;
@@ -132,7 +139,8 @@ class _EditProfileFormState extends State<EditProfileForm> {
                         autocorrect: false,
                         controller: nameController,
                         keyboardType: TextInputType.name,
-                        decoration: profileFieldDecor(AppLocalizations.of(context)!.name),
+                        decoration: profileFieldDecor(
+                            AppLocalizations.of(context)!.name),
                         onSaved: (value) {
                           nameController.text = value!.trim();
                         },
@@ -152,7 +160,8 @@ class _EditProfileFormState extends State<EditProfileForm> {
                         controller: bioController,
                         keyboardType: TextInputType.multiline,
                         maxLines: 6,
-                        decoration: profileFieldDecor(AppLocalizations.of(context)!.tellUsAbout),
+                        decoration: profileFieldDecor(
+                            AppLocalizations.of(context)!.tellUsAbout),
                         onSaved: (value) {
                           bioController.text = value!.trim();
                         },
@@ -180,7 +189,8 @@ class _EditProfileFormState extends State<EditProfileForm> {
                                 //   }
                                 //   return null;
                                 // },
-                                hint: Text(AppLocalizations.of(context)!.gender),
+                                hint:
+                                    Text(AppLocalizations.of(context)!.gender),
                                 icon:
                                     const Icon(Icons.keyboard_arrow_down_sharp),
                                 onChanged: (v) {
@@ -193,7 +203,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
                                   fillColor: Colors.white,
                                 ),
                                 // decoration: profileFieldDecor('Gender'),
-                                items:  [
+                                items: [
                                   DropdownMenuItem(
                                     value: 'Male',
                                     child: Text(
@@ -227,7 +237,8 @@ class _EditProfileFormState extends State<EditProfileForm> {
                                 autocorrect: false,
                                 controller: heightController,
                                 keyboardType: TextInputType.number,
-                                decoration: profileFieldDecor(AppLocalizations.of(context)!.height),
+                                decoration: profileFieldDecor(
+                                    AppLocalizations.of(context)!.height),
                                 onSaved: (value) {
                                   heightController.text = value!.trim();
                                 },
@@ -236,6 +247,11 @@ class _EditProfileFormState extends State<EditProfileForm> {
                                   FilteringTextInputFormatter.allow(
                                     RegExp("[0-9]"),
                                   ),
+                                  FilteringTextInputFormatter.deny(
+                                    RegExp(
+                                        r'^0+'), //users can't type 0 at 1st position
+                                  ), //users can't type 0 at 1st position
+
                                   LengthLimitingTextInputFormatter(3),
                                 ],
                               ),
@@ -250,14 +266,19 @@ class _EditProfileFormState extends State<EditProfileForm> {
                                 autocorrect: false,
                                 controller: ageController,
                                 keyboardType: TextInputType.number,
-                                decoration: profileFieldDecor(AppLocalizations.of(context)!.age),
+                                decoration: profileFieldDecor(
+                                    AppLocalizations.of(context)!.age),
                                 onSaved: (value) {
                                   ageController.text = value!.trim();
                                 },
                                 validator: validateNameField,
                                 inputFormatters: [
                                   FilteringTextInputFormatter.allow(
-                                    RegExp("[0-9]"),
+                                    RegExp(r'[0-9]'),
+                                  ),
+                                  FilteringTextInputFormatter.deny(
+                                    RegExp(
+                                        r'^0+'), //users can't type 0 at 1st position
                                   ),
                                   LengthLimitingTextInputFormatter(2),
                                 ],
@@ -269,10 +290,19 @@ class _EditProfileFormState extends State<EditProfileForm> {
                       const SizedBox(
                         height: 20,
                       ),
+                      LocationField(
+                        locationController: locationController,
+                        latitude: latitude,
+                        longitude: longitude,
+                        language: state.userModel!.language,
+                        func: (value) {
+                          locationController.text = value;
+                        },
+                      ),
                     ],
                   ),
-                  reUsableWidgets.openHobbiesOrInterests(
-                      context,AppLocalizations.of(context)!.interests, interests),
+                  reUsableWidgets.openHobbiesOrInterests(context,
+                      AppLocalizations.of(context)!.interests, interests),
                   reUsableWidgets.openHobbiesOrInterests(
                       context, AppLocalizations.of(context)!.hobbies, hobbies),
                   reUsableWidgets.lookingForWidget(context,
@@ -319,7 +349,8 @@ class _EditProfileFormState extends State<EditProfileForm> {
                                       ..hobbies = hobbies
                                       ..interests = interests
                                       ..university = universityController.text
-                                      ..company = companyController.text,
+                                      ..company = companyController.text
+                                      ..location = locationController.text,
                                     lookingFor = lookingFor)
                                 .then((value) => Navigator.pop(context));
 

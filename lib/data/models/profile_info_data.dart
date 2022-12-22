@@ -15,6 +15,7 @@ class ProfileInfoFields {
   String? job;
   Map<String, dynamic>? hobbies;
   Map<String, dynamic>? interests;
+  String? location;
 
   ProfileInfoFields({
     // this.id,
@@ -31,6 +32,7 @@ class ProfileInfoFields {
     this.job,
     this.hobbies,
     this.interests,
+    this.location,
   });
 
   factory ProfileInfoFields.fromFirestore(
@@ -53,6 +55,7 @@ class ProfileInfoFields {
       hobbies: data?['hobbies'],
       interests: data?['interests'],
       status: data?['status'],
+      location: data?['location'],
     );
   }
 
@@ -72,6 +75,7 @@ class ProfileInfoFields {
       hobbies: json['hobbies'],
       interests: json['interests'],
       status: json['status'],
+      location: json['location'],
     );
   }
 
@@ -90,5 +94,6 @@ class ProfileInfoFields {
         'hobbies': hobbies,
         'interests': interests,
         'status': status,
+        'location': location,
       };
 }

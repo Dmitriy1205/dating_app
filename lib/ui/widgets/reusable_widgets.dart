@@ -108,6 +108,14 @@ class ReUsableWidgets {
     Function(Map<String, dynamic>)? lookingFor,
     Map<String, dynamic>? lookingForMap,
   }) {
+    List<String> lookin = [
+      AppLocalizations.of(context)!.aMentee,
+      AppLocalizations.of(context)!.aFriend,
+      AppLocalizations.of(context)!.someoneToChillWith,
+      AppLocalizations.of(context)!.aRomanticPartner,
+      AppLocalizations.of(context)!.aBusinessPartner,
+      AppLocalizations.of(context)!.aMentor,
+    ];
     return Column(
       children: [
         const SizedBox(
@@ -146,7 +154,7 @@ class ReUsableWidgets {
                                     const EdgeInsets.fromLTRB(25, 5, 10, 5),
                                 dense: true,
                                 title: Text(
-                                  lookingForMap.keys.elementAt(index),
+                                  lookin[index],
                                   style: const TextStyle(
                                       fontSize: 17,
                                       fontWeight: FontWeight.normal,
@@ -624,8 +632,12 @@ class ReUsableWidgets {
   }
 
   static Padding buildExpansionList(
-      BuildContext context, Map<String, dynamic>? inputFields,
-      {required Function(String?) onTap, Function(Map<String, dynamic>)? set}) {
+    BuildContext context,
+    Map<String, dynamic>? inputFields, {
+    required Function(String?) onTap,
+    Function(Map<String, dynamic>)? set,
+    required List<String> names,
+  }) {
     return Padding(
       padding: const EdgeInsets.only(
         top: 10,
@@ -684,7 +696,7 @@ class ReUsableWidgets {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      inputFields.keys.elementAt(index),
+                                      names[index],
                                       style: TextStyle(
                                           color: inputFields.values
                                                       .elementAt(index) ==
