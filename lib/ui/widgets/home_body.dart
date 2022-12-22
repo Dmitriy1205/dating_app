@@ -19,7 +19,6 @@ class _HomeBody1State extends State<HomeBody1> {
 
   @override
   Widget build(BuildContext context) {
-    bool isVisible = false;
     return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
         if (state.status!.isLoading) {
@@ -89,11 +88,6 @@ class _HomeBody1State extends State<HomeBody1> {
                               ),
                             ),
                             height: MediaQuery.of(context).size.height * 0.65),
-                        Visibility(
-                            visible: isVisible,
-                            child: Positioned(
-                                top: MediaQuery.of(context).size.height * 0.35,
-                                child: Image.asset('assets/icons/close.png'))),
                         Positioned(
                           top: MediaQuery.of(context).size.height * 0.6,
                           left: MediaQuery.of(context).size.width * 0.25,

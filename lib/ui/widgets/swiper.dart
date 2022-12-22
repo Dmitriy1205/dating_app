@@ -53,7 +53,7 @@ class _CardsSectionState extends State<SwipeableCardsSection>
   int cardsCounter = 0;
   int index = 0;
   Widget? appendCard;
-
+  bool isVisible = false;
   List<Widget?> cards = [];
   late AnimationController _controller;
   bool enableSwipe = true;
@@ -67,7 +67,18 @@ class _CardsSectionState extends State<SwipeableCardsSection>
     bool? shouldAnimate = false;
     if (dir == Direction.left) {
       shouldAnimate = swipedCallback(Direction.left, index, cards[0]);
-      frontCardAlign = Alignment(-0.001, 0.0);
+      frontCardAlign = Alignment(
+        -0.001,
+        0.0,
+      );
+      // Transform.rotate(
+      //     angle: (pi / 180.0) * frontCardRot,
+      //     child: Align(
+      //         alignment: _controller.status == AnimationStatus.forward
+      //             ? CardsAnimation.frontCardDisappearAlignmentAnim(
+      //             _controller, frontCardAlign)
+      //             .value
+      //             : frontCardAlign,));
     } else if (dir == Direction.right) {
       shouldAnimate = swipedCallback(Direction.right, index, cards[0]);
       frontCardAlign = Alignment(0.001, 0.0);
@@ -75,6 +86,7 @@ class _CardsSectionState extends State<SwipeableCardsSection>
     shouldAnimate ??= true;
 
     if (shouldAnimate) {
+      print('shouldAnimate');
       animateCards();
     }
   }
@@ -104,8 +116,10 @@ class _CardsSectionState extends State<SwipeableCardsSection>
     frontCardAlign = cardsAlign[2];
 
     // Init the animation controller
-    _controller =
-        AnimationController(duration: Duration(milliseconds: 700), vsync: this);
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 700),
+      vsync: this,
+    );
     _controller.addListener(() => setState(() {}));
     _controller.addStatusListener((AnimationStatus status) {
       if (status == AnimationStatus.completed) changeCardsOrder();
@@ -130,6 +144,9 @@ class _CardsSectionState extends State<SwipeableCardsSection>
                   onPanUpdate: (DragUpdateDetails details) {
                     // Add what the user swiped in the last frame to the alignment of the card
                     setState(() {
+                      print(
+                          'details.delta.dx ${details.delta.dx}    details.delta.dy ${details.delta.dy}');
+                      isVisible = true;
                       frontCardAlign = Alignment(
                           frontCardAlign.x +
                               20 *
@@ -139,7 +156,6 @@ class _CardsSectionState extends State<SwipeableCardsSection>
                               1.5 *
                                   details.delta.dy /
                                   MediaQuery.of(context).size.height);
-
                       frontCardRot =
                           frontCardAlign.x * 2.5; // * rotation speed;
                     });
@@ -158,41 +174,40 @@ class _CardsSectionState extends State<SwipeableCardsSection>
                           onCardSwiped(Direction.left, index, cards[0]);
                     } else {
                       // Return to the initial rotation and alignment
+                      isVisible = false;
                       setState(() {
                         frontCardAlign = defaultFrontCardAlign;
                         frontCardRot = 0.0;
                       });
                     }
-
                     shouldAnimate ??= true;
-
                     if (shouldAnimate) {
                       animateCards();
                     }
                   },
                 ))
-              : Container(),
+              : const Center(child: Text('No new Users yet..')),
         ],
       ),
     ));
   }
 
-  Widget backCard() {
-    if (cards[2] != null) {
-      return Align(
-        alignment: _controller.status == AnimationStatus.forward
-            ? CardsAnimation.backCardAlignmentAnim(_controller).value
-            : cardsAlign[0],
-        child: SizedBox.fromSize(
-            size: _controller.status == AnimationStatus.forward
-                ? CardsAnimation.backCardSizeAnim(_controller).value
-                : cardsSize[2],
-            child: cards[2]),
-      );
-    } else {
-      return const SizedBox();
-    }
-  }
+  // Widget backCard() {
+  //   if (cards[2] != null) {
+  //     return Align(
+  //       alignment: _controller.status == AnimationStatus.forward
+  //           ? CardsAnimation.backCardAlignmentAnim(_controller).value
+  //           : cardsAlign[0],
+  //       child: SizedBox.fromSize(
+  //           size: _controller.status == AnimationStatus.forward
+  //               ? CardsAnimation.backCardSizeAnim(_controller).value
+  //               : cardsSize[2],
+  //           child: cards[2]),
+  //     );
+  //   } else {
+  //     return const SizedBox();
+  //   }
+  // }
 
   Widget middleCard() {
     if (cards[1] != null) {
@@ -213,18 +228,37 @@ class _CardsSectionState extends State<SwipeableCardsSection>
 
   Widget frontCard() {
     if (cards[0] != null) {
-      return Align(
-          alignment: _controller.status == AnimationStatus.forward
-              ? CardsAnimation.frontCardDisappearAlignmentAnim(
-                      _controller, frontCardAlign)
-                  .value
-              : frontCardAlign,
-          child: Transform.rotate(
-            angle: (pi / 180.0) * frontCardRot,
-            child: SizedBox.fromSize(size: cardsSize[0], child: cards[0]),
+      double a = frontCardAlign.x > 0
+          ? _controller.value * pi / 3
+          : -_controller.value * pi / 3;
+      return Transform.rotate(
+          angle: frontCardRot == 0.0 ? a : (pi / 180.0) * frontCardRot,
+          child: Align(
+            alignment: _controller.status == AnimationStatus.forward
+                ? CardsAnimation.frontCardDisappearAlignmentAnim(
+                        _controller, frontCardAlign)
+                    .value
+                : frontCardAlign,
+            child: SizedBox.fromSize(
+              size: cardsSize[0],
+              child: Stack(children: [
+                SizedBox.fromSize(size: cardsSize[0], child: cards[0]!),
+                Visibility(
+                  visible: isVisible,
+                  child: Center(
+                      child: SizedBox(
+                          height: 80,
+                          width: 80,
+                          child: frontCardAlign.x > 0
+                              ? Image.asset('assets/icons/green_mess.png')
+                              : Image.asset('assets/icons/red_close.png'))),
+                ),
+              ]),
+            ),
           ));
-    } else
-      return SizedBox();
+    } else {
+      return const SizedBox();
+    }
   }
 
   void changeCardsOrder() {
@@ -241,11 +275,15 @@ class _CardsSectionState extends State<SwipeableCardsSection>
       index++;
       frontCardAlign = defaultFrontCardAlign;
       frontCardRot = 0.0;
+      isVisible = false;
+      _controller.value = 0.0;
     });
   }
 
   void animateCards() {
     _controller.stop();
+    // _controller.value = (pi / 180.0) * frontCardRot;
+    print('animateCards 11');
     _controller.value = 0.0;
     _controller.forward();
   }
