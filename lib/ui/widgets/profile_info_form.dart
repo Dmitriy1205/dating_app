@@ -18,8 +18,13 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfileInfoFrom extends StatefulWidget {
   final String name;
+  final String date;
 
-  const ProfileInfoFrom({Key? key, required this.name}) : super(key: key);
+  const ProfileInfoFrom({
+    Key? key,
+    required this.name,
+    required this.date,
+  }) : super(key: key);
 
   @override
   State<ProfileInfoFrom> createState() => _ProfileInfoFromState();
@@ -80,6 +85,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
         }
 
         nameController.text = widget.name;
+        ageController.text = widget.date;
         return SingleChildScrollView(
           physics: const ClampingScrollPhysics(),
           child: Stack(
@@ -163,7 +169,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                         'job': jobController.text,
                                         'hobbies': hobbies,
                                         'interests': interests,
-                                        'location':locationController.text,
+                                        'location': locationController.text,
                                       });
                                     },
                                     child: SizedBox(
@@ -201,27 +207,27 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                 const SizedBox(
                                   height: 20,
                                 ),
-                                TextFormField(
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  autocorrect: false,
-                                  controller: nameController,
-                                  keyboardType: TextInputType.name,
-                                  decoration: profileFieldDecor(
-                                      AppLocalizations.of(context)!.name),
-                                  onSaved: (value) {
-                                    nameController.text = value!.trim();
-                                  },
-                                  validator: validateNameField,
-                                  // inputFormatters: [
-                                  //   FilteringTextInputFormatter.allow(
-                                  //     RegExp("[a-zA-Z ]"),
-                                  //   ),
-                                  // ],
-                                ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
+                                // TextFormField(
+                                //   autovalidateMode:
+                                //       AutovalidateMode.onUserInteraction,
+                                //   autocorrect: false,
+                                //   controller: nameController,
+                                //   keyboardType: TextInputType.name,
+                                //   decoration: profileFieldDecor(
+                                //       AppLocalizations.of(context)!.name),
+                                //   onSaved: (value) {
+                                //     nameController.text = value!.trim();
+                                //   },
+                                //   validator: validateNameField,
+                                //   // inputFormatters: [
+                                //   //   FilteringTextInputFormatter.allow(
+                                //   //     RegExp("[a-zA-Z ]"),
+                                //   //   ),
+                                //   // ],
+                                // ),
+                                // const SizedBox(
+                                //   height: 20,
+                                // ),
                                 TextFormField(
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
@@ -329,7 +335,6 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                               RegExp(
                                                   r'^0+'), //users can't type 0 at 1st position
                                             ),
-
                                             LengthLimitingTextInputFormatter(3),
                                           ],
                                         ),

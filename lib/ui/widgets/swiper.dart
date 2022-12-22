@@ -100,6 +100,7 @@ class _CardsSectionState extends State<SwipeableCardsSection>
     // Init cards
     for (cardsCounter = 0; cardsCounter < widget.items.length; cardsCounter++) {
       cards.add(widget.items[cardsCounter]);
+      print('--------------${widget.items.length}');
     }
 
 
@@ -121,7 +122,7 @@ class _CardsSectionState extends State<SwipeableCardsSection>
       ignoring: !enableSwipe,
       child: Stack(
         children: <Widget>[
-          if (cards[2] != null) backCard(),
+          // if (cards[2] != null) backCard(),
           if (cards[1] != null) middleCard(),
           if (cards[0] != null) frontCard(),
           // Prevent swiping if the cards are animating

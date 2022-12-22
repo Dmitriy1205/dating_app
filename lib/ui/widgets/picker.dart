@@ -4,9 +4,9 @@ class Picker {
   Future<DateTime?> birthDatePicker(BuildContext context) {
     return showDatePicker(
         context: context,
-        initialDate: DateTime.now(),
+        initialDate: DateTime(2003),
         firstDate: DateTime(1900),
-        lastDate: DateTime(2100),
+        lastDate: DateTime(2004),
         builder: (BuildContext context, Widget? child) {
           return Theme(
             data: ThemeData(
