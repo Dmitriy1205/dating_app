@@ -176,9 +176,8 @@ class FirebaseDataProvider {
           await firestore.collection('users').get();
       List<UserModel> palsList = [];
       users.docs.map((user) {
-        listAddedToFriends.contains(user.id)
-            ? palsList.add(UserModel.fromJson(user.data()))
-            : null;
+        if (listAddedToFriends.contains(user.id))
+             palsList.add(UserModel.fromJson(user.data()));
       }).toList();
       return palsList;
     } on FirebaseException catch (e) {

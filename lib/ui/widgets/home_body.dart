@@ -19,7 +19,6 @@ class _HomeBody1State extends State<HomeBody1> {
 
   @override
   Widget build(BuildContext context) {
-    bool isVisible = false;
     return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
         if (state.status!.isLoading) {
@@ -40,19 +39,19 @@ class _HomeBody1State extends State<HomeBody1> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             SwipeableCardsSection(
-              // onCardSwiped: (dir, index, widget) {
-              //   switch (dir) {
-              //     case Direction.left:
-              //       context.read<HomeCubit>().refuseUser(users[index].id!);
-              //       print('onDisliked ${users.first.firstName} ${dir} $index');
-              //       break;
-              //     case Direction.right:
-              //       context.read<HomeCubit>().addUser(users[index].id!);
-              //       print(
-              //           'onLiked ${users[index].id!} ${users[index].id} ${dir} $index');
-              //       break;
-              //   }
-              // },
+              onCardSwiped: (dir, index, widget) {
+                switch (dir) {
+                  case Direction.left:
+                    context.read<HomeCubit>().refuseUser(users[index].id!);
+                    print('onDisliked ${users.first.firstName} ${dir} $index');
+                    break;
+                  case Direction.right:
+                    context.read<HomeCubit>().addUser(users[index].id!);
+                    print(
+                        'onLiked ${users[index].id!} ${users[index].id} ${dir} $index');
+                    break;
+                }
+              },
               cardController: _cardController,
               context: context,
               items: List.generate(users.length, (index) {
@@ -89,11 +88,6 @@ class _HomeBody1State extends State<HomeBody1> {
                               ),
                             ),
                             height: MediaQuery.of(context).size.height * 0.65),
-                        Visibility(
-                            visible: isVisible,
-                            child: Positioned(
-                                top: MediaQuery.of(context).size.height * 0.35,
-                                child: Image.asset('assets/icons/close.png'))),
                         Positioned(
                           top: MediaQuery.of(context).size.height * 0.6,
                           left: MediaQuery.of(context).size.width * 0.25,
