@@ -602,8 +602,8 @@ class ReUsableWidgets {
     final ImagePicker picker = ImagePicker();
     final pickedFile = await picker.pickImage(
       source: ImageSource.gallery,
-      maxWidth: 200,
-      maxHeight: 400,
+      maxWidth: 480,
+      maxHeight: 640,
       imageQuality: 100,
     );
     if (pickedFile != null) {
@@ -618,8 +618,8 @@ class ReUsableWidgets {
     final ImagePicker picker = ImagePicker();
     final pickedFile = await picker.pickImage(
       source: ImageSource.camera,
-      maxWidth: 200,
-      maxHeight: 400,
+      maxWidth: 480,
+      maxHeight: 640,
       imageQuality: 100,
     );
     if (pickedFile != null) {

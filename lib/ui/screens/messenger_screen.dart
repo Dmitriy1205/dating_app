@@ -18,8 +18,8 @@ class MessengerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
-      value: sl<MessengerCubit>(),
-            // create: (BuildContext context) => sl<MessengerCubit>(),
+        value: sl<MessengerCubit>(),
+        // create: (BuildContext context) => sl<MessengerCubit>(),
         child: Scaffold(
             appBar: AppBar(
               elevation: 0,
@@ -59,8 +59,11 @@ class MessengerScreen extends StatelessWidget {
                     }.map((String choice) {
                       return PopupMenuItem<String>(
                         onTap: () {
-                          if (choice == AppLocalizations.of(context)!.clearChat) {
-                              context.read<MessengerCubit>().clearChat();
+                          if (choice == 'Clear Chat' ||
+                              choice == 'Vacie la conversacion' ||
+                              choice == 'Effacer le chat' ||
+                              choice == 'Limpar conversa') {
+                            context.read<MessengerCubit>().clearChat();
                           }
                         },
                         value: choice,

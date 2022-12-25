@@ -149,7 +149,7 @@ class FilterForm extends StatelessWidget {
                       // };
                     },
                     min: 5,
-                    max: 55),
+                    max: 100),
                 Padding(
                   padding: const EdgeInsets.only(top: 15, bottom: 8),
                   child: Row(

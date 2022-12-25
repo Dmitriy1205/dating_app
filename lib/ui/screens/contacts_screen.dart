@@ -1,4 +1,5 @@
 import 'package:dating_app/ui/bloc/contacts_cubit.dart';
+import 'package:dating_app/ui/bloc/profile/profile_cubit.dart';
 import 'package:dating_app/ui/screens/messenger_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,7 +31,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
             elevation: 0,
             backgroundColor: Colors.grey.shade50,
             leading: IconButton(
-              padding: const EdgeInsets.fromLTRB(23, 8, 8, 8),
+              padding: const EdgeInsets.fromLTRB(23, 15, 8, 8),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -42,10 +43,41 @@ class _ContactsScreenState extends State<ContactsScreen> {
                 color: Colors.black,
               ),
             ),
-            title: Text(
-              AppLocalizations.of(context)!.connections,
-              style: const TextStyle(
-                  color: Colors.black, fontWeight: FontWeight.bold),
+            title: Row(
+              children: [
+                Spacer(),
+                Text(
+                  AppLocalizations.of(context)!.connections,
+                  style: const TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold),
+                ),
+                Spacer(),
+                Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      //TODO: phone call
+                    },
+                    child:
+                    // const SizedBox(
+                    //   height: 45,
+                    //   width: 45,
+                    // ),
+                    SizedBox(
+                      height: 45,
+                      width: 45,
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        child: Image.asset(
+                          'assets/icons/call.png',
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           body: BlocBuilder<ContactsCubit, ContactsCubitStates>(
@@ -75,39 +107,104 @@ class _ContactsScreenState extends State<ContactsScreen> {
                   Container(
                     color: Colors.grey.shade200,
                     height: 120,
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: state.usersList!.length,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 5),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 25, right: 15),
+                          child: GestureDetector(
+                            onTap: () {
+                              //TODO: onatp func
+                            },
+                            child: Stack(
                               children: [
-                                SizedBox(
-                                  height: 70,
-                                  width: 70,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(50),
-                                    child:
-                                    state.image?[index] == null || state.image?[index] != ''
-                                        ? Image.network(
-                                            state.image![index],
-                                            fit: BoxFit.fill,
-                                          )
-                                        : Image.asset(
-                                            'assets/images/empty.png'),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      height: 75,
+                                      width: 75,
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Colors.orangeAccent,
+                                              width: 3),
+                                          borderRadius:
+                                              BorderRadius.circular(50)),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(50),
+                                        child: Image.asset(
+                                          'assets/images/empty.png',
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text('My Status'),
+                                  ],
+                                ),
+                                Positioned(
+                                  bottom: 30,
+                                  right: 0,
+                                  child: SizedBox(
+                                    height: 36,
+                                    width: 36,
+                                    child: Card(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20.0),
+                                      ),
+                                      child: Image.asset(
+                                        'assets/icons/plus.png',
+                                      ),
+                                    ),
                                   ),
                                 ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Text(state.usersList![index].firstName!),
                               ],
                             ),
-                          );
-                        }),
+                          ),
+                        ),
+                        ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: state.usersList!.length,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.only(right: 1),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      height: 75,
+                                      width: 75,
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Colors.orange, width: 3),
+                                          borderRadius:
+                                              BorderRadius.circular(50)),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(50),
+                                        child: state.image?[index] == null ||
+                                                state.image?[index] != ''
+                                            ? Image.network(
+                                                state.image![index],
+                                                fit: BoxFit.cover,
+                                              )
+                                            : Image.asset(
+                                                'assets/images/empty.png'),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(state.usersList![index].firstName!),
+                                  ],
+                                ),
+                              );
+                            }),
+                      ]),
+                    ),
                   ),
                   const SizedBox(
                     height: 30,
@@ -156,18 +253,21 @@ class _ContactsScreenState extends State<ContactsScreen> {
                                             right: 15,
                                           ),
                                           child: Container(
-                                            height: 85,
-                                            width: 85,
+                                            height: 75,
+                                            width: 75,
                                             child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(50),
-                                                child: state.image?[index] == null || state.image?[index] != ''
-                                                    ? Image.network(
-                                                  state.image![index],
-                                                  fit: BoxFit.fill,
-                                                )
-                                                    : Image.asset(
-                                                    'assets/images/empty.png'),),
+                                              borderRadius:
+                                                  BorderRadius.circular(50),
+                                              child: state.image?[index] ==
+                                                          null ||
+                                                      state.image?[index] != ''
+                                                  ? Image.network(
+                                                      state.image![index],
+                                                      fit: BoxFit.cover,
+                                                    )
+                                                  : Image.asset(
+                                                      'assets/images/empty.png'),
+                                            ),
                                           ),
                                         ),
                                         Padding(

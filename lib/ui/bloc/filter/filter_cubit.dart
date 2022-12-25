@@ -70,9 +70,10 @@ class FilterCubit extends Cubit<FilterState> {
     try {
       final user = await db.getUserFields(id);
       final searchPref = user!.searchPref!;
-
-      int start = searchPref.yearsRange!.values.elementAt(1);
-      int end = searchPref.yearsRange!.values.elementAt(0);
+      int start = searchPref.yearsRange!.entries.firstWhere((entry) => entry.key
+          == 'start').value;
+      int end = searchPref.yearsRange!.entries.firstWhere((entry) => entry.key
+          == 'end').value;
       print('start: $start, end: $end');
       final yearsRange = RangeValues(start.toDouble(), end.toDouble());
       emit(state.copyWith(

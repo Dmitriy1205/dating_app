@@ -49,8 +49,7 @@ class _ImagePickerList extends StatelessWidget {
                         context
                             .read<ImagePickerCubit>()
                             .uploadImage(f!, '${_itemCount++}')
-                            .whenComplete(() =>
-                            context
+                            .whenComplete(() => context
                                 .read<ImagePickerCubit>()
                                 .getAllImages());
                         userImage(list!.first);
@@ -65,8 +64,8 @@ class _ImagePickerList extends StatelessWidget {
                         width: 55,
                         child: state.status!.isLoading
                             ? const Center(
-                          child: CircularProgressIndicator(),
-                        )
+                                child: CircularProgressIndicator(),
+                              )
                             : Image.asset('assets/icons/photo.png'),
                       ),
                     ),
@@ -79,59 +78,59 @@ class _ImagePickerList extends StatelessWidget {
               list == null
                   ? const SizedBox()
                   : ListView.builder(
-                  itemCount: list.length,
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 15),
-                      child: InkWell(
-                        onTap: () {
-                          _selected = index;
-                          context
-                              .read<ImagePickerCubit>()
-                              .switcher(_selected!);
-                          // picked = !picked;
-                          userImage(list[index]);
-                          print(list[index]);
-                        },
-                        child: Container(
-                          height: 200,
-                          width: 150,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(7),
-                              border: index == _selected
-                                  ? Border.all(
-                                  color: Colors.orange, width: 3)
-                                  : Border.all(color: Colors.transparent)),
-                          child: Card(
-                            elevation: 5,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(5),
-                              child: Stack(
-                                fit: StackFit.expand,
-                                children: [
-                                  Image.network(
-                                    list[index],
-                                    width: 150,
-                                    height: 200,
-                                    fit: BoxFit.cover,
+                      itemCount: list.length,
+                      scrollDirection: Axis.horizontal,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 15),
+                          child: InkWell(
+                            onTap: () {
+                              _selected = index;
+                              context
+                                  .read<ImagePickerCubit>()
+                                  .switcher(_selected!);
+                              // picked = !picked;
+                              userImage(list[index]);
+                              print(list[index]);
+                            },
+                            child: Container(
+                              height: 200,
+                              width: 150,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(7),
+                                  border: index == _selected
+                                      ? Border.all(
+                                          color: Colors.orange, width: 3)
+                                      : Border.all(color: Colors.transparent)),
+                              child: Card(
+                                elevation: 5,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(5),
+                                  child: Stack(
+                                    fit: StackFit.expand,
+                                    children: [
+                                      Image.network(
+                                        list[index],
+                                        width: 150,
+                                        height: 200,
+                                        fit: BoxFit.cover,
+                                      ),
+                                      index == _selected
+                                          ? SizedBox(
+                                              child: Image.asset(
+                                                'assets/icons/check.png',
+                                              ),
+                                            )
+                                          : const SizedBox(),
+                                    ],
                                   ),
-                                  index == _selected
-                                      ? SizedBox(
-                                    child: Image.asset(
-                                      'assets/icons/check.png',
-                                    ),
-                                  )
-                                      : const SizedBox(),
-                                ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ),
-                    );
-                  }),
+                        );
+                      }),
             ],
           ),
         );

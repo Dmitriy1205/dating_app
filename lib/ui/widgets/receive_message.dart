@@ -4,21 +4,33 @@ import 'package:intl/intl.dart';
 import '../../core/themes/text_styles.dart';
 
 class ReplyCard extends StatelessWidget {
-  const ReplyCard({super.key, required this.messageModel, required this.time, required this.userPicture});
+  const ReplyCard(
+      {super.key,
+      required this.messageModel,
+      required this.time,
+      required this.userPicture});
 
   final MessageModel messageModel;
   final String time;
   final String userPicture;
+
   @override
   Widget build(BuildContext context) {
     return Stack(alignment: AlignmentDirectional.topStart, children: [
-      Container(
+      SizedBox(
         height: 45,
         width: 45,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(50),
-          child: userPicture != '' ? Image.network(userPicture): Image.asset(
-              'assets/images/empty.png'),
+          child: userPicture != ''
+              ? Image.network(
+                  userPicture,
+                  fit: BoxFit.cover,
+                )
+              : Image.asset(
+                  'assets/images/empty.png',
+                  fit: BoxFit.cover,
+                ),
           // fit: BoxFit.fill,
         ),
       ),

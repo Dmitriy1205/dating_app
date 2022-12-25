@@ -39,7 +39,7 @@ class OwnMessageCard1 extends StatelessWidget {
                 .loggedUserPicture != '' ? Image.network(context
                 .read<MessengerCubit>()
                 .loggedUser
-                .loggedUserPicture) :
+                .loggedUserPicture,fit: BoxFit.cover,) :
             Image.asset(CustomIcons.photo),
             // fit: BoxFit.fill,
           ),

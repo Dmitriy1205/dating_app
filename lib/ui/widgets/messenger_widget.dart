@@ -130,78 +130,82 @@ class _MessengerWidgetState extends State<MessengerWidget> {
   }
 
   Widget typeMessage(BuildContext context, state) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width - 20,
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25),
-        ),
-        child: TextFormField(
-          maxLines: 5,
-          minLines: 1,
-          controller: myMessageController,
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            hintText: AppLocalizations.of(context)!.typeYourMessage,
-            hintStyle: const TextStyle(color: Colors.grey),
-            prefix: const SizedBox(
-              width: 20,
-            ),
-            suffixIcon: SizedBox(
-              width: 100,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      ReUsableWidgets().showPicker(
-                        context,
-                        func: (File? f) async {
-                          String? messageUrl = await context
-                              .read<ImagePickerCubit>()
-                              .uploadMessageImage(
-                                  f!, context.read<MessengerCubit>().getChatId);
+    return Padding(
+      padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height/23),
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width - 20,
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25),
+          ),
+          child: TextFormField(
+            maxLines: 5,
+            minLines: 1,
+            controller: myMessageController,
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.only(top: 15),
+              border: InputBorder.none,
+              hintText: AppLocalizations.of(context)!.typeYourMessage,
+              hintStyle: const TextStyle(color: Colors.grey),
+              prefix: const SizedBox(
+                width: 20,
+              ),
+              suffixIcon: SizedBox(
+                width: 100,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        ReUsableWidgets().showPicker(
+                          context,
+                          func: (File? f) async {
+                            String? messageUrl = await context
+                                .read<ImagePickerCubit>()
+                                .uploadMessageImage(
+                                    f!, context.read<MessengerCubit>().getChatId);
+                            MessageModel message = MessageModel(
+                                message: messageUrl,
+                                recipientName: widget.user.firstName,
+                                time: DateTime.now().toString());
+                            context
+                                .read<MessengerCubit>()
+                                .sendMessage(message, widget.user, true);
+                          },
+                        );
+                      },
+                      child: SizedBox(
+                          width: 50,
+                          height: 50,
+                          child: Image.asset(CustomIcons.attachMessage)),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        if (myMessageController.text != '') {
+                          if (state.status!.isLoaded) {
+                            _scrollController.animateTo(
+                                _scrollController.position.minScrollExtent,
+                                duration: const Duration(seconds: 1),
+                                curve: Curves.easeInOut);
+                          }
                           MessageModel message = MessageModel(
-                              message: messageUrl,
-                              recipientName: widget.user.firstName,
-                              time: DateTime.now().toString());
+                            message: myMessageController.text,
+                            time: DateTime.now().toString(),
+                            recipientName: widget.user.firstName,
+                          );
                           context
                               .read<MessengerCubit>()
-                              .sendMessage(message, widget.user, true);
-                        },
-                      );
-                    },
-                    child: SizedBox(
-                        width: 50,
-                        height: 50,
-                        child: Image.asset(CustomIcons.attachMessage)),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      if (myMessageController.text != '') {
-                        if (state.status!.isLoaded) {
-                          _scrollController.animateTo(
-                              _scrollController.position.minScrollExtent,
-                              duration: const Duration(seconds: 1),
-                              curve: Curves.easeInOut);
+                              .sendMessage(message, widget.user);
+                          myMessageController.clear();
                         }
-                        MessageModel message = MessageModel(
-                          message: myMessageController.text,
-                          time: DateTime.now().toString(),
-                          recipientName: widget.user.firstName,
-                        );
-                        context
-                            .read<MessengerCubit>()
-                            .sendMessage(message, widget.user);
-                        myMessageController.clear();
-                      }
-                    },
-                    child: SizedBox(
-                        width: 50,
-                        height: 50,
-                        child: Image.asset(CustomIcons.sendMessage)),
-                  ),
-                ],
+                      },
+                      child: SizedBox(
+                          width: 50,
+                          height: 50,
+                          child: Image.asset(CustomIcons.sendMessage)),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
