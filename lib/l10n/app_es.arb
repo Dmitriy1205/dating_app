@@ -135,6 +135,10 @@
             "sharedInterests":"Intereses compartidos",
             "locationServicesAreDes":"Los servicios de ubicación están deshabilitados. Habilite los servicios",
               "locationPermissionDenied":"Los permisos de ubicación están denegados",
+              "youMustPickLookingFor":"Debes escoger buscando campo",
+              "youMustPickGender":"Debes elegir un género.",
+              "noUsersLeft":"No quedan usuarios",
+                "tryToChangePreferences":"Intenta cambiar tus Preferencias",
               "locationPermissionArePermanently":"Los permisos de ubicación se niegan permanentemente, no podemos solicitar permisos.",
               "sharedHobbies":"Pasatiempos compartidos"
 

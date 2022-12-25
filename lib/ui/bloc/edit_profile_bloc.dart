@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:dating_app/data/models/profile_info_data.dart';
-import 'package:dating_app/data/models/search_pref_data.dart';
 import 'package:dating_app/data/repositories/auth_repository.dart';
 import 'package:dating_app/data/repositories/storage_repository.dart';
 
@@ -56,9 +55,9 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     }
   }
 
-  Future<void> update(ProfileInfoFields p, Map<String,dynamic> s) async {
+  Future<void> update(ProfileInfoFields p, Map<String,dynamic> s,String name) async {
     try {
-      await db.updateFields(id, p.toFirestore(), s);
+      await db.updateFields(id, p.toFirestore(), s,name);
       emit(state.copyWith(status: Status.loaded()));
     } on BadRequestException catch (e) {
       print('prof edit $e');

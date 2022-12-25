@@ -11,12 +11,14 @@ part 'image_picker_state.dart';
 
 class ImagePickerCubit extends Cubit<ImagePickerState> {
   ImagePickerCubit({required this.auth, required this.storage})
-      : super(ImagePickerState(status: Status.initial())){
+      : super(ImagePickerState(status: Status.initial())) {
     getAllImages();
   }
 
   final AuthRepository auth;
   final StorageRepository storage;
+
+  void switcher(int pick) => emit(state.copyWith(pick: pick));
 
   Future<void> uploadImage(File source, String name) async {
     emit(state.copyWith(status: Status.loading()));
@@ -29,10 +31,12 @@ class ImagePickerCubit extends Cubit<ImagePickerState> {
       emit(state.copyWith(status: Status.error(e.toString())));
     }
   }
+
   Future<String?> uploadMessageImage(File source, String chatId) async {
     emit(state.copyWith(status: Status.loading()));
     try {
-      String imageUrl = await storage.upload(source, 'chats/$chatId/${DateTime.now()}');
+      String imageUrl =
+          await storage.upload(source, 'chats/$chatId/${DateTime.now()}');
       emit(state.copyWith(status: Status.loaded()));
       return imageUrl;
     } catch (e) {

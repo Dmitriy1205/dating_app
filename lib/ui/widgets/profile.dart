@@ -109,7 +109,7 @@ class Profile extends StatelessWidget {
                           style: TextStyle(fontSize: 14),
                         ),
                         Text(
-                          state.user!.profileInfo!.name ?? '',
+                          state.user!.firstName ?? '',
                           textAlign: TextAlign.start,
                           style: TextStyle(color: Colors.grey, fontSize: 14),
                         ),

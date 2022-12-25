@@ -79,6 +79,7 @@ class _HobbiesScreenState extends State<HobbiesScreen> {
                               GestureDetector(
                                 onTap: () {
                                   Navigator.pop(context, widget.hobbies);
+
                                 },
                                 child: Text(
                                   AppLocalizations.of(context)!.done,

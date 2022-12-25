@@ -384,7 +384,7 @@ class ReUsableWidgets {
             ),
           ]),
         TextFormField(
-          autovalidateMode: AutovalidateMode.onUserInteraction,
+
           autocorrect: false,
           controller: university,
           keyboardType: TextInputType.name,
@@ -393,14 +393,14 @@ class ReUsableWidgets {
           onSaved: (value) {
             universityController.text = value!.trim();
           },
-          validator: validateNameField,
+          // validator: validateNameField,
         ),
         const SizedBox(
           height: 10,
         ),
         if (isRegisterForm)
           TextFormField(
-            autovalidateMode: AutovalidateMode.onUserInteraction,
+
             autocorrect: false,
             controller: degreeController,
             keyboardType: TextInputType.name,
@@ -408,13 +408,13 @@ class ReUsableWidgets {
             onSaved: (value) {
               degreeController.text = value!.trim();
             },
-            validator: validateNameField,
+            // validator: validateNameField,
           ),
         const SizedBox(
           height: 10,
         ),
         TextFormField(
-          autovalidateMode: AutovalidateMode.onUserInteraction,
+
           autocorrect: false,
           controller: company,
           keyboardType: TextInputType.name,
@@ -422,14 +422,13 @@ class ReUsableWidgets {
           onSaved: (value) {
             companyController.text = value!.trim();
           },
-          validator: validateNameField,
+          // validator: validateNameField,
         ),
         const SizedBox(
           height: 10,
         ),
         if (isRegisterForm)
           TextFormField(
-            autovalidateMode: AutovalidateMode.onUserInteraction,
             autocorrect: false,
             controller: jobController,
             keyboardType: TextInputType.name,
@@ -437,7 +436,7 @@ class ReUsableWidgets {
             onSaved: (value) {
               jobController.text = value!.trim();
             },
-            validator: validateNameField,
+            // validator: validateNameField,
           ),
       ],
     );

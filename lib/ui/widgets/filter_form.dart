@@ -139,17 +139,17 @@ class FilterForm extends StatelessWidget {
                         style: const TextStyle(color: Colors.black45)),
                   ],
                 ),
-                // RangeSlider(
-                //     values: state.age!,
-                //     onChanged: (newYears) {
-                //       context.read<FilterCubit>().setAge(newYears);
-                //       // yearsRange = {
-                //       //   'start': state.age!.start.round(),
-                //       //   'end': state.age!.end.round()
-                //       // };
-                //     },
-                //     min: 5,
-                //     max: 55),
+                RangeSlider(
+                    values: state.age!,
+                    onChanged: (newYears) {
+                      context.read<FilterCubit>().setAge(newYears);
+                      // yearsRange = {
+                      //   'start': state.age!.start.round(),
+                      //   'end': state.age!.end.round()
+                      // };
+                    },
+                    min: 5,
+                    max: 55),
                 Padding(
                   padding: const EdgeInsets.only(top: 15, bottom: 8),
                   child: Row(

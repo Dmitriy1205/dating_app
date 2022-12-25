@@ -45,7 +45,7 @@ class UserModel {
         profileInfo: ProfileInfoFields.fromJson(data?['ProfileInfo']),
         searchPref: SearchPrefFields.fromJson(data?['SearchPreferences']),
         language: data?['language'],
-        firstName: data?['firstName'],
+        firstName: data?['name'],
         phone: data?['phone'],
         addedFriends: data?['addedFriends'],
         blockedFriends: data?['blockedFriends']);

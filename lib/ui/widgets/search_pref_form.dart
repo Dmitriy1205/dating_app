@@ -106,8 +106,34 @@ class SearchPrefForm extends StatelessWidget {
                                 GestureDetector(
                                     onTap: () {
                                       if (!_formKey.currentState!.validate()) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            backgroundColor: Colors.red,
+                                            content: Text(
+                                              AppLocalizations.of(context)!
+                                                  .youMustPickGender,
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        );
+                                        return;
+                                      } else if (!lookingFor!
+                                          .containsValue(true)) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            backgroundColor: Colors.red,
+                                            content: Text(
+                                              AppLocalizations.of(context)!
+                                                  .youMustPickLookingFor,
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        );
                                         return;
                                       }
+
                                       _formKey.currentState!.save();
                                       context
                                           .read<SearchPreferencesCubit>()

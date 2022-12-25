@@ -137,6 +137,10 @@
   "locationServicesAreDes":"Location services are disabled. Please enable the services",
   "locationPermissionDenied":"Location permissions are denied",
   "locationPermissionArePermanently":"Location permissions are permanently denied, we cannot request permissions.",
+  "youMustPickLookingFor":"You must pick looking for field",
+  "noUsersLeft":"No Users left",
+  "tryToChangePreferences":"Try to change your Preferences",
+  "youMustPickGender":"You must pick a gender",
   "sharedHobbies":"Shared hobbies"
 
 }

@@ -64,6 +64,13 @@ class _SignUpFormState extends State<SignUpForm> {
         }
       },
       builder: (context, state) {
+        if (state.status!.isLoading) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: Colors.orange,
+            ),
+          );
+        }
         return Stack(
           fit: StackFit.expand,
           alignment: Alignment.center,

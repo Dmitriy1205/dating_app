@@ -56,6 +56,15 @@ class _LoginFormState extends State<LoginForm> {
         }
       },
       builder: (context, state) {
+        if (state.status!.isLoading) {
+          return const Material(
+            child: Center(
+              child: CircularProgressIndicator(
+                color: Colors.orange,
+              ),
+            ),
+          );
+        }
         return Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
@@ -133,7 +142,7 @@ class _LoginFormState extends State<LoginForm> {
                                   AppLocalizations.of(context)!.phoneNumber),
                               onSaved: (value) {
                                 isoCode = value!.countryCode;
-                                _phoneController.text = value!.number;
+                                _phoneController.text = value.number;
                                 print(isoCode + _phoneController.text);
                               },
                               validator: validatePhoneField,

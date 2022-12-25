@@ -270,11 +270,12 @@ class FirebaseDataProvider {
   }
 
   Future<void> updateFields(
-      String id, Map<String, dynamic> prof, Map<String, dynamic> look) async {
+      String id, Map<String, dynamic> prof, Map<String, dynamic> look,String name) async {
     try {
       await firestore.collection('users').doc(id).update({
         'ProfileInfo': prof,
         'SearchPreferences.lookingFor': look,
+        'name':name,
       });
     } on FirebaseException catch (e) {
       print(e.message);

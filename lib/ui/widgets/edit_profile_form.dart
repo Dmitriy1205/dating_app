@@ -68,10 +68,8 @@ class _EditProfileFormState extends State<EditProfileForm> {
         }
         var search = state.userModel!.searchPref!;
         var profile = state.userModel!.profileInfo!;
-        // longitude = state.userModel.longitude;
-        // latitude = state.userModel.latitude;
         locationController.text = profile!.location!;
-        nameController.text = profile.name!;
+        nameController.text = state.userModel!.firstName!;
         bioController.text = profile.bio!;
         heightController.text = profile.height!;
         ageController.text = profile.age!;
@@ -351,7 +349,8 @@ class _EditProfileFormState extends State<EditProfileForm> {
                                       ..university = universityController.text
                                       ..company = companyController.text
                                       ..location = locationController.text,
-                                    lookingFor = lookingFor)
+                                    lookingFor = lookingFor,
+                                nameController.text)
                                 .then((value) => Navigator.pop(context));
 
                             print('saved');

@@ -83,8 +83,28 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
             child: CircularProgressIndicator(),
           );
         }
+        List<String> inter = [
+          AppLocalizations.of(context)!.photography,
+          AppLocalizations.of(context)!.acting,
+          AppLocalizations.of(context)!.film,
+          AppLocalizations.of(context)!.finArt,
+          AppLocalizations.of(context)!.music,
+          AppLocalizations.of(context)!.fashion,
+          AppLocalizations.of(context)!.dance,
+          AppLocalizations.of(context)!.politics,
+        ];
+        List<String> hobb = [
+          AppLocalizations.of(context)!.workingOut,
+          AppLocalizations.of(context)!.reading,
+          AppLocalizations.of(context)!.cooking,
+          AppLocalizations.of(context)!.biking,
+          AppLocalizations.of(context)!.drinking,
+          AppLocalizations.of(context)!.shopping,
+          AppLocalizations.of(context)!.hiking,
+          AppLocalizations.of(context)!.baking,
+        ];
 
-        nameController.text = widget.name;
+        // nameController.text = widget.name;
         ageController.text = widget.date;
         return SingleChildScrollView(
           physics: const ClampingScrollPhysics(),
@@ -148,35 +168,38 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                   ],
                                 ),
                                 GestureDetector(
-                                    onTap: () {
-                                      if (!_formKey.currentState!.validate()) {
-                                        return;
-                                      }
-                                      _formKey.currentState!.save();
-                                      context
-                                          .read<ProfileInfoCubit>()
-                                          .saveData(data: {
-                                        'image': userImage,
-                                        'name': nameController.text,
-                                        'bio': bioController.text,
-                                        'gender': gender,
-                                        'height': heightController.text,
-                                        'age': ageController.text,
-                                        'status': status,
-                                        'university': universityController.text,
-                                        'degree/major': degreeController.text,
-                                        'company': companyController.text,
-                                        'job': jobController.text,
-                                        'hobbies': hobbies,
-                                        'interests': interests,
-                                        'location': locationController.text,
-                                      });
-                                    },
-                                    child: SizedBox(
-                                        height: 25,
-                                        width: 25,
-                                        child: Image.asset(
-                                            'assets/icons/check.png'))),
+                                  onTap: () {
+                                    if (!_formKey.currentState!.validate()) {
+                                      return;
+                                    }
+                                    _formKey.currentState!.save();
+                                    context
+                                        .read<ProfileInfoCubit>()
+                                        .saveData(data: {
+                                      'image': userImage,
+                                      'name': nameController.text,
+                                      'bio': bioController.text,
+                                      'gender': gender,
+                                      'height': heightController.text,
+                                      'age': ageController.text,
+                                      'status': status,
+                                      'university': universityController.text,
+                                      'degree/major': degreeController.text,
+                                      'company': companyController.text,
+                                      'job': jobController.text,
+                                      'hobbies': hobbies,
+                                      'interests': interests,
+                                      'location': locationController.text,
+                                    });
+                                  },
+                                  child: SizedBox(
+                                    height: 25,
+                                    width: 25,
+                                    child: Image.asset(
+                                      'assets/icons/check.png',
+                                    ),
+                                  ),
+                                ),
                                 // const Icon(
                                 //   Icons.check,
                                 // ),
@@ -189,6 +212,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                             ImagePickerList(
                               userImage: (i) {
                                 userImage = i;
+                                print('-------$i');
                               },
                             ),
                             Column(
@@ -428,6 +452,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                               ],
                             ),
                             Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const SizedBox(
                                   height: 20,
@@ -448,6 +473,9 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                       ),
                                     );
                                     hobbies = result;
+                                    if (mounted) {
+                                      context.read<ProfileInfoCubit>().init();
+                                    }
                                   },
                                   child: Ink(
                                     color: Colors.white,
@@ -481,9 +509,35 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                     ),
                                   ),
                                 ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Wrap(
+                                  children: List<Widget>.generate(
+                                    hobbies.length,
+                                    (index) => hobbies.values
+                                                .elementAt(index) ==
+                                            false
+                                        ? const SizedBox()
+                                        : Padding(
+                                            padding:
+                                                const EdgeInsets.only(right: 6),
+                                            child: Chip(
+                                              label: Text(
+                                                hobb[index],
+                                                style: TextStyle(
+                                                  color: Colors.grey.shade800,
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                  ).toList(),
+                                ),
                               ],
                             ),
                             Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const SizedBox(
                                   height: 20,
@@ -504,6 +558,10 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                       ),
                                     );
                                     interests = result;
+
+                                    if (mounted) {
+                                      context.read<ProfileInfoCubit>().init();
+                                    }
                                   },
                                   child: Ink(
                                     color: Colors.white,
@@ -536,6 +594,31 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                       ),
                                     ),
                                   ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Wrap(
+                                  children: List<Widget>.generate(
+                                    interests.length,
+                                    (index) => interests.values
+                                                .elementAt(index) ==
+                                            false
+                                        ? const SizedBox()
+                                        : Padding(
+                                            padding:
+                                                const EdgeInsets.only(right: 6),
+                                            child: Chip(
+                                              label: Text(
+                                                inter[index],
+                                                style: TextStyle(
+                                                  color: Colors.grey.shade800,
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                  ).toList(),
                                 ),
                               ],
                             ),

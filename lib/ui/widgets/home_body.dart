@@ -26,9 +26,9 @@ class _HomeBody1State extends State<HomeBody1> {
         } else if(state.status!.isError){
           return Center(
             child: Column(mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Text('No Users left'),
-                Text('Try to change your Preferences..'),
+              children:  [
+                Text(AppLocalizations.of(context)!.noUsersLeft),
+                Text(AppLocalizations.of(context)!.tryToChangePreferences),
               ],
             ),
           );

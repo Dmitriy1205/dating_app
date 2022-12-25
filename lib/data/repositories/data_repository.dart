@@ -58,8 +58,8 @@ class DataRepository {
   }
 
   Future<void> updateFields(String id, Map<String, dynamic> profile,
-      Map<String, dynamic> look) async {
-    await dataProvider.updateFields(id, profile, look);
+      Map<String, dynamic> look,String name) async {
+    await dataProvider.updateFields(id, profile, look,name);
   }
 
   Future<List<UserModel>> getAllUserFields() async {

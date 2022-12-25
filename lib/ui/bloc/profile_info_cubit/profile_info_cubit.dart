@@ -21,6 +21,8 @@ class ProfileInfoCubit extends Cubit<ProfileInfoState> {
 
   String get id => auth.currentUser()!.uid;
 
+  void init() => emit(state.copyWith(status: Status.initial()));
+
   Future<void> saveData({required Map<String, dynamic> data}) async {
     emit(state.copyWith(status: Status.loading()));
 
