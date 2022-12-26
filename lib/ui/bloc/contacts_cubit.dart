@@ -22,7 +22,6 @@ class ContactsCubit extends Cubit<ContactsCubitStates> {
   Future<String> getUrlImage(String id) async {
     final String image = await db.getUserFields(id).then((value) {
       return value!.profileInfo!.image! ??
-
           'https://firebasestorage.googleapis.com/v0/b/dating-app-95830.appspot.com/o/users%2F7kyZ3iSjKUQyQHNTNpB1gzU8pP33%2Fimage2.png?alt=media&token=968c17f4-46ee-4e0b-a3e7-b6d0a92c3f4c';
     });
     return image;
@@ -30,6 +29,7 @@ class ContactsCubit extends Cubit<ContactsCubitStates> {
 
   Future<void> updateConnections() async {
     usersList = await db.getContacts();
+    final u = await db.getUserFields(authRepository.currentUser()!.uid);
     for (int i = 0; i < usersList.length; i++) {
       print('${usersList[i].firstName}');
       if (usersList[i].id == authRepository.currentUser()!.uid) {
@@ -39,7 +39,10 @@ class ContactsCubit extends Cubit<ContactsCubitStates> {
       imagesList.add(await getUrlImage(usersList[i].id!));
     }
     emit(state.copyWith(
-        usersList: usersList, status: Status.loaded(), image: imagesList));
+        usersList: usersList,
+        status: Status.loaded(),
+        image: imagesList,
+        currentUserAvatar: u!.profileInfo?.image));
   }
 }
 
@@ -47,18 +50,34 @@ class ContactsCubitStates extends Equatable {
   final List<String>? image;
   final List<UserModel>? usersList;
   final Status? status;
+  final String? currentUserAvatar;
 
-  ContactsCubitStates({this.image, this.usersList, this.status});
+  const ContactsCubitStates({
+    this.image,
+    this.usersList,
+    this.status,
+    this.currentUserAvatar,
+  });
 
   @override
-  List<Object?> get props => [image, usersList, status];
+  List<Object?> get props => [
+        image,
+        usersList,
+        status,
+        currentUserAvatar,
+      ];
 
-  ContactsCubitStates copyWith(
-      {List<String>? image, List<UserModel>? usersList, Status? status}) {
+  ContactsCubitStates copyWith({
+    List<String>? image,
+    List<UserModel>? usersList,
+    Status? status,
+    String? currentUserAvatar,
+  }) {
     return ContactsCubitStates(
       image: image ?? this.image,
       usersList: usersList ?? this.usersList,
       status: status ?? this.status,
+      currentUserAvatar: currentUserAvatar ?? this.currentUserAvatar,
     );
   }
 }

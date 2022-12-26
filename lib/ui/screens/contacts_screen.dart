@@ -1,6 +1,6 @@
 import 'package:dating_app/ui/bloc/contacts_cubit.dart';
-import 'package:dating_app/ui/bloc/profile/profile_cubit.dart';
 import 'package:dating_app/ui/screens/messenger_screen.dart';
+import 'package:dating_app/ui/widgets/status_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dating_app/core/service_locator.dart';
@@ -51,19 +51,14 @@ class _ContactsScreenState extends State<ContactsScreen> {
                   style: const TextStyle(
                       color: Colors.black, fontWeight: FontWeight.bold),
                 ),
-                Spacer(),
+                const Spacer(),
                 Padding(
                   padding: const EdgeInsets.all(5.0),
                   child: GestureDetector(
                     onTap: () {
                       //TODO: phone call
                     },
-                    child:
-                    // const SizedBox(
-                    //   height: 45,
-                    //   width: 45,
-                    // ),
-                    SizedBox(
+                    child: SizedBox(
                       height: 45,
                       width: 45,
                       child: Card(
@@ -114,7 +109,9 @@ class _ContactsScreenState extends State<ContactsScreen> {
                           padding: const EdgeInsets.only(left: 25, right: 15),
                           child: GestureDetector(
                             onTap: () {
-                              //TODO: onatp func
+                              StatusBottomSheet().showPicker(
+                                context,
+                              );
                             },
                             child: Stack(
                               children: [
@@ -132,16 +129,21 @@ class _ContactsScreenState extends State<ContactsScreen> {
                                               BorderRadius.circular(50)),
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(50),
-                                        child: Image.asset(
-                                          'assets/images/empty.png',
-                                          fit: BoxFit.cover,
-                                        ),
+                                        child: state.currentUserAvatar == null
+                                            ? Image.asset(
+                                                'assets/images/empty.png',
+                                                fit: BoxFit.cover,
+                                              )
+                                            : Image.network(
+                                                state.currentUserAvatar!,
+                                                fit: BoxFit.cover,
+                                              ),
                                       ),
                                     ),
                                     const SizedBox(
                                       height: 5,
                                     ),
-                                    Text('My Status'),
+                                    Text(AppLocalizations.of(context)!.myStatus),
                                   ],
                                 ),
                                 Positioned(

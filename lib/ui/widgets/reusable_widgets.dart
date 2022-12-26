@@ -508,9 +508,10 @@ class ReUsableWidgets {
         builder: (BuildContext bc) {
           return SafeArea(
             child: Wrap(
+              alignment: WrapAlignment.center,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 15, 15, 8),
+                  padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                   child: Card(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.0),
@@ -570,25 +571,35 @@ class ReUsableWidgets {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: Column(
-                      children: [
-                        ListTile(
-                            title: Center(
-                                child: Text(
-                              AppLocalizations.of(context)!.cancel,
-                              style: const TextStyle(
-                                  color: Colors.orange,
-                                  fontWeight: FontWeight.bold),
-                            )),
-                            onTap: () {
-                              Navigator.of(context).pop();
-                            }),
-                      ],
+                  padding: const EdgeInsets.only(left: 22,right: 22,bottom: 22),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    style: ElevatedButton.styleFrom(
+                        primary: Colors.transparent,
+                        padding: EdgeInsets.zero,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50))),
+                    child: Ink(
+                      decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment(0.1, 2.1),
+                            colors: [
+                              Colors.orange,
+                              Colors.purple,
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(50)),
+                      child: Container(
+                        width: 340,
+                        height: 55,
+                        alignment: Alignment.center,
+                        child: Text(
+                          AppLocalizations.of(context)!.cancel.toUpperCase(),
+                        ),
+                      ),
                     ),
                   ),
                 ),

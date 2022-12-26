@@ -139,6 +139,9 @@
               "youMustPickLookingFor":"Você deve escolher procurando campo",
               "youMustPickGender":"Você deve escolher um gênero",
               "noUsersLeft":"Nenhum usuário restante",
+              "addImage":"Adicionar imagem",
+                "addText":"Adicione texto",
+                "myStatus":"Meu status",
                 "tryToChangePreferences":"Tente mudar suas Preferências",
               "locationPermissionArePermanently":"As permissões de localização são permanentemente negadas, não podemos solicitar permissões.",
               "sharedHobbies":"Passatempos compartilhados"

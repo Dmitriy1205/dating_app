@@ -138,6 +138,9 @@
             "youMustPickLookingFor":"Vous devez choisir le champ de recherche",
             "youMustPickGender":"Vous devez choisir un sexe",
             "noUsersLeft":"Aucun utilisateur restant",
+            "addImage":"Ajouter une image",
+              "addText":"Ajouter du texte",
+              "myStatus":"Mon statut",
               "tryToChangePreferences":"Essayez de modifier vos Préférences",
             "locationPermissionArePermanently":"Les autorisations de localisation sont définitivement refusées, nous ne pouvons pas demander d'autorisations.",
             "sharedHobbies":"Loisirs partagés"

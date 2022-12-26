@@ -139,6 +139,9 @@
   "locationPermissionArePermanently":"Location permissions are permanently denied, we cannot request permissions.",
   "youMustPickLookingFor":"You must pick looking for field",
   "noUsersLeft":"No Users left",
+  "addImage":"Add Image",
+  "addText":"Add Text",
+  "myStatus":"My Status",
   "tryToChangePreferences":"Try to change your Preferences",
   "youMustPickGender":"You must pick a gender",
   "sharedHobbies":"Shared hobbies"
