@@ -135,7 +135,6 @@ class _CardsSectionState extends State<SwipeableCardsSection>
       ignoring: !enableSwipe,
       child: Stack(
         children: <Widget>[
-
           if (cards.length > 1) middleCard(),
           if (cards.isNotEmpty) frontCard(),
 
@@ -244,19 +243,33 @@ class _CardsSectionState extends State<SwipeableCardsSection>
                 : frontCardAlign,
             child: SizedBox.fromSize(
               size: cardsSize[0],
-              child: Stack(children: [
-                SizedBox.fromSize(size: cardsSize[0], child: cards[0]!),
-                Visibility(
-                  visible: isVisible,
-                  child: Center(
+              child: Stack(
+                alignment: AlignmentDirectional.center,
+                children: [
+                  SizedBox.fromSize(size: cardsSize[0], child: cards[0]!),
+                  Visibility(
+                    visible: isVisible,
+                    child: Positioned(
+                      top: 150,
                       child: SizedBox(
-                          height: 80,
-                          width: 80,
-                          child: frontCardAlign.x > 0
-                              ? Image.asset('assets/icons/green_mess.png')
-                              : Image.asset('assets/icons/red_close.png'))),
-                ),
-              ]),
+                        height: 120,
+                        width: 120,
+                        child: frontCardAlign.x > 0
+                            ? ClipRRect(
+                                child: Image.asset(
+                                  'assets/icons/green_mess.png',
+                                  fit: BoxFit.fill,
+                                ),
+                              )
+                            : ClipRRect(
+                                child:
+                                    Image.asset('assets/icons/red_close.png'),
+                              ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ));
     } else {
