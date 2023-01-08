@@ -43,12 +43,6 @@ class HomeCubit extends Cubit<HomeState> {
       final id = auth.currentUser()!.uid;
       final UserModel? searchUser = await db.getUserFields(id);
       final List<UserModel> allUsers = await db.getPals();
-      for (var user in allUsers) {
-        print(
-            'allUsers ${user.searchPref!.interests} ${user.searchPref!.hobbies} ${user.searchPref!.lookingFor} ${user.id} ${user.firstName}');
-      }
-      print(
-          'searchUser ${searchUser!.searchPref?.interests} ${searchUser!.searchPref?.hobbies} ${searchUser!.searchPref?.lookingFor}');
       allUsers
         ..removeWhere((element) => element.id == id)
         ..removeWhere((element) =>
