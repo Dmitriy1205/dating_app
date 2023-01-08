@@ -143,16 +143,10 @@ class FirebaseDataProvider {
       for (var element in getAddedFriends.docs) {
         listAddedToFriends.add(element.data()['addedFriend']);
       }
-      print('getAddedFriends ${getAddedFriends.size}');
-
-      print('refusedFriends ${refusedFriends.size}');
-
       for (var element in refusedFriends.docs) {
         print('element ${element.id}');
         listAddedToFriends.add(element.data()['addedFriend']);
       }
-      print('listAddedToFriends ${listAddedToFriends.length}');
-
       QuerySnapshot<Map<String, dynamic>> users =
           await firestore.collection('users').get();
       List<UserModel> palsList = [];
