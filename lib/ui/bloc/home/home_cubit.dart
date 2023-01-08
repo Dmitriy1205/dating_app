@@ -47,8 +47,8 @@ class HomeCubit extends Cubit<HomeState> {
         print(
             'allUsers ${user.searchPref!.interests} ${user.searchPref!.hobbies} ${user.searchPref!.lookingFor} ${user.id} ${user.firstName}');
       }
-      // print(
-      //     'searchUser ${searchUser!.searchPref?.interests} ${searchUser!.searchPref?.hobbies} ${searchUser!.searchPref?.lookingFor}');
+      print(
+          'searchUser ${searchUser!.searchPref?.interests} ${searchUser!.searchPref?.hobbies} ${searchUser!.searchPref?.lookingFor}');
       allUsers
         ..removeWhere((element) => element.id == id)
         ..removeWhere((element) =>
@@ -68,7 +68,7 @@ class HomeCubit extends Cubit<HomeState> {
             bool boolInUser = user.searchPref!.interests![
                 searchUser.searchPref!.interests!.keys.elementAt(a)];
             if (boolInUser) {
-              // print(' added interests ${user.firstName}');
+              print(' added interests ${user.firstName}');
               filteredInterests.contains(user)
                   ? null
                   : filteredInterests.add(user);
@@ -83,9 +83,9 @@ class HomeCubit extends Cubit<HomeState> {
             bool boolInUser = user.searchPref!
                 .hobbies![searchUser.searchPref!.hobbies!.keys.elementAt(a)];
             if (boolInUser) {
-              // print(' added hobbies ${user.firstName}');
+              print(' added hobbies ${user.firstName}');
               filteredHobbies.contains(user) ? null : filteredHobbies.add(user);
-              // print('filteredLookingFor ${filteredHobbies.first}');
+              print('filteredLookingFor ${filteredHobbies.first}');
               // allUsers.removeWhere((element) => element.id == allUsers[i].id);
             }
           }
@@ -98,12 +98,12 @@ class HomeCubit extends Cubit<HomeState> {
             bool boolInUser = user.searchPref!.lookingFor![
                 searchUser.searchPref!.lookingFor!.keys.elementAt(a)];
             if (boolInUser) {
-              // print(' added lookingFor ${user.firstName}');
+              print(' added lookingFor ${user.firstName}');
 
               filteredLookingFor.contains(user)
                   ? null
                   : filteredLookingFor.add(user);
-              // print('filteredLookingFor ${filteredLookingFor.first}');
+              print('filteredLookingFor ${filteredLookingFor.first}');
               // allUsers.removeWhere((element) => element.id == allUsers[i].id);
             }
           }
