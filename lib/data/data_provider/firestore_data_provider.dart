@@ -62,7 +62,9 @@ class FirebaseDataProvider {
           firestore.collection('chats/$chatId/messages').doc().id;
       messageModel.messageId = messageId;
       await firestore
-          .collection('chats/$chatId/messages').doc(messageId).set(messageModel.toJson());
+          .collection('chats/$chatId/messages')
+          .doc(messageId)
+          .set(messageModel.toJson());
     } on FirebaseException catch (e) {
       throw BadRequestException(message: e.message!);
     }
@@ -155,7 +157,7 @@ class FirebaseDataProvider {
           await firestore.collection('users').get();
       List<UserModel> palsList = [];
       users.docs.map((user) {
-        if(!listAddedToFriends.contains(user.id)) {
+        if (!listAddedToFriends.contains(user.id)) {
           palsList.add(UserModel.fromJson(user.data()));
         }
       }).toList();
