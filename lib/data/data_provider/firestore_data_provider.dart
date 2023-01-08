@@ -141,6 +141,8 @@ class FirebaseDataProvider {
       for (var element in getAddedFriends.docs) {
         listAddedToFriends.add(element.data()['addedFriend']);
       }
+      print('getAddedFriends ${getAddedFriends.size}');
+
       print('refusedFriends ${refusedFriends.size}');
 
       for (var element in refusedFriends.docs) {
@@ -153,9 +155,9 @@ class FirebaseDataProvider {
           await firestore.collection('users').get();
       List<UserModel> palsList = [];
       users.docs.map((user) {
-        listAddedToFriends.contains(user.id)
-            ? null
-            : palsList.add(UserModel.fromJson(user.data()));
+        if(!listAddedToFriends.contains(user.id)) {
+          palsList.add(UserModel.fromJson(user.data()));
+        }
       }).toList();
       return palsList;
     } on FirebaseException catch (e) {
