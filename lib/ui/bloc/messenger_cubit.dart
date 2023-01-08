@@ -68,6 +68,10 @@ class MessengerCubit extends Cubit<MessengerStates> {
     print('clearChat $getChatId');
     db.clearChat(getChatId);
   }
+
+  void palReadMessage(MessageModel message){
+    db.palReadMessage(message);
+  }
 }
 
 class MessengerStates extends Equatable {

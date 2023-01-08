@@ -115,6 +115,9 @@ class _MessengerWidgetState extends State<MessengerWidget> {
                     ),
                   );
                 } else {
+                  if(!state.messagesList[index].isRead) {
+                    context.read<MessengerCubit>().palReadMessage(state.messagesList[index]);
+                  }
                   return Padding(
                     padding: const EdgeInsets.fromLTRB(20, 5, 20, 10),
                     child: ReplyCard(

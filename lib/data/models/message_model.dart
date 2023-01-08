@@ -5,6 +5,8 @@ class MessageModel {
   String? recipientName;
   String? chatId;
   String? attachmentUrl;
+  bool? isRead;
+  String? messageId;
 
   MessageModel(
       {this.message,
@@ -12,7 +14,9 @@ class MessageModel {
       this.senderName,
       this.recipientName,
       this.chatId,
-      this.attachmentUrl});
+      this.attachmentUrl,
+      this.isRead,
+      this.messageId});
 
   MessageModel.fromJson(Map<String, dynamic> json) {
     message = json['message'];
@@ -21,6 +25,8 @@ class MessageModel {
     recipientName = json['recipientName'];
     chatId = json['chatId'];
     attachmentUrl = json['attachmentUrl'];
+    isRead = json['isRead'];
+    messageId = json['messageId'];
   }
 
   Map<String, dynamic> toJson() => {
@@ -30,5 +36,7 @@ class MessageModel {
         'recipientName': recipientName,
         'chatId': chatId,
         'attachmentUrl': attachmentUrl,
+        'isRead': false,
+        'messageId': messageId,
       };
 }

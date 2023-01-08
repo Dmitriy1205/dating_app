@@ -58,10 +58,11 @@ class FirebaseDataProvider {
   Future<void> sendMessageToPal(
       MessageModel messageModel, String chatId) async {
     try {
-      print('irestore.collection(\'chats/chatId/messages\') ${chatId}');
+      final String messageId =
+          firestore.collection('chats/$chatId/messages').doc().id;
+      messageModel.messageId = messageId;
       await firestore
-          .collection('chats/$chatId/messages')
-          .add(messageModel.toJson());
+          .collection('chats/$chatId/messages').doc(messageId).set(messageModel.toJson());
     } on FirebaseException catch (e) {
       throw BadRequestException(message: e.message!);
     }
@@ -132,16 +133,17 @@ class FirebaseDataProvider {
     try {
       QuerySnapshot<Map<String, dynamic>> getAddedFriends = await firestore
           .collection('users/${userRepository.getLoggedUser.id}/addedFriends')
-          .get().then((value) => value);
+          .get()
+          .then((value) => value);
       QuerySnapshot<Map<String, dynamic>> refusedFriends = await firestore
           .collection('users/${userRepository.getLoggedUser.id}/refusedFriends')
           .get();
       for (var element in getAddedFriends.docs) {
-          listAddedToFriends.add(element.data()['addedFriend']);
+        listAddedToFriends.add(element.data()['addedFriend']);
       }
       print('refusedFriends ${refusedFriends.size}');
 
-        for (var element in refusedFriends.docs) {
+      for (var element in refusedFriends.docs) {
         print('element ${element.id}');
         listAddedToFriends.add(element.data()['addedFriend']);
       }
@@ -177,7 +179,7 @@ class FirebaseDataProvider {
       List<UserModel> palsList = [];
       users.docs.map((user) {
         if (listAddedToFriends.contains(user.id))
-             palsList.add(UserModel.fromJson(user.data()));
+          palsList.add(UserModel.fromJson(user.data()));
       }).toList();
       return palsList;
     } on FirebaseException catch (e) {
@@ -269,13 +271,13 @@ class FirebaseDataProvider {
     }
   }
 
-  Future<void> updateFields(
-      String id, Map<String, dynamic> prof, Map<String, dynamic> look,String name) async {
+  Future<void> updateFields(String id, Map<String, dynamic> prof,
+      Map<String, dynamic> look, String name) async {
     try {
       await firestore.collection('users').doc(id).update({
         'ProfileInfo': prof,
         'SearchPreferences.lookingFor': look,
-        'name':name,
+        'name': name,
       });
     } on FirebaseException catch (e) {
       print(e.message);
@@ -341,6 +343,17 @@ class FirebaseDataProvider {
           .collection('users/${userRepository.getLoggedUser.id}/refusedFriends')
           .doc(refusedFriends)
           .set(UserModel().addedFriendToFirestore(refusedFriends));
+    } on FirebaseException catch (e) {
+      throw BadRequestException(message: e.message!);
+    }
+  }
+
+  Future<void> palReadMessage(MessageModel message, String chatId) async {
+    try {
+      await firestore
+          .collection('chats/$chatId/messages')
+          .doc(message.messageId)
+          .update({'isRead': true});
     } on FirebaseException catch (e) {
       throw BadRequestException(message: e.message!);
     }

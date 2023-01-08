@@ -66,6 +66,10 @@ class DataRepository {
     return dataProvider.getAllUserFields();
   }
 
+  Future<void> palReadMessage(MessageModel message) async {
+    dataProvider.palReadMessage(message, chatId);
+  }
+
 // Future<SearchPrefFields?> getSearchFields(String id) async {
 //   final fields = await dataProvider.getSearchFields(id);
 //   return fields;
