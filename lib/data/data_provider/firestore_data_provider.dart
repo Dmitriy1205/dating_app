@@ -8,6 +8,8 @@ import '../models/message_model.dart';
 import 'package:dating_app/data/models/profile_info_data.dart';
 import '../models/search_pref_data.dart';
 import '../repositories/user_repository.dart';
+import 'package:ntp/ntp.dart';
+
 
 class FirebaseDataProvider {
   final FirebaseFirestore firestore;
@@ -57,10 +59,12 @@ class FirebaseDataProvider {
 
   Future<void> sendMessageToPal(
       MessageModel messageModel, String chatId) async {
+    DateTime dateTimeNow = await NTP.now();
     try {
       final String messageId =
           firestore.collection('chats/$chatId/messages').doc().id;
       messageModel.messageId = messageId;
+      messageModel.time = dateTimeNow.toString();
       await firestore
           .collection('chats/$chatId/messages')
           .doc(messageId)

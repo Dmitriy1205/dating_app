@@ -6,6 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dating_app/core/service_locator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../core/notifications.dart';
+
 class ContactsScreen extends StatefulWidget {
   ContactsScreen({Key? key}) : super(key: key);
 
@@ -143,7 +145,8 @@ class _ContactsScreenState extends State<ContactsScreen> {
                                     const SizedBox(
                                       height: 5,
                                     ),
-                                    Text(AppLocalizations.of(context)!.myStatus),
+                                    Text(
+                                        AppLocalizations.of(context)!.myStatus),
                                   ],
                                 ),
                                 Positioned(

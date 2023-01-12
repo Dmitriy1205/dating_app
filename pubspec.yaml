@@ -51,6 +51,8 @@ dependencies:
   flutter_map: ^3.0.0
   latlong2: ^0.8.1
   geocoding: ^2.0.5
+  flutter_local_notifications: ^13.0.0
+  ntp: ^2.0.0
 
 
 dev_dependencies:
