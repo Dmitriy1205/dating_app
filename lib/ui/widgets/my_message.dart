@@ -40,7 +40,10 @@ class OwnMessageCard1 extends StatelessWidget {
                 .read<MessengerCubit>()
                 .loggedUser
                 .loggedUserPicture,fit: BoxFit.cover,) :
-            Image.asset(CustomIcons.photo),
+            Image.asset(
+              'assets/images/empty.png',
+              fit: BoxFit.cover,
+            ),
             // fit: BoxFit.fill,
           ),
         ),

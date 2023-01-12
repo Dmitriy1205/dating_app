@@ -111,7 +111,6 @@ class _CardsSectionState extends State<SwipeableCardsSection>
     // Init cards
     for (cardsCounter = 0; cardsCounter < widget.items.length; cardsCounter++) {
       cards.add(widget.items[cardsCounter]);
-      print('--------------${widget.items.length}');
     }
 
     frontCardAlign = cardsAlign[2];
