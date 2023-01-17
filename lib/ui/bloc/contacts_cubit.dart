@@ -39,10 +39,13 @@ class ContactsCubit extends Cubit<ContactsCubitStates> {
       imagesList.add(await getUrlImage(usersList[i].id!));
     }
     emit(state.copyWith(
-        usersList: usersList,
-        status: Status.loaded(),
-        image: imagesList,
-        currentUserAvatar: u!.profileInfo?.image));
+      usersList: usersList,
+      status: Status.loaded(),
+      image: imagesList,
+      currentUserAvatar: u!.profileInfo?.image,
+      currentUserId: u.id,
+      currentUserName: u.firstName,
+    ));
   }
 }
 
@@ -50,6 +53,8 @@ class ContactsCubitStates extends Equatable {
   final List<String>? image;
   final List<UserModel>? usersList;
   final Status? status;
+  final String? currentUserId;
+  final String? currentUserName;
   final String? currentUserAvatar;
 
   const ContactsCubitStates({
@@ -57,6 +62,8 @@ class ContactsCubitStates extends Equatable {
     this.usersList,
     this.status,
     this.currentUserAvatar,
+    this.currentUserId,
+    this.currentUserName,
   });
 
   @override
@@ -65,6 +72,8 @@ class ContactsCubitStates extends Equatable {
         usersList,
         status,
         currentUserAvatar,
+        currentUserId,
+        currentUserName,
       ];
 
   ContactsCubitStates copyWith({
@@ -72,12 +81,16 @@ class ContactsCubitStates extends Equatable {
     List<UserModel>? usersList,
     Status? status,
     String? currentUserAvatar,
+    String? currentUserId,
+    String? currentUserName,
   }) {
     return ContactsCubitStates(
       image: image ?? this.image,
       usersList: usersList ?? this.usersList,
       status: status ?? this.status,
       currentUserAvatar: currentUserAvatar ?? this.currentUserAvatar,
+      currentUserId: currentUserId ?? this.currentUserId,
+      currentUserName: currentUserName ?? this.currentUserName,
     );
   }
 }

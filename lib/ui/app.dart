@@ -8,9 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../core/routes.dart';
 import '../core/service_locator.dart';
+import '../core/services/cache_helper.dart';
 import '../core/themes/colors.dart';
 import 'bloc/image_picker/image_picker_cubit.dart';
 import 'bloc/localization/localization_cubit.dart';
+import 'bloc/register_call/register_call_cubit.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -32,6 +34,11 @@ class App extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => sl<LocalizationCubit>(),
+          ),
+          BlocProvider(
+            create: (context) => sl<RegisterCallCubit>()
+              ..updateFcmToken(uId: CacheHelper.getString(key: 'uId'))
+              ..listenToInComingCalls(),
           ),
         ],
         child: BlocBuilder<LocalizationCubit, LocalizationState>(

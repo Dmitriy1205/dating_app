@@ -1,10 +1,15 @@
+import 'package:dating_app/core/services/cache_helper.dart';
 import 'package:dating_app/ui/bloc/contacts_cubit.dart';
+import 'package:dating_app/ui/bloc/register_call/register_call_cubit.dart';
 import 'package:dating_app/ui/screens/messenger_screen.dart';
+import 'package:dating_app/ui/screens/video_call_screen.dart';
 import 'package:dating_app/ui/widgets/status_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dating_app/core/service_locator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'history_call_screen.dart';
 
 class ContactsScreen extends StatefulWidget {
   ContactsScreen({Key? key}) : super(key: key);
@@ -19,8 +24,10 @@ class _ContactsScreenState extends State<ContactsScreen> {
   @override
   void initState() {
     bloc = sl<ContactsCubit>();
+
     super.initState();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +64,8 @@ class _ContactsScreenState extends State<ContactsScreen> {
                   child: GestureDetector(
                     onTap: () {
                       //TODO: phone call
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (_) => const HistoryCallScreen()));
                     },
                     child: SizedBox(
                       height: 45,
@@ -78,6 +87,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
           body: BlocBuilder<ContactsCubit, ContactsCubitStates>(
               builder: (context, state) {
             if (state.status!.isLoaded) {
+
               return ListView(
                 children: [
                   const Divider(
@@ -143,7 +153,8 @@ class _ContactsScreenState extends State<ContactsScreen> {
                                     const SizedBox(
                                       height: 5,
                                     ),
-                                    Text(AppLocalizations.of(context)!.myStatus),
+                                    Text(
+                                        AppLocalizations.of(context)!.myStatus),
                                   ],
                                 ),
                                 Positioned(
@@ -222,7 +233,9 @@ class _ContactsScreenState extends State<ContactsScreen> {
                               .getUrlImage(state.usersList![index].id!);
                           return GestureDetector(
                             onTap: () {
+
                               bloc.palUser = state.usersList![index];
+                              CacheHelper.saveData(key: 'uId', value: state.currentUserId);
                               MessengerScreen(
                                   user: state.usersList![index],
                                   userPicture: state.image![index]);
@@ -232,6 +245,10 @@ class _ContactsScreenState extends State<ContactsScreen> {
                                       builder: (context) => BlocProvider.value(
                                             value: bloc,
                                             child: MessengerScreen(
+                                                currentUserName:
+                                                    state.currentUserName,
+                                                currentUserid:
+                                                    state.currentUserId,
                                                 user: bloc.palUser,
                                                 userPicture:
                                                     state.image![index]),

@@ -142,6 +142,7 @@
   "addImage":"Add Image",
   "addText":"Add Text",
   "myStatus":"My Status",
+  "locationNotSelected":"location not selected",
   "tryToChangePreferences":"Try to change your Preferences",
   "youMustPickGender":"You must pick a gender",
   "sharedHobbies":"Shared hobbies"

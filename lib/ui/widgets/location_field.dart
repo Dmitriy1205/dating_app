@@ -45,6 +45,7 @@ class _LocationFieldState extends State<LocationField> {
                 return AlertDialog(
                   content: Container(
                     height: 400,
+                    width: 100,
                     child: Padding(
                       padding: const EdgeInsets.only(
                         top: 20,

@@ -141,6 +141,7 @@
             "addImage":"Ajouter une image",
               "addText":"Ajouter du texte",
               "myStatus":"Mon statut",
+              "locationNotSelected":"emplacement non sélectionné",
               "tryToChangePreferences":"Essayez de modifier vos Préférences",
             "locationPermissionArePermanently":"Les autorisations de localisation sont définitivement refusées, nous ne pouvons pas demander d'autorisations.",
             "sharedHobbies":"Loisirs partagés"
