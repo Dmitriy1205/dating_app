@@ -34,6 +34,7 @@ dependencies:
   firebase_core: 2.1.1
   firebase_auth: 4.1.0
   firebase_storage: 11.0.3
+  firebase_messaging: ^14.0.4
   cloud_firestore: ^4.0.4
 
   #utils
@@ -51,6 +52,16 @@ dependencies:
   flutter_map: ^3.0.0
   latlong2: ^0.8.1
   geocoding: ^2.0.5
+  agora_uikit: ^1.1.1
+  agora_rtc_engine: ^6.1.0
+  permission_handler: ^10.2.0
+  audioplayers: ^0.20.1
+  quiver: ^3.2.1
+  dio: ^4.0.6
+  fluttertoast: ^8.0.8
+  shared_preferences: ^2.0.13
+  twilio_programmable_video: ^1.0.1
+  http: ^0.13.5
 
 
 dev_dependencies:
@@ -79,7 +90,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
-
+    - assets/sounds/
 
   # fonts:
   #   - family: Schyler

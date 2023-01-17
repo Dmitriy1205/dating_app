@@ -142,6 +142,7 @@
               "addImage":"Adicionar imagem",
                 "addText":"Adicione texto",
                 "myStatus":"Meu status",
+                "locationNotSelected":"local não selecionado",
                 "tryToChangePreferences":"Tente mudar suas Preferências",
               "locationPermissionArePermanently":"As permissões de localização são permanentemente negadas, não podemos solicitar permissões.",
               "sharedHobbies":"Passatempos compartilhados"

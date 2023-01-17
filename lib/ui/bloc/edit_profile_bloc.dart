@@ -27,6 +27,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
   String get id => auth.currentUser()!.uid;
 
+  void start() => emit(state.copyWith(status: Status.initial()));
+
   Future<void> changeData(String selectedLookingFor) async {
     selectedLookingForList.contains(selectedLookingFor)
         ? selectedLookingForList.remove(selectedLookingFor)
@@ -55,9 +57,10 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     }
   }
 
-  Future<void> update(ProfileInfoFields p, Map<String,dynamic> s,String name) async {
+  Future<void> update(
+      ProfileInfoFields p, Map<String, dynamic> s, String name) async {
     try {
-      await db.updateFields(id, p.toFirestore(), s,name);
+      await db.updateFields(id, p.toFirestore(), s, name);
       emit(state.copyWith(status: Status.loaded()));
     } on BadRequestException catch (e) {
       print('prof edit $e');

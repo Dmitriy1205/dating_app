@@ -314,7 +314,10 @@ class Profile extends StatelessWidget {
                           style: TextStyle(fontSize: 14),
                         ),
                         Text(
-                          state.user!.profileInfo!.location!,
+                          state.user!.profileInfo!.location! == ''
+                              ? AppLocalizations.of(context)!
+                                  .locationNotSelected
+                              : state.user!.profileInfo!.location!,
                           textAlign: TextAlign.start,
                           style: TextStyle(color: Colors.grey, fontSize: 14),
                         ),
