@@ -74,7 +74,7 @@ class Content {
 
 const appId = '8bbfa04b43d140398c646fe860e771ca';
 const testToken =
-'007eJxTYPiX+/7+gxtPf900mTJ13Uut/OUte4S8j9yYYK93PM44MGqyAoNFUlJaooFJkolxiqGJgbGlRbKZiVlaqoWZQaq5uWFyYlneseSGQEaGyq3rGBkZIBDEZ2VIyyktKWFgAAClMiNx';
+'007eJxTYFidcsKY/aFo42fn66d165QUj04+9mSubOSn7NbWywfThHcrMFgkJaUlGpgkmRinGJoYGFtaJJuZmKWlWpgZpJqbGyYnsp45ntwQyMggvvY+CyMDBIL4rAxpOaUlJQwMALtnIRI=';
 const testChannel = 'flutt';
 const int callDurationInSec = 15;
 

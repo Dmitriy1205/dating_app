@@ -57,7 +57,7 @@ class VideoCallCubit extends Cubit<VideoCallState> {
       debugPrint(
           '[onTokenPrivilegeWillExpire] connection: ${connection.toJson()}, token: $token');
     }, onLeaveChannel: (RtcConnection, RtcStats) {
-      assetsAudioPlayer.stop();
+      assetsAudioPlayer.release();
     }));
 
     await engine.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
