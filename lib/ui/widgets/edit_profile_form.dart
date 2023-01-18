@@ -9,7 +9,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../core/functions/validation.dart';
+import '../../core/themes/text_styles.dart';
 import '../bloc/edit_profile_state.dart';
+import '../screens/hobbies_screen.dart';
+import '../screens/interests_screen.dart';
 import 'field_decor.dart';
 
 class EditProfileForm extends StatefulWidget {
@@ -66,6 +69,26 @@ class _EditProfileFormState extends State<EditProfileForm> {
             child: CircularProgressIndicator(),
           );
         }
+        List<String> inter = [
+          AppLocalizations.of(context)!.photography,
+          AppLocalizations.of(context)!.acting,
+          AppLocalizations.of(context)!.film,
+          AppLocalizations.of(context)!.finArt,
+          AppLocalizations.of(context)!.music,
+          AppLocalizations.of(context)!.fashion,
+          AppLocalizations.of(context)!.dance,
+          AppLocalizations.of(context)!.politics,
+        ];
+        List<String> hobb = [
+          AppLocalizations.of(context)!.workingOut,
+          AppLocalizations.of(context)!.reading,
+          AppLocalizations.of(context)!.cooking,
+          AppLocalizations.of(context)!.biking,
+          AppLocalizations.of(context)!.drinking,
+          AppLocalizations.of(context)!.shopping,
+          AppLocalizations.of(context)!.hiking,
+          AppLocalizations.of(context)!.baking,
+        ];
         var search = state.userModel!.searchPref!;
         var profile = state.userModel!.profileInfo!;
         locationController.text = profile!.location!;
@@ -299,10 +322,177 @@ class _EditProfileFormState extends State<EditProfileForm> {
                       ),
                     ],
                   ),
-                  reUsableWidgets.openHobbiesOrInterests(context,
-                      AppLocalizations.of(context)!.interests, interests),
-                  reUsableWidgets.openHobbiesOrInterests(
-                      context, AppLocalizations.of(context)!.hobbies, hobbies),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      CustomTextStyle.bigText(
+                          AppLocalizations.of(context)!.interests),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      InkWell(
+                        onTap: () async {
+                          final result = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => InterestsScreen(
+                                interests: interests,
+                              ),
+                            ),
+                          );
+                          interests = result;
+
+                          if (mounted) {
+                            context.read<EditProfileCubit>().start();
+                          }
+                        },
+                        child: Ink(
+                          color: Colors.white,
+                          child: Container(
+                            height: 57,
+                            width: 400,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Colors.grey[300]!),
+                                borderRadius:
+                                BorderRadius.circular(10.0)),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 19),
+                              child: Column(
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    AppLocalizations.of(context)!
+                                        .selects,
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black54),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Wrap(
+                        children: List<Widget>.generate(
+                          interests.length,
+                              (index) => interests.values
+                              .elementAt(index) ==
+                              false
+                              ? const SizedBox()
+                              : Padding(
+                            padding:
+                            const EdgeInsets.only(right: 6),
+                            child: Chip(
+                              label: Text(
+                                inter[index],
+                                style: TextStyle(
+                                  color: Colors.grey.shade800,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ).toList(),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      CustomTextStyle.bigText(
+                          AppLocalizations.of(context)!.hobbies),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      InkWell(
+                        onTap: () async {
+                          final result = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => HobbiesScreen(
+                                hobbies: hobbies,
+                              ),
+                            ),
+                          );
+                          hobbies = result;
+                          if (mounted) {
+                            context.read<EditProfileCubit>().start();
+                          }
+                        },
+                        child: Ink(
+                          color: Colors.white,
+                          child: Container(
+                            height: 57,
+                            width: 400,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Colors.grey[300]!),
+                                borderRadius:
+                                BorderRadius.circular(10.0)),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 19),
+                              child: Column(
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    AppLocalizations.of(context)!
+                                        .selects,
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black54),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Wrap(
+                        children: List<Widget>.generate(
+                          hobbies.length,
+                              (index) => hobbies.values
+                              .elementAt(index) ==
+                              false
+                              ? const SizedBox()
+                              : Padding(
+                            padding:
+                            const EdgeInsets.only(right: 6),
+                            child: Chip(
+                              label: Text(
+                                hobb[index],
+                                style: TextStyle(
+                                  color: Colors.grey.shade800,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ).toList(),
+                      ),
+                    ],
+                  ),
                   reUsableWidgets.lookingForWidget(context,
                       onTap: (value) =>
                           context.read<EditProfileCubit>().changeData(value!),

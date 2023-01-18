@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dating_app/ui/screens/hobbies_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -440,6 +441,17 @@ class ReUsableWidgets {
           ),
       ],
     );
+  }
+  static showToast(
+      {required String msg}) {
+    Fluttertoast.showToast(
+        msg: msg,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 5,
+        backgroundColor: Colors.grey,
+        textColor: Colors.white,
+        fontSize: 16.0);
   }
 
   Widget openHobbiesOrInterests(

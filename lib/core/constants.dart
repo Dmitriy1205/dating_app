@@ -1,4 +1,3 @@
-
 class Content {
   static const String logo = 'assets/images/logo.png';
   static const String reflow = 'assets/images/comm.png';
@@ -6,6 +5,8 @@ class Content {
   static const String login = 'assets/images/login.png';
   static const String profile = 'assets/images/profile.png';
   static const String welcome = 'assets/images/welcome.png';
+  static const String outgoingCall = 'assets/sounds/outgoing_call.mp3';
+  static const String incomingCall = 'assets/sounds/incoming_call.mp3';
 
   static const List<String> hobbiesList = [
     'assets/images/working_out.png',
@@ -15,12 +16,7 @@ class Content {
     'assets/images/drinking.png',
     'assets/images/shopping.png',
     'assets/images/hiking.png',
-
-
-
     'assets/images/baking.png',
-
-
   ];
 
   static const List<String> interestsList = [
@@ -32,13 +28,6 @@ class Content {
     'assets/images/fashion.png',
     'assets/images/dance.png',
     'assets/images/politics.png',
-
-
-
-
-
-
-
   ];
   static const List<String> settingsList = [
     'assets/icons/notifications.png',
@@ -81,6 +70,31 @@ class Content {
     'Photography',
     'Acting',
   ];
+}
+
+const appId = '8bbfa04b43d140398c646fe860e771ca';
+
+
+// const testToken =
+// '007eJxTYFidcsKY/aFo42fn66d165QUj04+9mSubOSn7NbWywfThHcrMFgkJaUlGpgkmRinGJoYGFtaJJuZmKWlWpgZpJqbGyYnsp45ntwQyMggvvY+CyMDBIL4rAxpOaUlJQwMALtnIRI=';
+
+
+const testChannel = 'flutt';
+const int callDurationInSec = 15;
+
+enum CallStatus {
+  none,
+  ringing,
+  accept,
+  reject,
+  unAnswer,
+  cancel,
+  end,
+}
+
+enum IncomingCallStatus {
+  successOuterCall,
+  successIncomingCall,
 }
 
 class CustomIcons {

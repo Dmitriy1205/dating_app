@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dating_app/core/services/cache_helper.dart';
+import 'package:dating_app/core/services/dio_helper.dart';
 import 'package:dating_app/data/data_provider/firestore_data_provider.dart';
 import 'package:dating_app/data/repositories/auth_repository.dart';
 import 'package:dating_app/data/repositories/data_repository.dart';
 import 'package:dating_app/data/repositories/user_repository.dart';
+import 'package:dating_app/data/repositories/video_call_repository.dart';
 import 'package:dating_app/ui/bloc/auth/auth_cubit.dart';
 import 'package:dating_app/ui/bloc/contacts_cubit.dart';
 import 'package:dating_app/ui/bloc/facebook_auth/facebook_auth_cubit.dart';
@@ -10,9 +13,11 @@ import 'package:dating_app/ui/bloc/filter/filter_cubit.dart';
 import 'package:dating_app/ui/bloc/google_auth/google_auth_cubit.dart';
 import 'package:dating_app/ui/bloc/personal_profile_cubit/personal_profile_cubit.dart';
 import 'package:dating_app/ui/bloc/messenger_cubit.dart';
+import 'package:dating_app/ui/bloc/register_call/register_call_cubit.dart';
 import 'package:dating_app/ui/bloc/settings/settings_cubit.dart';
 import 'package:dating_app/ui/bloc/profile/profile_cubit.dart';
 import 'package:dating_app/ui/bloc/search_preferences_bloc.dart';
+import 'package:dating_app/ui/bloc/video_call/video_call_cubit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -46,6 +51,7 @@ Future<void> boot() async {
 
   //Repositories
   sl.registerLazySingleton(() => DataRepository(dataProvider: sl()));
+  sl.registerLazySingleton(() => VideoCallRepository(firestore: firestore));
   sl.registerLazySingleton(() => StorageRepository(storageProvider: sl()));
   sl.registerLazySingleton(() => AuthRepository(auth: auth, db: sl()));
   sl.registerLazySingleton(
@@ -53,6 +59,8 @@ Future<void> boot() async {
 
   //Cubits
   sl.registerFactory(() => GoogleAuthCubit(sl()));
+  sl.registerFactory(() => VideoCallCubit(repo: sl()));
+  sl.registerFactory(() => RegisterCallCubit(repo: sl()));
   sl.registerLazySingleton(() => LocalizationCubit(auth: sl(), db: sl()));
   sl.registerLazySingleton(() => SettingsCubit(sl()));
   sl.registerFactory(() => PersonalProfileCubit(sl()));
@@ -84,5 +92,6 @@ Future<void> boot() async {
 
 Future<void> init() async {
 Notifications.initialize(Notifications.flutterLocalNotificationsPlugin);
-
+  DioHelper.init();
+  await CacheHelper.init();
 }
