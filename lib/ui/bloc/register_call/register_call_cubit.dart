@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
@@ -22,15 +23,24 @@ class RegisterCallCubit extends Cubit<RegisterCallState> {
 
   final VideoCallRepository repo;
   CallStatus? currentCallStatus;
-
+  StreamSubscription? callStatusStreamSubscription;
   Future<void> makeCall({required CallModel callModel}) async {
     // emit(state.copyWith(status: Status.loading()));
     Map<String, dynamic> queryMap = {
       'channelName': 'channel_${UniqueKey().hashCode.toString()}',
       'uid': callModel.callerId,
     };
+    String? tempToken;
+    callStatusStreamSubscription = repo.getTemporaryTokenFromFirebase();
+    callStatusStreamSubscription!.onData((data) {
+      tempToken = data.data()!['token'];
+    });
+    // final test = await repo.getTemporaryTokenFromFirebase();
+    // var temporaryToken = test.map((e) => e.token).toString();
+    // print('------------------------$temporaryToken');
     try {
-      callModel.token = testToken;
+
+      callModel.token = tempToken;
       callModel.channelName = testChannel;
       postCallToFirestore(callModel: callModel);
     } catch (e) {

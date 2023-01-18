@@ -34,6 +34,7 @@ class VideoCallCubit extends Cubit<VideoCallState> {
   Future<void> initAgora({
     required bool isCaller,
     String? audio,
+    String? tempToken,
   }) async {
     await [Permission.microphone, Permission.camera].request();
 
@@ -65,7 +66,7 @@ class VideoCallCubit extends Cubit<VideoCallState> {
     await engine.startPreview();
 
     await engine.joinChannel(
-      token: testToken,
+      token: tempToken!,
       channelId: testChannel,
       uid: 0,
       options: const ChannelMediaOptions(),
@@ -89,8 +90,16 @@ class VideoCallCubit extends Cubit<VideoCallState> {
   Future<void> updateCallStatusToAccept({required CallModel callModel}) async {
     await repo.updateCallStatus(
         callId: callModel.id, status: CallStatus.accept.name);
+//trmporary token from firebase, delete after
+    callStatusStreamSubscription = repo.getTemporaryTokenFromFirebase();
+    callStatusStreamSubscription!.onData((data) {
+      String token = data.data()!['token'];
+      initAgora(isCaller: false, tempToken: token);
+    });
 
-    initAgora(isCaller: false);
+    // var temporaryToken = test.map((e) => e.token).toString();
+    // //---------------------
+    // initAgora(isCaller: false,tempToken:temporaryToken );
   }
 
   Future<void> updateCallStatusToReject({required String callId}) async {

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dating_app/data/models/user_token_model.dart';
 
 import '../../core/exceptions.dart';
 import '../../core/services/cache_helper.dart';
@@ -76,6 +77,15 @@ class VideoCallRepository {
     return FirebaseFirestore.instance
         .collection('calls')
         .doc(callId)
+        .snapshots()
+        .listen((event) {});
+  }
+
+  StreamSubscription<DocumentSnapshot<Map<String, dynamic>>>
+      getTemporaryTokenFromFirebase() {
+    return firestore
+        .collection('temporary')
+        .doc('1')
         .snapshots()
         .listen((event) {});
   }

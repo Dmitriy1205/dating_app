@@ -107,10 +107,11 @@ class _VideoCallScreenState extends State<_VideoCallScreen> {
         if (state.callStatus == CallStatus.cancel) {
           if (widget.isReceiver) {
             context.read<VideoCallCubit>().leave();
+            Navigator.pop(context);
             //Caller
             ReUsableWidgets.showToast(msg: 'Caller cancel the call!');
           }
-          Navigator.pop(context);
+
         }
         if (state.callStatus == CallStatus.reject) {
           if (!widget.isReceiver) {
