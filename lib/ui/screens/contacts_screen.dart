@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dating_app/core/service_locator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
+import '../../core/notifications.dart';
 import 'history_call_screen.dart';
 
 class ContactsScreen extends StatefulWidget {

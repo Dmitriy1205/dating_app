@@ -20,6 +20,7 @@ import 'package:dating_app/ui/bloc/search_preferences_bloc.dart';
 import 'package:dating_app/ui/bloc/video_call/video_call_cubit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get_it/get_it.dart';
 import '../data/data_provider/storage_data_provider.dart';
 import '../data/models/user_model.dart';
@@ -31,9 +32,11 @@ import '../ui/bloc/image_picker/image_picker_cubit.dart';
 import '../ui/bloc/localization/localization_cubit.dart';
 import '../ui/bloc/otp_verification/otp_cubit.dart';
 import '../ui/bloc/profile_info_cubit/profile_info_cubit.dart';
+import 'notifications.dart';
 
 final sl = GetIt.instance;
 UserModel userModel = UserModel();
+
 
 get user => userModel;
 
@@ -88,6 +91,7 @@ Future<void> boot() async {
 }
 
 Future<void> init() async {
+Notifications.initialize(Notifications.flutterLocalNotificationsPlugin);
   DioHelper.init();
   await CacheHelper.init();
 }

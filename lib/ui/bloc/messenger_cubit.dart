@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dating_app/data/repositories/user_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../../core/notifications.dart';
 import '../../core/service_locator.dart';
 import '../../data/models/message_model.dart';
 import '../../data/models/status.dart';
@@ -45,6 +46,7 @@ class MessengerCubit extends Cubit<MessengerStates> {
   void sendMessage(MessageModel messageModel, UserModel userModel,
       [bool attachment = false]) async {
     messageModel.senderName = loggedUser.getUserName;
+    messageModel.chatId = getChatId;
     if (attachment) {
       messageModel.attachmentUrl = 'chats/$getChatId/${DateTime.now()}';
     }
@@ -58,6 +60,16 @@ class MessengerCubit extends Cubit<MessengerStates> {
     messages.onData((data) {
       if (data.isNotEmpty) {
         emit(state.copyWith(messagesList: data, status: Status.loaded()));
+        print('data.last.message ${data[0].message!}');
+        if (!data[0].isRead!){
+          if(data[0].senderName != loggedUser.getUserName){
+            Notifications.showReceivedMessageNotification(
+                title: data[0].senderName!,
+                payload: 'payload',
+                body: data[0].message!,
+                fln: Notifications.flutterLocalNotificationsPlugin);
+          }
+        }
       } else {
         emit(state.copyWith(status: Status.initial()));
       }

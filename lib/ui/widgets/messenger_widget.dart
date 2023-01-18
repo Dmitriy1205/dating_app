@@ -169,8 +169,8 @@ class _MessengerWidgetState extends State<MessengerWidget> {
                                     f!, context.read<MessengerCubit>().getChatId);
                             MessageModel message = MessageModel(
                                 message: messageUrl,
-                                recipientName: widget.user.firstName,
-                                time: DateTime.now().toString());
+                                recipientName: widget.user.firstName);
+                                // time: DateTime.now().toLocal().toString());
                             context
                                 .read<MessengerCubit>()
                                 .sendMessage(message, widget.user, true);
