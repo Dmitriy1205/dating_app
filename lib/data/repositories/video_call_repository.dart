@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dating_app/data/models/user_token_model.dart';
 
 import '../../core/exceptions.dart';
 import '../../core/services/cache_helper.dart';
@@ -12,10 +11,11 @@ class VideoCallRepository {
 
   VideoCallRepository({required this.firestore});
 
-  Future<CallModel> getCallInfo({required String callId}) async {
-    final model = firestore.collection('calls').doc(callId).get();
+  Future<List<CallModel>?> getCallInfo({required String callId}) async {
+    final model = await firestore.collection('calls').doc(callId).get();
+    final s = model.data()?.values.map((e) => CallModel.fromJson(e)).toList();
 
-    return model as CallModel;
+    return s;
   }
 
   Future<void> postCallToFirestore({required CallModel callModel}) async {
@@ -73,6 +73,14 @@ class VideoCallRepository {
   }
 
   StreamSubscription<DocumentSnapshot<Map<String, dynamic>>> listenToCallStatus(
+      {required String callId}) {
+    return FirebaseFirestore.instance
+        .collection('calls')
+        .doc(callId)
+        .snapshots()
+        .listen((event) {});
+  }
+  StreamSubscription<DocumentSnapshot<Map<String, dynamic>>> getCallName(
       {required String callId}) {
     return FirebaseFirestore.instance
         .collection('calls')

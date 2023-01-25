@@ -99,10 +99,26 @@
 
              "typeYourMessage":"Tapez votre message...",
 
+             "callingYou":"Je t'appelle...",
+               "callingTo":"Appel à",
+               "cancelTheCall":"annuler l'appel!",
+               "rejectTheCall":"rejeter l'appel!",
+               "rejectTheCall":"mettre fin à l'appel!",
+               "noResponse":"Pas de réponse!",
+
              "sorryNoMatches":"Désolé, aucune correspondance",
                "chooseYourImage":"Choisissez votre image",
                "photo":"Photo",
                "imageFromFiles":"Image à partir de fichiers",
+
+               "cancellingSubscription":"Annulation d'un abonnement-",
+                 "unableSignin":"Impossible de se connecter-",
+                 "emailPasswordIssue":"Problème de mot de passe de messagerie-",
+
+                 "cancelSubText":"Si vous souhaitiez annuler un abonnement ou si vous avez décidé de désactiver le renouvellement automatique de votre abonnement. Vous pouvez simplement annuler en cliquant sur le lien ci-dessous",
+                   "unableSignText":"Si vous rencontrez des problèmes pour vous connecter, veuillez consulter les informations ci-dessous pour vous aider à résoudre le problème. Nous nous engageons à assurer la sûreté et la sécurité de nos utilisateurs, il peut donc arriver qu'un utilisateur soit bloqué par erreur ou remboursé de son abonnement. Si cela se produit, veuillez vérifier l'état de votre abonnement. S'il y a eu une erreur, contactez-nous immédiatement afin que nous puissions apporter les modifications nécessaires et corriger le problème",
+                   "emailIssue":"Si votre e-mail ou votre mot de passe se remplit automatiquement, essayez de saisir l'e-mail ou le mot de passe manuellement. Si vous rencontrez toujours des difficultés pour vous connecter, cliquez ici (surlignez cliquez ici) pour entrer votre adresse e-mail enregistrée et nous vous enverrons un e-mail de réinitialisation de mot de passe.",
+
 
         "about":"À propos de",
         "apply":"APPLIQUER",

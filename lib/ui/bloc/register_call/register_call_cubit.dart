@@ -11,7 +11,6 @@ import 'package:flutter/cupertino.dart';
 
 import '../../../core/constants.dart';
 import '../../../core/services/cache_helper.dart';
-import '../../../core/services/dio_helper.dart';
 import '../../../data/models/fcm_payload_model.dart';
 import '../../../data/models/status.dart';
 import '../../../data/models/user_token_model.dart';
@@ -19,30 +18,30 @@ import '../../../data/models/user_token_model.dart';
 part 'register_call_state.dart';
 
 class RegisterCallCubit extends Cubit<RegisterCallState> {
-  RegisterCallCubit({required this.repo}) : super(const RegisterCallState());
+  RegisterCallCubit({required this.repo}) : super( RegisterCallState(status: Status.initial()));
 
   final VideoCallRepository repo;
   CallStatus? currentCallStatus;
   StreamSubscription? callStatusStreamSubscription;
+
   Future<void> makeCall({required CallModel callModel}) async {
     // emit(state.copyWith(status: Status.loading()));
     Map<String, dynamic> queryMap = {
       'channelName': 'channel_${UniqueKey().hashCode.toString()}',
       'uid': callModel.callerId,
     };
-    String? tempToken;
-    callStatusStreamSubscription = repo.getTemporaryTokenFromFirebase();
-    callStatusStreamSubscription!.onData((data) {
-      tempToken = data.data()!['token'];
-    });
-    // final test = await repo.getTemporaryTokenFromFirebase();
-    // var temporaryToken = test.map((e) => e.token).toString();
-    // print('------------------------$temporaryToken');
-    try {
 
-      callModel.token = tempToken;
-      callModel.channelName = testChannel;
-      postCallToFirestore(callModel: callModel);
+    try {
+      String? tempToken;
+      callStatusStreamSubscription = repo.getTemporaryTokenFromFirebase();
+      callStatusStreamSubscription!.onData((data) {
+         tempToken = data.data()!['token'];
+         callModel.token = tempToken;
+         callModel.channelName = testChannel;
+         postCallToFirestore(callModel: callModel);
+      });
+      print('------------------$tempToken');
+
     } catch (e) {
       emit(state.copyWith(status: Status.error(e.toString())));
     }
@@ -76,7 +75,9 @@ class RegisterCallCubit extends Cubit<RegisterCallState> {
         };
         FcmPayloadModel fcmSendData =
             FcmPayloadModel(to: value.data()!['token'], data: bodyMap);
-        emit(state.copyWith(inCallStatus: IncomingCallStatus.successOuterCall, callModel: callModel));
+        emit(state.copyWith(
+            inCallStatus: IncomingCallStatus.successOuterCall,
+            callModel: callModel));
         // DioHelper.postData(
         //   data: fcmSendData.toMap(),
         //   baseUrl: 'https://fcm.googleapis.com/',
@@ -112,10 +113,10 @@ class RegisterCallCubit extends Cubit<RegisterCallState> {
                   inCallStatus: IncomingCallStatus.successIncomingCall,
                   callModel: CallModel.fromJson(element.data())));
             }
-            else if (status == CallStatus.cancel.name){
-              currentCallStatus = CallStatus.cancel;
-              emit(state.copyWith(callStatus: CallStatus.cancel));
-            }
+            // else if (status == CallStatus.cancel.name){
+            //   currentCallStatus = CallStatus.cancel;
+            //   emit(state.copyWith(callStatus: CallStatus.cancel));
+            // }
           }
         }
       }

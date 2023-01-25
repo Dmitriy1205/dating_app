@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
-import '../../core/constants.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FaqScreen extends StatelessWidget {
   const FaqScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    List<String> faqHeader = [
+      AppLocalizations.of(context)!.cancellingSubscription,
+      AppLocalizations.of(context)!.unableSignin,
+      AppLocalizations.of(context)!.emailPasswordIssue,
+    ];
+    List<String> faqBody = [
+      AppLocalizations.of(context)!.cancelSubText,
+      AppLocalizations.of(context)!.unableSignText,
+      AppLocalizations.of(context)!.emailIssue,
+    ];
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -32,17 +42,21 @@ class FaqScreen extends StatelessWidget {
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: ListView.builder(
-          itemCount: Content.faqHeader.length,
+          itemCount: faqHeader.length,
           itemBuilder: (BuildContext context, int index) {
             return Card(
               elevation: 10,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
               child: Theme(
-                data: ThemeData().copyWith(dividerColor: Colors.transparent,unselectedWidgetColor: Colors.black,primaryColor: Colors.black, ),
+                data: ThemeData().copyWith(
+                  dividerColor: Colors.transparent,
+                  unselectedWidgetColor: Colors.black,
+                  primaryColor: Colors.black,
+                ),
                 child: ExpansionTile(
                   title: Text(
-                    Content.faqHeader[index],
+                    faqHeader[index],
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   children: [
@@ -50,10 +64,12 @@ class FaqScreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 10),
                       child: Text(
-                        Content.faqBody[index],
+                        faqBody[index],
                       ),
                     ),
-                    const SizedBox(height: 20,)
+                    const SizedBox(
+                      height: 20,
+                    )
                   ],
                 ),
               ),

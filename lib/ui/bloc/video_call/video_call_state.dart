@@ -6,7 +6,8 @@ class VideoCallState extends Equatable {
   final bool localUserJoined;
   final int? remoteUid;
   final bool mute;
-  final CallModel? callModel;
+  final String? caller;
+  final String? reciver;
 
   const VideoCallState({
     this.status,
@@ -14,7 +15,8 @@ class VideoCallState extends Equatable {
     this.localUserJoined = false,
     this.remoteUid,
     this.mute = false,
-    this.callModel,
+    this.caller,
+    this.reciver,
   });
 
   VideoCallState copyWith({
@@ -23,7 +25,8 @@ class VideoCallState extends Equatable {
     bool? localUserJoined,
     int? remoteUid,
     bool? mute,
-    CallModel? callModel,
+    String? caller,
+    String? reciver,
   }) {
     return VideoCallState(
       status: status ?? this.status,
@@ -31,7 +34,8 @@ class VideoCallState extends Equatable {
       localUserJoined: localUserJoined ?? this.localUserJoined,
       remoteUid: remoteUid ?? this.remoteUid,
       mute: mute ?? this.mute,
-      callModel: callModel ?? this.callModel,
+      caller: caller ?? this.caller,
+      reciver: reciver ?? this.reciver,
     );
   }
 
@@ -42,6 +46,7 @@ class VideoCallState extends Equatable {
         localUserJoined,
         remoteUid,
         mute,
-        callModel,
+        caller,
+        reciver,
       ];
 }

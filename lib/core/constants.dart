@@ -5,8 +5,8 @@ class Content {
   static const String login = 'assets/images/login.png';
   static const String profile = 'assets/images/profile.png';
   static const String welcome = 'assets/images/welcome.png';
-  static const String outgoingCall = 'assets/sounds/outgoing_call.mp3';
-  static const String incomingCall = 'assets/sounds/incoming_call.mp3';
+  static const String outgoingCall = 'sounds/outgoing_call.mp3';
+  static const String incomingCall = 'sounds/incoming_call.mp3';
 
   static const List<String> hobbiesList = [
     'assets/images/working_out.png',
@@ -47,19 +47,7 @@ class Content {
     'Privacy Policy',
     'Logout'
   ];
-  static const List<String> faqHeader = [
-    'Cancelling a subscription-',
-    'Unable to signin-',
-    'Email/Password issue-',
-  ];
-  static const List<String> faqBody = [
-    'if you were interested for canceling a subscription'
-        ' or you havedecided to turn auto subscription'
-        ' renuwal',
-    'if you having problem with signin, please review'
-        ' the information below to help troubleshoot the problem',
-    'Friend List',
-  ];
+
   static const List<String> name = [
     'Politics',
     'Fashion',
@@ -72,11 +60,11 @@ class Content {
   ];
 }
 
-const appId = '8bbfa04b43d140398c646fe860e771ca';
+const appId = '3aea6f71bc31497cbd3e3dcdaf28a644';
 
 
-// const testToken =
-// '007eJxTYFidcsKY/aFo42fn66d165QUj04+9mSubOSn7NbWywfThHcrMFgkJaUlGpgkmRinGJoYGFtaJJuZmKWlWpgZpJqbGyYnsp45ntwQyMggvvY+CyMDBIL4rAxpOaUlJQwMALtnIRI=';
+const testToken =
+'007eJxTYFhUFmivMun4k0rPZY7zlG9xxLRV7+K8ciJd5U5QgXao0kQFBoukpLREA5MkE+MUQxMDY0uLZDMTs7RUCzODVHNzw+REi/RzyQ2BjAydOpLMjAwQCOKzMqTllJaUMDAAAP7bHew=+GSRTKfHR+dXmrnN7hK7Mmq/T19zcrMFgkJaUlGpgkmRinGJoYGFtaJJuZmKWlWpgZpJqbGyYnXlc8mdwQyMiwdsN8RkYGCATxWRnSckpLShgYAK5pITE=';
 
 
 const testChannel = 'flutt';

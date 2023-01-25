@@ -97,7 +97,22 @@
   "today":"Today",
   "connections":"Connections",
 
+  "cancellingSubscription":"Cancelling a subscription-",
+  "unableSignin":"Unable to signin-",
+  "emailPasswordIssue":"Email/Password issue-",
+
+  "cancelSubText":"If you were interested in canceling a subscription or you have decided to turn off your auto subscription renewal. You can simply cancel by clicking on the link below",
+  "unableSignText":"If you having problems with signing in please review the information below to help troubleshoot the problem. We are committed to the safety and security of our users so there may be times when a user is mistakenly blocked or refunded their subscription. If this occurs please check the status of your subscription. If there was a mistake contact us immediately so that we can make the necessary changes and correct the problem",
+  "emailIssue":"If your email or password auto populates try typing in the email or password manually. If you are still having difficulty signing in click here (hightlight click here) to enter your registered email address and we will send you a password reset email.",
+
   "typeYourMessage":"Type Your Message...",
+
+  "callingYou":"Calling to you...",
+  "callingTo":"Calling to",
+  "cancelTheCall":"cancel the call!",
+  "rejectTheCall":"reject the call!",
+  "rejectTheCall":"end the call!",
+  "noResponse":"No response!",
 
   "sorryNoMatches":"Sorry, no matches",
   "chooseYourImage":"Choose your image",

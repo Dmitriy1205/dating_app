@@ -42,7 +42,7 @@ PODS:
   - AppAuth/Core (1.6.0)
   - AppAuth/ExternalUserAgent (1.6.0):
     - AppAuth/Core
-  - audioplayers (0.0.1):
+  - audioplayers_darwin (0.0.1):
     - Flutter
   - cloud_firestore (4.0.4):
     - Firebase/Firestore (= 10.0.0)
@@ -133,6 +133,8 @@ PODS:
   - flutter_facebook_auth (5.0.0):
     - FBSDKLoginKit (= 15.0.0)
     - Flutter
+  - flutter_local_notifications (0.0.1):
+    - Flutter
   - flutter_native_splash (0.0.1):
     - Flutter
   - flutter_secure_storage (3.3.1):
@@ -206,7 +208,7 @@ DEPENDENCIES:
   - agora_rtc_engine (from `.symlinks/plugins/agora_rtc_engine/ios`)
   - agora_rtm (from `.symlinks/plugins/agora_rtm/ios`)
   - agora_uikit (from `.symlinks/plugins/agora_uikit/ios`)
-  - audioplayers (from `.symlinks/plugins/audioplayers/ios`)
+  - audioplayers_darwin (from `.symlinks/plugins/audioplayers_darwin/ios`)
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
@@ -215,6 +217,7 @@ DEPENDENCIES:
   - FirebaseFirestore (from `https://github.com/invertase/firestore-ios-sdk-frameworks.git`, tag `10.0.0`)
   - Flutter (from `Flutter`)
   - flutter_facebook_auth (from `.symlinks/plugins/flutter_facebook_auth/ios`)
+  - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
@@ -267,8 +270,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/agora_rtm/ios"
   agora_uikit:
     :path: ".symlinks/plugins/agora_uikit/ios"
-  audioplayers:
-    :path: ".symlinks/plugins/audioplayers/ios"
+  audioplayers_darwin:
+    :path: ".symlinks/plugins/audioplayers_darwin/ios"
   cloud_firestore:
     :path: ".symlinks/plugins/cloud_firestore/ios"
   firebase_auth:
@@ -286,6 +289,8 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_facebook_auth:
     :path: ".symlinks/plugins/flutter_facebook_auth/ios"
+  flutter_local_notifications:
+    :path: ".symlinks/plugins/flutter_local_notifications/ios"
   flutter_native_splash:
     :path: ".symlinks/plugins/flutter_native_splash/ios"
   flutter_secure_storage:
@@ -327,7 +332,7 @@ SPEC CHECKSUMS:
   AgoraRtcEngine_iOS: 33f0136ad4196b2a31c8470e6b536fe77fb25f8b
   AgoraRtm_iOS: 595a9fa33a409831e6183396ea8f8bc563918403
   AppAuth: 8fca6b5563a5baef2c04bee27538025e4ceb2add
-  audioplayers: 455322b54050b30ea4b1af7cd9e9d105f74efa8c
+  audioplayers_darwin: 877d9a4d06331c5c374595e46e16453ac7eafa40
   cloud_firestore: 62c5fa0e5ce5373be25d6233e8edbbe991fa973d
   FBAEMKit: d8312d8451ead46282adc7f3565ffc4965e3a4a7
   FBSDKCoreKit: 81879058dd06208c0820fc713d054ca54903e8ba
@@ -350,6 +355,7 @@ SPEC CHECKSUMS:
   FirebaseStorage: 8b0b0630e11b9f3e4a479a26cfccb70ec790ec50
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   flutter_facebook_auth: ad30745952f77ef167ec2ca5ddf29143c2c8c2e0
+  flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
   flutter_native_splash: 52501b97d1c0a5f898d687f1646226c1f93c56ef
   flutter_secure_storage: 7953c38a04c3fdbb00571bcd87d8e3b5ceb9daec
   fluttertoast: eb263d302cc92e04176c053d2385237e9f43fad0

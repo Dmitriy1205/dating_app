@@ -35,6 +35,9 @@ class App extends StatelessWidget {
           BlocProvider(
             create: (context) => sl<LocalizationCubit>(),
           ),
+          // BlocProvider(
+          //   create: (context) => sl<VideoCallCubit>(),
+          // ),
           BlocProvider(
             create: (context) => sl<RegisterCallCubit>()
               ..updateFcmToken(uId: CacheHelper.getString(key: 'uId'))

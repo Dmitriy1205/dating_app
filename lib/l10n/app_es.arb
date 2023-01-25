@@ -99,10 +99,26 @@
 
             "typeYourMessage":"Escribe tu mensaje...",
 
+            "callingYou":"llamandote...",
+              "callingTo":"llamando a",
+              "cancelTheCall":"cancelar la llamada!",
+              "rejectTheCall":"rechazar la llamada!",
+              "rejectTheCall":"¡termina la llamada!",
+              "noResponse":"¡Ninguna respuesta!",
+
             "sorryNoMatches":"Lo siento, no hay coincidencias",
               "chooseYourImage":"Elige tu imagen",
               "photo":"Foto",
               "imageFromFiles":"Imagen de archivos",
+
+              "cancellingSubscription":"Cancelar una suscripción-",
+                "unableSignin":"Incapaz de acceder-",
+                "emailPasswordIssue":"Problema de correo electrónico/contraseña-",
+
+                "cancelSubText":"Si estaba interesado en cancelar una suscripción o ha decidido desactivar la renovación automática de su suscripción. Simplemente puede cancelar haciendo clic en el enlace a continuación",
+                  "unableSignText":"Si tiene problemas para iniciar sesión, revise la siguiente información para ayudar a solucionar el problema. Estamos comprometidos con la seguridad de nuestros usuarios, por lo que puede haber ocasiones en las que un usuario sea bloqueado por error o se le reembolse su suscripción. Si esto ocurre, verifique el estado de su suscripción. Si hubo un error contáctenos inmediatamente para que podamos hacer los cambios necesarios y corregir el problema",
+                  "emailIssue":"Si su correo electrónico o contraseña se completa automáticamente, intente escribir el correo electrónico o la contraseña manualmente. Si aún tiene dificultades para iniciar sesión, haga clic aquí (resalte haga clic aquí) para ingresar su dirección de correo electrónico registrada y le enviaremos un correo electrónico de restablecimiento de contraseña.",
+
 
           "about":"Sobre",
           "apply":"APLICAR",

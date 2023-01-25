@@ -1,3 +1,4 @@
+import 'package:agora_uikit/agora_uikit.dart';
 import 'package:dating_app/data/models/call_model.dart';
 import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
@@ -8,6 +9,7 @@ import '../../core/service_locator.dart';
 import '../../core/services/cache_helper.dart';
 import '../bloc/video_call/video_call_cubit.dart';
 import '../widgets/reusable_widgets.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class VideoCallScreen extends StatelessWidget {
   final String id;
@@ -51,40 +53,42 @@ class _VideoCallScreen extends StatefulWidget {
 }
 
 class _VideoCallScreenState extends State<_VideoCallScreen> {
-  late VideoCallCubit cubit = VideoCallCubit(repo: sl());
+  late VideoCallCubit cubit;
 
   @override
   void initState() {
     super.initState();
-    context.read<VideoCallCubit>().listenToCallStatus(callModelId: widget.id);
+    cubit = BlocProvider.of<VideoCallCubit>(context);
+    getPermissions();
+    cubit.getInfo(widget.id);
+
+    cubit.listenToCallStatus(callModelId: widget.id);
 
     if (!widget.isReceiver) {
-      context.read<VideoCallCubit>().initAgora(
-            isCaller: true,
-            audio: Content.outgoingCall,
-          );
+      cubit.initAgora(
+        isCaller: true,
+        audio: Content.outgoingCall,
+      );
     } else {
-      context
-          .read<VideoCallCubit>()
-          .playContactingRing(isCaller: false, audio: Content.incomingCall);
+      cubit.playContactingRing(isCaller: false, audio: Content.incomingCall);
     }
+  }
+
+  Future<void> getPermissions() async {
+    await [Permission.microphone, Permission.camera].request();
   }
 
   @override
   void dispose() {
-    cubit.assetsAudioPlayer.dispose();
+    cubit.assetsAudioPlayer.release();
     cubit.engine.release();
-    if (!widget.isReceiver) {
-      //Sender
-      cubit.countDownTimer.cancel();
-    }
-    // cubit.performEndCall(
-    //     callModel: CallModel(
-    //   id: widget.id,
-    //   callerId: CacheHelper.getString(key: 'uId'),
-    //   receiverId: widget.receiverId,
-    //   status: CallStatus.end.name,
-    // ));
+    cubit.performEndCall(
+        callModel: CallModel(
+      id: widget.id,
+      callerId: CacheHelper.getString(key: 'uId'),
+      receiverId: widget.receiverId,
+      status: CallStatus.end.name,
+    ));
     super.dispose();
   }
 
@@ -97,47 +101,72 @@ class _VideoCallScreenState extends State<_VideoCallScreen> {
         //       .read<VideoCallCubit>()
         //       .updateCallStatusToUnAnswered(callId: widget.id);
         // }
-        if (state.callStatus == CallStatus.unAnswer) {
-          if (!widget.isReceiver) {
-            //Caller
-            ReUsableWidgets.showToast(msg: 'No response!');
-          }
-          Navigator.pop(context);
-        }
-        if (state.callStatus == CallStatus.cancel) {
+        // if (state.callStatus == CallStatus.unAnswer) {
+        //   if (!widget.isReceiver) {
+        //     //Caller
+        //     ReUsableWidgets.showToast(msg: ${AppLocalizations.of(context)!.noResponse});
+        //   }
+        //   Navigator.pop(context);
+        // }
+        if (state.status!.isError) {
+          ReUsableWidgets.showToast(msg: state.status!.errorMessage.toString());
+        } else if (state.callStatus == CallStatus.cancel) {
           if (widget.isReceiver) {
-            context.read<VideoCallCubit>().leave();
-            Navigator.pop(context);
             //Caller
-            ReUsableWidgets.showToast(msg: 'Caller cancel the call!');
+            ReUsableWidgets.showToast(
+                msg:
+                    '${state.caller} ${AppLocalizations.of(context)!.cancelTheCall}');
           }
 
+          Navigator.pop(context);
         }
         if (state.callStatus == CallStatus.reject) {
           if (!widget.isReceiver) {
-            context.read<VideoCallCubit>().leave();
-            ReUsableWidgets.showToast(msg: 'Receiver reject the call!');
+            ReUsableWidgets.showToast(
+                msg:
+                    '${state.reciver} ${AppLocalizations.of(context)!.rejectTheCall}');
           }
 
           Navigator.pop(context);
         }
-        if (state.callStatus == CallStatus.end) {
-          if (widget.isReceiver) {
-            //Caller
-            ReUsableWidgets.showToast(msg: 'Call ended!');
-          }
-          Navigator.pop(context);
-        }
+        // if (state.callStatus == CallStatus.end) {
+        //   if (widget.isReceiver) {
+        //     //Caller
+        //     ReUsableWidgets.showToast(msg: 'Call ended!');
+        //   }
+        //   Navigator.pop(context);
+        // }
       },
       builder: (context, state) {
+        if (state.status!.isLoading) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
         return Scaffold(
           backgroundColor: Colors.grey.shade50,
           body: Stack(
             children: [
+              Container(
+                height: double.infinity,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Colors.orange.shade100,
+                      Colors.orange.shade400,
+                    ],
+                  ),
+                ),
+              ),
               Center(
                   child: _remoteVideo(
                 state.remoteUid,
                 widget.isReceiver,
+                state.caller!,
+                state.reciver!,
               )),
               Align(
                 alignment: Alignment.topRight,
@@ -147,16 +176,15 @@ class _VideoCallScreenState extends State<_VideoCallScreen> {
                     width: 140,
                     height: 150,
                     decoration: BoxDecoration(
-                        color: Colors.grey.shade300,
+                        color: Colors.white,
                         borderRadius: BorderRadius.circular(8)),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
                       child: Center(
-                        child: state.localUserJoined
+                        child: state.localUserJoined == true
                             ? AgoraVideoView(
                                 controller: VideoViewController(
-                                  rtcEngine:
-                                      context.read<VideoCallCubit>().engine,
+                                  rtcEngine: cubit.engine,
                                   canvas: const VideoCanvas(uid: 0),
                                 ),
                               )
@@ -168,8 +196,8 @@ class _VideoCallScreenState extends State<_VideoCallScreen> {
                   ),
                 ),
               ),
-              state.remoteUid == null
-                  ? widget.isReceiver
+              widget.isReceiver
+                  ? state.remoteUid == null
                       ? Container()
                       : Padding(
                           padding: EdgeInsets.only(
@@ -178,21 +206,8 @@ class _VideoCallScreenState extends State<_VideoCallScreen> {
                             alignment: Alignment.bottomCenter,
                             child: GestureDetector(
                               onTap: () {
-                                context.read<VideoCallCubit>().performEndCall(
-                                        callModel: CallModel(
-                                      id: widget.id,
-                                      callerId:
-                                          CacheHelper.getString(key: 'uId'),
-                                      receiverId: widget.receiverId,
-                                      status: CallStatus.end.name,
-                                    ));
-                                context
-                                    .read<VideoCallCubit>()
-                                    .updateCallStatusToCancel(
-                                        callId: widget.id);
-                                Navigator.pop(context);
-                                // Navigator.of(context).push(MaterialPageRoute(
-                                //     builder: (_) => const VideoCallScreen()));
+                                cubit.updateCallStatusToReject(
+                                    callId: widget.id);
                               },
                               child: SizedBox(
                                 height: 95,
@@ -201,7 +216,7 @@ class _VideoCallScreenState extends State<_VideoCallScreen> {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(50.0),
                                   ),
-                                  child: Icon(
+                                  child: const Icon(
                                     Icons.call_end,
                                     size: 55,
                                     color: Colors.red,
@@ -218,9 +233,16 @@ class _VideoCallScreenState extends State<_VideoCallScreen> {
                         alignment: Alignment.bottomCenter,
                         child: GestureDetector(
                           onTap: () {
-                            context
-                                .read<VideoCallCubit>()
-                                .updateCallStatusToReject(callId: widget.id);
+                            cubit.updateCallStatusToCancel(callId: widget.id);
+                            // context.read<VideoCallCubit>().performEndCall(
+                            //         callModel: CallModel(
+                            //       id: widget.id,
+                            //       callerId: CacheHelper.getString(key: 'uId'),
+                            //       receiverId: widget.receiverId,
+                            //       status: CallStatus.end.name,
+                            //     ));
+
+                            // Navigator.pop(context);
                           },
                           child: SizedBox(
                             height: 95,
@@ -250,10 +272,12 @@ class _VideoCallScreenState extends State<_VideoCallScreen> {
                             child: GestureDetector(
                               onTap: () {
                                 //TODO: accept call
-                                context
-                                    .read<VideoCallCubit>()
-                                    .updateCallStatusToAccept(
-                                        callModel: CallModel(id: widget.id));
+
+                                cubit.updateCallStatusToAccept(
+                                  callModel: CallModel(
+                                    id: widget.id,
+                                  ),
+                                );
                               },
                               child: SizedBox(
                                 height: 65,
@@ -262,7 +286,7 @@ class _VideoCallScreenState extends State<_VideoCallScreen> {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30.0),
                                   ),
-                                  child: Icon(
+                                  child: const Icon(
                                     Icons.call,
                                     size: 35,
                                     color: Colors.green,
@@ -280,19 +304,15 @@ class _VideoCallScreenState extends State<_VideoCallScreen> {
                             alignment: Alignment.bottomLeft,
                             child: GestureDetector(
                               onTap: () {
-                                context.read<VideoCallCubit>().switchCamera();
+                                cubit.switchCamera();
                               },
-                              child: SizedBox(
+                              child: const SizedBox(
                                 height: 45,
                                 width: 45,
-                                child: Card(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20.0),
-                                  ),
-                                  child: Icon(
-                                    Icons.change_circle_rounded,
-                                    size: 35,
-                                  ),
+                                child: Icon(
+                                  Icons.change_circle_rounded,
+                                  size: 35,
+                                  color: Colors.white,
                                 ),
                               ),
                             ),
@@ -306,19 +326,15 @@ class _VideoCallScreenState extends State<_VideoCallScreen> {
                         alignment: Alignment.bottomLeft,
                         child: GestureDetector(
                           onTap: () {
-                            context.read<VideoCallCubit>().switchCamera();
+                            cubit.switchCamera();
                           },
-                          child: SizedBox(
+                          child: const SizedBox(
                             height: 45,
                             width: 45,
-                            child: Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                              child: const Icon(
-                                Icons.change_circle_rounded,
-                                size: 35,
-                              ),
+                            child: Icon(
+                              Icons.change_circle_rounded,
+                              size: 35,
+                              color: Colors.white,
                             ),
                           ),
                         ),
@@ -335,10 +351,8 @@ class _VideoCallScreenState extends State<_VideoCallScreen> {
                             child: GestureDetector(
                               onTap: () {
                                 //TODO: decline call
-                                context
-                                    .read<VideoCallCubit>()
-                                    .updateCallStatusToReject(
-                                        callId: widget.id);
+                                cubit.updateCallStatusToReject(
+                                    callId: widget.id);
                               },
                               child: SizedBox(
                                 height: 65,
@@ -347,7 +361,7 @@ class _VideoCallScreenState extends State<_VideoCallScreen> {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30.0),
                                   ),
-                                  child: Icon(
+                                  child: const Icon(
                                     Icons.call_end,
                                     size: 35,
                                     color: Colors.red,
@@ -365,27 +379,22 @@ class _VideoCallScreenState extends State<_VideoCallScreen> {
                             alignment: Alignment.bottomRight,
                             child: GestureDetector(
                               onTap: () {
-                                context
-                                    .read<VideoCallCubit>()
-                                    .switchAudio(!state.mute);
+                                cubit.switchAudio(!state.mute);
                               },
                               child: SizedBox(
                                 height: 45,
                                 width: 45,
-                                child: Card(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20.0),
-                                  ),
-                                  child: state.mute
-                                      ? const Icon(
-                                          Icons.mic_off_rounded,
-                                          size: 35,
-                                        )
-                                      : const Icon(
-                                          Icons.mic,
-                                          size: 35,
-                                        ),
-                                ),
+                                child: state.mute
+                                    ? const Icon(
+                                        Icons.mic_off_rounded,
+                                        size: 35,
+                                        color: Colors.white,
+                                      )
+                                    : const Icon(
+                                        Icons.mic,
+                                        size: 35,
+                                        color: Colors.white,
+                                      ),
                               ),
                             ),
                           ),
@@ -398,27 +407,22 @@ class _VideoCallScreenState extends State<_VideoCallScreen> {
                         alignment: Alignment.bottomRight,
                         child: GestureDetector(
                           onTap: () {
-                            context
-                                .read<VideoCallCubit>()
-                                .switchAudio(!state.mute);
+                            cubit.switchAudio(!state.mute);
                           },
                           child: SizedBox(
                             height: 45,
                             width: 45,
-                            child: Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                              child: state.mute
-                                  ? const Icon(
-                                      Icons.mic_off_rounded,
-                                      size: 35,
-                                    )
-                                  : const Icon(
-                                      Icons.mic,
-                                      size: 35,
-                                    ),
-                            ),
+                            child: state.mute
+                                ? const Icon(
+                                    Icons.mic_off_rounded,
+                                    size: 35,
+                                    color: Colors.white,
+                                  )
+                                : const Icon(
+                                    Icons.mic,
+                                    size: 35,
+                                    color: Colors.white,
+                                  ),
                           ),
                         ),
                       ),
@@ -430,11 +434,12 @@ class _VideoCallScreenState extends State<_VideoCallScreen> {
     );
   }
 
-  Widget _remoteVideo(int? remoteUid, bool isReceiver) {
+  Widget _remoteVideo(
+      int? remoteUid, bool isReceiver, String incoming, String outcoming) {
     if (remoteUid != null) {
       return AgoraVideoView(
         controller: VideoViewController.remote(
-          rtcEngine: context.read<VideoCallCubit>().engine,
+          rtcEngine: cubit.engine,
           canvas: VideoCanvas(uid: remoteUid),
           connection: const RtcConnection(channelId: testChannel),
         ),
@@ -444,7 +449,15 @@ class _VideoCallScreenState extends State<_VideoCallScreen> {
         padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 2),
         child: Column(
           children: [
-            isReceiver ? Text('Calling to you...') : Text('Calling to ..'),
+            isReceiver
+                ? Text(
+                    '${incoming.toUpperCase()} \n\n${AppLocalizations.of(context)!.callingYou}',
+                    textAlign: TextAlign.center,
+                  )
+                : Text(
+                    '${AppLocalizations.of(context)!.callingTo} \n\n ${outcoming.toUpperCase()}...',
+                    textAlign: TextAlign.center,
+                  ),
             const SizedBox(
               height: 10,
             ),

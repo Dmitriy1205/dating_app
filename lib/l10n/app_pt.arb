@@ -100,10 +100,26 @@
 
             "typeYourMessage":"Digite sua mensagem...",
 
+            "callingYou":"Chamando você...",
+              "callingTo":"Ligando para",
+              "cancelTheCall":"cancele a ligação!",
+              "rejectTheCall":"rejeitar a chamada!",
+              "rejectTheCall":"encerre a ligação!",
+              "noResponse":"Nenhuma resposta!",
+
             "sorryNoMatches":"Desculpe, não há correspondências",
               "chooseYourImage":"Escolha sua imagem",
               "photo":"Foto",
               "imageFromFiles":"Imagem de arquivos",
+
+              "cancellingSubscription":"Cancelando uma assinatura-",
+                "unableSignin":"Não foi possível fazer login-",
+                "emailPasswordIssue":"Problema de e-mail/senha-",
+
+                "cancelSubText":"Se você estava interessado em cancelar uma assinatura ou decidiu desativar a renovação automática da assinatura. Você pode simplesmente cancelar clicando no link abaixo",
+                  "unableSignText":"Se você tiver problemas para fazer login, revise as informações abaixo para ajudar a solucionar o problema. Estamos comprometidos com a segurança de nossos usuários, portanto, pode haver momentos em que um usuário seja bloqueado por engano ou reembolsado por sua assinatura. Se isso ocorrer, verifique o status da sua assinatura. Se houve algum erro entre em contato conosco imediatamente para que possamos fazer as alterações necessárias e corrigir o problema",
+                  "emailIssue":"Se o seu e-mail ou senha for preenchido automaticamente, tente digitar o e-mail ou a senha manualmente. Se você ainda estiver tendo dificuldades para fazer login, clique aqui (destaque clique aqui) para inserir seu endereço de e-mail registrado e nós lhe enviaremos um e-mail de redefinição de senha.",
+
 
 
           "about":"Sobre",

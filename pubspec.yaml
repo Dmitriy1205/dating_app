@@ -58,7 +58,7 @@ dependencies:
   agora_uikit: ^1.1.1
   agora_rtc_engine: ^6.1.0
   permission_handler: ^10.2.0
-  audioplayers: ^0.20.1
+  audioplayers: ^2.0.0
   quiver: ^3.2.1
   dio: ^4.0.6
   fluttertoast: ^8.0.8
