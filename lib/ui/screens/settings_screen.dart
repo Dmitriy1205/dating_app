@@ -1,4 +1,5 @@
 import 'package:dating_app/core/constants.dart';
+import 'package:dating_app/ui/bloc/friends_list/friends_list_cubit.dart';
 import 'package:dating_app/ui/bloc/settings/settings_cubit.dart';
 import 'package:dating_app/ui/screens/blocked_contacts_screen.dart';
 import 'package:dating_app/ui/screens/faq_screen.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_switch/flutter_switch.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../core/service_locator.dart';
+import '../bloc/blocked_contacts/blocked_contacts_cubit.dart';
 import 'friend_list_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -80,9 +82,7 @@ class _SettingsState extends State<Settings> {
                   onTap: () {
                     settingNames[index] == settingNames.first
                         ? const SizedBox()
-
-                        : settingNames[index] ==
-                                settingNames.last
+                        : settingNames[index] == settingNames.last
                             ? showAlertDialog(context)
                             : Navigator.push(
                                 context,
@@ -115,8 +115,7 @@ class _SettingsState extends State<Settings> {
                                 ),
                               ],
                             ),
-                            settingNames[index] ==
-                                    settingNames.first
+                            settingNames[index] == settingNames.first
                                 ? FlutterSwitch(
                                     height: 22,
                                     width: 40,
@@ -130,8 +129,7 @@ class _SettingsState extends State<Settings> {
                                     },
                                     value: isToggle,
                                   )
-                                : settingNames[index] ==
-                                        settingNames.last
+                                : settingNames[index] == settingNames.last
                                     ? Container()
                                     : const Icon(
                                         Icons.arrow_forward_ios_rounded,
@@ -187,8 +185,14 @@ class _SettingsState extends State<Settings> {
 
 List screens = [
   SizedBox(),
-  BlockedContactsScreen(),
-  FriendListScreen(),
+  BlocProvider(
+    create: (context) => sl<BlockedContactsCubit>(),
+    child: const BlockedContactsScreen(),
+  ),
+  BlocProvider(
+    create: (context) => sl<FriendsListCubit>(),
+    child: const FriendListScreen(),
+  ),
   FaqScreen(),
   TermsAndConditions(),
   PrivacyScreen(),

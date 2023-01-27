@@ -11,7 +11,6 @@ import '../bloc/image_picker/image_picker_cubit.dart';
 import '../bloc/messenger_cubit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-
 class MessengerWidget extends StatefulWidget {
   const MessengerWidget(BuildContext context,
       {super.key, required this.user, required this.userPicture});
@@ -38,16 +37,54 @@ class _MessengerWidgetState extends State<MessengerWidget> {
   Widget build(BuildContext context) {
     return BlocBuilder<MessengerCubit, MessengerStates>(
       builder: (context, state) {
-        print('state ${state}');
         if (state.status!.isLoaded) {
-          return Column(
-            children: [
-              Expanded(
-                child: messages(context, state),
-              ),
-              typeMessage(context, state)
-            ],
-          );
+          return state.userBlocked == true
+              ? SizedBox(
+                  child: Center(
+                    child: Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.orange, width: 3),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 20),
+                        child: RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 30,
+                              color: Colors.black,
+                            ),
+                            children: [
+                              TextSpan(
+                                text:
+                                    '${AppLocalizations.of(context)!.sorry}\n',
+                              ),
+                              TextSpan(
+                                text: '${widget.user.firstName}\n',
+                                style: const TextStyle(
+                                  color: Colors.orange,
+                                ),
+                              ),
+                              TextSpan(
+                                  text: AppLocalizations.of(context)!
+                                      .isBlockedYou)
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              : Column(
+                  children: [
+                    Expanded(
+                      child: messages(context, state),
+                    ),
+                    typeMessage(context, state)
+                  ],
+                );
         } else if (state.status!.isInitial) {
           return Column(
             children: [
@@ -92,7 +129,6 @@ class _MessengerWidgetState extends State<MessengerWidget> {
             const Expanded(
               child: Divider(
                 color: Colors.black54,
-
               ),
             ),
           ],
@@ -115,15 +151,17 @@ class _MessengerWidgetState extends State<MessengerWidget> {
                     ),
                   );
                 } else {
-                  if(!state.messagesList[index].isRead) {
-                    context.read<MessengerCubit>().palReadMessage(state.messagesList[index]);
+                  if (!state.messagesList[index].isRead) {
+                    context
+                        .read<MessengerCubit>()
+                        .palReadMessage(state.messagesList[index]);
                   }
                   return Padding(
                     padding: const EdgeInsets.fromLTRB(20, 5, 20, 10),
                     child: ReplyCard(
                         messageModel: state.messagesList[index],
                         time: state.messagesList[index].time!,
-                        userPicture: widget.userPicture   ),
+                        userPicture: widget.userPicture),
                   );
                 }
               }),
@@ -134,7 +172,7 @@ class _MessengerWidgetState extends State<MessengerWidget> {
 
   Widget typeMessage(BuildContext context, state) {
     return Padding(
-      padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height/23),
+      padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 23),
       child: SizedBox(
         width: MediaQuery.of(context).size.width - 20,
         child: Card(
@@ -165,12 +203,12 @@ class _MessengerWidgetState extends State<MessengerWidget> {
                           func: (File? f) async {
                             String? messageUrl = await context
                                 .read<ImagePickerCubit>()
-                                .uploadMessageImage(
-                                    f!, context.read<MessengerCubit>().getChatId);
+                                .uploadMessageImage(f!,
+                                    context.read<MessengerCubit>().getChatId);
                             MessageModel message = MessageModel(
                                 message: messageUrl,
                                 recipientName: widget.user.firstName);
-                                // time: DateTime.now().toLocal().toString());
+                            // time: DateTime.now().toLocal().toString());
                             context
                                 .read<MessengerCubit>()
                                 .sendMessage(message, widget.user, true);

@@ -6,7 +6,7 @@ class Content {
   static const String profile = 'assets/images/profile.png';
   static const String welcome = 'assets/images/welcome.png';
   static const String outgoingCall = 'sounds/outgoing_call.mp3';
-  static const String incomingCall = 'sounds/incoming_call.mp3';
+  static const String incomingCall = 'assets/sounds/incoming_call.mp3';
 
   static const List<String> hobbiesList = [
     'assets/images/working_out.png',

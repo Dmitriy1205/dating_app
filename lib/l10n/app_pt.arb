@@ -91,6 +91,10 @@
           "photography":"Fotografia",
           "acting":"Atuando",
 
+          "areYouSureBlock":"Tem certeza que deseja bloquear",
+                                 "yes":"Sim",
+                                 "no":"Nao",
+
           "block":"Quadra",
             "clearChat":"Limpar conversa",
             "reportUser":"Reportar usuário",
@@ -98,7 +102,15 @@
             "today":"Hoje",
             "connections":"Conexões",
 
+            "sorry":"Desculpa,",
+                                       "isBlockedYou":"te bloqueou.",
+
             "typeYourMessage":"Digite sua mensagem...",
+
+            "whyYouWantReport":"Por que você deseja denunciar este usuário?",
+              "ok":"Ok",
+              "youSureUnfriend":"Tem certeza que deseja cancelar a amizade",
+              "writeHere":"Escreva aqui...",
 
             "callingYou":"Chamando você...",
               "callingTo":"Ligando para",

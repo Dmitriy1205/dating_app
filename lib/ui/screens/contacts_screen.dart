@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dating_app/core/service_locator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../../core/notifications.dart';
+import '../bloc/messenger_cubit.dart';
 import 'history_call_screen.dart';
 
 class ContactsScreen extends StatefulWidget {
@@ -25,7 +25,6 @@ class _ContactsScreenState extends State<ContactsScreen> {
 
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +60,6 @@ class _ContactsScreenState extends State<ContactsScreen> {
                   padding: const EdgeInsets.all(5.0),
                   child: GestureDetector(
                     onTap: () {
-                      //TODO: phone call
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (_) => const HistoryCallScreen()));
                     },
@@ -85,7 +83,6 @@ class _ContactsScreenState extends State<ContactsScreen> {
           body: BlocBuilder<ContactsCubit, ContactsCubitStates>(
               builder: (context, state) {
             if (state.status!.isLoaded) {
-
               return ListView(
                 children: [
                   const Divider(
@@ -112,109 +109,135 @@ class _ContactsScreenState extends State<ContactsScreen> {
                     height: 120,
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
-                      child: Row(children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 25, right: 15),
-                          child: GestureDetector(
-                            onTap: () {
-                              StatusBottomSheet().showPicker(
-                                context,
-                              );
-                            },
-                            child: Stack(
-                              children: [
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      height: 75,
-                                      width: 75,
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: Colors.orangeAccent,
-                                              width: 3),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 25, right: 15),
+                            child: GestureDetector(
+                              onTap: () {
+                                StatusBottomSheet().showPicker(
+                                  context,
+                                );
+                              },
+                              child: Stack(
+                                children: [
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        height: 75,
+                                        width: 75,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Colors.orangeAccent,
+                                                width: 3),
+                                            borderRadius:
+                                                BorderRadius.circular(50)),
+                                        child: ClipRRect(
                                           borderRadius:
-                                              BorderRadius.circular(50)),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(50),
-                                        child: state.currentUserAvatar != null
-                                            ? Image.asset(
-                                                'assets/images/empty.png',
-                                                fit: BoxFit.cover,
-                                              )
-                                            : Image.network(
-                                                state.currentUserAvatar!,
-                                                fit: BoxFit.cover,
-                                              ),
+                                              BorderRadius.circular(50),
+                                          child: state.currentUserAvatar != null
+                                              ? Image.asset(
+                                                  'assets/images/empty.png',
+                                                  fit: BoxFit.cover,
+                                                )
+                                              : Image.network(
+                                                  state.currentUserAvatar!,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                        ),
                                       ),
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                        AppLocalizations.of(context)!.myStatus),
-                                  ],
-                                ),
-                                Positioned(
-                                  bottom: 30,
-                                  right: 0,
-                                  child: SizedBox(
-                                    height: 36,
-                                    width: 36,
-                                    child: Card(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20.0),
+                                      const SizedBox(
+                                        height: 5,
                                       ),
-                                      child: Image.asset(
-                                        'assets/icons/plus.png',
+                                      Text(AppLocalizations.of(context)!
+                                          .myStatus),
+                                    ],
+                                  ),
+                                  Positioned(
+                                    bottom: 30,
+                                    right: 0,
+                                    child: SizedBox(
+                                      height: 36,
+                                      width: 36,
+                                      child: Card(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20.0),
+                                        ),
+                                        child: Image.asset(
+                                          'assets/icons/plus.png',
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: state.usersList!.length,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.only(right: 1),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      height: 75,
-                                      width: 75,
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: Colors.orange, width: 3),
-                                          borderRadius:
-                                              BorderRadius.circular(50)),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(50),
-                                        child: state.image?[index] == null ||
-                                                state.image?[index] != ''
-                                            ? Image.network(
-                                                state.image![index],
-                                                fit: BoxFit.cover,
-                                              )
-                                            : Image.asset(
-                                                'assets/images/empty.png'),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(state.usersList![index].firstName!),
-                                  ],
-                                ),
-                              );
-                            }),
-                      ]),
+                          // ListView.builder(
+                          //     shrinkWrap: true,
+                          //     itemCount: state.usersList!.length,
+                          //     scrollDirection: Axis.horizontal,
+                          //     itemBuilder: (context, index) {
+                          //       return Padding(
+                          //         padding: const EdgeInsets.only(right: 1),
+                          //         child: Column(
+                          //           mainAxisAlignment: MainAxisAlignment.center,
+                          //           children: [
+                          //             Container(
+                          //               height: 75,
+                          //               width: 75,
+                          //               decoration: BoxDecoration(
+                          //                   border: Border.all(
+                          //                       color: Colors.orange, width: 3),
+                          //                   borderRadius:
+                          //                       BorderRadius.circular(50)),
+                          //               child: ClipRRect(
+                          //                 borderRadius: BorderRadius.circular(50),
+                          //                 child: state.image?[index] == null ||
+                          //                         state.image?[index] != ''
+                          //                     ? Image.network(
+                          //                         state.image![index],
+                          //                         fit: BoxFit.cover,
+                          //                       )
+                          //                     : Stack(
+                          //                         fit: StackFit.expand,
+                          //                         children: [
+                          //                           Image.asset(
+                          //                             'assets/images/empty.png',
+                          //                             fit: BoxFit.cover,
+                          //                           ),
+                          //                           const Center(
+                          //                             child: Padding(
+                          //                               padding:
+                          //                                   EdgeInsets.all(8.0),
+                          //                               child: Text(
+                          //                                 'No Avatar',
+                          //                                 textAlign:
+                          //                                     TextAlign.center,
+                          //                                 style: TextStyle(
+                          //                                     fontSize: 10,
+                          //                                     fontWeight:
+                          //                                         FontWeight
+                          //                                             .bold),
+                          //                               ),
+                          //                             ),
+                          //                           ),
+                          //                         ],
+                          //                       ),
+                          //               ),
+                          //             ),
+                          //             const SizedBox(
+                          //               height: 5,
+                          //             ),
+                          //             Text(state.usersList![index].firstName!),
+                          //           ],
+                          //         ),
+                          //       );
+                          //     }),
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(
@@ -229,28 +252,32 @@ class _ContactsScreenState extends State<ContactsScreen> {
                           context
                               .read<ContactsCubit>()
                               .getUrlImage(state.usersList![index].id!);
+
                           return GestureDetector(
                             onTap: () {
-
                               bloc.palUser = state.usersList![index];
-                              CacheHelper.saveData(key: 'uId', value: state.currentUserId);
+                              CacheHelper.saveData(
+                                  key: 'uId', value: state.currentUserId);
                               MessengerScreen(
                                   user: state.usersList![index],
                                   userPicture: state.image![index]);
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => BlocProvider.value(
-                                            value: bloc,
-                                            child: MessengerScreen(
-                                                currentUserName:
-                                                    state.currentUserName,
-                                                currentUserid:
-                                                    state.currentUserId,
-                                                user: bloc.palUser,
-                                                userPicture:
-                                                    state.image![index]),
-                                          )));
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => BlocProvider.value(
+                                    value: bloc,
+                                    child: BlocProvider.value(
+                                      value: sl<MessengerCubit>(),
+                                      child: MessengerScreen(
+                                        currentUserName: state.currentUserName,
+                                        currentUserid: state.currentUserId,
+                                        user: bloc.palUser,
+                                        userPicture: state.image![index],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
                             },
                             child: Container(
                               color: Colors.grey.shade200,
@@ -282,8 +309,33 @@ class _ContactsScreenState extends State<ContactsScreen> {
                                                       state.image![index],
                                                       fit: BoxFit.cover,
                                                     )
-                                                  : Image.asset(
-                                                      'assets/images/empty.png'),
+                                                  : Stack(
+                                                      fit: StackFit.expand,
+                                                      children: [
+                                                        Image.asset(
+                                                          'assets/images/empty.png',
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                        const Center(
+                                                          child: Padding(
+                                                            padding:
+                                                                EdgeInsets.all(
+                                                                    8.0),
+                                                            child: Text(
+                                                              'No Avatar',
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: TextStyle(
+                                                                  fontSize: 10,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
                                             ),
                                           ),
                                         ),

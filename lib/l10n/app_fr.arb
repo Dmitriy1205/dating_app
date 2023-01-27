@@ -90,14 +90,25 @@
            "photography":"La photographie",
            "acting":"Agissant",
 
+           "areYouSureBlock":"Êtes-vous sûr de vouloir bloquer",
+                       "yes":"Oui",
+                       "no":"Non",
+
            "block":"Bloquer",
              "clearChat":"Effacer le chat",
              "reportUser":"Dénoncer un utilisateur",
              "unfriend":"Désami",
              "today":"Aujourd'hui",
              "connections":"Connexions",
+             "sorry":"Désolé,",
+                           "isBlockedYou":"vous a bloqué.",
 
              "typeYourMessage":"Tapez votre message...",
+
+             "whyYouWantReport":"Pourquoi voulez-vous signaler cet utilisateur?",
+               "ok":"Ok",
+               "youSureUnfriend":"Êtes-vous sûr de vouloir retirer votre liste d'amis",
+               "writeHere":"Ecrire ici...",
 
              "callingYou":"Je t'appelle...",
                "callingTo":"Appel à",
