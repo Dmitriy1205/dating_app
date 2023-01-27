@@ -1,4 +1,5 @@
 import 'package:dating_app/data/data_provider/firestore_data_provider.dart';
+import '../models/friend_model.dart';
 import '../models/message_model.dart';
 import '../models/user_model.dart';
 
@@ -18,6 +19,18 @@ class DataRepository {
 
   Future<List<UserModel>> getContacts() async {
     return await dataProvider.getContacts();
+  }
+
+  Future<List<UserModel>> getBlockedContacts() async {
+    return await dataProvider.getBlockedContactsList();
+  }
+
+  Future<void> blockContact(String id) async {
+    await dataProvider.toBlockContact(id);
+  }
+
+  Future<void> unblockContact(String id) async {
+    await dataProvider.toUnblockContact(id);
   }
 
   Future<void> sendMessageToPal(messageModel, String chatId) async {
@@ -58,8 +71,8 @@ class DataRepository {
   }
 
   Future<void> updateFields(String id, Map<String, dynamic> profile,
-      Map<String, dynamic> look,String name) async {
-    await dataProvider.updateFields(id, profile, look,name);
+      Map<String, dynamic> look, String name) async {
+    await dataProvider.updateFields(id, profile, look, name);
   }
 
   Future<List<UserModel>> getAllUserFields() async {
@@ -68,6 +81,11 @@ class DataRepository {
 
   Future<void> palReadMessage(MessageModel message) async {
     dataProvider.palReadMessage(message, chatId);
+  }
+
+  Future<FriendModel?> isUserBlocked(
+      String? currentUserId, String blockerUserId) async {
+    return dataProvider.isUserBlocked(currentUserId, blockerUserId);
   }
 
 // Future<SearchPrefFields?> getSearchFields(String id) async {

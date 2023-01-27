@@ -21,8 +21,7 @@ class ContactsCubit extends Cubit<ContactsCubitStates> {
 
   Future<String> getUrlImage(String id) async {
     final String image = await db.getUserFields(id).then((value) {
-      return value!.profileInfo!.image! ??
-          'https://firebasestorage.googleapis.com/v0/b/dating-app-95830.appspot.com/o/users%2F7kyZ3iSjKUQyQHNTNpB1gzU8pP33%2Fimage2.png?alt=media&token=968c17f4-46ee-4e0b-a3e7-b6d0a92c3f4c';
+      return value!.profileInfo!.image!;
     });
     return image;
   }
@@ -47,6 +46,8 @@ class ContactsCubit extends Cubit<ContactsCubitStates> {
       currentUserName: u.firstName,
     ));
   }
+
+
 }
 
 class ContactsCubitStates extends Equatable {
@@ -56,6 +57,7 @@ class ContactsCubitStates extends Equatable {
   final String? currentUserId;
   final String? currentUserName;
   final String? currentUserAvatar;
+  final bool? userBlocked;
 
   const ContactsCubitStates({
     this.image,
@@ -64,6 +66,7 @@ class ContactsCubitStates extends Equatable {
     this.currentUserAvatar,
     this.currentUserId,
     this.currentUserName,
+    this.userBlocked = false,
   });
 
   @override
@@ -74,6 +77,7 @@ class ContactsCubitStates extends Equatable {
         currentUserAvatar,
         currentUserId,
         currentUserName,
+        userBlocked,
       ];
 
   ContactsCubitStates copyWith({
@@ -83,6 +87,7 @@ class ContactsCubitStates extends Equatable {
     String? currentUserAvatar,
     String? currentUserId,
     String? currentUserName,
+    bool? userBlocked,
   }) {
     return ContactsCubitStates(
       image: image ?? this.image,
@@ -91,6 +96,7 @@ class ContactsCubitStates extends Equatable {
       currentUserAvatar: currentUserAvatar ?? this.currentUserAvatar,
       currentUserId: currentUserId ?? this.currentUserId,
       currentUserName: currentUserName ?? this.currentUserName,
+      userBlocked: userBlocked ?? this.userBlocked,
     );
   }
 }

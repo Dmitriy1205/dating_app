@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dating_app/ui/screens/hobbies_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../core/functions/validation.dart';
 import '../../core/themes/checkboxes.dart';
 import '../../core/themes/text_styles.dart';
+import '../bloc/messenger_cubit.dart';
 import '../screens/interests_screen.dart';
 import 'field_decor.dart';
 
@@ -27,6 +29,9 @@ class ReUsableWidgets {
   final companyController = TextEditingController();
   final jobController = TextEditingController();
   final locationController = TextEditingController();
+
+
+
 
   Widget customGradientButton(BuildContext context, {required String text}) {
     return Column(
@@ -779,6 +784,339 @@ class ReUsableWidgets {
           ),
         ),
       ),
+    );
+  }
+ static showBlockDialog(BuildContext context, String userName, String userId) {
+    Widget noButton = ElevatedButton(
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+      style: ElevatedButton.styleFrom(
+          primary: Colors.transparent,
+          padding: EdgeInsets.zero,
+          shape:
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
+      child: Ink(
+        decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment(0.1, 2.1),
+              colors: [
+                Colors.orange,
+                Colors.purple,
+              ],
+            ),
+            borderRadius: BorderRadius.circular(50)),
+        child: Container(
+          width: 110,
+          height: 35,
+          alignment: Alignment.center,
+          child: Text(
+            AppLocalizations.of(context)!.no,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+    );
+
+    // );
+    Widget yesButton = ElevatedButton(
+      onPressed: () {
+        BlocProvider.of<MessengerCubit>(context)
+            .blockUser(userId)
+            .then((value) => Navigator.pop(context));
+      },
+      style: ElevatedButton.styleFrom(
+          primary: Colors.transparent,
+          padding: EdgeInsets.zero,
+          shape:
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
+      child: Ink(
+        decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment(0.1, 2.1),
+              colors: [
+                Colors.orange,
+                Colors.purple,
+              ],
+            ),
+            borderRadius: BorderRadius.circular(50)),
+        child: Container(
+          width: 110,
+          height: 35,
+          alignment: Alignment.center,
+          child: Text(
+            AppLocalizations.of(context)!.yes,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Center(
+          child: AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            content: Padding(
+              padding: const EdgeInsets.only(top: 20, left: 15, right: 15),
+              child: Text(
+                '${AppLocalizations.of(context)!.areYouSureBlock}\n$userName',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
+            actions: [
+              Padding(
+                padding:
+                const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    noButton,
+                    yesButton,
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+ static showUnfriendDialog(BuildContext context, String userName, String userId) {
+    Widget noButton = ElevatedButton(
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+      style: ElevatedButton.styleFrom(
+          primary: Colors.transparent,
+          padding: EdgeInsets.zero,
+          shape:
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
+      child: Ink(
+        decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment(0.1, 2.1),
+              colors: [
+                Colors.orange,
+                Colors.purple,
+              ],
+            ),
+            borderRadius: BorderRadius.circular(50)),
+        child: Container(
+          width: 110,
+          height: 35,
+          alignment: Alignment.center,
+          child: Text(
+            AppLocalizations.of(context)!.no,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+    );
+
+    // );
+    Widget yesButton = ElevatedButton(
+      onPressed: () {
+        //Todo: unfriend
+      },
+      style: ElevatedButton.styleFrom(
+          primary: Colors.transparent,
+          padding: EdgeInsets.zero,
+          shape:
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
+      child: Ink(
+        decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment(0.1, 2.1),
+              colors: [
+                Colors.orange,
+                Colors.purple,
+              ],
+            ),
+            borderRadius: BorderRadius.circular(50)),
+        child: Container(
+          width: 110,
+          height: 35,
+          alignment: Alignment.center,
+          child: Text(
+            AppLocalizations.of(context)!.yes,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Center(
+          child: AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            content: Padding(
+              padding: const EdgeInsets.only(top: 20, left: 15, right: 15),
+              child: Text(
+                '${AppLocalizations.of(context)!.youSureUnfriend}\n$userName',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
+            actions: [
+              Padding(
+                padding:
+                const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    noButton,
+                    yesButton,
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  static showReportDialog(BuildContext context, String userName, String userId) {
+    Widget noButton = ElevatedButton(
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+      style: ElevatedButton.styleFrom(
+          primary: Colors.transparent,
+          padding: EdgeInsets.zero,
+          shape:
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
+      child: Ink(
+        decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment(0.1, 2.1),
+              colors: [
+                Colors.orange,
+                Colors.purple,
+              ],
+            ),
+            borderRadius: BorderRadius.circular(50)),
+        child: Container(
+          width: 120,
+          height: 35,
+          alignment: Alignment.center,
+          child: Text(
+            AppLocalizations.of(context)!.ok,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+    );
+
+    // );
+    Widget yesButton = ElevatedButton(
+      onPressed: () {
+        //Todo: send report
+        Navigator.of(context).pop();
+      },
+      style: ElevatedButton.styleFrom(
+          primary: Colors.transparent,
+          padding: EdgeInsets.zero,
+          shape:
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
+      child: Ink(
+        decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment(0.1, 2.1),
+              colors: [
+                Colors.orange,
+                Colors.purple,
+              ],
+            ),
+            borderRadius: BorderRadius.circular(50)),
+        child: Container(
+          width: 120,
+          height: 35,
+          alignment: Alignment.center,
+          child: Text(
+            AppLocalizations.of(context)!.cancel,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Center(
+          child: AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            content: Padding(
+              padding: const EdgeInsets.only(
+                top: 20,
+              ),
+              child: SizedBox(
+                height: MediaQuery.of(context).size.width / 3,
+                width: MediaQuery.of(context).size.width / 1,
+                child: Column(
+                  children: [
+                    Text(
+                      AppLocalizations.of(context)!.whyYouWantReport,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Flexible(
+                      child: TextFormField(
+                        autocorrect: false,
+                        // controller: bioController,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: 6,
+                        decoration: profileFieldDecor(
+                            AppLocalizations.of(context)!.writeHere),
+                        //   onSaved: (value) {
+                        //     bioController.text = value!.trim();
+                        //   },
+                        //   validator: validateNameField,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    noButton,
+                    yesButton,
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

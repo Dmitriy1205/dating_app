@@ -97,6 +97,11 @@
   "today":"Today",
   "connections":"Connections",
 
+  "whyYouWantReport":"Why do you want to report this user?",
+  "ok":"Ok",
+  "youSureUnfriend":"Are you sure want to unfriend",
+  "writeHere":"Write here...",
+
   "cancellingSubscription":"Cancelling a subscription-",
   "unableSignin":"Unable to signin-",
   "emailPasswordIssue":"Email/Password issue-",
@@ -115,6 +120,8 @@
   "noResponse":"No response!",
 
   "sorryNoMatches":"Sorry, no matches",
+  "sorry":"Sorry,",
+  "isBlockedYou":"is Blocked You",
   "chooseYourImage":"Choose your image",
   "photo":"Photo",
   "imageFromFiles":"Image from files",
@@ -140,6 +147,9 @@
   "logout":"Logout",
   "warning":"Warning",
   "areYouSure":"Are you sure you want to logout?",
+  "areYouSureBlock":"Are you sure want to block",
+  "yes":"Yes",
+  "no":"No",
   "notifications":"Notifications",
   "blockedContacts":"Blocked Contacts",
   "friendList":"Friend List",

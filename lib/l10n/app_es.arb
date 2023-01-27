@@ -90,12 +90,24 @@
           "photography":"Fotografía",
           "acting":"Actuación",
 
+          "areYouSureBlock":"Estas seguro de querer bloquear",
+            "yes":"Si",
+            "no":"No",
+
           "block":"Bloquear",
             "clearChat":"Vacie la conversacion",
             "reportUser":"Reportar usuario",
             "unfriend":"No amigo",
             "today":"Este Dia",
             "connections":"Conexiones",
+
+            "sorry":"Lo siento,",
+              "isBlockedYou":"te ha bloqueado.",
+
+            "whyYouWantReport":"¿Por qué quieres reportar a este usuario?",
+              "ok":"Ok",
+              "youSureUnfriend":"Seguro que quieres dejar de ser amigo",
+              "writeHere":"Escriba aqui...",
 
             "typeYourMessage":"Escribe tu mensaje...",
 

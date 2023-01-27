@@ -269,19 +269,21 @@ class Profile extends StatelessWidget {
                           child: Wrap(
                             crossAxisAlignment: WrapCrossAlignment.end,
                             children: List<Widget>.generate(
-                              state.user!.searchPref!.lookingFor!.length,
-                              (index) => state
-                                          .user!.searchPref!.lookingFor!.values
+                                state.user!.searchPref!.lookingFor!.length,
+                                (index) {
+                              String text = '${lookin[index]}. ';
+
+                              return state.user!.searchPref!.lookingFor!.values
                                           .elementAt(index) ==
                                       false
                                   ? const SizedBox()
                                   : Text(
-                                      '${lookin[index]}, ',
+                                      text,
                                       textAlign: TextAlign.start,
                                       style: const TextStyle(
                                           color: Colors.grey, fontSize: 14),
-                                    ),
-                            ).toList(),
+                                    );
+                            }).toList(),
                           ),
                         ),
                       ],

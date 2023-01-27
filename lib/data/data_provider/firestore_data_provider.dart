@@ -4,12 +4,12 @@ import 'package:dating_app/data/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../core/exceptions.dart';
 import '../../core/service_locator.dart';
+import '../models/friend_model.dart';
 import '../models/message_model.dart';
 import 'package:dating_app/data/models/profile_info_data.dart';
 import '../models/search_pref_data.dart';
 import '../repositories/user_repository.dart';
 import 'package:ntp/ntp.dart';
-
 
 class FirebaseDataProvider {
   final FirebaseFirestore firestore;
@@ -189,6 +189,56 @@ class FirebaseDataProvider {
     }
   }
 
+  Future<List<UserModel>> getBlockedContactsList() async {
+    List<String> listAddedToFriends = [];
+    try {
+      QuerySnapshot<Map<String, dynamic>> getAddedFriends = await firestore
+          .collection('users/${userRepository.getLoggedUser.id}/addedFriends')
+          .get();
+      getAddedFriends.docs.forEach((element) {
+        if (element.data()['blockedFriend'] == true) {
+          listAddedToFriends.add(element.data()['addedFriend']);
+        }
+      });
+      QuerySnapshot<Map<String, dynamic>> users =
+          await firestore.collection('users').get();
+      List<UserModel> palsList = [];
+      users.docs.map((user) {
+        if (listAddedToFriends.contains(user.id))
+          palsList.add(UserModel.fromJson(user.data()));
+      }).toList();
+      return palsList;
+    } on FirebaseException catch (e) {
+      throw BadRequestException(message: e.message!);
+    }
+  }
+
+  Future<void> toBlockContact(String id) async {
+    try {
+      await firestore
+          .collection('users')
+          .doc(userRepository.getLoggedUser.id)
+          .collection('addedFriends')
+          .doc(id)
+          .update({'blockedFriend': true});
+    } on FirebaseException catch (e) {
+      throw BadRequestException(message: e.message!);
+    }
+  }
+
+  Future<void> toUnblockContact(String id) async {
+    try {
+      await firestore
+          .collection('users')
+          .doc(userRepository.getLoggedUser.id)
+          .collection('addedFriends')
+          .doc(id)
+          .update({'blockedFriend': false});
+    } on FirebaseException catch (e) {
+      throw BadRequestException(message: e.message!);
+    }
+  }
+
   Future<ProfileInfoFields?> getProfileFields(String id) async {
     try {
       final doc = await firestore
@@ -356,6 +406,25 @@ class FirebaseDataProvider {
           .collection('chats/$chatId/messages')
           .doc(message.messageId)
           .update({'isRead': true});
+    } on FirebaseException catch (e) {
+      throw BadRequestException(message: e.message!);
+    }
+  }
+
+  Future<FriendModel?> isUserBlocked(
+      String? currentUserId, String blockerUserId) async {
+    try {
+      var data = await firestore
+          .collection('users')
+          .doc(blockerUserId)
+          .collection('addedFriends')
+          .doc(currentUserId)
+          .withConverter(
+              fromFirestore: FriendModel.fromFirestore,
+              toFirestore: (FriendModel u, _) => u.toFirestore())
+          .get();
+
+      return data.data();
     } on FirebaseException catch (e) {
       throw BadRequestException(message: e.message!);
     }
