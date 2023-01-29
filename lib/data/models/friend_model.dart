@@ -26,4 +26,11 @@ class FriendModel {
       "blockedFriend": isBlocked,
     };
   }
+
+  factory FriendModel.fromJson(Map<String, dynamic> json) {
+    return FriendModel(
+      id: json["addedFriend"],
+      isBlocked: json["blockedFriend"],
+    );
+  }
 }

@@ -429,4 +429,17 @@ class FirebaseDataProvider {
       throw BadRequestException(message: e.message!);
     }
   }
+
+  Future<List<String>> isUserMatch(String id) async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> data = await firestore
+          .collection('users')
+          .doc(id)
+          .collection('addedFriends').get();
+
+      return data.docs.map((e) => e.id).toList();
+    } on FirebaseException catch (e) {
+      throw BadRequestException(message: e.message!);
+    }
+  }
 }

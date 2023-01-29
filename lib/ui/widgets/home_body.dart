@@ -1,14 +1,16 @@
 import 'dart:convert';
 
+import 'package:dating_app/core/service_locator.dart';
 import 'package:dating_app/data/models/user_model.dart';
+import 'package:dating_app/ui/bloc/messenger_cubit.dart';
+import 'package:dating_app/ui/screens/messenger_screen.dart';
 import 'package:dating_app/ui/screens/video_call_screen.dart';
+import 'package:dating_app/ui/widgets/reusable_widgets.dart';
 import 'package:dating_app/ui/widgets/swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../../core/services/cache_helper.dart';
 import '../bloc/home/home_cubit.dart';
-import '../bloc/register_call/register_call_cubit.dart';
 import '../screens/person_profile.dart';
 
 class HomeBody1 extends StatefulWidget {
@@ -22,11 +24,36 @@ class _HomeBody1State extends State<HomeBody1> {
   final SwipeableCardSectionController _cardController =
       SwipeableCardSectionController();
 
-
-
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeCubit, HomeState>(
+    return BlocConsumer<HomeCubit, HomeState>(
+      listener: (context, state) {
+        if (state.match == true) {
+          ReUsableWidgets.showMatchDialog(
+            context,
+            userName: state.matchUser!.firstName,
+            userId: state.matchUser!.id,
+            image: state.matchUser!.profileInfo?.image,
+            place: state.matchUser!.profileInfo?.location,
+            goToChat: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => BlocProvider.value(
+                    value: sl<MessengerCubit>(),
+                    child: MessengerScreen(
+                      user: state.matchUser!,
+                      currentUserid: state.currentUser!.id,
+                      currentUserName: state.currentUser!.firstName,
+                      userPicture: state.matchUser!.profileInfo!.image!,
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
+        }
+      },
       builder: (context, state) {
         if (state.status!.isLoading) {
           return const Center(child: CircularProgressIndicator());
@@ -58,6 +85,7 @@ class _HomeBody1State extends State<HomeBody1> {
                       break;
                     case Direction.right:
                       context.read<HomeCubit>().addUser(users[index].id!);
+
                       print(
                           'onLiked ${users[index].id!} ${users[index].id} ${dir} $index');
                       break;
@@ -129,7 +157,7 @@ class _HomeBody1State extends State<HomeBody1> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 5,
                                 ),
                                 IconButton(
@@ -169,18 +197,23 @@ class _HomeBody1State extends State<HomeBody1> {
                                 const SizedBox(
                                   height: 5,
                                 ),
-                                SizedBox(
-                                  width: 280,
-                                  child: Text(
-                                    users[index].profileInfo!.bio ?? '',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 4,
-                                    style: TextStyle(
-                                      fontSize: 14.0,
-                                      fontWeight: FontWeight.normal,
-                                      color: Colors.grey[700],
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 20,right: 20),
+                                  child: SizedBox(
+                                    width: 280,
+                                    child: Text(
+                                      users[index].profileInfo!.bio ?? '',
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 4,
+                                      textWidthBasis: TextWidthBasis.longestLine,
+                                      style: TextStyle(
+                                        fontSize: 14.0,
+
+                                        fontWeight: FontWeight.normal,
+                                        color: Colors.grey[700],
+                                      ),
+                                      textAlign: TextAlign.center,
                                     ),
-                                    textAlign: TextAlign.start,
                                   ),
                                 ),
                               ],

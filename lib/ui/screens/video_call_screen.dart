@@ -110,6 +110,7 @@ class _VideoCallScreenState extends State<_VideoCallScreen> {
         // }
         if (state.status!.isError) {
           ReUsableWidgets.showToast(msg: state.status!.errorMessage.toString());
+          Navigator.pop(context);
         } else if (state.callStatus == CallStatus.cancel) {
           if (widget.isReceiver) {
             //Caller

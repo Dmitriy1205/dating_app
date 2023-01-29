@@ -1,3 +1,4 @@
+import 'package:animation_search_bar/animation_search_bar.dart';
 import 'package:dating_app/core/services/cache_helper.dart';
 import 'package:dating_app/ui/bloc/contacts_cubit.dart';
 import 'package:dating_app/ui/screens/messenger_screen.dart';
@@ -18,11 +19,12 @@ class ContactsScreen extends StatefulWidget {
 
 class _ContactsScreenState extends State<ContactsScreen> {
   late ContactsCubit bloc;
+  late TextEditingController controller;
 
   @override
   void initState() {
     bloc = sl<ContactsCubit>();
-
+    controller = TextEditingController();
     super.initState();
   }
 
@@ -91,8 +93,15 @@ class _ContactsScreenState extends State<ContactsScreen> {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 15),
-                    child: Row(
+                        horizontal: 10, vertical: 10),
+                    child:
+                    // AnimationSearchBar(
+                    //   centerTitle: '',
+                    //   isBackButtonVisible: false,
+                    //   onChanged: (String) {},
+                    //   searchTextEditingController: controller,
+                    // ),
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(

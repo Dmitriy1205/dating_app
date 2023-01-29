@@ -100,6 +100,7 @@ class BlockedContactsScreen extends StatelessWidget {
                                             : Image.network(
                                                 contact.usersList![index]
                                                     .profileInfo!.image!,
+                                          fit: BoxFit.fill,
                                               ),
                                       ),
                                     ),

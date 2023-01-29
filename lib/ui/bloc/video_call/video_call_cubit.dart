@@ -66,7 +66,13 @@ class VideoCallCubit extends Cubit<VideoCallState> {
       },
       onError: (ErrorCodeType e, String s){
         emit(state.copyWith(status: Status.error(e.name)));
-      }
+      },
+      onConnectionLost: (RtcConnection c){
+        emit(state.copyWith(status: Status.error('connection lost')));
+      },
+      onConnectionInterrupted: (RtcConnection c){
+        emit(state.copyWith(status: Status.error('connection interrupted')));
+      },
     ));
 
     callStatusStreamSubscription = repo.getTemporaryTokenFromFirebase();

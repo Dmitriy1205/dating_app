@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../core/constants.dart';
 import '../../core/functions/validation.dart';
 import '../../core/themes/checkboxes.dart';
 import '../../core/themes/text_styles.dart';
@@ -29,9 +30,6 @@ class ReUsableWidgets {
   final companyController = TextEditingController();
   final jobController = TextEditingController();
   final locationController = TextEditingController();
-
-
-
 
   Widget customGradientButton(BuildContext context, {required String text}) {
     return Column(
@@ -390,7 +388,6 @@ class ReUsableWidgets {
             ),
           ]),
         TextFormField(
-
           autocorrect: false,
           controller: university,
           keyboardType: TextInputType.name,
@@ -406,7 +403,6 @@ class ReUsableWidgets {
         ),
         if (isRegisterForm)
           TextFormField(
-
             autocorrect: false,
             controller: degreeController,
             keyboardType: TextInputType.name,
@@ -420,7 +416,6 @@ class ReUsableWidgets {
           height: 10,
         ),
         TextFormField(
-
           autocorrect: false,
           controller: company,
           keyboardType: TextInputType.name,
@@ -447,8 +442,8 @@ class ReUsableWidgets {
       ],
     );
   }
-  static showToast(
-      {required String msg}) {
+
+  static showToast({required String msg}) {
     Fluttertoast.showToast(
         msg: msg,
         toastLength: Toast.LENGTH_SHORT,
@@ -588,7 +583,8 @@ class ReUsableWidgets {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 22,right: 22,bottom: 22),
+                  padding:
+                      const EdgeInsets.only(left: 22, right: 22, bottom: 22),
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.of(context).pop();
@@ -786,7 +782,8 @@ class ReUsableWidgets {
       ),
     );
   }
- static showBlockDialog(BuildContext context, String userName, String userId) {
+
+  static showBlockDialog(BuildContext context, String userName, String userId) {
     Widget noButton = ElevatedButton(
       onPressed: () {
         Navigator.of(context).pop();
@@ -795,7 +792,7 @@ class ReUsableWidgets {
           primary: Colors.transparent,
           padding: EdgeInsets.zero,
           shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
       child: Ink(
         decoration: BoxDecoration(
             gradient: const LinearGradient(
@@ -830,7 +827,7 @@ class ReUsableWidgets {
           primary: Colors.transparent,
           padding: EdgeInsets.zero,
           shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
       child: Ink(
         decoration: BoxDecoration(
             gradient: const LinearGradient(
@@ -873,7 +870,7 @@ class ReUsableWidgets {
             actions: [
               Padding(
                 padding:
-                const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+                    const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -889,7 +886,8 @@ class ReUsableWidgets {
     );
   }
 
- static showUnfriendDialog(BuildContext context, String userName, String userId) {
+  static showUnfriendDialog(
+      BuildContext context, String userName, String userId) {
     Widget noButton = ElevatedButton(
       onPressed: () {
         Navigator.of(context).pop();
@@ -898,7 +896,7 @@ class ReUsableWidgets {
           primary: Colors.transparent,
           padding: EdgeInsets.zero,
           shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
       child: Ink(
         decoration: BoxDecoration(
             gradient: const LinearGradient(
@@ -931,7 +929,7 @@ class ReUsableWidgets {
           primary: Colors.transparent,
           padding: EdgeInsets.zero,
           shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
       child: Ink(
         decoration: BoxDecoration(
             gradient: const LinearGradient(
@@ -974,7 +972,7 @@ class ReUsableWidgets {
             actions: [
               Padding(
                 padding:
-                const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+                    const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -990,7 +988,8 @@ class ReUsableWidgets {
     );
   }
 
-  static showReportDialog(BuildContext context, String userName, String userId) {
+  static showReportDialog(
+      BuildContext context, String userName, String userId) {
     Widget noButton = ElevatedButton(
       onPressed: () {
         Navigator.of(context).pop();
@@ -999,7 +998,7 @@ class ReUsableWidgets {
           primary: Colors.transparent,
           padding: EdgeInsets.zero,
           shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
       child: Ink(
         decoration: BoxDecoration(
             gradient: const LinearGradient(
@@ -1033,7 +1032,7 @@ class ReUsableWidgets {
           primary: Colors.transparent,
           padding: EdgeInsets.zero,
           shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
       child: Ink(
         decoration: BoxDecoration(
             gradient: const LinearGradient(
@@ -1114,6 +1113,127 @@ class ReUsableWidgets {
                 ),
               ),
             ],
+          ),
+        );
+      },
+    );
+  }
+
+  static showMatchDialog(
+    BuildContext context, {
+    String? userName,
+    String? userId,
+    String? image,
+    String? place,
+    required Function() goToChat,
+  }) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Center(
+          child: Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Stack(
+              alignment: AlignmentDirectional.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).size.height / 6),
+                  child: Container(
+                    width: 180,
+                    height: 180,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(50),
+                      child: image == null
+                          ? Image.asset(
+                              'assets/images/empty.png',
+                              fit: BoxFit.cover,
+                            )
+                          : Image.network(
+                              image!,
+                              fit: BoxFit.cover,
+                            ),
+                    ),
+                  ),
+                ),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image.asset(
+                    Content.match,
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                Positioned(
+                    bottom: MediaQuery.of(context).size.height / 5.1,
+                    child: Text(
+                      userName!,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 27,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )),
+                Positioned(
+                  bottom: MediaQuery.of(context).size.height / 6,
+                  child: Text(
+                    place!,
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 17,
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: MediaQuery.of(context).size.height / 11,
+                  child: ElevatedButton(
+                    onPressed:
+                      goToChat
+                    ,
+                    style: ElevatedButton.styleFrom(
+                        primary: Colors.transparent,
+                        padding: EdgeInsets.zero,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50))),
+                    child: Ink(
+                      decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment(0.1, 2.1),
+                            colors: [
+                              Colors.orange,
+                              Colors.purple,
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(50)),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width / 1.4,
+                        height: MediaQuery.of(context).size.width / 8.5,
+                        alignment: Alignment.center,
+                        child: Text(
+                          'START CHAT',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                    bottom: MediaQuery.of(context).size.height / 40,
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text(
+                        'Continue Swipe'.toUpperCase(),
+                        style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            color: Colors.grey),
+                      ),
+                    )),
+              ],
+            ),
           ),
         );
       },

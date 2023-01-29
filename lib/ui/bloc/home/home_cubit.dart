@@ -166,9 +166,25 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-  void addUser(String id) {
+  Future<void> addUser(String id) async {
     db.dataProvider.addedToFriends(id);
-    print('addUser id $id');
+    try {
+      List<String> userMatch = await db.isUserMatch(id);
+      UserModel? matchUser = await db.getUserFields(id);
+      UserModel? currentUser = await db.getUserFields(auth.currentUser()!.uid);
+      print('=============== ${userMatch.toString()}');
+      if (userMatch.contains(auth.currentUser()!.uid)) {
+        emit(state.copyWith(
+          match: true,
+          matchUser: matchUser,
+          currentUser: currentUser,
+        ));
+      } else {
+        emit(state.copyWith(match: false));
+      }
+
+      print('addUser id $id');
+    } catch (e) {}
   }
 
   void refuseUser(String id) {

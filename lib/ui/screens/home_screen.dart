@@ -3,6 +3,7 @@ import 'package:dating_app/ui/bloc/register_call/register_call_cubit.dart';
 import 'package:dating_app/ui/screens/contacts_screen.dart';
 import 'package:dating_app/ui/screens/profile_screen.dart';
 import 'package:dating_app/ui/screens/video_call_screen.dart';
+import 'package:dating_app/ui/widgets/reusable_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,14 +22,13 @@ class HomeScreen extends StatelessWidget {
       onWillPop: () async => false,
       child: BlocListener<RegisterCallCubit, RegisterCallState>(
         listener: (context, state) {
-          if (state.inCallStatus ==
-              IncomingCallStatus.successIncomingCall) {
+          if (state.inCallStatus == IncomingCallStatus.successIncomingCall) {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (_) => VideoCallScreen(
-                  receiverId: state.callModel!.receiverId!,
-                  id: state.callModel!.id,
-                  isReceiver: true,
-                )));
+                      receiverId: state.callModel!.receiverId!,
+                      id: state.callModel!.id,
+                      isReceiver: true,
+                    )));
           }
         },
         child: Scaffold(
@@ -66,7 +66,6 @@ class HomeScreen extends StatelessWidget {
                       padding: const EdgeInsets.all(5.0),
                       child: GestureDetector(
                         onTap: () {
-                          //TODO: navigation to profile
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -100,8 +99,8 @@ class HomeScreen extends StatelessWidget {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20.0),
                                   ),
-                                  child: Image.asset(
-                                      'assets/icons/menu.png')))),
+                                  child:
+                                      Image.asset('assets/icons/menu.png')))),
                     ),
                   ],
                 ),
