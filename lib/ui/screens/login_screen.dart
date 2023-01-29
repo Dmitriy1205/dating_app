@@ -8,9 +8,6 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: const LoginForm(),
-    );
+    return const LoginForm();
   }
 }

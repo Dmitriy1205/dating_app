@@ -148,7 +148,12 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                       padding: const EdgeInsets.fromLTRB(
                                           0, 10, 10, 0),
                                       onPressed: () {
-                                        Navigator.pop(context);
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => const SearchPrefScreen(),
+                                          ),
+                                        );
                                       },
                                       splashRadius: 0.1,
                                       iconSize: 28,
