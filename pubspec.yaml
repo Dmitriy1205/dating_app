@@ -26,10 +26,6 @@ dependencies:
   carousel_slider: ^4.1.1
   dots_indicator: ^2.0.0
   flutter_switch: ^0.3.2
-  flutter_staggered_grid_view: ^0.6.2
-#  animation_search_bar: ^0.0.10
-
-  #  photo_card_swiper: ^0.0.6
 
   # firebase
   firebase_core: 2.1.1
@@ -64,7 +60,6 @@ dependencies:
   dio: ^4.0.6
   fluttertoast: ^8.0.8
   shared_preferences: ^2.0.13
-  twilio_programmable_video: ^1.0.1
   http: ^0.13.5
 
 

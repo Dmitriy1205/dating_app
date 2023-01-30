@@ -211,13 +211,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.5"
-  dartlin:
-    dependency: transitive
-    description:
-      name: dartlin
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.6.3"
   dbus:
     dependency: transitive
     description:
@@ -245,14 +238,7 @@ packages:
       name: dropdown_button2
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.9.1"
-  enum_to_string:
-    dependency: transitive
-    description:
-      name: enum_to_string
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.1"
+    version: "1.9.2"
   equatable:
     dependency: "direct main"
     description:
@@ -508,13 +494,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.2"
-  flutter_staggered_grid_view:
-    dependency: "direct main"
-    description:
-      name: flutter_staggered_grid_view
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.6.2"
   flutter_switch:
     dependency: "direct main"
     description:
@@ -1118,27 +1097,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
-  twilio_programmable_video:
-    dependency: "direct main"
-    description:
-      name: twilio_programmable_video
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.1"
-  twilio_programmable_video_platform_interface:
-    dependency: transitive
-    description:
-      name: twilio_programmable_video_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0"
-  twilio_programmable_video_web:
-    dependency: transitive
-    description:
-      name: twilio_programmable_video_web
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0"
   typed_data:
     dependency: transitive
     description:
@@ -1174,13 +1132,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.2"
-  version:
-    dependency: transitive
-    description:
-      name: version
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.3"
   win32:
     dependency: transitive
     description:
