@@ -126,6 +126,11 @@
   "photo":"Photo",
   "imageFromFiles":"Image from files",
 
+  "searchContact":"Search Contact",
+  "undo":"Undo",
+  "contactNotExist":"Contact Not Exist",
+  "callHistory":"Call History",
+
   "about":"About",
   "reset":"Reset",
   "done":"Done",

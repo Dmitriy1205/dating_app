@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:dating_app/data/models/user_model.dart';
 import 'package:dating_app/data/repositories/auth_repository.dart';
 import 'package:equatable/equatable.dart';
 
+import '../../core/constants.dart';
 import '../../core/service_locator.dart';
 import '../../data/models/status.dart';
 import '../../data/repositories/data_repository.dart';
@@ -16,8 +19,10 @@ class ContactsCubit extends Cubit<ContactsCubitStates> {
   late UserModel palUser;
   DataRepository db = sl();
   final AuthRepository authRepository;
+
   List<UserModel> usersList = [];
-  List<String> imagesList = [];
+  List<UserModel> foundedNames = [];
+  List<UserModel> userNames = [];
 
   Future<String> getUrlImage(String id) async {
     final String image = await db.getUserFields(id).then((value) {
@@ -35,19 +40,47 @@ class ContactsCubit extends Cubit<ContactsCubitStates> {
         print('delete ${usersList[i].firstName}');
         usersList.removeAt(i);
       }
-      imagesList.add(await getUrlImage(usersList[i].id!));
+      // imagesList.add(await getUrlImage(usersList[i].id!));
     }
     emit(state.copyWith(
       usersList: usersList,
       status: Status.loaded(),
-      image: imagesList,
+      search: Search.finishSearch,
+      // image: imagesList,
       currentUserAvatar: u!.profileInfo?.image,
       currentUserId: u.id,
       currentUserName: u.firstName,
     ));
   }
 
+  Future<void> searchContact(String name) async {
+    emit(state.copyWith(search: Search.searching));
+    try {
+      usersList = await db.getContacts();
+      userNames = List.generate(usersList.length, (index) => usersList[index]);
 
+      if (name.isEmpty) {
+        emit(state.copyWith(search: Search.found, foundedUsersList: userNames));
+      } else {
+        foundedNames = userNames
+            .where((user) =>
+                user.firstName!.toLowerCase().contains(name.toLowerCase()))
+            .toList();
+        if (foundedNames.isEmpty) {
+          emit(state.copyWith(
+            search: Search.noMatch,
+          ));
+        } else {
+          emit(state.copyWith(
+            search: Search.found,
+            foundedUsersList: foundedNames,
+          ));
+        }
+      }
+    } on Exception catch (e) {
+      emit(state.copyWith(status: Status.error(e.toString())));
+    }
+  }
 }
 
 class ContactsCubitStates extends Equatable {
@@ -58,6 +91,8 @@ class ContactsCubitStates extends Equatable {
   final String? currentUserName;
   final String? currentUserAvatar;
   final bool? userBlocked;
+  final Search? search;
+  final List<UserModel>? foundedUsersList;
 
   const ContactsCubitStates({
     this.image,
@@ -67,6 +102,8 @@ class ContactsCubitStates extends Equatable {
     this.currentUserId,
     this.currentUserName,
     this.userBlocked = false,
+    this.search,
+    this.foundedUsersList,
   });
 
   @override
@@ -78,6 +115,8 @@ class ContactsCubitStates extends Equatable {
         currentUserId,
         currentUserName,
         userBlocked,
+        search,
+        foundedUsersList,
       ];
 
   ContactsCubitStates copyWith({
@@ -88,6 +127,8 @@ class ContactsCubitStates extends Equatable {
     String? currentUserId,
     String? currentUserName,
     bool? userBlocked,
+    Search? search,
+    List<UserModel>? foundedUsersList,
   }) {
     return ContactsCubitStates(
       image: image ?? this.image,
@@ -97,6 +138,8 @@ class ContactsCubitStates extends Equatable {
       currentUserId: currentUserId ?? this.currentUserId,
       currentUserName: currentUserName ?? this.currentUserName,
       userBlocked: userBlocked ?? this.userBlocked,
+      search: search ?? this.search,
+      foundedUsersList: foundedUsersList ?? this.foundedUsersList,
     );
   }
 }

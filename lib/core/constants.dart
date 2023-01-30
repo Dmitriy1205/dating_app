@@ -63,10 +63,8 @@ class Content {
 
 const appId = '3aea6f71bc31497cbd3e3dcdaf28a644';
 
-
 const testToken =
-'007eJxTYFhUFmivMun4k0rPZY7zlG9xxLRV7+K8ciJd5U5QgXao0kQFBoukpLREA5MkE+MUQxMDY0uLZDMTs7RUCzODVHNzw+REi/RzyQ2BjAydOpLMjAwQCOKzMqTllJaUMDAAAP7bHew=+GSRTKfHR+dXmrnN7hK7Mmq/T19zcrMFgkJaUlGpgkmRinGJoYGFtaJJuZmKWlWpgZpJqbGyYnXlc8mdwQyMiwdsN8RkYGCATxWRnSckpLShgYAK5pITE=';
-
+    '007eJxTYFhUFmivMun4k0rPZY7zlG9xxLRV7+K8ciJd5U5QgXao0kQFBoukpLREA5MkE+MUQxMDY0uLZDMTs7RUCzODVHNzw+REi/RzyQ2BjAydOpLMjAwQCOKzMqTllJaUMDAAAP7bHew=+GSRTKfHR+dXmrnN7hK7Mmq/T19zcrMFgkJaUlGpgkmRinGJoYGFtaJJuZmKWlWpgZpJqbGyYnXlc8mdwQyMiwdsN8RkYGCATxWRnSckpLShgYAK5pITE=';
 
 const testChannel = 'flutt';
 const int callDurationInSec = 15;
@@ -84,6 +82,13 @@ enum CallStatus {
 enum IncomingCallStatus {
   successOuterCall,
   successIncomingCall,
+}
+
+enum Search {
+  searching,
+  found,
+  noMatch,
+  finishSearch,
 }
 
 class CustomIcons {

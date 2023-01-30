@@ -26,7 +26,7 @@ class HistoryCallScreen extends StatelessWidget {
           ),
         ),
         title: Text(
-          'Call History',
+          AppLocalizations.of(context)!.callHistory,
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),

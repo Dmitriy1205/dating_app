@@ -33,6 +33,7 @@ import '../ui/bloc/image_picker/image_picker_cubit.dart';
 import '../ui/bloc/localization/localization_cubit.dart';
 import '../ui/bloc/otp_verification/otp_cubit.dart';
 import '../ui/bloc/profile_info_cubit/profile_info_cubit.dart';
+import '../ui/bloc/search/search_cubit.dart';
 import 'notifications.dart';
 
 final sl = GetIt.instance;
@@ -59,6 +60,7 @@ Future<void> boot() async {
 
   //Cubits
   sl.registerFactory(() => GoogleAuthCubit(sl()));
+  sl.registerFactory(() => SearchCubit());
   sl.registerFactory(() => FriendsListCubit(auth: sl(), db: sl()));
   sl.registerFactory(() => BlockedContactsCubit(auth: sl(), db: sl()));
   sl.registerFactory(() => VideoCallCubit(repo: sl()));

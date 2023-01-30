@@ -60,6 +60,11 @@
         "company":"Compañía",
         "job":"Título Profesional",
 
+"searchContact":"Buscar contacto",
+  "undo":"Deshacer",
+  "contactNotExist":"El contacto no existe",
+  "callHistory":"Historial de llamadas",
+
         "searchPreferences":"Preferencias ",
           "weUseThisInfo":"Usaremos esta información para mostrarte personas con intereses y pasatiempos similares a los tuyos.",
           "distance":"Distancia",

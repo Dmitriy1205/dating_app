@@ -143,8 +143,8 @@ class BlockedContactsScreen extends StatelessWidget {
                                       width: 75,
                                       height: 30,
                                       alignment: Alignment.center,
-                                      child: const Text(
-                                        'Undo',
+                                      child: Text(
+                                        AppLocalizations.of(context)!.undo,
                                       ),
                                     ),
                                   ),

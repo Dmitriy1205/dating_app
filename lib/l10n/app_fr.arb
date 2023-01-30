@@ -14,6 +14,11 @@
     "reflowTermsConditions":"Termes et conditions",
     "reflowLetsGoButton":"ALLONS-Y",
 
+    "searchContact":"Rechercher un contact",
+      "undo":"Annuler",
+      "contactNotExist":"Le contact n'existe pas",
+      "callHistory":"Historique des appels",
+
     "login":"Connexion",
       "signing":"Connectez-vous ...",
       "welcomeBack":"Content de te revoir",

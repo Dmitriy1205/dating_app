@@ -20,7 +20,11 @@ class StatusBottomSheet {
               alignment: WrapAlignment.center,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.all(22),
+                  padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).size.height / 25,
+                    left: MediaQuery.of(context).size.width / 13,
+                    right: MediaQuery.of(context).size.width / 13,
+                  ),
                   child: Card(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.0),
@@ -105,7 +109,11 @@ class StatusBottomSheet {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 22,right: 22,bottom: 22),
+                  padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).size.height / 35,
+                    left: MediaQuery.of(context).size.width / 17,
+                    right: MediaQuery.of(context).size.width / 17,
+                  ),
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.of(context).pop();
