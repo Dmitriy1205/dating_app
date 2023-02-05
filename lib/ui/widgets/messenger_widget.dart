@@ -39,44 +39,48 @@ class _MessengerWidgetState extends State<MessengerWidget> {
       builder: (context, state) {
         if (state.status!.isLoaded) {
           return state.userBlocked == true
-              ? SizedBox(
-                  child: Center(
-                    child: Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.orange, width: 3),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 20),
-                        child: RichText(
-                          textAlign: TextAlign.center,
-                          text: TextSpan(
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 30,
-                              color: Colors.black,
-                            ),
-                            children: [
-                              TextSpan(
-                                text:
-                                    '${AppLocalizations.of(context)!.sorry}\n',
+              ? Align(
+            alignment: Alignment.topCenter,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 150),
+                  child: SizedBox(
+                      child: Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.orange, width: 3),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 20),
+                          child: RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 30,
+                                color: Colors.black,
                               ),
-                              TextSpan(
-                                text: '${widget.user.firstName}\n',
-                                style: const TextStyle(
-                                  color: Colors.orange,
+                              children: [
+                                TextSpan(
+                                  text:
+                                      '${AppLocalizations.of(context)!.sorry}\n',
                                 ),
-                              ),
-                              TextSpan(
-                                  text: AppLocalizations.of(context)!
-                                      .isBlockedYou)
-                            ],
+                                TextSpan(
+                                  text: '${widget.user.firstName}\n',
+                                  style: const TextStyle(
+                                    color: Colors.orange,
+                                  ),
+                                ),
+                                TextSpan(
+                                    text: AppLocalizations.of(context)!
+                                        .isBlockedYou)
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                )
+                ),
+              )
               : Column(
                   children: [
                     Expanded(

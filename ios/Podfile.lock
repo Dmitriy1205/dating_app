@@ -199,10 +199,6 @@ PODS:
   - sign_in_with_apple (0.0.1):
     - Flutter
   - Toast (4.0.0)
-  - twilio_programmable_video (1.0.1):
-    - Flutter
-    - TwilioVideo (~> 4.6)
-  - TwilioVideo (4.6.3)
 
 DEPENDENCIES:
   - agora_rtc_engine (from `.symlinks/plugins/agora_rtc_engine/ios`)
@@ -230,7 +226,6 @@ DEPENDENCIES:
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/ios`)
   - sign_in_with_apple (from `.symlinks/plugins/sign_in_with_apple/ios`)
-  - twilio_programmable_video (from `.symlinks/plugins/twilio_programmable_video/ios`)
 
 SPEC REPOS:
   trunk:
@@ -261,7 +256,6 @@ SPEC REPOS:
     - nanopb
     - PromisesObjC
     - Toast
-    - TwilioVideo
 
 EXTERNAL SOURCES:
   agora_rtc_engine:
@@ -315,8 +309,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/shared_preferences_foundation/ios"
   sign_in_with_apple:
     :path: ".symlinks/plugins/sign_in_with_apple/ios"
-  twilio_programmable_video:
-    :path: ".symlinks/plugins/twilio_programmable_video/ios"
 
 CHECKOUT OPTIONS:
   FirebaseFirestore:
@@ -376,8 +368,6 @@ SPEC CHECKSUMS:
   shared_preferences_foundation: 297b3ebca31b34ec92be11acd7fb0ba932c822ca
   sign_in_with_apple: f3bf75217ea4c2c8b91823f225d70230119b8440
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
-  twilio_programmable_video: 8263cc6acd077e9854a0a4493d98f846070c0720
-  TwilioVideo: 4afaac028c5886f2f3b313a9fcc146a6b7ca34e2
 
 PODFILE CHECKSUM: 427cc6fbd067a80587e8c4de22eeeb71ca7587f1
 

@@ -1,4 +1,3 @@
-
 import 'package:dating_app/core/constants.dart';
 import 'package:dating_app/data/models/call_model.dart';
 import 'package:dating_app/data/models/user_model.dart';
@@ -33,12 +32,13 @@ class MessengerScreen extends StatefulWidget {
 
 class _MessengerScreenState extends State<MessengerScreen> {
   final String callModelId = 'call_${UniqueKey().hashCode.toString()}';
+
   @override
   void initState() {
     context.read<MessengerCubit>().getUsersBlock(
-      currentUserId: widget.currentUserid!,
-      blockerUserId: widget.user.id!,
-    );
+          currentUserId: widget.currentUserid!,
+          blockerUserId: widget.user.id!,
+        );
     super.initState();
   }
 
@@ -91,36 +91,37 @@ class _MessengerScreenState extends State<MessengerScreen> {
               ),
             ),
             actions: <Widget>[
-              context.watch<MessengerCubit>().state.userBlocked == true ? SizedBox():
-              Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: GestureDetector(
-                  onTap: () {
-                    context.read<RegisterCallCubit>().makeCall(
-                            callModel: CallModel(
-                          id: callModelId,
-                          callerId: CacheHelper.getString(key: 'uId'),
-                          callerName: widget.currentUserName,
-                          receiverId: widget.user.id,
-                          receiverName: widget.user.firstName,
-                          status: CallStatus.ringing.name,
-                          current: true,
-                        ));
-                  },
-                  child: SizedBox(
-                    height: 45,
-                    width: 45,
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      child: Image.asset(
-                        'assets/icons/video.png',
+              context.watch<MessengerCubit>().state.userBlocked == true
+                  ? SizedBox()
+                  : Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          context.read<RegisterCallCubit>().makeCall(
+                                  callModel: CallModel(
+                                id: callModelId,
+                                callerId: CacheHelper.getString(key: 'uId'),
+                                callerName: widget.currentUserName,
+                                receiverId: widget.user.id,
+                                receiverName: widget.user.firstName,
+                                status: CallStatus.ringing.name,
+                                current: true,
+                              ));
+                        },
+                        child: SizedBox(
+                          height: 45,
+                          width: 45,
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: Image.asset(
+                              'assets/icons/video.png',
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-              ),
               PopupMenuButton<String>(
                 icon: const Icon(
                   Icons.more_vert,
@@ -128,63 +129,119 @@ class _MessengerScreenState extends State<MessengerScreen> {
                 ),
                 onSelected: handleClick,
                 itemBuilder: (BuildContext context) {
-                  return {
-                    AppLocalizations.of(context)!.block,
-                    BlocProvider.of<MessengerCubit>(context).state.userBlocked == true? '': AppLocalizations.of(context)!.clearChat,
-                    AppLocalizations.of(context)!.reportUser,
-                    AppLocalizations.of(context)!.unfriend
-                  }.map((String choice) {
-                    return PopupMenuItem<String>(
-                      onTap: () {
-                        if (choice == 'Clear Chat' ||
-                            choice == 'Vacie la conversacion' ||
-                            choice == 'Effacer le chat' ||
-                            choice == 'Limpar conversa') {
-                          context.read<MessengerCubit>().clearChat();
-                        } else if (choice == 'Block' ||
-                            choice == 'Bloquear' ||
-                            choice == 'Bloquer' ||
-                            choice == 'Quadra') {
-                          WidgetsBinding.instance.addPostFrameCallback((_) {
-                            ReUsableWidgets.showBlockDialog(
-                              context,
-                              widget.user.firstName!,
-                              widget.user.id!,
-                            );
-                          });
-                        } else if (choice == 'Report User' ||
-                            choice == 'Reportar usuario' ||
-                            choice == 'Dénoncer un utilisateur' ||
-                            choice == 'Reportar usuário') {
-                          WidgetsBinding.instance.addPostFrameCallback((_) {
-                            ReUsableWidgets.showReportDialog(
-                              context,
-                              widget.user.firstName!,
-                              widget.user.id!,
-                            );
-                          });
-                        } else if (choice == 'Unfriend' ||
-                            choice == 'No amigo' ||
-                            choice == 'Désami' ||
-                            choice == 'Tirar amizade') {
-                          WidgetsBinding.instance.addPostFrameCallback((_) {
-                            ReUsableWidgets.showUnfriendDialog(
-                              context,
-                              widget.user.firstName!,
-                              widget.user.id!,
-                            );
-                          });
-                        }
-                      },
-                      value: choice,
-                      child: Text(choice),
-                    );
-                  }).toList();
+                  return BlocProvider.of<MessengerCubit>(context)
+                              .state
+                              .userBlocked ==
+                          true
+                      ? {
+                          AppLocalizations.of(context)!.block,
+                          AppLocalizations.of(context)!.reportUser,
+                          AppLocalizations.of(context)!.unfriend
+                        }.map((String choice) {
+                          return PopupMenuItem<String>(
+                            onTap: () {
+                              if (choice == 'Block' ||
+                                  choice == 'Bloquear' ||
+                                  choice == 'Bloquer' ||
+                                  choice == 'Quadra') {
+                                WidgetsBinding.instance
+                                    .addPostFrameCallback((_) {
+                                  ReUsableWidgets.showBlockDialog(
+                                    context,
+                                    widget.user.firstName!,
+                                    widget.user.id!,
+                                  );
+                                });
+                              } else if (choice == 'Report User' ||
+                                  choice == 'Reportar usuario' ||
+                                  choice == 'Dénoncer un utilisateur' ||
+                                  choice == 'Reportar usuário') {
+                                WidgetsBinding.instance
+                                    .addPostFrameCallback((_) {
+                                  ReUsableWidgets.showReportDialog(
+                                    context,
+                                    widget.user.firstName!,
+                                    widget.user.id!,
+                                  );
+                                });
+                              } else if (choice == 'Unfriend' ||
+                                  choice == 'No amigo' ||
+                                  choice == 'Désami' ||
+                                  choice == 'Tirar amizade') {
+                                WidgetsBinding.instance
+                                    .addPostFrameCallback((_) {
+                                  ReUsableWidgets.showUnfriendDialog(
+                                    context,
+                                    widget.user.firstName!,
+                                    widget.user.id!,
+                                  );
+                                });
+                              }
+                            },
+                            value: choice,
+                            child: Text(choice),
+                          );
+                        }).toList()
+                      : {
+                          AppLocalizations.of(context)!.block,
+                          AppLocalizations.of(context)!.clearChat,
+                          AppLocalizations.of(context)!.reportUser,
+                          AppLocalizations.of(context)!.unfriend
+                        }.map((String choice) {
+                          return PopupMenuItem<String>(
+                            onTap: () {
+                              if (choice == 'Clear Chat' ||
+                                  choice == 'Vacie la conversacion' ||
+                                  choice == 'Effacer le chat' ||
+                                  choice == 'Limpar conversa') {
+                                context.read<MessengerCubit>().clearChat();
+                              } else if (choice == 'Block' ||
+                                  choice == 'Bloquear' ||
+                                  choice == 'Bloquer' ||
+                                  choice == 'Quadra') {
+                                WidgetsBinding.instance
+                                    .addPostFrameCallback((_) {
+                                  ReUsableWidgets.showBlockDialog(
+                                    context,
+                                    widget.user.firstName!,
+                                    widget.user.id!,
+                                  );
+                                });
+                              } else if (choice == 'Report User' ||
+                                  choice == 'Reportar usuario' ||
+                                  choice == 'Dénoncer un utilisateur' ||
+                                  choice == 'Reportar usuário') {
+                                WidgetsBinding.instance
+                                    .addPostFrameCallback((_) {
+                                  ReUsableWidgets.showReportDialog(
+                                    context,
+                                    widget.user.firstName!,
+                                    widget.user.id!,
+                                  );
+                                });
+                              } else if (choice == 'Unfriend' ||
+                                  choice == 'No amigo' ||
+                                  choice == 'Désami' ||
+                                  choice == 'Tirar amizade') {
+                                WidgetsBinding.instance
+                                    .addPostFrameCallback((_) {
+                                  ReUsableWidgets.showUnfriendDialog(
+                                    context,
+                                    widget.user.firstName!,
+                                    widget.user.id!,
+                                  );
+                                });
+                              }
+                            },
+                            value: choice,
+                            child: Text(choice),
+                          );
+                        }).toList();
                 },
               ),
             ],
           ),
-          body:MessengerWidget(context,
+          body: MessengerWidget(context,
               user: widget.user, userPicture: widget.userPicture)),
     );
   }
