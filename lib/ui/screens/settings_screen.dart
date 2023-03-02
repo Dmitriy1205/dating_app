@@ -159,9 +159,9 @@ class _SettingsState extends State<Settings> {
     Widget continueButton = TextButton(
       child: Text(AppLocalizations.of(context)!.logout),
       onPressed: () {
-        BlocProvider.of<SettingsCubit>(context).logout().then((value) =>
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => WelcomeScreen())));
+        BlocProvider.of<SettingsCubit>(context).logout();
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (_) => WelcomeScreen()));
       },
     );
 

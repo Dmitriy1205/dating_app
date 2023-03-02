@@ -45,8 +45,9 @@ class HomeCubit extends Cubit<HomeState> {
       final List<UserModel> allUsers = await db.getPals();
       allUsers
         ..removeWhere((element) => element.id == id)
+        ..removeWhere((element) => element.searchPref == null)
         ..removeWhere((element) =>
-            element.searchPref!.distance! > searchUser!.searchPref!.distance!)
+            element.searchPref!.distance! > searchUser!.searchPref!.distance! )
         ..removeWhere((element) =>
             int.parse(element.profileInfo!.age!) <
                 searchUser?.searchPref!.yearsRange?.values.elementAt(0) ||

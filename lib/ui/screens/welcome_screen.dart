@@ -33,7 +33,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               fit: BoxFit.fill,
             ),
             Positioned(
-              top: 250,
+              top: MediaQuery.of(context).size.height/3,
               child: Center(
                 child: SizedBox(
                   height: 50,

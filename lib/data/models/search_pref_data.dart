@@ -23,23 +23,79 @@ class SearchPrefFields {
   ) {
     final data = snapshot.data();
     return SearchPrefFields(
-      yearsRange: data?['yearsRange'],
-      distance: data?['distance'],
-      lookingFor: data?['lookingFor'],
-      gender: data?['gender'],
-      hobbies: data?['hobbies'],
-      interests: data?['interests'],
+      yearsRange: data?['yearsRange'] ?? {'start': 20, 'end': 30},
+      distance: data?['distance'] ?? 28,
+      lookingFor: data?['lookingFor'] ??
+          {
+            'someone to chill with': false,
+            'a friend': false,
+            'a romantic partner': false,
+            'a business partner': false,
+            'a mentor': false,
+            'a mentee': false
+          },
+      gender: data?['gender'] ?? '',
+      hobbies: data?['hobbies'] ??
+          {
+            'WorkingOut': true,
+            'Hiking': true,
+            'Biking': true,
+            'Shopping': true,
+            'Cooking': true,
+            'Baking': true,
+            'Drinking': true,
+            'Reading': true,
+          },
+      interests: data?['interests'] ??
+          {
+            'Politics': true,
+            'Fashion': true,
+            'FinArt': true,
+            'Music': true,
+            'Dance': true,
+            'Film': true,
+            'Photography': true,
+            'Acting': true,
+          },
     );
   }
 
   factory SearchPrefFields.fromJson(Map<String, dynamic> json) {
     return SearchPrefFields(
-      yearsRange: json['yearsRange'],
-      distance: json['distance'],
-      lookingFor: json['lookingFor'],
-      gender: json['gender'],
-      hobbies: json['hobbies'],
-      interests: json['interests'],
+      yearsRange: json['yearsRange'] ?? {'start': 20, 'end': 30},
+      distance: json['distance'] ?? 28,
+      lookingFor: json['lookingFor'] ??
+          {
+            'someone to chill with': false,
+            'a friend': false,
+            'a romantic partner': false,
+            'a business partner': false,
+            'a mentor': false,
+            'a mentee': false
+          },
+      gender: json['gender'] ?? '',
+      hobbies: json['hobbies'] ??
+          {
+            'WorkingOut': true,
+            'Hiking': true,
+            'Biking': true,
+            'Shopping': true,
+            'Cooking': true,
+            'Baking': true,
+            'Drinking': true,
+            'Reading': true,
+          },
+      interests: json['interests'] ??
+          {
+            'Politics': true,
+            'Fashion': true,
+            'FinArt': true,
+            'Music': true,
+            'Dance': true,
+            'Film': true,
+            'Photography': true,
+            'Acting': true,
+          },
     );
   }
 

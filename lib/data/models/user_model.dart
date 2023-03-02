@@ -6,7 +6,6 @@ class UserModel {
   UserModel(
       {this.id,
       this.firstName,
-      // this.lastName,
       this.phone,
       this.birthday,
       this.email,
@@ -19,15 +18,12 @@ class UserModel {
 
   String? id;
   String? firstName;
-
-  // String? lastName;
   String? phone;
   String? birthday;
   String? email;
   String? joinDate;
   List<String>? addedFriends;
   List<String>? blockedFriends;
-
   ProfileInfoFields? profileInfo;
   SearchPrefFields? searchPref;
   String? language;
@@ -55,13 +51,16 @@ class UserModel {
     return UserModel(
         id: json['id'],
         firstName: json['name'],
-        // lastName: json['lastName'],
         phone: json['phone'],
         birthday: json['date'],
         email: json['email'],
         joinDate: json['joinDate'],
-        profileInfo: ProfileInfoFields.fromJson(json['ProfileInfo']),
-        searchPref: SearchPrefFields.fromJson(json['SearchPreferences']),
+        profileInfo: json['ProfileInfo'] == null
+            ? null
+            : ProfileInfoFields.fromJson(json['ProfileInfo']),
+        searchPref: json['SearchPreferences'] == null
+            ? null
+            : SearchPrefFields.fromJson(json['SearchPreferences']),
         language: json['language'],
         addedFriends: json['addedFriends'],
         blockedFriends: json['blockedFriends']);
@@ -70,7 +69,6 @@ class UserModel {
   Map<String, dynamic> toFirestore() => {
         'id': id,
         'name': firstName,
-        // 'lastName': lastName,
         'phone': phone,
         'date': birthday,
         'email': email,
@@ -82,11 +80,9 @@ class UserModel {
         'blockedFriends': blockedFriends
       };
 
-  Map<String, dynamic> addedFriendToFirestore(String addedFriendId) => {
-    'addedFriend': addedFriendId,
-    'blockedFriend': false
-  };
-  Map<String, dynamic> blockFriendToFirestore(String addedFriendId) => {
-    'blockedFriend': true
-  };
+  Map<String, dynamic> addedFriendToFirestore(String addedFriendId) =>
+      {'addedFriend': addedFriendId, 'blockedFriend': false};
+
+  Map<String, dynamic> blockFriendToFirestore(String addedFriendId) =>
+      {'blockedFriend': true};
 }

@@ -363,7 +363,8 @@ class FirebaseDataProvider {
     try {
       final allUsers = await firestore.collection('users').get();
 
-      return allUsers.docs.map((e) => UserModel.fromJson(e.data())).toList();
+
+      return allUsers.docs.map((e) => UserModel.fromJson(e.data() ?? {})).toList();
     } on FirebaseException catch (e) {
       print(e.message);
       throw BadRequestException(message: e.message!);
