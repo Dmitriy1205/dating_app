@@ -22,36 +22,29 @@ class AuthRepository {
   Future<void> signupWithPhone(
     String phoneNumber,
     String verificationId,
-    void Function(String s) nav, {
-    required void Function() loaded,
-  }) async {
+    void Function(String s) nav,
+  ) async {
     try {
       print('phoneNumber  TRYYY signupWithPhone $phoneNumber');
       List<UserModel> allUsers = await db.getAllUserFields();
       final userPhone = allUsers.map((e) => e.phone);
-      if (!userPhone.contains(phoneNumber)){
+      if (!userPhone.contains(phoneNumber)) {
         await auth.verifyPhoneNumber(
           phoneNumber: phoneNumber,
-          verificationCompleted: (_) {
-            loaded;
-          },
+          verificationCompleted: (_) {},
           verificationFailed: (FirebaseAuthException e) {
-            loaded;
             print(e.message);
           },
           codeSent: (verId, _) {
-            loaded;
             verificationId = verId;
             nav(verificationId);
             print('print 1 $verificationId');
           },
           codeAutoRetrievalTimeout: (value) {},
         );
-      }else {
-        loaded;
+      } else {
         throw Exception();
       }
-
     } on FirebaseAuthException catch (e) {
       print('print 1 ${e.message.toString()}');
       throw BadRequestException(message: e.message!);

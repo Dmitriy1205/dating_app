@@ -31,15 +31,13 @@ class AuthCubit extends Cubit<AuthState> {
       await authRepository.signupWithPhone(
         phoneNumber,
         verificationId,
-        nav, loaded: () { emit(state.copyWith(
-        status: Status.loaded(),
-      )); },
+        nav,
       );
 
       print('print 2 $verificationId');
-      // emit(state.copyWith(
-      //   status: Status.loaded(),
-      // ));
+      emit(state.copyWith(
+        status: Status.loaded(),
+      ));
     } on BadRequestException catch (e) {
       emit(state.copyWith(status: Status.error(e.message)));
     }
