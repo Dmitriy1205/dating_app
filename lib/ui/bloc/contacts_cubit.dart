@@ -35,22 +35,25 @@ class ContactsCubit extends Cubit<ContactsCubitStates> {
     usersList = await db.getContacts();
     final u = await db.getUserFields(authRepository.currentUser()!.uid);
     for (int i = 0; i < usersList.length; i++) {
-      print('${usersList[i].firstName}');
-      if (usersList[i].id == authRepository.currentUser()!.uid) {
-        print('delete ${usersList[i].firstName}');
+      List<String> userMatch = await db.isUserMatch(usersList[i].id.toString());
+      if (!userMatch.contains(authRepository.currentUser()!.uid)) {
         usersList.removeAt(i);
       }
-      // imagesList.add(await getUrlImage(usersList[i].id!));
+      // if (usersList[i].id == authRepository.currentUser()!.uid) {
+      //   usersList.removeAt(i);
+      // }
     }
-    emit(state.copyWith(
-      usersList: usersList,
-      status: Status.loaded(),
-      search: Search.finishSearch,
-      // image: imagesList,
-      currentUserAvatar: u!.profileInfo?.image,
-      currentUserId: u.id,
-      currentUserName: u.firstName,
-    ));
+
+    emit(
+      state.copyWith(
+        usersList: usersList,
+        status: Status.loaded(),
+        search: Search.finishSearch,
+        currentUserAvatar: u!.profileInfo?.image,
+        currentUserId: u.id,
+        currentUserName: u.firstName,
+      ),
+    );
   }
 
   Future<void> searchContact(String name) async {
@@ -91,6 +94,7 @@ class ContactsCubitStates extends Equatable {
   final String? currentUserName;
   final String? currentUserAvatar;
   final bool? userBlocked;
+  final bool? userMatch;
   final Search? search;
   final List<UserModel>? foundedUsersList;
 
@@ -102,6 +106,7 @@ class ContactsCubitStates extends Equatable {
     this.currentUserId,
     this.currentUserName,
     this.userBlocked = false,
+    this.userMatch,
     this.search,
     this.foundedUsersList,
   });
@@ -115,6 +120,7 @@ class ContactsCubitStates extends Equatable {
         currentUserId,
         currentUserName,
         userBlocked,
+        userMatch,
         search,
         foundedUsersList,
       ];
@@ -127,6 +133,7 @@ class ContactsCubitStates extends Equatable {
     String? currentUserId,
     String? currentUserName,
     bool? userBlocked,
+    bool? userMatch,
     Search? search,
     List<UserModel>? foundedUsersList,
   }) {
@@ -138,6 +145,7 @@ class ContactsCubitStates extends Equatable {
       currentUserId: currentUserId ?? this.currentUserId,
       currentUserName: currentUserName ?? this.currentUserName,
       userBlocked: userBlocked ?? this.userBlocked,
+      userMatch: userMatch ?? this.userMatch,
       search: search ?? this.search,
       foundedUsersList: foundedUsersList ?? this.foundedUsersList,
     );

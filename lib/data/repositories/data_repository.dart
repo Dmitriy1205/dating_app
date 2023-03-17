@@ -87,7 +87,8 @@ class DataRepository {
       String? currentUserId, String blockerUserId) async {
     return dataProvider.isUserBlocked(currentUserId, blockerUserId);
   }
-  Future<List<String>> isUserMatch(String id)async{
+
+  Future<List<String>> isUserMatch(String id) async {
     return dataProvider.isUserMatch(id);
   }
 
@@ -111,5 +112,4 @@ class DataRepository {
 // Future<List<SearchPrefFields>> getAllSearchFields() async {
 //   return dataProvider.getAllSearchFields();
 // }
-
 }

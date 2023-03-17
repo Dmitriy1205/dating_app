@@ -1,5 +1,6 @@
 class Content {
   static const String logo = 'assets/images/logo.png';
+  static const String empty = 'assets/images/empty.png';
   static const String match = 'assets/images/match.png';
   static const String reflow = 'assets/images/comm.png';
   static const String signUp = 'assets/images/up.png';

@@ -422,8 +422,11 @@ class _ContactsScreenState extends State<ContactsScreen> {
                                   );
                                 })
                             : state.search == Search.noMatch
-                                ?  SizedBox(
-                                    child: Center(child: Text(AppLocalizations.of(context)!.contactNotExist)),
+                                ? SizedBox(
+                                    child: Center(
+                                        child: Text(
+                                            AppLocalizations.of(context)!
+                                                .contactNotExist)),
                                   )
                                 : buildListView(state),
                   ),
@@ -452,7 +455,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
         ));
   }
 
-  ListView buildListView(ContactsCubitStates state) {
+  ListView buildListView(ContactsCubitStates state,) {
     return ListView.builder(
         shrinkWrap: true,
         itemCount: state.usersList!.length,
@@ -461,114 +464,117 @@ class _ContactsScreenState extends State<ContactsScreen> {
               .read<ContactsCubit>()
               .getUrlImage(state.usersList![index].id!);
 
-          return GestureDetector(
-            onTap: () {
-              bloc.palUser = state.usersList![index];
-              CacheHelper.saveData(key: 'uId', value: state.currentUserId);
-              MessengerScreen(
-                  user: state.usersList![index],
-                  userPicture: state.usersList![index].profileInfo!.image!);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => BlocProvider.value(
-                    value: bloc,
-                    child: BlocProvider.value(
-                      value: sl<MessengerCubit>(),
-                      child: MessengerScreen(
-                        currentUserName: state.currentUserName,
-                        currentUserid: state.currentUserId,
-                        user: bloc.palUser,
+          return  GestureDetector(
+                  onTap: () {
+                    bloc.palUser = state.usersList![index];
+                    CacheHelper.saveData(
+                        key: 'uId', value: state.currentUserId);
+                    MessengerScreen(
+                        user: state.usersList![index],
                         userPicture:
-                            state.usersList![index].profileInfo!.image!,
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            },
-            child: Container(
-              color: Colors.grey.shade200,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            top: 15,
-                            bottom: 15,
-                            right: 15,
-                          ),
-                          child: Container(
-                            height: 75,
-                            width: 75,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(50),
-                              child: state.usersList![index].profileInfo!
-                                          .image! !=
-                                      ''
-                                  ? Image.network(
-                                      state.usersList![index].profileInfo!
-                                          .image!,
-                                      fit: BoxFit.cover,
-                                    )
-                                  : Stack(
-                                      fit: StackFit.expand,
-                                      children: [
-                                        Image.asset(
-                                          'assets/images/empty.png',
-                                          fit: BoxFit.cover,
-                                        ),
-                                        const Center(
-                                          child: Padding(
-                                            padding: EdgeInsets.all(8.0),
-                                            child: Text(
-                                              'No Avatar',
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                            state.usersList![index].profileInfo!.image!);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BlocProvider.value(
+                          value: bloc,
+                          child: BlocProvider.value(
+                            value: sl<MessengerCubit>(),
+                            child: MessengerScreen(
+                              currentUserName: state.currentUserName,
+                              currentUserid: state.currentUserId,
+                              user: bloc.palUser,
+                              userPicture:
+                                  state.usersList![index].profileInfo!.image!,
                             ),
                           ),
                         ),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    color: Colors.grey.shade200,
+                    child: Column(
+                      children: [
                         Padding(
-                          padding: const EdgeInsets.only(top: 35),
-                          child: Column(
+                          padding: const EdgeInsets.symmetric(horizontal: 30),
+                          child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                state.usersList![index].firstName!,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 15,
+                                  bottom: 15,
+                                  right: 15,
+                                ),
+                                child: Container(
+                                  height: 75,
+                                  width: 75,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(50),
+                                    child: state.usersList![index].profileInfo!
+                                                .image! !=
+                                            ''
+                                        ? Image.network(
+                                            state.usersList![index].profileInfo!
+                                                .image!,
+                                            fit: BoxFit.cover,
+                                          )
+                                        : Stack(
+                                            fit: StackFit.expand,
+                                            children: [
+                                              Image.asset(
+                                                'assets/images/empty.png',
+                                                fit: BoxFit.cover,
+                                              ),
+                                              const Center(
+                                                child: Padding(
+                                                  padding: EdgeInsets.all(8.0),
+                                                  child: Text(
+                                                    'No Avatar',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                  ),
+                                ),
                               ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              const Text(
-                                'Message',
+                              Padding(
+                                padding: const EdgeInsets.only(top: 35),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      state.usersList![index].firstName!,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    const Text(
+                                      'Message',
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
                         ),
+                        const Divider(
+                          thickness: 0.3,
+                          color: Colors.grey,
+                        ),
                       ],
                     ),
                   ),
-                  const Divider(
-                    thickness: 0.3,
-                    color: Colors.grey,
-                  ),
-                ],
-              ),
-            ),
-          );
+                );
         });
   }
 }

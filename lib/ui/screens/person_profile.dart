@@ -12,28 +12,23 @@ class PersonalProf extends StatelessWidget {
   final String name;
   final String bio;
   final String height;
-
-  // final String image;
   final String joinDate;
-
-  // final List<String> pic;
   final Map<String, dynamic> interests;
   final Map<String, dynamic> lookingFor;
   final String status;
+  final String location;
 
   const PersonalProf({
     Key? key,
     required this.name,
     required this.bio,
     required this.height,
-    // required this.image,
     required this.joinDate,
-    // required this.pic,
     required this.interests,
     required this.lookingFor,
     required this.id,
     required this.status,
-    // required this.id,
+    required this.location,
   }) : super(key: key);
 
   @override
@@ -49,6 +44,7 @@ class PersonalProf extends StatelessWidget {
         joinDate: joinDate,
         id: id,
         status: status,
+        location: location,
       ),
     );
   }
@@ -59,14 +55,11 @@ class PersonProfile extends StatefulWidget {
   final String name;
   final String bio;
   final String height;
-
-  // final String image;
   final String joinDate;
-
-  // final List<String> pic;
   final Map<String, dynamic> interests;
   final Map<String, dynamic> lookingFor;
   final String status;
+  final String location;
 
   const PersonProfile({
     Key? key,
@@ -75,11 +68,10 @@ class PersonProfile extends StatefulWidget {
     required this.height,
     required this.interests,
     required this.lookingFor,
-    // required this.image,
     required this.joinDate,
-    // required this.pic,
     required this.id,
     required this.status,
+    required this.location,
   }) : super(key: key);
 
   @override
@@ -100,7 +92,7 @@ class _PersonProfileState extends State<PersonProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        physics: ClampingScrollPhysics(),
+        physics: const ClampingScrollPhysics(),
         child: BlocBuilder<PersonalProfileCubit, PersonalProfileState>(
           builder: (context, state) {
             if (state.status!.isLoading) {
@@ -127,13 +119,14 @@ class _PersonProfileState extends State<PersonProfile> {
               AppLocalizations.of(context)!.aMentor,
             ];
             List<String> inter = [
-              AppLocalizations.of(context)!.photography,
+
               AppLocalizations.of(context)!.acting,
+              AppLocalizations.of(context)!.dance,
+              AppLocalizations.of(context)!.fashion,
               AppLocalizations.of(context)!.film,
               AppLocalizations.of(context)!.finArt,
               AppLocalizations.of(context)!.music,
-              AppLocalizations.of(context)!.fashion,
-              AppLocalizations.of(context)!.dance,
+              AppLocalizations.of(context)!.photography,
               AppLocalizations.of(context)!.politics,
             ];
             return Column(
@@ -144,7 +137,7 @@ class _PersonProfileState extends State<PersonProfile> {
                     SizedBox(
                       height: MediaQuery.of(context).size.height / 1.7,
                       width: MediaQuery.of(context).size.width,
-                      child: state.pic!.length == 0
+                      child: state.pic!.isEmpty
                           ? Padding(
                               padding: const EdgeInsets.all(5.0),
                               child: ClipRRect(
@@ -202,12 +195,11 @@ class _PersonProfileState extends State<PersonProfile> {
                       top: 70,
                       child: DotsIndicator(
                         axis: Axis.vertical,
-                        dotsCount:
-                            state.pic!.length <= 0 ? 1 : state.pic!.length,
+                        dotsCount: state.pic!.isEmpty ? 1 : state.pic!.length,
                         position: _currentPosition,
                         decorator: DotsDecorator(
-                            size: Size(15, 12),
-                            activeSize: Size(15, 12),
+                            size: const Size(15, 12),
+                            activeSize: const Size(15, 12),
                             color: Colors.pink.withOpacity(0.2),
                             activeColor: Colors.pink.withOpacity(0.6)),
                       ),
@@ -229,9 +221,12 @@ class _PersonProfileState extends State<PersonProfile> {
                         height: 5,
                       ),
                       Text(
-                        AppLocalizations.of(context)!.location,
+                        widget.location == ''
+                            ? 'Unknown location'
+                            : widget.location,
                         textAlign: TextAlign.start,
-                        style: TextStyle(color: Colors.grey, fontSize: 14),
+                        style:
+                            const TextStyle(color: Colors.grey, fontSize: 14),
                       ),
                     ],
                   ),

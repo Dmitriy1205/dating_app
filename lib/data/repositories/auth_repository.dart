@@ -20,12 +20,9 @@ class AuthRepository {
   Stream<User?> get authState => auth.authStateChanges();
 
   Future<void> signupWithPhone(
-    String phoneNumber,
-    String verificationId,
-    void Function(String s) nav,
-  ) async {
+      String phoneNumber, String verificationId, void Function(String s) nav,
+      {required Function() load}) async {
     try {
-      print('phoneNumber  TRYYY signupWithPhone $phoneNumber');
       List<UserModel> allUsers = await db.getAllUserFields();
       final userPhone = allUsers.map((e) => e.phone);
       if (!userPhone.contains(phoneNumber)) {
@@ -40,7 +37,9 @@ class AuthRepository {
             nav(verificationId);
             print('print 1 $verificationId');
           },
-          codeAutoRetrievalTimeout: (value) {},
+          codeAutoRetrievalTimeout: (value) {
+            load;
+          },
         );
       } else {
         throw Exception();
@@ -62,7 +61,6 @@ class AuthRepository {
     try {
       List<UserModel> allUsers = await db.getAllUserFields();
       final userPhone = allUsers.map((e) => e.phone).toList();
-      print('============${userPhone}');
       if (userPhone.contains(phoneNumber)) {
         await auth.verifyPhoneNumber(
           phoneNumber: phoneNumber,

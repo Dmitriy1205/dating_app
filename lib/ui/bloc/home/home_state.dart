@@ -2,9 +2,6 @@ part of 'home_cubit.dart';
 
 class HomeState extends Equatable {
   final Status? status;
-
-  // final List<ProfileInfoFields>? fields;
-  // final List<SearchPrefFields>? lookingFor;
   final List<UserModel>? user;
   final bool? match;
   final UserModel? matchUser;
@@ -12,8 +9,6 @@ class HomeState extends Equatable {
 
   const HomeState({
     this.status,
-    // this.fields,
-    // this.lookingFor,
     this.user,
     this.match,
     this.matchUser,
@@ -23,12 +18,10 @@ class HomeState extends Equatable {
   @override
   List<Object?> get props => [
         status,
-        // fields,
-        // lookingFor,
         user,
         match,
         matchUser,
-    currentUser,
+        currentUser,
       ];
 
   HomeState copyWith({
@@ -47,7 +40,7 @@ class HomeState extends Equatable {
       user: user ?? this.user,
       match: match ?? this.match,
       matchUser: matchUser ?? this.matchUser,
-      currentUser: currentUser??this.currentUser,
+      currentUser: currentUser ?? this.currentUser,
     );
   }
 }

@@ -58,7 +58,7 @@ class _CardsSectionState extends State<SwipeableCardsSection>
   late AnimationController _controller;
   bool enableSwipe = true;
 
-  final Alignment defaultFrontCardAlign = Alignment(0.0, 0.0);
+  final Alignment defaultFrontCardAlign = const Alignment(0.0, 0.0);
   Alignment frontCardAlign = cardsAlign[2];
   double frontCardRot = 0.0;
 
@@ -67,7 +67,7 @@ class _CardsSectionState extends State<SwipeableCardsSection>
     bool? shouldAnimate = false;
     if (dir == Direction.left) {
       shouldAnimate = swipedCallback(Direction.left, index, cards[0]);
-      frontCardAlign = Alignment(
+      frontCardAlign = const Alignment(
         -0.001,
         0.0,
       );
@@ -81,7 +81,7 @@ class _CardsSectionState extends State<SwipeableCardsSection>
       //             : frontCardAlign,));
     } else if (dir == Direction.right) {
       shouldAnimate = swipedCallback(Direction.right, index, cards[0]);
-      frontCardAlign = Alignment(0.001, 0.0);
+      frontCardAlign = const Alignment(0.001, 0.0);
     }
     shouldAnimate ??= true;
 
@@ -93,7 +93,7 @@ class _CardsSectionState extends State<SwipeableCardsSection>
 
   void _enableSwipe(bool isSwipeEnabled) {
     setState(() {
-      this.enableSwipe = isSwipeEnabled;
+      enableSwipe = isSwipeEnabled;
     });
   }
 

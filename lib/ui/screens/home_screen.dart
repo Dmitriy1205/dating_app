@@ -14,7 +14,7 @@ import '../widgets/home_body.dart';
 class HomeScreen extends StatelessWidget {
   static const String id = 'home';
 
-  HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,6 @@ class HomeScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(5.0),
                   child: GestureDetector(
                     onTap: () {
-                      //TODO: navigation to messenger
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -69,7 +68,7 @@ class HomeScreen extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ProfileScreen()));
+                                  builder: (context) => const ProfileScreen()));
                         },
                         child: SizedBox(
                           height: 50,
@@ -89,7 +88,6 @@ class HomeScreen extends StatelessWidget {
                       padding: const EdgeInsets.all(5.0),
                       child: GestureDetector(
                           onTap: () {
-                            //TODO: navigation to filter_screen
                             Navigator.pushNamed(context, 'filter');
                           },
                           child: SizedBox(

@@ -159,6 +159,7 @@ class FirebaseDataProvider {
           palsList.add(UserModel.fromJson(user.data()));
         }
       }).toList();
+      print('userlist from dataprovider GetUsers()---${palsList.length} users');
       return palsList;
     } on FirebaseException catch (e) {
       throw BadRequestException(message: e.message!);

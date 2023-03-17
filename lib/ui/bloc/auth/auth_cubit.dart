@@ -32,6 +32,7 @@ class AuthCubit extends Cubit<AuthState> {
         phoneNumber,
         verificationId,
         nav,
+          load:(){emit(state.copyWith(status: Status.loading()));} ,
       );
 
       print('print 2 $verificationId');
