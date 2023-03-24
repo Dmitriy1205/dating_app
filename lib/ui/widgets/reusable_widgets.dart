@@ -55,7 +55,7 @@ class ReUsableWidgets {
             //TODO: navigation to profile
           },
           style: ElevatedButton.styleFrom(
-              primary: Colors.transparent,
+              backgroundColor: Colors.transparent,
               padding: EdgeInsets.zero,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(50))),
@@ -174,7 +174,6 @@ class ReUsableWidgets {
                                   lookingForMap.update(
                                       lookingForMap.keys.elementAt(index),
                                       (value) => !value);
-                                  print(lookingForMap);
                                   lookingFor!(lookingForMap);
                                 }),
                           )
@@ -590,7 +589,7 @@ class ReUsableWidgets {
                       Navigator.of(context).pop();
                     },
                     style: ElevatedButton.styleFrom(
-                        primary: Colors.transparent,
+                        backgroundColor: Colors.transparent,
                         padding: EdgeInsets.zero,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50))),
@@ -681,11 +680,12 @@ class ReUsableWidgets {
               child: ExpansionTile(
                 title: Text(
                   AppLocalizations.of(context)!.selects,
-                  style: TextStyle(color: Colors.grey),
+                  style: const TextStyle(color: Colors.grey),
                 ),
                 children: [
                   ListView.builder(
                       shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: inputFields!.length,
                       itemBuilder: (context, index) {
                         return GestureDetector(
@@ -695,7 +695,7 @@ class ReUsableWidgets {
                             inputFields.update(
                                 inputFields.keys.elementAt(index),
                                 (value) => !value);
-                            print(inputFields.values);
+
                             set!(inputFields);
                           },
                           child: SizedBox(
@@ -789,7 +789,7 @@ class ReUsableWidgets {
         Navigator.of(context).pop();
       },
       style: ElevatedButton.styleFrom(
-          primary: Colors.transparent,
+          backgroundColor: Colors.transparent,
           padding: EdgeInsets.zero,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
@@ -810,7 +810,7 @@ class ReUsableWidgets {
           alignment: Alignment.center,
           child: Text(
             AppLocalizations.of(context)!.no,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
       ),
@@ -824,7 +824,7 @@ class ReUsableWidgets {
             .then((value) => Navigator.pop(context));
       },
       style: ElevatedButton.styleFrom(
-          primary: Colors.transparent,
+          backgroundColor: Colors.transparent,
           padding: EdgeInsets.zero,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
@@ -845,7 +845,7 @@ class ReUsableWidgets {
           alignment: Alignment.center,
           child: Text(
             AppLocalizations.of(context)!.yes,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
       ),
@@ -864,7 +864,7 @@ class ReUsableWidgets {
               child: Text(
                 '${AppLocalizations.of(context)!.areYouSureBlock}\n$userName',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18),
+                style: const TextStyle(fontSize: 18),
               ),
             ),
             actions: [
@@ -893,7 +893,7 @@ class ReUsableWidgets {
         Navigator.of(context).pop();
       },
       style: ElevatedButton.styleFrom(
-          primary: Colors.transparent,
+          backgroundColor: Colors.transparent,
           padding: EdgeInsets.zero,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
@@ -914,7 +914,7 @@ class ReUsableWidgets {
           alignment: Alignment.center,
           child: Text(
             AppLocalizations.of(context)!.no,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
       ),
@@ -926,7 +926,7 @@ class ReUsableWidgets {
         //Todo: unfriend
       },
       style: ElevatedButton.styleFrom(
-          primary: Colors.transparent,
+          backgroundColor: Colors.transparent,
           padding: EdgeInsets.zero,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
@@ -947,7 +947,7 @@ class ReUsableWidgets {
           alignment: Alignment.center,
           child: Text(
             AppLocalizations.of(context)!.yes,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
       ),
@@ -966,7 +966,7 @@ class ReUsableWidgets {
               child: Text(
                 '${AppLocalizations.of(context)!.youSureUnfriend}\n$userName',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18),
+                style: const TextStyle(fontSize: 18),
               ),
             ),
             actions: [
@@ -995,7 +995,7 @@ class ReUsableWidgets {
         Navigator.of(context).pop();
       },
       style: ElevatedButton.styleFrom(
-          primary: Colors.transparent,
+          backgroundColor: Colors.transparent,
           padding: EdgeInsets.zero,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
@@ -1016,7 +1016,7 @@ class ReUsableWidgets {
           alignment: Alignment.center,
           child: Text(
             AppLocalizations.of(context)!.ok,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
       ),
@@ -1029,7 +1029,7 @@ class ReUsableWidgets {
         Navigator.of(context).pop();
       },
       style: ElevatedButton.styleFrom(
-          primary: Colors.transparent,
+          backgroundColor: Colors.transparent,
           padding: EdgeInsets.zero,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
@@ -1076,7 +1076,7 @@ class ReUsableWidgets {
                     Text(
                       AppLocalizations.of(context)!.whyYouWantReport,
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 18),
+                      style: const TextStyle(fontSize: 18),
                     ),
                     const SizedBox(
                       height: 20,
@@ -1141,7 +1141,7 @@ class ReUsableWidgets {
                 Padding(
                   padding: EdgeInsets.only(
                       bottom: MediaQuery.of(context).size.height / 6),
-                  child: Container(
+                  child: SizedBox(
                     width: 180,
                     height: 180,
                     child: ClipRRect(
@@ -1152,7 +1152,7 @@ class ReUsableWidgets {
                               fit: BoxFit.cover,
                             )
                           : Image.network(
-                              image!,
+                              image,
                               fit: BoxFit.cover,
                             ),
                     ),
@@ -1169,7 +1169,7 @@ class ReUsableWidgets {
                     bottom: MediaQuery.of(context).size.height / 5.1,
                     child: Text(
                       userName!,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.black,
                         fontSize: 27,
                         fontWeight: FontWeight.bold,
@@ -1179,7 +1179,7 @@ class ReUsableWidgets {
                   bottom: MediaQuery.of(context).size.height / 6,
                   child: Text(
                     place!,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.grey,
                       fontSize: 17,
                     ),
@@ -1188,11 +1188,9 @@ class ReUsableWidgets {
                 Positioned(
                   bottom: MediaQuery.of(context).size.height / 11,
                   child: ElevatedButton(
-                    onPressed:
-                      goToChat
-                    ,
+                    onPressed: goToChat,
                     style: ElevatedButton.styleFrom(
-                        primary: Colors.transparent,
+                        backgroundColor: Colors.transparent,
                         padding: EdgeInsets.zero,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50))),
@@ -1211,7 +1209,7 @@ class ReUsableWidgets {
                         width: MediaQuery.of(context).size.width / 1.4,
                         height: MediaQuery.of(context).size.width / 8.5,
                         alignment: Alignment.center,
-                        child: Text(
+                        child: const Text(
                           'START CHAT',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
@@ -1227,7 +1225,7 @@ class ReUsableWidgets {
                       },
                       child: Text(
                         'Continue Swipe'.toUpperCase(),
-                        style: TextStyle(
+                        style: const TextStyle(
                             decoration: TextDecoration.underline,
                             color: Colors.grey),
                       ),

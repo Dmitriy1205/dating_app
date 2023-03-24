@@ -13,8 +13,7 @@ class FilterCubit extends Cubit<FilterState> {
   FilterCubit({
     required this.db,
     required this.auth,
-  }) : super(FilterState()) {
-    // getData();
+  }) : super(const FilterState()) {
     init();
   }
 
@@ -55,7 +54,6 @@ class FilterCubit extends Cubit<FilterState> {
   }
 
   Future<void> setInterestFields(String inter) async {
-    print('inter $inter');
     selectedInterestList.contains(inter)
         ? selectedInterestList.remove(inter)
         : selectedInterestList.add(inter);
@@ -70,11 +68,13 @@ class FilterCubit extends Cubit<FilterState> {
     try {
       final user = await db.getUserFields(id);
       final searchPref = user!.searchPref!;
-      int start = searchPref.yearsRange!.entries.firstWhere((entry) => entry.key
-          == 'start').value;
-      int end = searchPref.yearsRange!.entries.firstWhere((entry) => entry.key
-          == 'end').value;
-      print('start: $start, end: $end');
+      int start = searchPref.yearsRange!.entries
+          .firstWhere((entry) => entry.key == 'start')
+          .value;
+      int end = searchPref.yearsRange!.entries
+          .firstWhere((entry) => entry.key == 'end')
+          .value;
+
       final yearsRange = RangeValues(start.toDouble(), end.toDouble());
       emit(state.copyWith(
         status: Status.loaded(),
@@ -87,7 +87,6 @@ class FilterCubit extends Cubit<FilterState> {
         interests: searchPref.interests,
       ));
     } on Exception catch (e) {
-      print(e.toString());
       emit(state.copyWith(status: Status.error(e.toString())));
     }
   }
@@ -97,7 +96,6 @@ class FilterCubit extends Cubit<FilterState> {
       await db.updateSearchFields(id, s.toFirestore());
       emit(state.copyWith(status: Status.loaded()));
     } on Exception catch (e) {
-      print(e);
       emit(state.copyWith(status: Status.error(e.toString())));
     }
   }

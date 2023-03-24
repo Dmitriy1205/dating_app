@@ -22,13 +22,13 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => sl<SettingsCubit>(),
-      child: Settings(),
+      child: const Settings(),
     );
   }
 }
 
 class Settings extends StatefulWidget {
-  Settings({Key? key}) : super(key: key);
+  const Settings({Key? key}) : super(key: key);
 
   @override
   State<Settings> createState() => _SettingsState();
@@ -68,7 +68,7 @@ class _SettingsState extends State<Settings> {
         ),
         title: Text(
           AppLocalizations.of(context)!.settings,
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
       body: BlocBuilder<SettingsCubit, SettingsState>(
@@ -111,7 +111,7 @@ class _SettingsState extends State<Settings> {
                                 ),
                                 Text(
                                   settingNames[index],
-                                  style: TextStyle(fontSize: 18),
+                                  style: const TextStyle(fontSize: 18),
                                 ),
                               ],
                             ),
@@ -161,7 +161,7 @@ class _SettingsState extends State<Settings> {
       onPressed: () {
         BlocProvider.of<SettingsCubit>(context).logout();
         Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (_) => WelcomeScreen()));
+            MaterialPageRoute(builder: (_) => const WelcomeScreen()));
       },
     );
 
@@ -184,7 +184,7 @@ class _SettingsState extends State<Settings> {
 }
 
 List screens = [
-  SizedBox(),
+  const SizedBox(),
   BlocProvider(
     create: (context) => sl<BlockedContactsCubit>(),
     child: const BlockedContactsScreen(),
@@ -193,8 +193,8 @@ List screens = [
     create: (context) => sl<FriendsListCubit>(),
     child: const FriendListScreen(),
   ),
-  FaqScreen(),
-  TermsAndConditions(),
-  PrivacyScreen(),
-  SizedBox(),
+  const FaqScreen(),
+  const TermsAndConditions(),
+  const PrivacyScreen(),
+  const SizedBox(),
 ];

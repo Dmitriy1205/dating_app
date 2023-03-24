@@ -20,7 +20,7 @@ class SearchPreferencesCubit extends Cubit<SearchPreferencesState> {
           status: Status.initial(),
           age: const RangeValues(20, 30),
           distance: 28,
-          selectedLookingForList: [],
+          selectedLookingForList: const [],
         ));
 
   List<String> selectedLookingForList = [];

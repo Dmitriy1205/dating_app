@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dating_app/data/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import '../../core/exceptions.dart';
 import '../../core/service_locator.dart';
 import '../models/friend_model.dart';
@@ -38,7 +39,9 @@ class FirebaseDataProvider {
     userModel.language = language;
 
     try {
-      print(userModel.toFirestore());
+      if (kDebugMode) {
+        print(userModel.toFirestore());
+      }
       await firestore
           .collection('users')
           .doc(user.uid)
@@ -52,7 +55,6 @@ class FirebaseDataProvider {
     try {
       await firestore.collection('users').doc(id).update({'ProfileInfo': data});
     } on FirebaseException catch (e) {
-      print(e.message);
       throw BadRequestException(message: e.message!);
     }
   }
@@ -99,7 +101,6 @@ class FirebaseDataProvider {
           .doc(id)
           .update({'SearchPreferences': data});
     } on FirebaseException catch (e) {
-      print(e.message);
       throw BadRequestException(message: e.message!);
     }
   }
@@ -112,7 +113,6 @@ class FirebaseDataProvider {
           .snapshots()
           .forEach((element) {});
     } on FirebaseException catch (e) {
-      print(e.message);
       throw BadRequestException(message: e.message!);
     }
   }
@@ -148,7 +148,6 @@ class FirebaseDataProvider {
         listAddedToFriends.add(element.data()['addedFriend']);
       }
       for (var element in refusedFriends.docs) {
-        print('element ${element.id}');
         listAddedToFriends.add(element.data()['addedFriend']);
       }
       QuerySnapshot<Map<String, dynamic>> users =
@@ -159,7 +158,7 @@ class FirebaseDataProvider {
           palsList.add(UserModel.fromJson(user.data()));
         }
       }).toList();
-      print('userlist from dataprovider GetUsers()---${palsList.length} users');
+
       return palsList;
     } on FirebaseException catch (e) {
       throw BadRequestException(message: e.message!);
@@ -172,17 +171,18 @@ class FirebaseDataProvider {
       QuerySnapshot<Map<String, dynamic>> getAddedFriends = await firestore
           .collection('users/${userRepository.getLoggedUser.id}/addedFriends')
           .get();
-      getAddedFriends.docs.forEach((element) {
+      for (var element in getAddedFriends.docs) {
         if (element.data()['blockedFriend'] == false) {
           listAddedToFriends.add(element.data()['addedFriend']);
         }
-      });
+      }
       QuerySnapshot<Map<String, dynamic>> users =
           await firestore.collection('users').get();
       List<UserModel> palsList = [];
       users.docs.map((user) {
-        if (listAddedToFriends.contains(user.id))
+        if (listAddedToFriends.contains(user.id)) {
           palsList.add(UserModel.fromJson(user.data()));
+        }
       }).toList();
       return palsList;
     } on FirebaseException catch (e) {
@@ -196,17 +196,18 @@ class FirebaseDataProvider {
       QuerySnapshot<Map<String, dynamic>> getAddedFriends = await firestore
           .collection('users/${userRepository.getLoggedUser.id}/addedFriends')
           .get();
-      getAddedFriends.docs.forEach((element) {
+      for (var element in getAddedFriends.docs) {
         if (element.data()['blockedFriend'] == true) {
           listAddedToFriends.add(element.data()['addedFriend']);
         }
-      });
+      }
       QuerySnapshot<Map<String, dynamic>> users =
           await firestore.collection('users').get();
       List<UserModel> palsList = [];
       users.docs.map((user) {
-        if (listAddedToFriends.contains(user.id))
+        if (listAddedToFriends.contains(user.id)) {
           palsList.add(UserModel.fromJson(user.data()));
+        }
       }).toList();
       return palsList;
     } on FirebaseException catch (e) {
@@ -251,7 +252,6 @@ class FirebaseDataProvider {
           .get();
       return doc.data();
     } on FirebaseException catch (e) {
-      print(e.message);
       throw BadRequestException(message: e.message!);
     }
   }
@@ -267,7 +267,6 @@ class FirebaseDataProvider {
           .get();
       return doc.data();
     } on FirebaseException catch (e) {
-      print(e.message);
       throw BadRequestException(message: e.message!);
     }
   }
@@ -283,7 +282,6 @@ class FirebaseDataProvider {
           .get();
       return doc.data();
     } on FirebaseException catch (e) {
-      print(e.message);
       throw BadRequestException(message: e.message!);
     }
   }
@@ -295,7 +293,6 @@ class FirebaseDataProvider {
           .doc(id)
           .update({'SearchPreferences': data});
     } on FirebaseException catch (e) {
-      print(e.message);
       throw BadRequestException(message: e.message!);
     }
   }
@@ -319,7 +316,6 @@ class FirebaseDataProvider {
           .doc(id)
           .set(data, SetOptions(merge: true));
     } on FirebaseException catch (e) {
-      print(e.message);
       throw BadRequestException(message: e.message!);
     }
   }
@@ -333,7 +329,6 @@ class FirebaseDataProvider {
         'name': name,
       });
     } on FirebaseException catch (e) {
-      print(e.message);
       throw BadRequestException(message: e.message!);
     }
   }
@@ -344,7 +339,6 @@ class FirebaseDataProvider {
 
       return doc.docs.map((e) => ProfileInfoFields.fromJson(e.data())).toList();
     } on FirebaseException catch (e) {
-      print(e.message);
       throw BadRequestException(message: e.message!);
     }
   }
@@ -355,7 +349,6 @@ class FirebaseDataProvider {
 
       return doc.docs.map((e) => SearchPrefFields.fromJson(e.data())).toList();
     } on FirebaseException catch (e) {
-      print(e.message);
       throw BadRequestException(message: e.message!);
     }
   }
@@ -364,20 +357,14 @@ class FirebaseDataProvider {
     try {
       final allUsers = await firestore.collection('users').get();
 
-
-      return allUsers.docs.map((e) => UserModel.fromJson(e.data() ?? {})).toList();
+      return allUsers.docs.map((e) => UserModel.fromJson(e.data())).toList();
     } on FirebaseException catch (e) {
-      print(e.message);
       throw BadRequestException(message: e.message!);
     }
   }
 
   Future<void> addedToFriends(String addedFriendId) async {
     try {
-      print('addedFriendId  ${addedFriendId}');
-      print(
-          'userRepository.getLoggedUser.id()  ${userRepository.getLoggedUser.id}');
-
       await firestore
           .collection('users/${userRepository.getLoggedUser.id}/addedFriends')
           .doc(addedFriendId)
@@ -389,10 +376,6 @@ class FirebaseDataProvider {
 
   Future<void> refusedFriends(String refusedFriends) async {
     try {
-      print('addedFriendId  ${refusedFriends}');
-      print(
-          'userRepository.getLoggedUser.id()  ${userRepository.getLoggedUser.id}');
-
       await firestore
           .collection('users/${userRepository.getLoggedUser.id}/refusedFriends')
           .doc(refusedFriends)
@@ -437,7 +420,8 @@ class FirebaseDataProvider {
       QuerySnapshot<Map<String, dynamic>> data = await firestore
           .collection('users')
           .doc(id)
-          .collection('addedFriends').get();
+          .collection('addedFriends')
+          .get();
 
       return data.docs.map((e) => e.id).toList();
     } on FirebaseException catch (e) {

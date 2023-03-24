@@ -47,7 +47,7 @@ class _LoginFormState extends State<LoginForm> {
             content: Text(
               AppLocalizations.of(context)!.noMatchUser,
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
               ),
             ),
@@ -110,7 +110,7 @@ class _LoginFormState extends State<LoginForm> {
                             Text(
                               AppLocalizations.of(context)!.login,
                               textAlign: TextAlign.center,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 27,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -143,7 +143,7 @@ class _LoginFormState extends State<LoginForm> {
                               onSaved: (value) {
                                 isoCode = value!.countryCode;
                                 _phoneController.text = value.number;
-                                print(isoCode + _phoneController.text);
+
                               },
                               validator: validatePhoneField,
                             ),
@@ -165,13 +165,13 @@ class _LoginFormState extends State<LoginForm> {
                                               builder: (context) =>
                                                   OtpVerificationScreen(
                                                     verId: verId,
-                                                    page: HomeScreen(),
+                                                    page: const HomeScreen(),
                                                     pageId: 2,
                                                   )));
                                     });
                               },
                               style: ElevatedButton.styleFrom(
-                                  primary: Colors.transparent,
+                                  backgroundColor: Colors.transparent,
                                   padding: EdgeInsets.zero,
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(50))),
@@ -196,7 +196,7 @@ class _LoginFormState extends State<LoginForm> {
                                 ),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 35,
                             ),
                             Center(
@@ -224,7 +224,7 @@ class _LoginFormState extends State<LoginForm> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (contect) =>
-                                                        SignUpScreen()));
+                                                        const SignUpScreen()));
                                           }),
                                   ],
                                 ),

@@ -92,7 +92,7 @@ class _ImagePickerList extends StatelessWidget {
                                   .switcher(_selected!);
                               // picked = !picked;
                               userImage(list[index]);
-                              print(list[index]);
+
                             },
                             child: Container(
                               height: 200,

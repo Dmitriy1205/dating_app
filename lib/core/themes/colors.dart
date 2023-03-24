@@ -228,8 +228,8 @@ class GradientRectRangeSliderTrackShape extends RangeSliderTrackShape {
         rightThumbOffset = startThumbCenter;
         break;
     }
-    final Size thumbSize =
-        sliderTheme.rangeThumbShape!.getPreferredSize(isEnabled, isDiscrete);
+    // final Size thumbSize =
+    //     sliderTheme.rangeThumbShape!.getPreferredSize(isEnabled, isDiscrete);
     final Radius trackRadius = Radius.circular(trackRect.height / 2);
 
     context.canvas.drawRRect(

@@ -188,7 +188,7 @@ class _MessengerWidgetState extends State<MessengerWidget> {
             minLines: 1,
             controller: myMessageController,
             decoration: InputDecoration(
-              contentPadding: EdgeInsets.only(top: 15),
+              contentPadding: const EdgeInsets.only(top: 15),
               border: InputBorder.none,
               hintText: AppLocalizations.of(context)!.typeYourMessage,
               hintStyle: const TextStyle(color: Colors.grey),

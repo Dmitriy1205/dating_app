@@ -43,7 +43,7 @@ class _LocationFieldState extends State<LocationField> {
               context: context,
               builder: (BuildContext c) {
                 return AlertDialog(
-                  content: Container(
+                  content: SizedBox(
                     height: 400,
                     width: 100,
                     child: Padding(
@@ -117,7 +117,6 @@ class _LocationFieldState extends State<LocationField> {
                                   address = value;
                                   widget.func(address);
                                   // widget.locationController.text = address;
-                                  print('=========${address}');
                                 }));
 
                         Navigator.pop(context);
@@ -141,10 +140,10 @@ class _LocationFieldState extends State<LocationField> {
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      ScaffoldMessenger.of(context).showSnackBar(
+       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Colors.red,
-          duration: Duration(seconds: 5),
+          duration: const Duration(seconds: 5),
           content: Text(
             AppLocalizations.of(context)!.locationServicesAreDes,
           ),
@@ -158,7 +157,7 @@ class _LocationFieldState extends State<LocationField> {
       if (permission == LocationPermission.denied) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Colors.red,
-            duration: Duration(seconds: 5),
+            duration: const Duration(seconds: 5),
             content:
                 Text(AppLocalizations.of(context)!.locationPermissionDenied)));
         return false;
@@ -167,7 +166,7 @@ class _LocationFieldState extends State<LocationField> {
     if (permission == LocationPermission.deniedForever) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: Colors.red,
-          duration: Duration(seconds: 5),
+          duration: const Duration(seconds: 5),
           content: Text(
               AppLocalizations.of(context)!.locationPermissionArePermanently)));
       return false;

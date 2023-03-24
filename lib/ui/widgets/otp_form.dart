@@ -65,7 +65,7 @@ class _OtpFormState extends State<OtpForm> {
               Text(
                 AppLocalizations.of(context)!.verification,
                 textAlign: TextAlign.left,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 27,
                   fontWeight: FontWeight.bold,
                 ),
@@ -87,6 +87,7 @@ class _OtpFormState extends State<OtpForm> {
                   child: PinCodeTextField(
                       validator: (value) {
                         code = value!;
+                        return null;
                       },
                       autoFocus: true,
                       showCursor: false,
@@ -134,7 +135,7 @@ class _OtpFormState extends State<OtpForm> {
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                    primary: Colors.transparent,
+                    backgroundColor: Colors.transparent,
                     padding: EdgeInsets.zero,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50))),

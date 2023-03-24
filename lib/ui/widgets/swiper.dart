@@ -6,7 +6,7 @@ const List<Alignment> cardsAlign = [
   Alignment(0.0, 0.8),
   Alignment(0.0, 0.0)
 ];
-List<Size> cardsSize = List.filled(3, Size(1, 1));
+List<Size> cardsSize = List.filled(3, const Size(1, 1));
 
 class SwipeableCardsSection extends StatefulWidget {
   final SwipeableCardSectionController? cardController;
@@ -23,7 +23,7 @@ class SwipeableCardsSection extends StatefulWidget {
   final Function? appendItemCallback;
 
   SwipeableCardsSection({
-    Key? key,
+    super.key,
     this.cardController,
     required BuildContext context,
     required this.items,
@@ -45,7 +45,7 @@ class SwipeableCardsSection extends StatefulWidget {
   }
 
   @override
-  _CardsSectionState createState() => _CardsSectionState();
+  State<SwipeableCardsSection> createState() => _CardsSectionState();
 }
 
 class _CardsSectionState extends State<SwipeableCardsSection>
@@ -86,7 +86,6 @@ class _CardsSectionState extends State<SwipeableCardsSection>
     shouldAnimate ??= true;
 
     if (shouldAnimate) {
-      print('shouldAnimate');
       animateCards();
     }
   }
@@ -124,7 +123,6 @@ class _CardsSectionState extends State<SwipeableCardsSection>
     _controller.addStatusListener((AnimationStatus status) {
       if (status == AnimationStatus.completed) changeCardsOrder();
     });
-    print('cardsCounter $cardsCounter');
   }
 
   @override
@@ -145,8 +143,6 @@ class _CardsSectionState extends State<SwipeableCardsSection>
                   onPanUpdate: (DragUpdateDetails details) {
                     // Add what the user swiped in the last frame to the alignment of the card
                     setState(() {
-                      print(
-                          'details.delta.dx ${details.delta.dx}    details.delta.dy ${details.delta.dy}');
                       isVisible = true;
                       frontCardAlign = Alignment(
                           frontCardAlign.x +
@@ -298,7 +294,7 @@ class _CardsSectionState extends State<SwipeableCardsSection>
   void animateCards() {
     _controller.stop();
     // _controller.value = (pi / 180.0) * frontCardRot;
-    print('animateCards 11');
+
     _controller.value = 0.0;
     _controller.forward();
   }
@@ -309,26 +305,30 @@ class CardsAnimation {
       AnimationController parent) {
     return AlignmentTween(begin: cardsAlign[0], end: cardsAlign[1]).animate(
         CurvedAnimation(
-            parent: parent, curve: Interval(0.4, 0.7, curve: Curves.easeIn)));
+            parent: parent,
+            curve: const Interval(0.4, 0.7, curve: Curves.easeIn)));
   }
 
   static Animation<Size?> backCardSizeAnim(AnimationController parent) {
     return SizeTween(begin: cardsSize[2], end: cardsSize[1]).animate(
         CurvedAnimation(
-            parent: parent, curve: Interval(0.4, 0.7, curve: Curves.easeIn)));
+            parent: parent,
+            curve: const Interval(0.4, 0.7, curve: Curves.easeIn)));
   }
 
   static Animation<Alignment> middleCardAlignmentAnim(
       AnimationController parent) {
     return AlignmentTween(begin: cardsAlign[1], end: cardsAlign[2]).animate(
         CurvedAnimation(
-            parent: parent, curve: Interval(0.2, 0.5, curve: Curves.easeIn)));
+            parent: parent,
+            curve: const Interval(0.2, 0.5, curve: Curves.easeIn)));
   }
 
   static Animation<Size?> middleCardSizeAnim(AnimationController parent) {
     return SizeTween(begin: cardsSize[1], end: cardsSize[0]).animate(
         CurvedAnimation(
-            parent: parent, curve: Interval(0.2, 0.5, curve: Curves.easeIn)));
+            parent: parent,
+            curve: const Interval(0.2, 0.5, curve: Curves.easeIn)));
   }
 
   static Animation<Alignment> frontCardDisappearAlignmentAnim(
@@ -356,7 +356,8 @@ class CardsAnimation {
                       : beginAlign.y - 30.0) // Has swiped to the top or bottom?
               )
           .animate(CurvedAnimation(
-              parent: parent, curve: Interval(0.0, 0.5, curve: Curves.easeIn)));
+              parent: parent,
+              curve: const Interval(0.0, 0.5, curve: Curves.easeIn)));
     }
   }
 }

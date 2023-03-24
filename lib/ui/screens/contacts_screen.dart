@@ -12,7 +12,7 @@ import '../widgets/search_bar.dart';
 import 'history_call_screen.dart';
 
 class ContactsScreen extends StatefulWidget {
-  ContactsScreen({Key? key}) : super(key: key);
+  const ContactsScreen({Key? key}) : super(key: key);
 
   @override
   State<ContactsScreen> createState() => _ContactsScreenState();
@@ -52,7 +52,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
             ),
             title: Row(
               children: [
-                Spacer(),
+                const Spacer(),
                 Text(
                   AppLocalizations.of(context)!.connections,
                   style: const TextStyle(
@@ -327,7 +327,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
                                                     bottom: 15,
                                                     right: 15,
                                                   ),
-                                                  child: Container(
+                                                  child: SizedBox(
                                                     height: 75,
                                                     width: 75,
                                                     child: ClipRRect(
@@ -507,7 +507,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
                                   bottom: 15,
                                   right: 15,
                                 ),
-                                child: Container(
+                                child: SizedBox(
                                   height: 75,
                                   width: 75,
                                   child: ClipRRect(

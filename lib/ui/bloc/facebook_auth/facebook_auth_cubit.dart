@@ -19,7 +19,6 @@ class FacebookAuthCubit extends Cubit<FacebookAuthState> {
       await _repository.loginWithFacebook();
       emit(state.copyWith(status: Status.loaded()));
     } on BadRequestException catch (e) {
-      print(e.message);
       emit(state.copyWith(status: Status.error(e.message)));
     }
   }

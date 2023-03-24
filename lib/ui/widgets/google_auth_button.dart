@@ -1,6 +1,5 @@
 import 'package:dating_app/ui/bloc/google_auth/google_auth_cubit.dart';
 import 'package:dating_app/ui/screens/home_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -31,7 +30,7 @@ class _GoogleAuthButton extends StatelessWidget {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => HomeScreen(),
+              builder: (context) => const HomeScreen(),
             ),
           );
         }
@@ -44,7 +43,7 @@ class _GoogleAuthButton extends StatelessWidget {
                   context.read<GoogleAuthCubit>().login();
                 },
           style: ElevatedButton.styleFrom(
-            primary: Colors.transparent,
+            backgroundColor: Colors.transparent,
             shadowColor: Colors.white,
             elevation: 0,
             fixedSize: const Size(340, 55),
@@ -65,7 +64,7 @@ class _GoogleAuthButton extends StatelessWidget {
                 state.status!.isLoading == true
                     ? AppLocalizations.of(context)!.signing
                     : AppLocalizations.of(context)!.signingGoogle,
-                style: TextStyle(color: Colors.red),
+                style: const TextStyle(color: Colors.red),
               ),
             ],
           ),

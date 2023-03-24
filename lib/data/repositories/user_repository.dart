@@ -14,8 +14,10 @@ class UserRepository {
   get getUserName {
     return loggedUser.firstName;
   }
-  get getLoggedUser  {return loggedUser;}
 
+  get getLoggedUser {
+    return loggedUser;
+  }
 
   Future<void> loggedUserPictureMethod() async {
     await firestore
@@ -23,11 +25,8 @@ class UserRepository {
         .doc(auth.currentUser!.uid)
         .get()
         .then((value) {
-          print('value loggedUserPicture ${value.data()}');
       loggedUserPicture = value.data()!['ProfileInfo']['image'];
-      print('loggedUserPicture3 $loggedUserPicture');
     });
-
   }
 
   Future<void> userLoginRepo() async {
@@ -36,8 +35,5 @@ class UserRepository {
         .doc(auth.currentUser!.uid)
         .get()
         .then((value) => loggedUser = UserModel.fromJson(value.data()!));
-    print(' loggedUser UserRepository ${loggedUser.firstName}');
-    print(' loggedUserid UserRepository ${loggedUser.id}');
-
   }
 }

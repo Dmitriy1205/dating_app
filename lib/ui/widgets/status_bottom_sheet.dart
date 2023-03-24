@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -50,7 +49,7 @@ class StatusBottomSheet {
                                         ),
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 10,
                                     ),
                                     Text(
@@ -85,7 +84,7 @@ class StatusBottomSheet {
                                         ),
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 10,
                                     ),
                                     Text(
@@ -119,7 +118,7 @@ class StatusBottomSheet {
                       Navigator.of(context).pop();
                     },
                     style: ElevatedButton.styleFrom(
-                        primary: Colors.transparent,
+                        backgroundColor: Colors.transparent,
                         padding: EdgeInsets.zero,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50))),
@@ -179,7 +178,7 @@ class StatusBottomSheet {
       _image = File(pickedFile.path);
       getPhoto(_image!);
     } else {
-      print('No image selected.');
+
     }
   }
 }

@@ -22,7 +22,7 @@ class TermsAndConditions extends StatelessWidget {
                     )),
                  Text(
                   AppLocalizations.of(context)!.reflowTermsConditions,
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox()
               ],

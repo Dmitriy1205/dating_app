@@ -34,7 +34,7 @@ class PhotoCardLayoutWidget extends StatefulWidget {
   final Function? onCardTap;
   final int photoIndex;
 
-  PhotoCardLayoutWidget({
+  const PhotoCardLayoutWidget({
     required this.photoCard,
     required this.cardHeight,
     required this.cardWidth,
@@ -64,7 +64,7 @@ class PhotoCardLayoutWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _PhotoCardLayoutWidgetState createState() => _PhotoCardLayoutWidgetState();
+  State<PhotoCardLayoutWidget> createState() => _PhotoCardLayoutWidgetState();
 }
 
 class _PhotoCardLayoutWidgetState extends State<PhotoCardLayoutWidget> {
@@ -88,7 +88,7 @@ class _PhotoCardLayoutWidgetState extends State<PhotoCardLayoutWidget> {
               color: Colors.grey[300] ?? Colors.black,
               blurRadius: 0.0,
               spreadRadius: 1.0,
-              offset: Offset(0, 5),
+              offset: const Offset(0, 5),
             ),
           ],
         ),
@@ -101,7 +101,7 @@ class _PhotoCardLayoutWidgetState extends State<PhotoCardLayoutWidget> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5.0),
                 color: widget.imageBackgroundColor,
-                image: widget.photoCard.imagePath == '' || widget.photoCard.imagePath == null
+                image: widget.photoCard.imagePath == ''
                     ? const DecorationImage(
                         image: AssetImage(
                           'assets/images/empty.png',
@@ -236,7 +236,7 @@ class CardActionSpecifcOverlayWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedOpacity(
       opacity: isVisible ? 1 : 0,
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
       curve: Curves.easeInCirc,
       onEnd: () {},
       child: BackdropFilter(
@@ -247,7 +247,7 @@ class CardActionSpecifcOverlayWidget extends StatelessWidget {
         child: Center(
           child: ClipOval(
             clipBehavior: Clip.antiAlias,
-            child: Container(
+            child: SizedBox(
               width: 135,
               height: 135,
               // color: Colors.white.withOpacity(0.7),

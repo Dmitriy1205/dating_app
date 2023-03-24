@@ -1,4 +1,3 @@
-import 'package:dating_app/core/constants.dart';
 import 'package:dating_app/data/models/message_model.dart';
 import 'package:dating_app/ui/bloc/messenger_cubit.dart';
 import 'package:flutter/material.dart';

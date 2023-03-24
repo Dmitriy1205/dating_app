@@ -25,7 +25,7 @@ class LoadingDataPhotoCardWidget extends StatelessWidget {
   final bool isLoading;
   final bool hideCenterButton;
 
-  LoadingDataPhotoCardWidget({
+  const LoadingDataPhotoCardWidget({
     required this.cardHeight,
     required this.cardWidth,
     required this.isLoading,
@@ -49,7 +49,7 @@ class LoadingDataPhotoCardWidget extends StatelessWidget {
               color: Colors.grey[350] ?? Colors.black,
               blurRadius: 7.0,
               spreadRadius: 3.0,
-              offset: Offset(2, 3),
+              offset: const Offset(2, 3),
             ),
           ],
         ),
@@ -61,7 +61,7 @@ class LoadingDataPhotoCardWidget extends StatelessWidget {
             color: Colors.white,
             child: Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 20.0,
                 ),
                 Row(
@@ -75,7 +75,7 @@ class LoadingDataPhotoCardWidget extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 20.0,
                     ),
                     hideCenterButton
@@ -88,7 +88,7 @@ class LoadingDataPhotoCardWidget extends StatelessWidget {
                               ),
                             ),
                           ),
-                    SizedBox(
+                    const SizedBox(
                       width: 20.0,
                     ),
                     ClipOval(
@@ -101,19 +101,19 @@ class LoadingDataPhotoCardWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20.0,
                 ),
                 DefaultTitleContainerWidget(
                   isLoading: isLoading,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5.0,
                 ),
                 DefaultDescriptionContainerWidget(
                   isLoading: isLoading,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20.0,
                 ),
               ],
@@ -238,14 +238,12 @@ class DefaultPhotoContainerWidget extends StatelessWidget {
     return ShimmerLoading(
       isLoading: isLoading,
       child: Container(
-        child: Container(
-          clipBehavior: Clip.hardEdge,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(25.0),
-            color: Colors.grey[200],
-          ),
-          margin: const EdgeInsets.all(10.0),
+        clipBehavior: Clip.hardEdge,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(25.0),
+          color: Colors.grey[200],
         ),
+        margin: const EdgeInsets.all(10.0),
       ),
     );
   }

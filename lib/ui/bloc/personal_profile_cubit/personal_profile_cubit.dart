@@ -20,9 +20,8 @@ class PersonalProfileCubit extends Cubit<PersonalProfileState> {
         pic: im,
       ));
     } on Exception catch (e) {
-      print(e.toString());
       emit(state.copyWith(
-        status: Status.error(),
+        status: Status.error(e.toString()),
       ));
     }
   }

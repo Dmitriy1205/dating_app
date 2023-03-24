@@ -33,7 +33,7 @@ class ReflowScreen extends StatelessWidget {
                 children: [
                   Text(
                     AppLocalizations.of(context)!.reflowMiddleText,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.black,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -59,7 +59,7 @@ class ReflowScreen extends StatelessWidget {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.transparent,
+                      backgroundColor: Colors.transparent,
                       padding: EdgeInsets.zero,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
@@ -236,7 +236,7 @@ Widget buildTextColumn(BuildContext context) {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => TermsAndConditions(),
+                        builder: (context) => const TermsAndConditions(),
                       ),
                     );
                   }),

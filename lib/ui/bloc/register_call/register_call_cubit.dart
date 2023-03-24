@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,7 +10,6 @@ import 'package:flutter/cupertino.dart';
 
 import '../../../core/constants.dart';
 import '../../../core/services/cache_helper.dart';
-import '../../../data/models/fcm_payload_model.dart';
 import '../../../data/models/status.dart';
 import '../../../data/models/user_token_model.dart';
 
@@ -26,10 +24,10 @@ class RegisterCallCubit extends Cubit<RegisterCallState> {
 
   Future<void> makeCall({required CallModel callModel}) async {
     // emit(state.copyWith(status: Status.loading()));
-    Map<String, dynamic> queryMap = {
-      'channelName': 'channel_${UniqueKey().hashCode.toString()}',
-      'uid': callModel.callerId,
-    };
+    // Map<String, dynamic> queryMap = {
+    //   'channelName': 'channel_${UniqueKey().hashCode.toString()}',
+    //   'uid': callModel.callerId,
+    // };
 
     try {
       String? tempToken;
@@ -40,7 +38,6 @@ class RegisterCallCubit extends Cubit<RegisterCallState> {
          callModel.channelName = testChannel;
          postCallToFirestore(callModel: callModel);
       });
-      print('------------------$tempToken');
 
     } catch (e) {
       emit(state.copyWith(status: Status.error(e.toString())));
@@ -68,13 +65,13 @@ class RegisterCallCubit extends Cubit<RegisterCallState> {
         .get()
         .then((value) {
       if (value.exists) {
-        Map<String, dynamic> bodyMap = {
-          'type': 'call',
-          'title': 'New call',
-          'body': jsonEncode(callModel.toMap())
-        };
-        FcmPayloadModel fcmSendData =
-            FcmPayloadModel(to: value.data()!['token'], data: bodyMap);
+        // Map<String, dynamic> bodyMap = {
+        //   'type': 'call',
+        //   'title': 'New call',
+        //   'body': jsonEncode(callModel.toMap())
+        // };
+        // FcmPayloadModel fcmSendData =
+        //     FcmPayloadModel(to: value.data()!['token'], data: bodyMap);
         emit(state.copyWith(
             inCallStatus: IncomingCallStatus.successOuterCall,
             callModel: callModel));
@@ -120,7 +117,7 @@ class RegisterCallCubit extends Cubit<RegisterCallState> {
           }
         }
       }
-      print('sdfdsfdfs');
+
     });
   }
 

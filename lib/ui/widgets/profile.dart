@@ -106,12 +106,12 @@ class Profile extends StatelessWidget {
                         Text(
                           AppLocalizations.of(context)!.username,
                           textAlign: TextAlign.start,
-                          style: TextStyle(fontSize: 14),
+                          style: const TextStyle(fontSize: 14),
                         ),
                         Text(
                           state.user!.firstName ?? '',
                           textAlign: TextAlign.start,
-                          style: TextStyle(color: Colors.grey, fontSize: 14),
+                          style: const TextStyle(color: Colors.grey, fontSize: 14),
                         ),
                       ],
                     ),
@@ -143,14 +143,14 @@ class Profile extends StatelessWidget {
                         Text(
                           AppLocalizations.of(context)!.gender,
                           textAlign: TextAlign.start,
-                          style: TextStyle(fontSize: 14),
+                          style: const TextStyle(fontSize: 14),
                         ),
                         Text(
                           state.user!.profileInfo!.gender == 'Male'
                               ? AppLocalizations.of(context)!.male
                               : AppLocalizations.of(context)!.female,
                           textAlign: TextAlign.start,
-                          style: TextStyle(color: Colors.grey, fontSize: 14),
+                          style: const TextStyle(color: Colors.grey, fontSize: 14),
                         ),
                       ],
                     ),
@@ -177,7 +177,7 @@ class Profile extends StatelessWidget {
                     Text(
                       state.user!.profileInfo!.bio ?? '',
                       textAlign: TextAlign.start,
-                      style: TextStyle(color: Colors.grey, fontSize: 14),
+                      style: const TextStyle(color: Colors.grey, fontSize: 14),
                     ),
                   ],
                 ),
@@ -313,7 +313,7 @@ class Profile extends StatelessWidget {
                         Text(
                           '${AppLocalizations.of(context)!.currentLocation} : ',
                           textAlign: TextAlign.start,
-                          style: TextStyle(fontSize: 14),
+                          style: const TextStyle(fontSize: 14),
                         ),
                         Text(
                           state.user!.profileInfo!.location! == ''
@@ -321,7 +321,7 @@ class Profile extends StatelessWidget {
                                   .locationNotSelected
                               : state.user!.profileInfo!.location!,
                           textAlign: TextAlign.start,
-                          style: TextStyle(color: Colors.grey, fontSize: 14),
+                          style: const TextStyle(color: Colors.grey, fontSize: 14),
                         ),
                       ],
                     ),
@@ -423,7 +423,7 @@ class Profile extends StatelessWidget {
                           .then((value) => context.read<ProfileCubit>().init());
                     },
                     style: ElevatedButton.styleFrom(
-                        primary: Colors.transparent,
+                        backgroundColor: Colors.transparent,
                         padding: EdgeInsets.zero,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50))),

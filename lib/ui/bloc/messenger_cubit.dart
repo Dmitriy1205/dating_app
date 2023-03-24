@@ -12,7 +12,7 @@ import '../../data/repositories/data_repository.dart';
 class MessengerCubit extends Cubit<MessengerStates> {
   MessengerCubit(this.db, this.auth, UserModel userModel)
       : super(MessengerStates(
-          messagesList: [],
+          messagesList: const [],
           status: Status.initial(),
         )) {
     // messagesStream();
@@ -38,7 +38,6 @@ class MessengerCubit extends Cubit<MessengerStates> {
         .isUserBlocked(currentUserId, blockerUserId)
         .then((value) => value!.isBlocked);
     // bool isBlocked = fields?.map((e) => e.isBlocked) ;
-    print('============$isBlocked');
     emit(state.copyWith(userBlocked: isBlocked));
   }
 
@@ -71,7 +70,6 @@ class MessengerCubit extends Cubit<MessengerStates> {
     messages.onData((data) {
       if (data.isNotEmpty) {
         emit(state.copyWith(messagesList: data, status: Status.loaded()));
-        print('data.last.message ${data[0].message!}');
         if (!data[0].isRead!) {
           if (data[0].senderName != loggedUser.getUserName) {
             Notifications.showReceivedMessageNotification(
@@ -88,7 +86,6 @@ class MessengerCubit extends Cubit<MessengerStates> {
   }
 
   void clearChat() async {
-    print('clearChat $getChatId');
     db.clearChat(getChatId);
   }
 

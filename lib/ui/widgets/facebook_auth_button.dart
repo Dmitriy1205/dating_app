@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -31,7 +30,7 @@ class _FacebookAuthButton extends StatelessWidget {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => HomeScreen(),
+              builder: (context) => const HomeScreen(),
             ),
           );
         }
@@ -44,11 +43,11 @@ class _FacebookAuthButton extends StatelessWidget {
                   context.read<FacebookAuthCubit>().login();
                 },
           style: ElevatedButton.styleFrom(
-            primary: Colors.transparent,
+            backgroundColor: Colors.transparent,
             shadowColor: Colors.white,
             elevation: 0,
             fixedSize: const Size(340, 55),
-            side: BorderSide(color: Colors.blue),
+            side: const BorderSide(color: Colors.blue),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(50),
             ),

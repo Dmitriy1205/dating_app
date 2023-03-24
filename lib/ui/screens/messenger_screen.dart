@@ -13,7 +13,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../core/services/cache_helper.dart';
 
 class MessengerScreen extends StatefulWidget {
-  MessengerScreen({
+  const MessengerScreen({
     Key? key,
     required this.user,
     required this.userPicture,
@@ -57,7 +57,7 @@ class _MessengerScreenState extends State<MessengerScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               backgroundColor: Colors.red,
-              duration: Duration(seconds: 5),
+              duration: const Duration(seconds: 5),
               content: Text(
                 state.status!.errorMessage!,
               ),
@@ -92,7 +92,7 @@ class _MessengerScreenState extends State<MessengerScreen> {
             ),
             actions: <Widget>[
               context.watch<MessengerCubit>().state.userBlocked == true
-                  ? SizedBox()
+                  ? const SizedBox()
                   : Padding(
                       padding: const EdgeInsets.all(5.0),
                       child: GestureDetector(

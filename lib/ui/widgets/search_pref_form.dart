@@ -149,7 +149,7 @@ class SearchPrefForm extends StatelessWidget {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      HomeScreen())));
+                                                      const HomeScreen())));
                                     },
                                     child: SizedBox(
                                         height: 25,
@@ -162,7 +162,7 @@ class SearchPrefForm extends StatelessWidget {
                               height: 20,
                             ),
                             Text(AppLocalizations.of(context)!.weUseThisInfo,
-                                style: TextStyle(color: Colors.black38)),
+                                style: const TextStyle(color: Colors.black38)),
                             const SizedBox(
                               height: 30,
                             ),

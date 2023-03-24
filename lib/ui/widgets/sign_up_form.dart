@@ -4,6 +4,7 @@ import 'package:dating_app/ui/bloc/localization/localization_cubit.dart';
 import 'package:dating_app/ui/screens/login_screen.dart';
 import 'package:dating_app/ui/screens/terms.dart';
 import 'package:dating_app/ui/widgets/field_decor.dart';
+import 'package:dating_app/ui/widgets/loading_indicator.dart';
 import 'package:dating_app/ui/widgets/picker.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -65,11 +66,7 @@ class _SignUpFormState extends State<SignUpForm> {
       },
       builder: (context, state) {
         if (state.status!.isLoading) {
-          return Center(
-            child: CircularProgressIndicator(
-              color: Colors.orange,
-            ),
-          );
+          return const LoadingIndicator();
         }
         return Stack(
           fit: StackFit.expand,
@@ -82,7 +79,7 @@ class _SignUpFormState extends State<SignUpForm> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 45, horizontal: 15),
               child: SingleChildScrollView(
-                physics: ClampingScrollPhysics(),
+                physics: const ClampingScrollPhysics(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -162,7 +159,7 @@ class _SignUpFormState extends State<SignUpForm> {
                               onSaved: (value) {
                                 isoCode = value!.countryCode;
                                 _phoneController.text = value.number;
-                                print(isoCode + _phoneController.text);
+
                               },
                               validator: validatePhoneField,
                             ),
@@ -184,7 +181,7 @@ class _SignUpFormState extends State<SignUpForm> {
                                     .requestFocus(FocusNode());
                                 date = await Picker().birthDatePicker(context);
                                 age = DateTime.now().year - date!.year;
-                                print('===========${age}');
+
                                 _dateController.text = Jiffy(date).yMMMMd;
                               },
                               onSaved: (value) {
@@ -292,7 +289,7 @@ class _SignUpFormState extends State<SignUpForm> {
                                           });
                                     },
                               style: ElevatedButton.styleFrom(
-                                  primary: Colors.transparent,
+                                  backgroundColor: Colors.transparent,
                                   padding: EdgeInsets.zero,
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(50))),
@@ -349,7 +346,7 @@ class _SignUpFormState extends State<SignUpForm> {
                                                       context,
                                                       MaterialPageRoute(
                                                           builder: (context) =>
-                                                              LoginScreen()));
+                                                              const LoginScreen()));
                                                 }),
                                         ],
                                       ),

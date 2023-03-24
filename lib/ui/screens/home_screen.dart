@@ -3,7 +3,6 @@ import 'package:dating_app/ui/bloc/register_call/register_call_cubit.dart';
 import 'package:dating_app/ui/screens/contacts_screen.dart';
 import 'package:dating_app/ui/screens/profile_screen.dart';
 import 'package:dating_app/ui/screens/video_call_screen.dart';
-import 'package:dating_app/ui/widgets/reusable_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -45,7 +44,7 @@ class HomeScreen extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ContactsScreen()));
+                              builder: (context) => const ContactsScreen()));
                     },
                     child: SizedBox(
                       height: 50,

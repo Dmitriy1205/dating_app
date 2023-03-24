@@ -43,7 +43,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
             ),
           ),
-          body: EditProfileForm()),
+          body: const EditProfileForm()),
     );
   }
 }

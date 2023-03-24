@@ -217,7 +217,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                             ImagePickerList(
                               userImage: (i) {
                                 userImage = i;
-                                print('-------$i');
+
                               },
                             ),
                             Column(

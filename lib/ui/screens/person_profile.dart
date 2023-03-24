@@ -156,21 +156,22 @@ class _PersonProfileState extends State<PersonProfile> {
                                   viewportFraction: 1,
                                   enableInfiniteScroll: false,
                                   onScrolled: (item) {
-                                    double _validPosition(double position) {
-                                      if (position >= state.pic!.length)
+                                    double validPosition(double position) {
+                                      if (position >= state.pic!.length) {
                                         return 0;
+                                      }
                                       if (position < 0) {
                                         return state.pic!.length - 1.0;
                                       }
                                       return position;
                                     }
 
-                                    _updatePosition(double position) {
+                                    updatePosition(double position) {
                                       setState(() => _currentPosition =
-                                          _validPosition(position));
+                                          validPosition(position));
                                     }
 
-                                    _updatePosition(item!);
+                                    updatePosition(item!);
                                   }),
                             ),
                       // Image.asset('assets/images/pic.png',fit: BoxFit.fill,),
@@ -279,12 +280,12 @@ class _PersonProfileState extends State<PersonProfile> {
                           Text(
                             '${AppLocalizations.of(context)!.height} : ',
                             textAlign: TextAlign.start,
-                            style: TextStyle(fontSize: 14),
+                            style: const TextStyle(fontSize: 14),
                           ),
                           Text(
                             widget.height,
                             textAlign: TextAlign.start,
-                            style: TextStyle(color: Colors.grey, fontSize: 14),
+                            style: const TextStyle(color: Colors.grey, fontSize: 14),
                           ),
                         ],
                       ),
@@ -305,7 +306,7 @@ class _PersonProfileState extends State<PersonProfile> {
                                     ? ''
                                     : AppLocalizations.of(context)!.single,
                             textAlign: TextAlign.start,
-                            style: TextStyle(color: Colors.grey, fontSize: 14),
+                            style: const TextStyle(color: Colors.grey, fontSize: 14),
                           ),
                         ],
                       ),
@@ -322,7 +323,7 @@ class _PersonProfileState extends State<PersonProfile> {
                           Text(
                             widget.joinDate,
                             textAlign: TextAlign.start,
-                            style: TextStyle(color: Colors.grey, fontSize: 14),
+                            style: const TextStyle(color: Colors.grey, fontSize: 14),
                           ),
                         ],
                       ),

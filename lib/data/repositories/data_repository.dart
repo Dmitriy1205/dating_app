@@ -38,7 +38,6 @@ class DataRepository {
   }
 
   String getClearId(recipientId, senderId) {
-    print('recipientId $recipientId senderId $senderId');
     chatId = dataProvider.getClearChatId(senderId, recipientId);
     return chatId;
   }

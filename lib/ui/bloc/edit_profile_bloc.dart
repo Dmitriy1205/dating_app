@@ -33,7 +33,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     selectedLookingForList.contains(selectedLookingFor)
         ? selectedLookingForList.remove(selectedLookingFor)
         : selectedLookingForList.add(selectedLookingFor);
-    print('lookingFor from EditProfileCubit $selectedLookingForList');
 
     emit(state.copyWith(
         status: Status.initial(),
@@ -52,7 +51,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         userModel: userField,
       ));
     } on BadRequestException catch (e) {
-      print(e.message);
       emit(state.copyWith(status: Status.error(e.message)));
     }
   }
@@ -63,8 +61,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       await db.updateFields(id, p.toFirestore(), s, name);
       emit(state.copyWith(status: Status.loaded()));
     } on BadRequestException catch (e) {
-      print('prof edit $e');
-      print(e.message);
       emit(state.copyWith(status: Status.error(e.message)));
     }
   }

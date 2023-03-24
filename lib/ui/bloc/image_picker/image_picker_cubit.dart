@@ -27,7 +27,6 @@ class ImagePickerCubit extends Cubit<ImagePickerState> {
       await storage.upload(source, 'users/$id/image$name.png');
       emit(state.copyWith(status: Status.loaded()));
     } catch (e) {
-      print(e);
       emit(state.copyWith(status: Status.error(e.toString())));
     }
   }
@@ -40,9 +39,9 @@ class ImagePickerCubit extends Cubit<ImagePickerState> {
       emit(state.copyWith(status: Status.loaded()));
       return imageUrl;
     } catch (e) {
-      print(e);
       emit(state.copyWith(status: Status.error(e.toString())));
     }
+    return null;
   }
 
   Future<void> getAllImages() async {
@@ -52,7 +51,6 @@ class ImagePickerCubit extends Cubit<ImagePickerState> {
       var image = await storage.getAllById(id);
       emit(state.copyWith(status: Status.loaded(), image: image));
     } catch (e) {
-      print(e);
       emit(state.copyWith(status: Status.error(e.toString())));
     }
   }

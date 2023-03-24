@@ -1,5 +1,4 @@
 import 'package:dating_app/ui/bloc/filter/filter_cubit.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -21,7 +20,7 @@ class FilterScreen extends StatelessWidget {
         centerTitle: true,
         actions: [
           Padding(
-            padding: EdgeInsets.only(right: 25),
+            padding: const EdgeInsets.only(right: 25),
             child: Center(
               child: GestureDetector(
                 onTap: () {

@@ -43,7 +43,7 @@ class BlockedContactsScreen extends StatelessWidget {
           }
           final contact = context.read<BlockedContactsCubit>().state;
           return contact.usersList == null
-              ? SizedBox()
+              ? const SizedBox()
               : ListView.builder(
                   itemCount: contact.usersList?.length,
                   itemBuilder: (context, index) {
@@ -68,7 +68,7 @@ class BlockedContactsScreen extends StatelessWidget {
                                       height: 55,
                                       width: 55,
                                       child: ClipRRect(
-                                        borderRadius: BorderRadius.all(
+                                        borderRadius: const BorderRadius.all(
                                             Radius.circular(40)),
                                         child: contact.usersList![index]
                                                 .profileInfo!.image!.isEmpty
@@ -121,8 +121,7 @@ class BlockedContactsScreen extends StatelessWidget {
 
                                   },
                                   style: ElevatedButton.styleFrom(
-                                      elevation: 0,
-                                      primary: Colors.transparent,
+                                      elevation: 0, backgroundColor: Colors.transparent,
                                       padding: EdgeInsets.zero,
                                       shape: RoundedRectangleBorder(
                                           borderRadius:

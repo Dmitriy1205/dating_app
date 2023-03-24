@@ -16,7 +16,7 @@ class ProfileCubit extends Cubit<ProfileState> {
     required this.auth,
     required this.db,
     required this.storage,
-  }) : super(ProfileState()) {
+  }) : super(const ProfileState()) {
     // getData();
     init();
   }
@@ -38,7 +38,6 @@ class ProfileCubit extends Cubit<ProfileState> {
         images: image,
       ));
     } on BadRequestException catch (e) {
-      print(e.message);
       emit(state.copyWith(status: Status.error(e.message)));
     }
   }

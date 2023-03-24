@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
-import 'package:agora_uikit/agora_uikit.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dating_app/data/repositories/video_call_repository.dart';
@@ -37,7 +36,6 @@ class VideoCallCubit extends Cubit<VideoCallState> {
 
     engine.registerEventHandler(RtcEngineEventHandler(
       onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
-        print("local user ${connection.localUid} joined");
         emit(state.copyWith(localUserJoined: true));
       },
       onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) {

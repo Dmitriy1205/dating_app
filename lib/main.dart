@@ -11,6 +11,11 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  // Notifications.scheduleNotification(
+  //     title: 'My Notification Title',
+  //     body: 'This is the notification body',
+  //     scheduledDate: DateTime.now().add(Duration(seconds: 10)),
+  //     notificationId: 0);
   await sl.boot();
   await sl.init();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);

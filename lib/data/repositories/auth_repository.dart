@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
-import 'package:dating_app/core/service_locator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -29,13 +28,10 @@ class AuthRepository {
         await auth.verifyPhoneNumber(
           phoneNumber: phoneNumber,
           verificationCompleted: (_) {},
-          verificationFailed: (FirebaseAuthException e) {
-            print(e.message);
-          },
+          verificationFailed: (FirebaseAuthException e) {},
           codeSent: (verId, _) {
             verificationId = verId;
             nav(verificationId);
-            print('print 1 $verificationId');
           },
           codeAutoRetrievalTimeout: (value) {
             load;
@@ -45,7 +41,6 @@ class AuthRepository {
         throw Exception();
       }
     } on FirebaseAuthException catch (e) {
-      print('print 1 ${e.message.toString()}');
       throw BadRequestException(message: e.message!);
     } catch (e) {
       throw BadRequestException(message: e.toString());
@@ -65,14 +60,11 @@ class AuthRepository {
         await auth.verifyPhoneNumber(
           phoneNumber: phoneNumber,
           verificationCompleted: (_) {},
-          verificationFailed: (FirebaseAuthException e) {
-            print('print  2 auth_repository login failed ${e.message}');
-          },
+          verificationFailed: (FirebaseAuthException e) {},
           codeSent: (verId, _) {
             loaded;
             verificationId = verId;
             nav(verificationId);
-            print('print 1 $verificationId');
           },
           codeAutoRetrievalTimeout: (value) {},
         );

@@ -1,4 +1,5 @@
 import 'package:dating_app/data/models/search_pref_data.dart';
+import 'package:dating_app/ui/widgets/loading_indicator.dart';
 import 'package:dating_app/ui/widgets/reusable_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,7 +10,7 @@ import '../bloc/filter/filter_cubit.dart';
 class FilterForm extends StatelessWidget {
   FilterForm({Key? key}) : super(key: key);
 
-  RangeValues yearsRange = RangeValues(0, 0);
+  RangeValues yearsRange = const RangeValues(0, 0);
 
   int distance = 0;
 
@@ -24,9 +25,7 @@ class FilterForm extends StatelessWidget {
     return BlocBuilder<FilterCubit, FilterState>(
       builder: (context, state) {
         if (state.status!.isLoading) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const LoadingIndicator();
         }
         List<String> lookin = [
           AppLocalizations.of(context)!.aMentee,
@@ -258,7 +257,7 @@ class FilterForm extends StatelessWidget {
                                 Navigator.of(context).popAndPushNamed('home'));
                       },
                       style: ElevatedButton.styleFrom(
-                          primary: Colors.transparent,
+                          backgroundColor: Colors.transparent,
                           padding: EdgeInsets.zero,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(50))),

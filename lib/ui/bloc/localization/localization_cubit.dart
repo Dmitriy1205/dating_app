@@ -22,11 +22,11 @@ class LocalizationCubit extends Cubit<LocalizationState> {
     emit(state.copyWith(locale: Locale(lang)));
   }
 
-  void toEnglish() => emit(state.copyWith(locale: Locale('en')));
+  void toEnglish() => emit(state.copyWith(locale: const Locale('en')));
 
-  void toSpanish() => emit(state.copyWith(locale: Locale('es')));
+  void toSpanish() => emit(state.copyWith(locale: const Locale('es')));
 
-  void toFrench() => emit(state.copyWith(locale: Locale('fr')));
+  void toFrench() => emit(state.copyWith(locale: const Locale('fr')));
 
-  void toPortugal() => emit(state.copyWith(locale: Locale('pt')));
+  void toPortugal() => emit(state.copyWith(locale: const Locale('pt')));
 }

@@ -15,7 +15,7 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
-  MenuItem item = MenuItem();
+  MenuItem item = const MenuItem();
 
   dynamic val;
 
@@ -43,7 +43,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       value: val,
                       hint: Text(
                         AppLocalizations.of(context)!.selectLanguage,
-                        style: TextStyle(color: Colors.black),
+                        style: const TextStyle(color: Colors.black),
                       ),
                       offset: const Offset(0, -18),
                       dropdownDecoration: BoxDecoration(
@@ -60,7 +60,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           val = value;
                         });
 
-                        print(value.text);
                       },
                       items: [
                         ...MenuItems.items.map(
@@ -85,12 +84,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ReflowScreen(),
+                          builder: (context) => const ReflowScreen(),
                         ),
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                        primary: Colors.transparent,
+                        backgroundColor: Colors.transparent,
                         padding: EdgeInsets.zero,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50))),
@@ -123,12 +122,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       Navigator.push<void>(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => LoginScreen(),
+                          builder: (context) => const LoginScreen(),
                         ),
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                        primary: Colors.transparent,
+                        backgroundColor: Colors.transparent,
                         padding: EdgeInsets.zero,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50))),

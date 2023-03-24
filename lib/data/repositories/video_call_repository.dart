@@ -25,7 +25,7 @@ class VideoCallRepository {
           .doc(callModel.id)
           .set(callModel.toMap());
     } on Exception catch (e) {
-      print('======================${e}');
+      throw BadRequestException(message: e.toString());
     }
   }
 
@@ -46,7 +46,7 @@ class VideoCallRepository {
             .update(busyMap);
       });
     } on FirebaseException catch (e) {
-      print(e);
+      throw BadRequestException(message: e.toString());
     }
   }
 
@@ -68,8 +68,7 @@ class VideoCallRepository {
           .snapshots()
           .listen((event) {});
     } on Exception catch (e) {
-      throw BadRequestException;
-    }
+      throw BadRequestException(message: e.toString());    }
   }
 
   StreamSubscription<DocumentSnapshot<Map<String, dynamic>>> listenToCallStatus(

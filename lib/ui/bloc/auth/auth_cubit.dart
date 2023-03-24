@@ -25,17 +25,17 @@ class AuthCubit extends Cubit<AuthState> {
     required void Function(String s) nav,
   }) async {
     emit(state.copyWith(status: Status.loading()));
-    print('print 1 AuthCubit $verificationId');
 
     try {
       await authRepository.signupWithPhone(
         phoneNumber,
         verificationId,
         nav,
-          load:(){emit(state.copyWith(status: Status.loading()));} ,
+        load: () {
+          emit(state.copyWith(status: Status.loading()));
+        },
       );
 
-      print('print 2 $verificationId');
       emit(state.copyWith(
         status: Status.loaded(),
       ));
@@ -49,7 +49,6 @@ class AuthCubit extends Cubit<AuthState> {
     required String verificationId,
     required void Function(String s) nav,
   }) async {
-
     try {
       emit(state.copyWith(status: Status.loading()));
       await authRepository.loginWithPhone(
@@ -61,7 +60,7 @@ class AuthCubit extends Cubit<AuthState> {
         },
       );
       FirebaseAuth.instance.authStateChanges();
-      print('print 3 AuthCubit $verificationId');
+
       emit(state.copyWith(status: Status.loaded()));
     } on BadRequestException catch (e) {
       emit(state.copyWith(status: Status.error(e.toString())));

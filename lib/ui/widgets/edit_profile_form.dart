@@ -91,7 +91,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
         ];
         var search = state.userModel!.searchPref!;
         var profile = state.userModel!.profileInfo!;
-        locationController.text = profile!.location!;
+        locationController.text = profile.location!;
         nameController.text = state.userModel!.firstName!;
         bioController.text = profile.bio!;
         heightController.text = profile.height!;
@@ -121,7 +121,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
         // interests = state.profileInfo!.interests!;
         // lookingFor = state.searchPref!.lookingFor!;
         // image = state.profileInfo!.image ?? '';
-        print('lookingFor 22 $lookingFor');
+
 
         return SingleChildScrollView(
           physics: const ClampingScrollPhysics(),
@@ -543,10 +543,10 @@ class _EditProfileFormState extends State<EditProfileForm> {
                                 nameController.text)
                                 .then((value) => Navigator.pop(context));
 
-                            print('saved');
+
                           },
                           style: ElevatedButton.styleFrom(
-                              primary: Colors.transparent,
+                              backgroundColor: Colors.transparent,
                               padding: EdgeInsets.zero,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(50))),

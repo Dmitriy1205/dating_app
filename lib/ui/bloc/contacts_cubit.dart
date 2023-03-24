@@ -20,7 +20,7 @@ class ContactsCubit extends Cubit<ContactsCubitStates> {
   DataRepository db = sl();
   final AuthRepository authRepository;
 
-  List<UserModel> usersList = [];
+  List<UserModel> addedUsersList = [];
   List<UserModel> foundedNames = [];
   List<UserModel> userNames = [];
 
@@ -32,12 +32,16 @@ class ContactsCubit extends Cubit<ContactsCubitStates> {
   }
 
   Future<void> updateConnections() async {
-    usersList = await db.getContacts();
-    final u = await db.getUserFields(authRepository.currentUser()!.uid);
-    for (int i = 0; i < usersList.length; i++) {
-      List<String> userMatch = await db.isUserMatch(usersList[i].id.toString());
-      if (!userMatch.contains(authRepository.currentUser()!.uid)) {
-        usersList.removeAt(i);
+    addedUsersList = await db.getContacts();
+    final currentUserFields =
+        await db.getUserFields(authRepository.currentUser()!.uid);
+    for (var i = 0; i < addedUsersList.length; i++) {
+      List<String> userMatch =
+          await db.isUserMatch(addedUsersList[i].id.toString());
+      if (!userMatch.contains(authRepository.currentUser()!.uid) ||
+          userMatch.contains(null)) {
+        addedUsersList.removeAt(i);
+        i--;
       }
       // if (usersList[i].id == authRepository.currentUser()!.uid) {
       //   usersList.removeAt(i);
@@ -46,12 +50,12 @@ class ContactsCubit extends Cubit<ContactsCubitStates> {
 
     emit(
       state.copyWith(
-        usersList: usersList,
+        usersList: addedUsersList,
         status: Status.loaded(),
         search: Search.finishSearch,
-        currentUserAvatar: u!.profileInfo?.image,
-        currentUserId: u.id,
-        currentUserName: u.firstName,
+        currentUserAvatar: currentUserFields!.profileInfo?.image,
+        currentUserId: currentUserFields.id,
+        currentUserName: currentUserFields.firstName,
       ),
     );
   }
@@ -59,8 +63,9 @@ class ContactsCubit extends Cubit<ContactsCubitStates> {
   Future<void> searchContact(String name) async {
     emit(state.copyWith(search: Search.searching));
     try {
-      usersList = await db.getContacts();
-      userNames = List.generate(usersList.length, (index) => usersList[index]);
+      addedUsersList = await db.getContacts();
+      userNames = List.generate(
+          addedUsersList.length, (index) => addedUsersList[index]);
 
       if (name.isEmpty) {
         emit(state.copyWith(search: Search.found, foundedUsersList: userNames));

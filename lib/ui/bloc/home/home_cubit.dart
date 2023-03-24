@@ -176,14 +176,11 @@ class HomeCubit extends Cubit<HomeState> {
       final id = auth.currentUser()!.uid;
       final searchUser = await db.getUserFields(id);
       final allUsers = await db.getPals();
-      print('userlist from homeCubit() allUsers---${allUsers.length} users');
-      print(
-          'searchUser from homeCubit() searchUser---${searchUser!.searchPref!.gender} users');
 
       final filtered = allUsers.where((user) {
         return user.id != id &&
             user.searchPref != null &&
-            user.searchPref!.distance! <= searchUser.searchPref!.distance! &&
+            user.searchPref!.distance! <= searchUser!.searchPref!.distance! &&
             int.parse(user.profileInfo!.age!) >=
                 searchUser.searchPref!.yearsRange!.entries
                     .firstWhere((entry) => entry.key == 'start')
@@ -196,7 +193,7 @@ class HomeCubit extends Cubit<HomeState> {
       }).toList();
 
       filtered.removeWhere((user) {
-        final interests = searchUser.searchPref!.interests!.entries
+        final interests = searchUser!.searchPref!.interests!.entries
             .where((entry) => entry.value);
         final hobbies = searchUser.searchPref!.hobbies!.entries
             .where((entry) => entry.value);
@@ -240,6 +237,5 @@ class HomeCubit extends Cubit<HomeState> {
 
   void refuseUser(String id) {
     db.dataProvider.refusedFriends(id);
-    print('refusedFriend id $id');
   }
 }

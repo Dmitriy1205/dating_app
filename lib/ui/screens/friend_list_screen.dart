@@ -28,7 +28,7 @@ class FriendListScreen extends StatelessWidget {
         ),
         title: Text(
           AppLocalizations.of(context)!.friendList,
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
       body: BlocBuilder<FriendsListCubit, FriendsListState>(
@@ -41,7 +41,7 @@ class FriendListScreen extends StatelessWidget {
             );
           }
           final contact = context.read<FriendsListCubit>().state;
-          return  contact.usersList == null ? SizedBox() : ListView.builder(
+          return  contact.usersList == null ? const SizedBox() : ListView.builder(
             itemCount: contact.usersList?.length,
             itemBuilder: (context, index) {
               return Padding(
@@ -66,7 +66,7 @@ class FriendListScreen extends StatelessWidget {
                                 width: 55,
                                 child: ClipRRect(
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(40)),
+                                      const BorderRadius.all(Radius.circular(40)),
                                   child: contact.usersList![index].profileInfo!
                                           .image!.isEmpty
                                       ? Stack(

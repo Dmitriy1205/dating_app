@@ -20,11 +20,11 @@ class Picker {
               primarySwatch: Colors.orange,
               splashColor: Colors.black,
               textTheme: const TextTheme(
-                subtitle1: TextStyle(color: Colors.black),
-                button: TextStyle(color: Colors.black),
+                titleMedium: TextStyle(color: Colors.black),
+                labelLarge: TextStyle(color: Colors.black),
               ),
             ),
-            child: child ?? Text(''),
+            child: child ?? const Text(''),
           );
         });
   }

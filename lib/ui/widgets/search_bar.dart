@@ -57,12 +57,12 @@ class AnimationSearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _duration = duration ?? const Duration(milliseconds: 500);
-    final _searchFieldHeight = searchFieldHeight ?? 40;
-    final _hPadding = horizontalPadding != null ? horizontalPadding! * 2 : 0;
-    final _searchBarWidth =
-        searchBarWidth ?? MediaQuery.of(context).size.width - _hPadding;
-    final _isBackButtonVisible = isBackButtonVisible ?? true;
+    final dDuration = duration ?? const Duration(milliseconds: 500);
+    final sSearchFieldHeight = searchFieldHeight ?? 40;
+    final hPadding = horizontalPadding != null ? horizontalPadding! * 2 : 0;
+    final sSearchBarWidth =
+        searchBarWidth ?? MediaQuery.of(context).size.width - hPadding;
+    final iSBackButtonVisible = isBackButtonVisible ?? true;
     return BlocProvider(
       create: (context) => sl<SearchCubit>(),
       child: BlocBuilder<SearchCubit, SearchState>(
@@ -73,7 +73,7 @@ class AnimationSearchBar extends StatelessWidget {
                 horizontal: horizontalPadding ?? 0,
                 vertical: verticalPadding ?? 0),
             child: SizedBox(
-              width: _searchBarWidth,
+              width: sSearchBarWidth,
               height: searchBarHeight ?? 50,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -81,22 +81,22 @@ class AnimationSearchBar extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   /// back Button
-                  _isBackButtonVisible
+                  iSBackButtonVisible
                       ? AnimatedOpacity(
                           opacity: isSearching ? 0 : 1,
-                          duration: _duration,
+                          duration: dDuration,
                           child: AnimatedContainer(
                               curve: Curves.easeInOutCirc,
                               width: isSearching ? 0 : 165,
                               height: isSearching ? 0 : 25,
-                              duration: _duration,
+                              duration: dDuration,
                               child: leadingWidget),
                         )
                       : AnimatedContainer(
                           curve: Curves.easeInOutCirc,
                           width: isSearching ? 0 : 35,
                           height: isSearching ? 0 : 35,
-                          duration: _duration),
+                          duration: dDuration),
 
                   /// text
                   // AnimatedOpacity(
@@ -123,12 +123,12 @@ class AnimationSearchBar extends StatelessWidget {
                   /// close search
                   AnimatedOpacity(
                     opacity: isSearching ? 1 : 0,
-                    duration: _duration,
+                    duration: dDuration,
                     child: AnimatedContainer(
                       curve: Curves.easeInOutCirc,
                       width: isSearching ? 35 : 0,
                       height: isSearching ? 35 : 0,
-                      duration: _duration,
+                      duration: dDuration,
                       child: FittedBox(
                         child: KCustomButton(
                           widget: Padding(
@@ -148,14 +148,14 @@ class AnimationSearchBar extends StatelessWidget {
                   /// input panel
                   AnimatedOpacity(
                     opacity: isSearching ? 1 : 0,
-                    duration: _duration,
+                    duration: dDuration,
                     child: AnimatedContainer(
                       curve: Curves.easeInOutCirc,
-                      duration: _duration,
+                      duration: dDuration,
                       width: isSearching
-                          ? _searchBarWidth - 55 - (horizontalPadding ?? 0 * 2)
+                          ? sSearchBarWidth - 55 - (horizontalPadding ?? 0 * 2)
                           : 0,
-                      height: isSearching ? _searchFieldHeight : 20,
+                      height: isSearching ? sSearchFieldHeight : 20,
                       margin: EdgeInsets.only(
                           left: isSearching ? 5 : 0,
                           right: isSearching ? 10 : 0),
@@ -175,7 +175,7 @@ class AnimationSearchBar extends StatelessWidget {
                                 color: Colors.black,
                                 fontWeight: FontWeight.w500),
                         decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(left: 10),
+                          contentPadding: const EdgeInsets.only(left: 10),
                           hintText: hintText ?? 'Search contact',
                           hintStyle: hintStyle ??
                               TextStyle(
@@ -198,10 +198,10 @@ class AnimationSearchBar extends StatelessWidget {
                   ///  search button
                   AnimatedOpacity(
                     opacity: isSearching ? 0 : 1,
-                    duration: _duration,
+                    duration: dDuration,
                     child: AnimatedContainer(
                       curve: Curves.easeInOutCirc,
-                      duration: _duration,
+                      duration: dDuration,
                       width: isSearching ? 0 : 35,
                       height: isSearching ? 0 : 35,
                       child: FittedBox(
@@ -252,12 +252,12 @@ class KCustomButton extends StatelessWidget {
             child: InkWell(
                 splashColor: Theme.of(context).primaryColor.withOpacity(.2),
                 highlightColor: Theme.of(context).primaryColor.withOpacity(.05),
+                onTap: onPressed,
+                onLongPress: onLongPress,
                 child: Padding(
                     padding:
                         const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
-                    child: widget),
-                onTap: onPressed,
-                onLongPress: onLongPress)));
+                    child: widget))));
   }
 }
 

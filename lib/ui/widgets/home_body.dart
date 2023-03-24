@@ -10,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../bloc/home/home_cubit.dart';
 import '../screens/person_profile.dart';
+import 'loading_indicator.dart';
 
 class HomeBody1 extends StatefulWidget {
   const HomeBody1({Key? key}) : super(key: key);
@@ -54,29 +55,26 @@ class _HomeBody1State extends State<HomeBody1> {
       },
       builder: (context, state) {
         if (state.status!.isLoading) {
-          return const Center(child: CircularProgressIndicator());
+          return const LoadingIndicator();
         } else if (state.status!.isError) {
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(AppLocalizations.of(context)!.noUsersLeft),
-                Text(
-                    AppLocalizations.of(context)!.tryToChangePreferences),
+                Text(AppLocalizations.of(context)!.tryToChangePreferences),
               ],
             ),
           );
         }
         List<UserModel> users = state.user!;
-        print('users ${users.length}');
         return users.isEmpty
             ? Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(AppLocalizations.of(context)!.noUsersLeft),
-                    Text(AppLocalizations.of(context)!
-                        .tryToChangePreferences),
+                    Text(AppLocalizations.of(context)!.tryToChangePreferences),
                   ],
                 ),
               )
@@ -92,16 +90,11 @@ class _HomeBody1State extends State<HomeBody1> {
                             context
                                 .read<HomeCubit>()
                                 .refuseUser(users[index].id!);
-                            print(
-                                'onDisliked ${users.first.firstName} ${dir} $index');
+
                             break;
                           case Direction.right:
-                            context
-                                .read<HomeCubit>()
-                                .addUser(users[index].id!);
+                            context.read<HomeCubit>().addUser(users[index].id!);
 
-                            print(
-                                'onLiked ${users[index].id!} ${users[index].id} ${dir} $index');
                             break;
                         }
                       },
@@ -118,29 +111,23 @@ class _HomeBody1State extends State<HomeBody1> {
                                 context,
                                 MaterialPageRoute(builder: (context) {
                                   return PersonalProf(
-                                    bio: users[index].profileInfo!.bio ??
-                                        '',
-                                    height: users[index]
-                                            .profileInfo!
-                                            .height ??
-                                        '',
+                                    bio: users[index].profileInfo!.bio ?? '',
+                                    height:
+                                        users[index].profileInfo!.height ?? '',
                                     name: users[index].firstName ?? '',
-                                    interests: users[index]
-                                            .profileInfo!
-                                            .interests ??
-                                        {},
-                                    lookingFor: users[index]
-                                            .searchPref!
-                                            .lookingFor ??
-                                        {},
-                                    joinDate:
-                                        state.user![index].joinDate ?? '',
+                                    interests:
+                                        users[index].profileInfo!.interests ??
+                                            {},
+                                    lookingFor:
+                                        users[index].searchPref!.lookingFor ??
+                                            {},
+                                    joinDate: state.user![index].joinDate ?? '',
                                     id: state.user![index].id!,
-                                    status: state.user![index]
-                                            .profileInfo!.status ??
+                                    status: state
+                                            .user![index].profileInfo!.status ??
                                         '',
-                                    location: state.user![index]
-                                        .profileInfo!.location!,
+                                    location: state
+                                        .user![index].profileInfo!.location!,
                                   );
                                 }),
                               );
@@ -150,116 +137,97 @@ class _HomeBody1State extends State<HomeBody1> {
                               children: [
                                 Container(
                                     decoration: BoxDecoration(
-                                      borderRadius:
-                                          const BorderRadius.only(
-                                              topLeft:
-                                                  Radius.circular(20),
-                                              topRight:
-                                                  Radius.circular(20)),
+                                      borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(20),
+                                          topRight: Radius.circular(20)),
                                       color: Colors.grey.shade100,
-                                      image: users[index]
-                                                      .profileInfo!
-                                                      .image ==
+                                      image: users[index].profileInfo!.image ==
                                                   null ||
-                                              users[index]
-                                                      .profileInfo!
-                                                      .image ==
+                                              users[index].profileInfo!.image ==
                                                   ''
                                           ? const DecorationImage(
-                                              image: AssetImage(
-                                                  Content.empty),
+                                              image: AssetImage(Content.empty),
                                               fit: BoxFit.contain,
                                             )
                                           : DecorationImage(
-                                              image: NetworkImage(
-                                                  users[index]
-                                                      .profileInfo!
-                                                      .image!),
+                                              image: NetworkImage(users[index]
+                                                  .profileInfo!
+                                                  .image!),
                                               fit: BoxFit.cover,
                                             ),
                                     ),
-                                    height: MediaQuery.of(context)
-                                            .size
-                                            .height *
-                                        0.6),
+                                    height: MediaQuery.of(context).size.height *
+                                        0.59),
                                 Positioned(
                                   top:
-                                      MediaQuery.of(context).size.height *
-                                          0.55,
-                                  left:
-                                      MediaQuery.of(context).size.width *
-                                          0.25,
-                                  child: Row(
-                                    children: [
-                                      IconButton(
-                                        iconSize: 70,
-                                        padding: const EdgeInsets.all(0),
-                                        onPressed: () {
-                                          context
-                                              .read<HomeCubit>()
-                                              .refuseUser(
-                                                  users[index].id!);
-                                          _cardController
-                                              .triggerSwipeLeft();
-                                        },
-                                        icon: Card(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(
-                                                    30.0),
-                                          ),
-                                          child: Image.asset(
-                                            'assets/icons/close.png',
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 5,
-                                      ),
-                                      IconButton(
+                                      MediaQuery.of(context).size.height * 0.55,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 30),
+                                    child: Row(
+                                      children: [
+                                        IconButton(
                                           iconSize: 70,
-                                          padding:
-                                              const EdgeInsets.all(0),
+                                          padding: const EdgeInsets.all(0),
                                           onPressed: () {
-                                            _cardController
-                                                .triggerSwipeRight();
-
                                             context
                                                 .read<HomeCubit>()
-                                                .addUser(
-                                                    users[index].id!);
+                                                .refuseUser(users[index].id!);
+                                            _cardController.triggerSwipeLeft();
                                           },
                                           icon: Card(
-                                              shape:
-                                                  RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        30.0),
-                                              ),
-                                              child: Image.asset(
-                                                  'assets/icons/message.png')))
-                                    ],
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(30.0),
+                                            ),
+                                            child: Image.asset(
+                                              'assets/icons/close.png',
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 5,
+                                        ),
+                                        IconButton(
+                                            iconSize: 70,
+                                            padding: const EdgeInsets.all(0),
+                                            onPressed: () {
+                                              _cardController
+                                                  .triggerSwipeRight();
+
+                                              context
+                                                  .read<HomeCubit>()
+                                                  .addUser(users[index].id!);
+                                            },
+                                            icon: Card(
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          30.0),
+                                                ),
+                                                child: Image.asset(
+                                                    'assets/icons/message.png')))
+                                      ],
+                                    ),
                                   ),
                                 ),
                                 Positioned(
                                   top:
-                                      MediaQuery.of(context).size.height *
-                                          0.65,
+                                      MediaQuery.of(context).size.height * 0.65,
                                   child: Column(
                                     children: [
                                       Text(users[index].firstName ?? '',
                                           textAlign: TextAlign.center,
                                           style: const TextStyle(
                                               fontSize: 23,
-                                              fontWeight:
-                                                  FontWeight.bold)),
+                                              fontWeight: FontWeight.bold)),
                                       const SizedBox(
                                         height: 5,
                                       ),
                                       Text(
                                           '${users[index].searchPref!.distance.toString()} ${AppLocalizations.of(context)!.miles}'),
                                       const SizedBox(
-                                        height: 5,
+                                        height: 15,
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.only(
@@ -269,19 +237,14 @@ class _HomeBody1State extends State<HomeBody1> {
                                         child: SizedBox(
                                           width: 280,
                                           child: Text(
-                                            users[index]
-                                                    .profileInfo!
-                                                    .bio ??
-                                                '',
-                                            overflow:
-                                                TextOverflow.ellipsis,
+                                            users[index].profileInfo!.bio ?? '',
+                                            overflow: TextOverflow.ellipsis,
                                             maxLines: 4,
-                                            textWidthBasis: TextWidthBasis
-                                                .longestLine,
+                                            textWidthBasis:
+                                                TextWidthBasis.longestLine,
                                             style: TextStyle(
                                               fontSize: 14.0,
-                                              fontWeight:
-                                                  FontWeight.normal,
+                                              fontWeight: FontWeight.normal,
                                               color: Colors.grey[700],
                                             ),
                                             textAlign: TextAlign.center,

@@ -2,7 +2,6 @@ import 'package:dating_app/data/models/profile_info_data.dart';
 import 'package:dating_app/data/models/search_pref_data.dart';
 import 'package:dating_app/data/models/user_model.dart';
 import 'package:equatable/equatable.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../data/models/status.dart';
 
