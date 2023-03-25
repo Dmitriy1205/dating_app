@@ -28,11 +28,11 @@ dependencies:
   flutter_switch: ^0.3.2
 
   # firebase
-  firebase_core: 2.1.1
-  firebase_auth: 4.1.0
-  firebase_storage: 11.0.3
-  firebase_messaging: ^14.0.4
-  cloud_firestore: ^4.0.4
+  firebase_core: ^2.8.0
+  firebase_auth: ^4.3.0
+  firebase_storage: ^11.0.16
+  firebase_messaging: ^14.3.0
+  cloud_firestore: ^4.4.5
 
   #utils
   flutter_bloc: ^8.1.1
