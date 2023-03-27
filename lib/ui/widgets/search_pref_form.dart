@@ -83,7 +83,21 @@ class SearchPrefForm extends StatelessWidget {
                                       padding: const EdgeInsets.fromLTRB(
                                           0, 10, 10, 0),
                                       onPressed: () {
-                                        Navigator.pop(context);
+                                        context
+                                            .read<SearchPreferencesCubit>()
+                                            .saveData(
+                                            data: SearchPrefFields()
+                                              ..yearsRange = yearsRange
+                                              ..distance = distance
+                                              ..lookingFor = lookingFor
+                                              ..gender = gender
+                                              ..hobbies = hobbies
+                                              ..interests = interests)
+                                            .then((value) => Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                const HomeScreen())));
                                       },
                                       splashRadius: 0.1,
                                       iconSize: 28,

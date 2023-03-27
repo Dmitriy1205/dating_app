@@ -12,9 +12,7 @@ class UserModel {
       this.joinDate,
       this.profileInfo,
       this.searchPref,
-      this.language,
-      this.addedFriends,
-      this.blockedFriends});
+      this.language,});
 
   String? id;
   String? firstName;
@@ -43,8 +41,7 @@ class UserModel {
         language: data?['language'],
         firstName: data?['name'],
         phone: data?['phone'],
-        addedFriends: data?['addedFriends'],
-        blockedFriends: data?['blockedFriends']);
+        );
   }
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -62,8 +59,7 @@ class UserModel {
             ? null
             : SearchPrefFields.fromJson(json['SearchPreferences']),
         language: json['language'],
-        addedFriends: json['addedFriends'],
-        blockedFriends: json['blockedFriends']);
+        );
   }
 
   Map<String, dynamic> toFirestore() => {
@@ -76,8 +72,6 @@ class UserModel {
         'ProfileInfo': profileInfo,
         'SearchPreferences': searchPref,
         'language': language,
-        'addedFriends': addedFriends,
-        'blockedFriends': blockedFriends
       };
 
   Map<String, dynamic> addedFriendToFirestore(String addedFriendId) =>

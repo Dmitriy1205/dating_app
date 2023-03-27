@@ -148,10 +148,31 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                       padding: const EdgeInsets.fromLTRB(
                                           0, 10, 10, 0),
                                       onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => const SearchPrefScreen(),
+                                        context
+                                            .read<ProfileInfoCubit>()
+                                            .saveData(data: {
+                                          'image': userImage,
+                                          'name': nameController.text,
+                                          'bio': bioController.text,
+                                          'gender': gender,
+                                          'height': heightController.text,
+                                          'age': ageController.text,
+                                          'status': status,
+                                          'university':
+                                              universityController.text,
+                                          'degree/major': degreeController.text,
+                                          'company': companyController.text,
+                                          'job': jobController.text,
+                                          'hobbies': hobbies,
+                                          'interests': interests,
+                                          'location': locationController.text,
+                                        }).then(
+                                          (value) => Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const SearchPrefScreen(),
+                                            ),
                                           ),
                                         );
                                       },
@@ -217,7 +238,6 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                             ImagePickerList(
                               userImage: (i) {
                                 userImage = i;
-
                               },
                             ),
                             Column(

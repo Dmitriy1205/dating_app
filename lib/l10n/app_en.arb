@@ -175,6 +175,11 @@
   "locationNotSelected":"location not selected",
   "tryToChangePreferences":"Try to change your Preferences",
   "youMustPickGender":"You must pick a gender",
+  "notSelected":"not selected",
+  "notFilled":"not filled",
+  "unknown":"unknown",
+  "noAvatar":"No Avatar",
+  "editYorProfile":"Edit Your Profile",
   "sharedHobbies":"Shared hobbies"
 
 }

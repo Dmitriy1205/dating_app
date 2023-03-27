@@ -176,6 +176,11 @@
               "locationNotSelected":"emplacement non sélectionné",
               "tryToChangePreferences":"Essayez de modifier vos Préférences",
             "locationPermissionArePermanently":"Les autorisations de localisation sont définitivement refusées, nous ne pouvons pas demander d'autorisations.",
+            "notSelected":"non séléctionné",
+              "notFilled":"non-rempli",
+              "unknown":"inconnu",
+              "noAvatar":"Pas D'avatar",
+                "editYorProfile":"Modifier votre profil",
             "sharedHobbies":"Loisirs partagés"
 
 }

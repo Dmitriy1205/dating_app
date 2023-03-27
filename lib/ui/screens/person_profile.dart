@@ -119,7 +119,6 @@ class _PersonProfileState extends State<PersonProfile> {
               AppLocalizations.of(context)!.aMentor,
             ];
             List<String> inter = [
-
               AppLocalizations.of(context)!.acting,
               AppLocalizations.of(context)!.dance,
               AppLocalizations.of(context)!.fashion,
@@ -250,7 +249,7 @@ class _PersonProfileState extends State<PersonProfile> {
                         height: 5,
                       ),
                       Text(
-                        widget.bio,
+                        widget.bio == '' ? AppLocalizations.of(context)!.unknown : widget.bio,
                         textAlign: TextAlign.start,
                         style:
                             const TextStyle(color: Colors.grey, fontSize: 14),
@@ -283,9 +282,10 @@ class _PersonProfileState extends State<PersonProfile> {
                             style: const TextStyle(fontSize: 14),
                           ),
                           Text(
-                            widget.height,
+                            widget.height == '' ? AppLocalizations.of(context)!.unknown : widget.height,
                             textAlign: TextAlign.start,
-                            style: const TextStyle(color: Colors.grey, fontSize: 14),
+                            style: const TextStyle(
+                                color: Colors.grey, fontSize: 14),
                           ),
                         ],
                       ),
@@ -302,11 +302,12 @@ class _PersonProfileState extends State<PersonProfile> {
                           Text(
                             widget.status == 'Married'
                                 ? AppLocalizations.of(context)!.married
-                                : widget.status == ''
-                                    ? ''
+                                : widget.status == 'status'
+                                    ? AppLocalizations.of(context)!.unknown
                                     : AppLocalizations.of(context)!.single,
                             textAlign: TextAlign.start,
-                            style: const TextStyle(color: Colors.grey, fontSize: 14),
+                            style: const TextStyle(
+                                color: Colors.grey, fontSize: 14),
                           ),
                         ],
                       ),
@@ -323,7 +324,8 @@ class _PersonProfileState extends State<PersonProfile> {
                           Text(
                             widget.joinDate,
                             textAlign: TextAlign.start,
-                            style: const TextStyle(color: Colors.grey, fontSize: 14),
+                            style: const TextStyle(
+                                color: Colors.grey, fontSize: 14),
                           ),
                         ],
                       ),
@@ -347,26 +349,34 @@ class _PersonProfileState extends State<PersonProfile> {
                       const SizedBox(
                         height: 15,
                       ),
-                      Wrap(
-                        children: List<Widget>.generate(
-                          widget.interests.length,
-                          (index) =>
-                              widget.interests.values.elementAt(index) == false
-                                  ? const SizedBox()
-                                  : Padding(
-                                      padding: const EdgeInsets.only(right: 6),
-                                      child: Chip(
-                                        label: Text(
-                                          inter[index],
-                                          style: TextStyle(
-                                            color: Colors.grey.shade800,
-                                            fontSize: 14,
+                      !widget.interests.containsValue(true)
+                          ?  Text(
+                        AppLocalizations.of(context)!.unknown,
+                              style:
+                                  const TextStyle(color: Colors.grey, fontSize: 14),
+                            )
+                          : Wrap(
+                              children: List<Widget>.generate(
+                                widget.interests.length,
+                                (index) =>
+                                    widget.interests.values.elementAt(index) ==
+                                            false
+                                        ? const SizedBox()
+                                        : Padding(
+                                            padding:
+                                                const EdgeInsets.only(right: 6),
+                                            child: Chip(
+                                              label: Text(
+                                                inter[index],
+                                                style: TextStyle(
+                                                  color: Colors.grey.shade800,
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                      ),
-                                    ),
-                        ).toList(),
-                      ),
+                              ).toList(),
+                            ),
                     ],
                   ),
                 ),
@@ -387,26 +397,34 @@ class _PersonProfileState extends State<PersonProfile> {
                       const SizedBox(
                         height: 15,
                       ),
-                      Wrap(
-                        children: List<Widget>.generate(
-                          widget.lookingFor.length,
-                          (index) =>
-                              widget.lookingFor.values.elementAt(index) == false
-                                  ? const SizedBox()
-                                  : Padding(
-                                      padding: const EdgeInsets.only(right: 6),
-                                      child: Chip(
-                                        label: Text(
-                                          lookin[index],
-                                          style: TextStyle(
-                                            color: Colors.grey.shade800,
-                                            fontSize: 14,
+                      !widget.lookingFor.containsValue(true)
+                          ?  Text(
+                        AppLocalizations.of(context)!.unknown,
+                              style:
+                                  const TextStyle(color: Colors.grey, fontSize: 14),
+                            )
+                          : Wrap(
+                              children: List<Widget>.generate(
+                                widget.lookingFor.length,
+                                (index) =>
+                                    widget.lookingFor.values.elementAt(index) ==
+                                            false
+                                        ? const SizedBox()
+                                        : Padding(
+                                            padding:
+                                                const EdgeInsets.only(right: 6),
+                                            child: Chip(
+                                              label: Text(
+                                                lookin[index],
+                                                style: TextStyle(
+                                                  color: Colors.grey.shade800,
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                      ),
-                                    ),
-                        ).toList(),
-                      ),
+                              ).toList(),
+                            ),
                       const SizedBox(
                         height: 35,
                       ),

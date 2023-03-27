@@ -148,7 +148,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
                                             borderRadius:
                                                 BorderRadius.circular(50),
                                             child: state.currentUserAvatar ==
-                                                    null
+                                                    null || state.currentUserAvatar ==''
                                                 ? Image.asset(
                                                     'assets/images/empty.png',
                                                     fit: BoxFit.cover,

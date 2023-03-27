@@ -122,7 +122,6 @@ class _EditProfileFormState extends State<EditProfileForm> {
         // lookingFor = state.searchPref!.lookingFor!;
         // image = state.profileInfo!.image ?? '';
 
-
         return SingleChildScrollView(
           physics: const ClampingScrollPhysics(),
           child: Padding(
@@ -204,9 +203,12 @@ class _EditProfileFormState extends State<EditProfileForm> {
                             child: Center(
                               child: DropdownButtonFormField(
                                 value: gender,
+                                // autovalidateMode:
+                                //     AutovalidateMode.onUserInteraction,
                                 // validator: (v) {
-                                //   if (v == null) {
-                                //     return 'Choose your gender';
+                                //   if (v == 'Gender') {
+                                //     return AppLocalizations.of(context)!
+                                //         .chooseGender;
                                 //   }
                                 //   return null;
                                 // },
@@ -217,14 +219,22 @@ class _EditProfileFormState extends State<EditProfileForm> {
                                 onChanged: (v) {
                                   gender = v.toString();
                                 },
-
                                 decoration: const InputDecoration(
-                                  enabledBorder: InputBorder.none,
-                                  focusedBorder: InputBorder.none,
-                                  fillColor: Colors.white,
-                                ),
-                                // decoration: profileFieldDecor('Gender'),
+                                  errorBorder:InputBorder.none ,
+                                      enabledBorder: InputBorder.none,
+                                      focusedBorder: InputBorder.none,
+                                      fillColor: Colors.white,
+                                    ),
                                 items: [
+                                  DropdownMenuItem(
+                                    enabled: false,
+                                    value: 'Gender',
+                                    child: Text(
+                                      AppLocalizations.of(context)!.gender,
+                                      style: TextStyle(
+                                          color: Colors.grey.shade600),
+                                    ),
+                                  ),
                                   DropdownMenuItem(
                                     value: 'Male',
                                     child: Text(
@@ -239,6 +249,43 @@ class _EditProfileFormState extends State<EditProfileForm> {
                                   ),
                                 ],
                               ),
+                              // DropdownButtonFormField(
+                              //   value: gender,
+                              //   // validator: (v) {
+                              //   //   if (v == null) {
+                              //   //     return 'Choose your gender';
+                              //   //   }
+                              //   //   return null;
+                              //   // },
+                              //   hint:
+                              //       Text(AppLocalizations.of(context)!.gender),
+                              //   icon:
+                              //       const Icon(Icons.keyboard_arrow_down_sharp),
+                              //   onChanged: (v) {
+                              //     gender = v.toString();
+                              //   },
+                              //
+                              //   decoration: const InputDecoration(
+                              //     enabledBorder: InputBorder.none,
+                              //     focusedBorder: InputBorder.none,
+                              //     fillColor: Colors.white,
+                              //   ),
+                              //   // decoration: profileFieldDecor('Gender'),
+                              //   items: [
+                              //     DropdownMenuItem(
+                              //       value: 'Male',
+                              //       child: Text(
+                              //         AppLocalizations.of(context)!.male,
+                              //       ),
+                              //     ),
+                              //     DropdownMenuItem(
+                              //       value: 'Female',
+                              //       child: Text(
+                              //         AppLocalizations.of(context)!.female,
+                              //       ),
+                              //     ),
+                              //   ],
+                              // ),
                             ),
                           ),
                         ),
@@ -355,25 +402,19 @@ class _EditProfileFormState extends State<EditProfileForm> {
                             height: 57,
                             width: 400,
                             decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Colors.grey[300]!),
-                                borderRadius:
-                                BorderRadius.circular(10.0)),
+                                border: Border.all(color: Colors.grey[300]!),
+                                borderRadius: BorderRadius.circular(10.0)),
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 19),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 19),
                               child: Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
-                                mainAxisAlignment:
-                                MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    AppLocalizations.of(context)!
-                                        .selects,
+                                    AppLocalizations.of(context)!.selects,
                                     style: const TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.black54),
+                                        fontSize: 16, color: Colors.black54),
                                   ),
                                 ],
                               ),
@@ -387,23 +428,20 @@ class _EditProfileFormState extends State<EditProfileForm> {
                       Wrap(
                         children: List<Widget>.generate(
                           interests.length,
-                              (index) => interests.values
-                              .elementAt(index) ==
-                              false
+                          (index) => interests.values.elementAt(index) == false
                               ? const SizedBox()
                               : Padding(
-                            padding:
-                            const EdgeInsets.only(right: 6),
-                            child: Chip(
-                              label: Text(
-                                inter[index],
-                                style: TextStyle(
-                                  color: Colors.grey.shade800,
-                                  fontSize: 14,
+                                  padding: const EdgeInsets.only(right: 6),
+                                  child: Chip(
+                                    label: Text(
+                                      inter[index],
+                                      style: TextStyle(
+                                        color: Colors.grey.shade800,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ),
                         ).toList(),
                       ),
                     ],
@@ -440,25 +478,19 @@ class _EditProfileFormState extends State<EditProfileForm> {
                             height: 57,
                             width: 400,
                             decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Colors.grey[300]!),
-                                borderRadius:
-                                BorderRadius.circular(10.0)),
+                                border: Border.all(color: Colors.grey[300]!),
+                                borderRadius: BorderRadius.circular(10.0)),
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 19),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 19),
                               child: Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
-                                mainAxisAlignment:
-                                MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    AppLocalizations.of(context)!
-                                        .selects,
+                                    AppLocalizations.of(context)!.selects,
                                     style: const TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.black54),
+                                        fontSize: 16, color: Colors.black54),
                                   ),
                                 ],
                               ),
@@ -472,23 +504,20 @@ class _EditProfileFormState extends State<EditProfileForm> {
                       Wrap(
                         children: List<Widget>.generate(
                           hobbies.length,
-                              (index) => hobbies.values
-                              .elementAt(index) ==
-                              false
+                          (index) => hobbies.values.elementAt(index) == false
                               ? const SizedBox()
                               : Padding(
-                            padding:
-                            const EdgeInsets.only(right: 6),
-                            child: Chip(
-                              label: Text(
-                                hobb[index],
-                                style: TextStyle(
-                                  color: Colors.grey.shade800,
-                                  fontSize: 14,
+                                  padding: const EdgeInsets.only(right: 6),
+                                  child: Chip(
+                                    label: Text(
+                                      hobb[index],
+                                      style: TextStyle(
+                                        color: Colors.grey.shade800,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ),
                         ).toList(),
                       ),
                     ],
@@ -540,10 +569,8 @@ class _EditProfileFormState extends State<EditProfileForm> {
                                       ..company = companyController.text
                                       ..location = locationController.text,
                                     lookingFor = lookingFor,
-                                nameController.text)
+                                    nameController.text)
                                 .then((value) => Navigator.pop(context));
-
-
                           },
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.transparent,

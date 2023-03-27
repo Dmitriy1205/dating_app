@@ -54,7 +54,7 @@ class Profile extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: state.images!.isEmpty
+                child: state.images!.isEmpty || state.images == null
                     ? GridView(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
@@ -66,9 +66,35 @@ class Profile extends StatelessWidget {
                             padding: const EdgeInsets.all(5.0),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(5),
-                              child: Image.asset(
-                                'assets/images/empty.png',
-                                fit: BoxFit.contain,
+                              child: Stack(
+                                fit: StackFit
+                                    .expand,
+                                children: [
+                                  Image.asset(
+                                    'assets/images/empty.png',
+                                    fit: BoxFit
+                                        .cover,
+                                  ),
+                                   Center(
+                                    child:
+                                    Padding(
+                                      padding:
+                                      const EdgeInsets.all(
+                                          8.0),
+                                      child: Text(
+                                        '${AppLocalizations.of(context)!.noAvatar}\n\n ${AppLocalizations.of(context)!.editYorProfile}',
+                                        textAlign:
+                                        TextAlign
+                                            .center,
+                                        style: const TextStyle(
+                                            fontSize:
+                                            20,
+                                            fontWeight:
+                                            FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
@@ -111,7 +137,8 @@ class Profile extends StatelessWidget {
                         Text(
                           state.user!.firstName ?? '',
                           textAlign: TextAlign.start,
-                          style: const TextStyle(color: Colors.grey, fontSize: 14),
+                          style:
+                              const TextStyle(color: Colors.grey, fontSize: 14),
                         ),
                       ],
                     ),
@@ -146,11 +173,15 @@ class Profile extends StatelessWidget {
                           style: const TextStyle(fontSize: 14),
                         ),
                         Text(
-                          state.user!.profileInfo!.gender == 'Male'
-                              ? AppLocalizations.of(context)!.male
-                              : AppLocalizations.of(context)!.female,
+                          state.user!.profileInfo!.gender == 'Gender' ||
+                                  state.user!.profileInfo!.gender == null
+                              ? AppLocalizations.of(context)!.notSelected
+                              : state.user!.profileInfo!.gender == 'Male'
+                                  ? AppLocalizations.of(context)!.male
+                                  : AppLocalizations.of(context)!.female,
                           textAlign: TextAlign.start,
-                          style: const TextStyle(color: Colors.grey, fontSize: 14),
+                          style:
+                              const TextStyle(color: Colors.grey, fontSize: 14),
                         ),
                       ],
                     ),
@@ -175,7 +206,10 @@ class Profile extends StatelessWidget {
                       height: 5,
                     ),
                     Text(
-                      state.user!.profileInfo!.bio ?? '',
+                      state.user!.profileInfo!.bio == '' ||
+                              state.user!.profileInfo!.bio == null
+                          ? AppLocalizations.of(context)!.notFilled
+                          : state.user!.profileInfo!.bio!,
                       textAlign: TextAlign.start,
                       style: const TextStyle(color: Colors.grey, fontSize: 14),
                     ),
@@ -207,7 +241,10 @@ class Profile extends StatelessWidget {
                           style: const TextStyle(fontSize: 14),
                         ),
                         Text(
-                          state.user!.profileInfo!.height ?? '',
+                          state.user!.profileInfo!.height == '' ||
+                                  state.user!.profileInfo!.height == null
+                              ? AppLocalizations.of(context)!.notFilled
+                              : state.user!.profileInfo!.height!,
                           textAlign: TextAlign.start,
                           style:
                               const TextStyle(color: Colors.grey, fontSize: 14),
@@ -227,8 +264,9 @@ class Profile extends StatelessWidget {
                         Text(
                           state.user!.profileInfo!.status == 'Married'
                               ? AppLocalizations.of(context)!.married
-                              : state.user!.profileInfo!.status == ''
-                                  ? ''
+                              : state.user!.profileInfo!.status == 'status' ||
+                                      state.user!.profileInfo!.status == null
+                                  ? AppLocalizations.of(context)!.notSelected
                                   : AppLocalizations.of(context)!.single,
                           textAlign: TextAlign.start,
                           style:
@@ -266,25 +304,35 @@ class Profile extends StatelessWidget {
                           style: const TextStyle(fontSize: 14),
                         ),
                         Flexible(
-                          child: Wrap(
-                            crossAxisAlignment: WrapCrossAlignment.end,
-                            children: List<Widget>.generate(
-                                state.user!.searchPref!.lookingFor!.length,
-                                (index) {
-                              String text = '${lookin[index]}. ';
+                          child: !state.user!.searchPref!.lookingFor!
+                                      .containsValue(true) ||
+                                  state.user!.searchPref!.lookingFor == null
+                              ? Text(
+                                  AppLocalizations.of(context)!.notSelected,
+                                  style: const TextStyle(
+                                      color: Colors.grey, fontSize: 14),
+                                )
+                              : Wrap(
+                                  crossAxisAlignment: WrapCrossAlignment.end,
+                                  children: List<Widget>.generate(
+                                      state.user!.searchPref!.lookingFor!
+                                          .length, (index) {
+                                    String text = '${lookin[index]}. ';
 
-                              return state.user!.searchPref!.lookingFor!.values
-                                          .elementAt(index) ==
-                                      false
-                                  ? const SizedBox()
-                                  : Text(
-                                      text,
-                                      textAlign: TextAlign.start,
-                                      style: const TextStyle(
-                                          color: Colors.grey, fontSize: 14),
-                                    );
-                            }).toList(),
-                          ),
+                                    return state.user!.searchPref!.lookingFor!
+                                                .values
+                                                .elementAt(index) ==
+                                            false
+                                        ? const SizedBox()
+                                        : Text(
+                                            text,
+                                            textAlign: TextAlign.start,
+                                            style: const TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: 14),
+                                          );
+                                  }).toList(),
+                                ),
                         ),
                       ],
                     ),
@@ -321,7 +369,8 @@ class Profile extends StatelessWidget {
                                   .locationNotSelected
                               : state.user!.profileInfo!.location!,
                           textAlign: TextAlign.start,
-                          style: const TextStyle(color: Colors.grey, fontSize: 14),
+                          style:
+                              const TextStyle(color: Colors.grey, fontSize: 14),
                         ),
                       ],
                     ),
@@ -345,27 +394,35 @@ class Profile extends StatelessWidget {
                     const SizedBox(
                       height: 5,
                     ),
-                    Wrap(
-                      children: List<Widget>.generate(
-                        state.user!.profileInfo!.interests!.length,
-                        (index) => state.user!.profileInfo!.interests!.values
-                                    .elementAt(index) ==
-                                false
-                            ? const SizedBox()
-                            : Padding(
-                                padding: const EdgeInsets.only(right: 6),
-                                child: Chip(
-                                  label: Text(
-                                    inter[index],
-                                    style: TextStyle(
-                                      color: Colors.grey.shade800,
-                                      fontSize: 14,
+                    !state.user!.profileInfo!.interests!.containsValue(true) ||
+                            state.user!.profileInfo!.interests == null
+                        ? Text(
+                            AppLocalizations.of(context)!.notSelected,
+                            style: const TextStyle(
+                                color: Colors.grey, fontSize: 14),
+                          )
+                        : Wrap(
+                            children: List<Widget>.generate(
+                              state.user!.profileInfo!.interests!.length,
+                              (index) => state
+                                          .user!.profileInfo!.interests!.values
+                                          .elementAt(index) ==
+                                      false
+                                  ? const SizedBox()
+                                  : Padding(
+                                      padding: const EdgeInsets.only(right: 6),
+                                      child: Chip(
+                                        label: Text(
+                                          inter[index],
+                                          style: TextStyle(
+                                            color: Colors.grey.shade800,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              ),
-                      ).toList(),
-                    ),
+                            ).toList(),
+                          ),
                   ],
                 ),
               ),
@@ -386,26 +443,34 @@ class Profile extends StatelessWidget {
                     const SizedBox(
                       height: 5,
                     ),
-                    Wrap(
-                      children: List<Widget>.generate(
-                        state.user!.profileInfo!.hobbies!.length,
-                        (index) => state.user!.profileInfo!.hobbies!.values
-                                    .elementAt(index) ==
-                                false
-                            ? const SizedBox()
-                            : Padding(
-                                padding: const EdgeInsets.only(right: 6),
-                                child: Chip(
-                                  label: Text(
-                                    hobb[index],
-                                    style: TextStyle(
-                                        color: Colors.grey.shade800,
-                                        fontSize: 14),
-                                  ),
-                                ),
-                              ),
-                      ).toList(),
-                    ),
+                    !state.user!.profileInfo!.hobbies!.containsValue(true) ||
+                            state.user!.profileInfo!.hobbies == null
+                        ? Text(
+                            AppLocalizations.of(context)!.notSelected,
+                            style: const TextStyle(
+                                color: Colors.grey, fontSize: 14),
+                          )
+                        : Wrap(
+                            children: List<Widget>.generate(
+                              state.user!.profileInfo!.hobbies!.length,
+                              (index) => state
+                                          .user!.profileInfo!.hobbies!.values
+                                          .elementAt(index) ==
+                                      false
+                                  ? const SizedBox()
+                                  : Padding(
+                                      padding: const EdgeInsets.only(right: 6),
+                                      child: Chip(
+                                        label: Text(
+                                          hobb[index],
+                                          style: TextStyle(
+                                              color: Colors.grey.shade800,
+                                              fontSize: 14),
+                                        ),
+                                      ),
+                                    ),
+                            ).toList(),
+                          ),
                   ],
                 ),
               ),

@@ -215,6 +215,15 @@ class FilterForm extends StatelessWidget {
                             // decoration: profileFieldDecor('Gender'),
                             items: [
                               DropdownMenuItem(
+                                enabled: false,
+                                value: 'Gender',
+                                child: Text(
+                                  AppLocalizations.of(context)!.gender,
+                                  style: TextStyle(
+                                      color: Colors.grey.shade600),
+                                ),
+                              ),
+                              DropdownMenuItem(
                                 value: "Male",
                                 child: Text(
                                   AppLocalizations.of(context)!.male,

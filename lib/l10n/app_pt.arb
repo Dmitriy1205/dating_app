@@ -178,6 +178,11 @@
                 "locationNotSelected":"local não selecionado",
                 "tryToChangePreferences":"Tente mudar suas Preferências",
               "locationPermissionArePermanently":"As permissões de localização são permanentemente negadas, não podemos solicitar permissões.",
+              "notSelected":"não selecionado",
+                "notFilled":"não preenchido",
+                "unknown":"desconhecido",
+                "noAvatar":"Sem Avatar",
+                  "editYorProfile":"Edite seu perfil",
               "sharedHobbies":"Passatempos compartilhados"
 
 }
