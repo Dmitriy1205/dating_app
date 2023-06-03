@@ -6,7 +6,7 @@ class Picker {
         context: context,
         initialDate: DateTime(2003),
         firstDate: DateTime(1900),
-        lastDate: DateTime(2004),
+        lastDate: DateTime(2012),
         builder: (BuildContext context, Widget? child) {
           return Theme(
             data: ThemeData(

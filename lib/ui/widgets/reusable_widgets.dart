@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:dating_app/ui/screens/hobbies_screen.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +17,6 @@ import 'field_decor.dart';
 
 class ReUsableWidgets {
   final _formKey = GlobalKey<FormState>();
-  File? _image;
 
   bool isChecked = false;
   final nameController = TextEditingController();
@@ -512,7 +510,7 @@ class ReUsableWidgets {
   }
 
   void showPicker(BuildContext context,
-      {required void Function(File? f) func}) {
+      {required void Function(Uint8List? f) func}) {
     showModalBottomSheet(
         backgroundColor: Colors.transparent,
         context: context,
@@ -554,7 +552,7 @@ class ReUsableWidgets {
                               ),
                             ),
                             onTap: () {
-                              imageFromCamera(getPhoto: (File? f) {
+                              imageFromCamera(getPhoto: (Uint8List? f) {
                                 func(f);
                               });
                               Navigator.of(context).pop();
@@ -572,7 +570,7 @@ class ReUsableWidgets {
                               ),
                             ),
                             onTap: () {
-                              imageFromGallery(getImage: (File? f) {
+                              imageFromGallery(getImage: (Uint8List? f) {
                                 func(f);
                               });
                               Navigator.of(context).pop();
@@ -621,23 +619,23 @@ class ReUsableWidgets {
         });
   }
 
-  Future imageFromGallery({required Function(File?) getImage}) async {
+  Future imageFromGallery({required Function(Uint8List?) getImage}) async {
     final ImagePicker picker = ImagePicker();
-    final pickedFile = await picker.pickImage(
+    final XFile? pickedFile = await picker.pickImage(
       source: ImageSource.gallery,
       maxWidth: 480,
       maxHeight: 640,
       imageQuality: 100,
     );
     if (pickedFile != null) {
-      _image = File(pickedFile.path);
-      getImage(_image!);
+      final Uint8List imageData = await pickedFile.readAsBytes();
+      getImage(imageData);
     } else {
       // print('No image selected.');
     }
   }
 
-  Future imageFromCamera({required Function(File?) getPhoto}) async {
+  Future imageFromCamera({required Function(Uint8List?) getPhoto}) async {
     final ImagePicker picker = ImagePicker();
     final pickedFile = await picker.pickImage(
       source: ImageSource.camera,
@@ -646,8 +644,8 @@ class ReUsableWidgets {
       imageQuality: 100,
     );
     if (pickedFile != null) {
-      _image = File(pickedFile.path);
-      getPhoto(_image!);
+      final Uint8List imageData = await pickedFile.readAsBytes();
+      getPhoto(imageData);
     } else {
       // print('No image selected.');
     }

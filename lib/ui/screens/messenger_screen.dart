@@ -2,6 +2,7 @@ import 'package:dating_app/core/constants.dart';
 import 'package:dating_app/data/models/call_model.dart';
 import 'package:dating_app/data/models/user_model.dart';
 import 'package:dating_app/ui/bloc/messenger_cubit.dart';
+import 'package:dating_app/ui/bloc/notification/notification_cubit.dart';
 import 'package:dating_app/ui/bloc/register_call/register_call_cubit.dart';
 import 'package:dating_app/ui/screens/video_call_screen.dart';
 import 'package:dating_app/ui/widgets/messenger_widget.dart';
@@ -35,6 +36,7 @@ class _MessengerScreenState extends State<MessengerScreen> {
 
   @override
   void initState() {
+    context.read<NotificationCubit>().cancel();
     context.read<MessengerCubit>().getUsersBlock(
           currentUserId: widget.currentUserid!,
           blockerUserId: widget.user.id!,
@@ -97,13 +99,16 @@ class _MessengerScreenState extends State<MessengerScreen> {
                       padding: const EdgeInsets.all(5.0),
                       child: GestureDetector(
                         onTap: () {
+                          context.read<NotificationCubit>().sendCallNotification(userId: widget.user.id!, callerName: widget.currentUserName!);
                           context.read<RegisterCallCubit>().makeCall(
                                   callModel: CallModel(
                                 id: callModelId,
                                 callerId: CacheHelper.getString(key: 'uId'),
+                                callerAvatar: widget.userPicture,
                                 callerName: widget.currentUserName,
                                 receiverId: widget.user.id,
                                 receiverName: widget.user.firstName,
+                                receiverAvatar: widget.user.profileInfo!.image,
                                 status: CallStatus.ringing.name,
                                 current: true,
                               ));
@@ -241,8 +246,12 @@ class _MessengerScreenState extends State<MessengerScreen> {
               ),
             ],
           ),
-          body: MessengerWidget(context,
-              user: widget.user, userPicture: widget.userPicture)),
+          body: MessengerWidget(
+            context,
+            user: widget.user,
+            userPicture: widget.userPicture,
+            recieverId: widget.user.id!,
+          )),
     );
   }
 

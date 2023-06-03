@@ -15,7 +15,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
-import '../../core/functions/validation.dart';
+import '../bloc/sign_in/sign_in_cubit.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({Key? key}) : super(key: key);
@@ -25,6 +25,7 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
+
   final _formKey = GlobalKey<FormState>();
   final _phoneController = TextEditingController();
   ReUsableWidgets reUsableWidgets = ReUsableWidgets();
@@ -39,225 +40,239 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AuthCubit, AuthState>(
-      listener: (context, state) {
-        if (state.status!.isError) {
-          final snackBar = SnackBar(
-            backgroundColor: Colors.redAccent,
-            content: Text(
-              AppLocalizations.of(context)!.noMatchUser,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Colors.white,
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<AuthCubit,AuthState>(listener: (context,state){
+          if (state is Authorized) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const HomeScreen(),
               ),
-            ),
-          );
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        }
-      },
-      builder: (context, state) {
-        if (state.status!.isLoading) {
-          return const Material(
-            child: Center(
-              child: CircularProgressIndicator(
-                color: Colors.orange,
-              ),
-            ),
-          );
-        }
-        return Scaffold(
-          resizeToAvoidBottomInset: false,
-          appBar: AppBar(
-            elevation: 0,
-            backgroundColor: Colors.white,
-            leading: IconButton(
-              padding: const EdgeInsets.fromLTRB(23, 8, 8, 8),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              splashRadius: 0.1,
-              iconSize: 28,
-              alignment: Alignment.topLeft,
-              icon: const Icon(
-                Icons.close,
-                color: Colors.black,
-              ),
-            ),
-          ),
-          body: Stack(
-            fit: StackFit.expand,
-            alignment: Alignment.center,
-            children: [
-              Image.asset(
-                Content.login,
-                fit: BoxFit.fill,
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 18,
-                      ),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              AppLocalizations.of(context)!.login,
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontSize: 27,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Text(
-                              AppLocalizations.of(context)!.welcomeBack,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.grey[600],
-                                fontSize: 18,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 50,
-                            ),
-                            IntlPhoneField(
-                              invalidNumberMessage:
-                                  AppLocalizations.of(context)!.invalidPhone,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp(r'^\d+\.?\d{0,1}')),
-                              ],
-                              textAlign: TextAlign.center,
-                              controller: _phoneController,
-                              decoration: authFieldDecor(
-                                  AppLocalizations.of(context)!.phoneNumber),
-                              onSaved: (value) {
-                                isoCode = value!.countryCode;
-                                _phoneController.text = value.number;
+            );
+          }
+        }),
+      ],
+      child: BlocConsumer<SignInCubit, SignInState>(
 
-                              },
-                              validator: validatePhoneField,
-                            ),
-                            const SizedBox(
-                              height: 35,
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                if (!_formKey.currentState!.validate()) return;
-                                _formKey.currentState!.save();
-                                context.read<AuthCubit>().login(
-                                    phoneNumber:
-                                        isoCode + _phoneController.text,
-                                    verificationId: verificationId,
-                                    nav: (verId) {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  OtpVerificationScreen(
-                                                    verId: verId,
-                                                    page: const HomeScreen(),
-                                                    pageId: 2,
-                                                  )));
-                                    });
-                              },
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.transparent,
-                                  padding: EdgeInsets.zero,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(50))),
-                              child: Ink(
-                                decoration: BoxDecoration(
-                                    gradient: const LinearGradient(
-                                      begin: Alignment.topCenter,
-                                      end: Alignment(0.1, 2.1),
-                                      colors: [
-                                        Colors.orange,
-                                        Colors.purple,
-                                      ],
+        listener: (context, state) {
+          if (state.status!.isError) {
+            final snackBar = SnackBar(
+              backgroundColor: Colors.redAccent,
+              content: Text(
+                AppLocalizations.of(context)!.noMatchUser,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }
+        },
+        builder: (context, state) {
+          if (state.status!.isLoading) {
+            return const Material(
+              child: Center(
+                child: CircularProgressIndicator(
+                  color: Colors.orange,
+                ),
+              ),
+            );
+          }
+          return Scaffold(
+            resizeToAvoidBottomInset: false,
+            appBar: AppBar(
+              elevation: 0,
+              backgroundColor: Colors.white,
+              leading: IconButton(
+                padding: const EdgeInsets.fromLTRB(23, 8, 8, 8),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                splashRadius: 0.1,
+                iconSize: 28,
+                alignment: Alignment.topLeft,
+                icon: const Icon(
+                  Icons.close,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            body: Stack(
+              fit: StackFit.expand,
+              alignment: Alignment.center,
+              children: [
+                Image.asset(
+                  Content.login,
+                  fit: BoxFit.fill,
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 18,
+                        ),
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                AppLocalizations.of(context)!.login,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontSize: 27,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Text(
+                                AppLocalizations.of(context)!.welcomeBack,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 18,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 50,
+                              ),
+                              IntlPhoneField(
+                                invalidNumberMessage:
+                                    AppLocalizations.of(context)!.invalidPhone,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'^\d+\.?\d{0,1}')),
+                                ],
+                                textAlign: TextAlign.center,
+                                controller: _phoneController,
+                                decoration: authFieldDecor(
+                                    AppLocalizations.of(context)!.phoneNumber),
+                                onSaved: (value) {
+                                  isoCode = value!.countryCode;
+                                  _phoneController.text = value.number;
+                                },
+                                // validator: validatePhoneField,
+                              ),
+                              const SizedBox(
+                                height: 35,
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  if (!_formKey.currentState!.validate()) return;
+                                  _formKey.currentState!.save();
+                                  context.read<SignInCubit>().login(
+                                      phoneNumber:
+                                          isoCode + _phoneController.text,
+                                      verificationId: verificationId,
+                                      nav: (verId) {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    OtpVerificationScreen(
+                                                      verId: verId,
+                                                      page: const HomeScreen(),
+                                                      pageId: 2,
+                                                    )));
+                                      });
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.transparent,
+                                    padding: EdgeInsets.zero,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(50))),
+                                child: Ink(
+                                  decoration: BoxDecoration(
+                                      gradient: const LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment(0.1, 2.1),
+                                        colors: [
+                                          Colors.orange,
+                                          Colors.purple,
+                                        ],
+                                      ),
+                                      borderRadius: BorderRadius.circular(50)),
+                                  child: Container(
+                                    // width: 340,
+                                    height: 55,
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      AppLocalizations.of(context)!.signInButton,
                                     ),
-                                    borderRadius: BorderRadius.circular(50)),
-                                child: Container(
-                                  width: 340,
-                                  height: 55,
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    AppLocalizations.of(context)!.signInButton,
                                   ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(
-                              height: 35,
-                            ),
-                            Center(
-                              child: RichText(
-                                text: TextSpan(
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                  ),
-                                  children: [
-                                    TextSpan(
-                                      text:
-                                          '${AppLocalizations.of(context)!.dontHaveaAcount} ',
+                              const SizedBox(
+                                height: 35,
+                              ),
+                              Center(
+                                child: RichText(
+                                  text: TextSpan(
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
                                     ),
-                                    TextSpan(
-                                        text: AppLocalizations.of(context)!
-                                            .signUp,
-                                        style: TextStyle(
-                                          color: Colors.orange[800],
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                        recognizer: TapGestureRecognizer()
-                                          ..onTap = () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (contect) =>
-                                                        const SignUpScreen()));
-                                          }),
-                                  ],
+                                    children: [
+                                      TextSpan(
+                                        text:
+                                            '${AppLocalizations.of(context)!.dontHaveaAcount} ',
+                                      ),
+                                      TextSpan(
+                                          text: AppLocalizations.of(context)!
+                                              .signUp.toUpperCase(),
+                                          style: TextStyle(
+                                            color: Colors.orange[800],
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                          recognizer: TapGestureRecognizer()
+                                            ..onTap = () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (contect) =>
+                                                          const SignUpScreen()));
+                                            }),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 55),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: const [
-                    AppleAuthButton(),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    FacebookAuthButton(),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    GoogleAuthButton(),
-                  ],
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 55),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: const [
+                      AppleAuthButton(),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      FacebookAuthButton(),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      GoogleAuthButton(),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-        );
-      },
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

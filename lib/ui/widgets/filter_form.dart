@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../bloc/filter/filter_cubit.dart';
+import '../bloc/home/home_cubit.dart';
 
 class FilterForm extends StatelessWidget {
   FilterForm({Key? key}) : super(key: key);
@@ -186,7 +187,7 @@ class FilterForm extends StatelessWidget {
                   child: Ink(
                     child: Container(
                       height: 57,
-                      width: 350,
+
                       decoration: BoxDecoration(
                           color: Colors.white,
                           border: Border.all(color: Colors.grey[300]!),
@@ -262,8 +263,10 @@ class FilterForm extends StatelessWidget {
                                 ..gender = gender
                                 ,
                             )
-                            .then((value) =>
-                                Navigator.of(context).popAndPushNamed('home'));
+                            .then((value) {
+                          Navigator.pop(context);
+                          context.read<HomeCubit>().init();
+                            });
                       },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.transparent,
@@ -282,7 +285,7 @@ class FilterForm extends StatelessWidget {
                             ),
                             borderRadius: BorderRadius.circular(50)),
                         child: Container(
-                          width: 340,
+
                           height: 55,
                           alignment: Alignment.center,
                           child: Text(

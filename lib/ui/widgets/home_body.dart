@@ -1,5 +1,5 @@
 import 'package:dating_app/core/constants.dart';
-import 'package:dating_app/core/service_locator.dart';
+import 'package:dating_app/core/services/service_locator.dart';
 import 'package:dating_app/data/models/user_model.dart';
 import 'package:dating_app/ui/bloc/messenger_cubit.dart';
 import 'package:dating_app/ui/screens/messenger_screen.dart';

@@ -16,11 +16,9 @@ class AuthRepository {
 
   AuthRepository({required this.db, required this.auth});
 
-  Stream<User?> get authState => auth.authStateChanges();
-
   Future<void> signupWithPhone(
       String phoneNumber, String verificationId, void Function(String s) nav,
-      {required Function() load}) async {
+      {required Function() loaded}) async {
     try {
       List<UserModel> allUsers = await db.getAllUserFields();
       final userPhone = allUsers.map((e) => e.phone);
@@ -30,12 +28,11 @@ class AuthRepository {
           verificationCompleted: (_) {},
           verificationFailed: (FirebaseAuthException e) {},
           codeSent: (verId, _) {
+            loaded;
             verificationId = verId;
             nav(verificationId);
           },
-          codeAutoRetrievalTimeout: (value) {
-            load;
-          },
+          codeAutoRetrievalTimeout: (value) {},
         );
       } else {
         throw Exception();
@@ -81,29 +78,33 @@ class AuthRepository {
     }
   }
 
-  Future<void> verificationAfterSignUp(
-    String verId,
-    String code,
-    String name,
-    String phone,
-    String date,
-    String joinDate,
-    String email,
-    String language,
-  ) async {
+  Future<void> verificationAfterSignUp({
+    required String verId,
+    required String code,
+    required String name,
+    required String phone,
+    required String date,
+    required String email,
+    required String joinDate,
+    required String language,
+  }) async {
     try {
+      UserCredential userCredential = await auth.createUserWithEmailAndPassword(
+          email: email, password: 'password');
+
       PhoneAuthCredential credential =
           PhoneAuthProvider.credential(verificationId: verId, smsCode: code);
+      await userCredential.user!.linkWithCredential(credential);
       var signIn = await auth.signInWithCredential(credential);
       signIn;
       await db.createUser(
-        signIn.user!,
-        name,
-        phone,
-        date,
-        email,
-        joinDate,
-        language,
+        user: signIn.user!,
+        name: name,
+        phone: phone,
+        date: date,
+        joinDate: joinDate,
+        email: email,
+        language: language,
       );
     } on FirebaseAuthException catch (e) {
       throw BadRequestException(message: e.message!);
@@ -143,8 +144,16 @@ class AuthRepository {
         idToken: appleCredential.identityToken,
         rawNonce: rawNonce,
       );
-
-      await auth.signInWithCredential(oauthCredential);
+      List<String> signInMethods =
+          await auth.fetchSignInMethodsForEmail(appleCredential.email!);
+      if (signInMethods.isNotEmpty) {
+        UserCredential userCredential = await auth.signInWithEmailAndPassword(
+            email: appleCredential.email!, password: 'password');
+        await userCredential.user?.linkWithCredential(oauthCredential);
+        await auth.signInWithCredential(oauthCredential);
+      } else {
+        throw BadRequestException(message: '-');
+      }
     } on FirebaseAuthException catch (e) {
       throw BadRequestException(message: e.message!);
     } catch (e) {
@@ -162,7 +171,20 @@ class AuthRepository {
     try {
       final OAuthCredential facebookAuthCredential =
           FacebookAuthProvider.credential(loginResult.accessToken!.token);
-      await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+      final userData = await FacebookAuth.instance.getUserData(
+        fields: 'email',
+      );
+      List<String> signInMethods =
+          await auth.fetchSignInMethodsForEmail(userData['email']);
+      if (signInMethods.isNotEmpty) {
+        UserCredential userCredential = await auth.signInWithEmailAndPassword(
+            email: userData['email'], password: 'password');
+        await userCredential.user?.linkWithCredential(facebookAuthCredential);
+        await FirebaseAuth.instance
+            .signInWithCredential(facebookAuthCredential);
+      } else {
+        throw BadRequestException(message: '-');
+      }
     } on FirebaseAuthException catch (e) {
       throw BadRequestException(message: e.message!);
     } catch (e) {
@@ -174,16 +196,28 @@ class AuthRepository {
     try {
       await GoogleSignIn().signOut();
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      if (googleUser == null) {
+        return;
+      }
 
-      final GoogleSignInAuthentication? googleAuth =
-          await googleUser?.authentication;
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
 
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth?.accessToken,
-        idToken: googleAuth?.idToken,
+      final googleCredential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
       );
 
-      await FirebaseAuth.instance.signInWithCredential(credential);
+      List<String> signInMethods =
+          await auth.fetchSignInMethodsForEmail(googleUser.email);
+      if (signInMethods.isNotEmpty) {
+        UserCredential userCredential = await auth.signInWithEmailAndPassword(
+            email: googleUser.email, password: 'password');
+        await userCredential.user?.linkWithCredential(googleCredential);
+        await auth.signInWithCredential(googleCredential);
+      } else {
+        throw BadRequestException(message: '-');
+      }
     } on FirebaseAuthException catch (e) {
       throw BadRequestException(message: e.message!);
     } on Exception catch (e) {
@@ -193,10 +227,6 @@ class AuthRepository {
 
   User? currentUser() {
     return auth.currentUser;
-  }
-
-  Stream<User?> getUserStatus() {
-    return auth.userChanges();
   }
 
   Future<void> logout() async {

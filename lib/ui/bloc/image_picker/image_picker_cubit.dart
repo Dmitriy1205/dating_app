@@ -1,4 +1,5 @@
-import 'dart:io';
+import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -20,18 +21,19 @@ class ImagePickerCubit extends Cubit<ImagePickerState> {
 
   void switcher(int pick) => emit(state.copyWith(pick: pick));
 
-  Future<void> uploadImage(File source, String name) async {
+  Future<void> uploadImage(Uint8List source) async {
     emit(state.copyWith(status: Status.loading()));
     try {
+
       var id = auth.currentUser()!.uid;
-      await storage.upload(source, 'users/$id/image$name.png');
+      await storage.upload(source, 'users/$id/image${idGenerator()}.png');
       emit(state.copyWith(status: Status.loaded()));
     } catch (e) {
       emit(state.copyWith(status: Status.error(e.toString())));
     }
   }
 
-  Future<String?> uploadMessageImage(File source, String chatId) async {
+  Future<String?> uploadMessageImage(Uint8List source, String chatId) async {
     emit(state.copyWith(status: Status.loading()));
     try {
       String imageUrl =
@@ -53,5 +55,19 @@ class ImagePickerCubit extends Cubit<ImagePickerState> {
     } catch (e) {
       emit(state.copyWith(status: Status.error(e.toString())));
     }
+  }
+  String idGenerator() {
+    final Random random = Random.secure();
+
+    const String chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    const int charsLength = chars.length;
+
+    String id = '';
+
+    for (int i = 0; i < 8; i++) {
+      id += chars[random.nextInt(charsLength)];
+    }
+
+    return id;
   }
 }

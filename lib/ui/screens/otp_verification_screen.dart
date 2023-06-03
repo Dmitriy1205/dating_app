@@ -1,9 +1,12 @@
+import 'package:dating_app/ui/bloc/auth/auth_cubit.dart';
 import 'package:dating_app/ui/bloc/otp_verification/otp_cubit.dart';
+import 'package:dating_app/ui/bloc/sign_up/sign_up_cubit.dart';
 import 'package:dating_app/ui/widgets/otp_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../core/service_locator.dart';
+import '../../core/services/service_locator.dart';
+import '../bloc/sign_in/sign_in_cubit.dart';
 
 class OtpVerificationScreen extends StatelessWidget {
   final String? verId;
@@ -40,6 +43,8 @@ class OtpVerificationScreen extends StatelessWidget {
           leading: IconButton(
             padding: const EdgeInsets.fromLTRB(23, 8, 8, 8),
             onPressed: () {
+              context.read<SignUpCubit>().reset();
+              context.read<SignInCubit>().reset();
               Navigator.pop(context);
             },
             splashRadius: 0.1,

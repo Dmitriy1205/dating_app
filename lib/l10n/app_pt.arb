@@ -183,6 +183,7 @@
                 "unknown":"desconhecido",
                 "noAvatar":"Sem Avatar",
                   "editYorProfile":"Edite seu perfil",
+                  "loginError":"Nenhum usuário cadastrado com este e-mail",
               "sharedHobbies":"Passatempos compartilhados"
 
 }

@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:typed_data';
 import 'package:dating_app/data/models/message_model.dart';
 import 'package:dating_app/ui/widgets/my_message.dart';
 import 'package:dating_app/ui/widgets/receive_message.dart';
@@ -11,12 +11,18 @@ import '../bloc/image_picker/image_picker_cubit.dart';
 import '../bloc/messenger_cubit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../bloc/notification/notification_cubit.dart';
+
 class MessengerWidget extends StatefulWidget {
   const MessengerWidget(BuildContext context,
-      {super.key, required this.user, required this.userPicture});
+      {super.key,
+      required this.user,
+      required this.userPicture,
+      required this.recieverId});
 
   final UserModel user;
   final String userPicture;
+  final String recieverId;
 
   @override
   State<MessengerWidget> createState() => _MessengerWidgetState();
@@ -40,10 +46,10 @@ class _MessengerWidgetState extends State<MessengerWidget> {
         if (state.status!.isLoaded) {
           return state.userBlocked == true
               ? Align(
-            alignment: Alignment.topCenter,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 150),
-                  child: SizedBox(
+                  alignment: Alignment.topCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 150),
+                    child: SizedBox(
                       child: Container(
                         decoration: BoxDecoration(
                             border: Border.all(color: Colors.orange, width: 3),
@@ -79,8 +85,8 @@ class _MessengerWidgetState extends State<MessengerWidget> {
                         ),
                       ),
                     ),
-                ),
-              )
+                  ),
+                )
               : Column(
                   children: [
                     Expanded(
@@ -204,7 +210,7 @@ class _MessengerWidgetState extends State<MessengerWidget> {
                       onTap: () {
                         ReUsableWidgets().showPicker(
                           context,
-                          func: (File? f) async {
+                          func: (Uint8List? f) async {
                             String? messageUrl = await context
                                 .read<ImagePickerCubit>()
                                 .uploadMessageImage(f!,
@@ -212,10 +218,12 @@ class _MessengerWidgetState extends State<MessengerWidget> {
                             MessageModel message = MessageModel(
                                 message: messageUrl,
                                 recipientName: widget.user.firstName);
-                            // time: DateTime.now().toLocal().toString());
-                            context
-                                .read<MessengerCubit>()
-                                .sendMessage(message, widget.user, true);
+                            if(context.mounted){
+                              context
+                                  .read<MessengerCubit>()
+                                  .sendMessage(message, widget.user, true);
+                            }
+
                           },
                         );
                       },
@@ -238,6 +246,13 @@ class _MessengerWidgetState extends State<MessengerWidget> {
                             time: DateTime.now().toString(),
                             recipientName: widget.user.firstName,
                           );
+                          context
+                              .read<NotificationCubit>()
+                              .sendMessageNotification(
+                                userId: widget.recieverId,
+                                senderName: widget.user.firstName!,
+                                message: myMessageController.text,
+                              );
                           context
                               .read<MessengerCubit>()
                               .sendMessage(message, widget.user);

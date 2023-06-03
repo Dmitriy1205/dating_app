@@ -24,7 +24,7 @@ class FriendsListCubit extends Cubit<FriendsListState> {
   Future<void> getFriendsList() async {
     emit(state.copyWith(status: Status.loading()));
     try {
-      usersList = await db.getContacts();
+      usersList = await db.getContacts(currentUserId: auth.currentUser()!.uid);
       emit(state.copyWith(status: Status.loaded(), usersList: usersList));
     } on Exception catch (e) {
       // TODO

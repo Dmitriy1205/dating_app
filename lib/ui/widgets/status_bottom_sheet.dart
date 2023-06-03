@@ -1,11 +1,13 @@
-import 'dart:io';
+import 'dart:typed_data';
+import 'package:dating_app/ui/bloc/stories/stories_cubit.dart';
+import 'package:dating_app/ui/widgets/add_stories.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class StatusBottomSheet {
-  File? _image;
 
   void showPicker(
     BuildContext context,
@@ -62,8 +64,8 @@ class StatusBottomSheet {
                                 ),
                               ),
                               onTap: () {
-                                imageFromCamera(getPhoto: (File? f) {
-                                  // func(f);
+                                imageFromCamera(getPhoto: (Uint8List? f) {
+                                  context.read<StoriesCubit>().publish(image: f!);
                                 });
                                 Navigator.of(context).pop();
                               }),
@@ -97,10 +99,28 @@ class StatusBottomSheet {
                                 ),
                               ),
                               onTap: () {
-                                // imageFromGallery(getImage: (File? f) {
-                                //   func(f);
-                                // });
                                 Navigator.of(context).pop();
+                                Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                      pageBuilder: (context, animation, page) =>
+                                          const AddStories(),
+                                      transitionsBuilder: (context, animation,
+                                          secondaryAnimation, child) {
+                                        const begin = Offset(0.0, 1.0);
+                                        const end = Offset.zero;
+                                        const curve = Curves.ease;
+
+                                        var tween = Tween(
+                                                begin: begin, end: end)
+                                            .chain(CurveTween(curve: curve));
+
+                                        return SlideTransition(
+                                          position: animation.drive(tween),
+                                          child: child,
+                                        );
+                                      },
+                                    ));
                               }),
                         ],
                       ),
@@ -166,7 +186,7 @@ class StatusBottomSheet {
   //   }
   // }
 
-  Future imageFromCamera({required Function(File?) getPhoto}) async {
+  Future imageFromCamera({required Function(Uint8List?) getPhoto}) async {
     final ImagePicker picker = ImagePicker();
     final pickedFile = await picker.pickImage(
       source: ImageSource.camera,
@@ -175,10 +195,8 @@ class StatusBottomSheet {
       imageQuality: 100,
     );
     if (pickedFile != null) {
-      _image = File(pickedFile.path);
-      getPhoto(_image!);
-    } else {
-
-    }
+      final Uint8List imageData = await pickedFile.readAsBytes();
+      getPhoto(imageData);
+    } else {}
   }
 }

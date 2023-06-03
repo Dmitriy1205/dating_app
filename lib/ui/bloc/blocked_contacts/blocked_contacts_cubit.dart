@@ -23,7 +23,7 @@ class BlockedContactsCubit extends Cubit<BlockedContactsState> {
   Future<void> getBlockedContacts() async {
     emit(state.copyWith(status: Status.loading()));
     try {
-      usersList = await db.getBlockedContacts();
+      usersList = await db.getBlockedContacts(currentUserId: auth.currentUser()!.uid);
       emit(state.copyWith(status: Status.loaded(), usersList: usersList));
     } on Exception catch (e) {
       emit(state.copyWith(status: Status.error(e.toString())));
@@ -33,7 +33,7 @@ class BlockedContactsCubit extends Cubit<BlockedContactsState> {
   Future<void> unblockContact(String id) async {
     emit(state.copyWith(status: Status.loading()));
     try {
-      await db.unblockContact(id).then((value) => getBlockedContacts());
+      await db.unblockContact(id, currentUserId: auth.currentUser()!.uid).then((value) => getBlockedContacts());
       emit(state.copyWith(status: Status.loaded()));
     } on Exception catch (e) {
       emit(state.copyWith(status: Status.error(e.toString())));

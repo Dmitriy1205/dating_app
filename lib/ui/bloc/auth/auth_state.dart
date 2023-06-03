@@ -1,28 +1,22 @@
 part of 'auth_cubit.dart';
 
-class AuthState extends Equatable {
-  final Status? status;
-  final String? verId;
+abstract class AuthState extends Equatable {}
 
-  const AuthState({
-    this.verId,
-    this.status,
-  });
+class Initial extends AuthState {
+  @override
+  List<Object?> get props => [];
+}
+
+class Authorized extends AuthState {
+  final User? user;
+
+  Authorized({this.user});
 
   @override
-  List<Object?> get props => [
-        status,
-        verId,
-      ];
+  List<Object?> get props => [user];
+}
 
-  AuthState copyWith({
-    Status? status,
-    String? verId,
-  }) {
-    return AuthState(
-      status: status ?? this.status,
-      verId: verId ?? this.verId,
-    );
-  }
-
+class Unauthorized extends AuthState {
+  @override
+  List<Object?> get props => [];
 }

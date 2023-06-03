@@ -1,14 +1,15 @@
 import 'package:dating_app/core/services/cache_helper.dart';
 import 'package:dating_app/ui/bloc/contacts_cubit.dart';
+import 'package:dating_app/ui/bloc/stories/stories_cubit.dart';
 import 'package:dating_app/ui/screens/messenger_screen.dart';
-import 'package:dating_app/ui/widgets/status_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:dating_app/core/service_locator.dart';
+import 'package:dating_app/core/services/service_locator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../core/constants.dart';
 import '../bloc/messenger_cubit.dart';
 import '../widgets/search_bar.dart';
+import '../widgets/stories_bar.dart';
 import 'history_call_screen.dart';
 
 class ContactsScreen extends StatefulWidget {
@@ -25,6 +26,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
   @override
   void initState() {
     bloc = sl<ContactsCubit>();
+    context.read<StoriesCubit>().fetchAllStories();
     controller = TextEditingController();
     super.initState();
   }
@@ -64,7 +66,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
                   child: GestureDetector(
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (_) => const HistoryCallScreen()));
+                          builder: (_) => HistoryCallScreen(callHistory: bloc.state.callHistory!,)));
                     },
                     child: SizedBox(
                       height: 45,
@@ -111,148 +113,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
                     },
                     searchTextEditingController: controller,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Container(
-                      color: Colors.grey.shade200,
-                      height: 120,
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 25, right: 15),
-                              child: GestureDetector(
-                                onTap: () {
-                                  StatusBottomSheet().showPicker(
-                                    context,
-                                  );
-                                },
-                                child: Stack(
-                                  children: [
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          height: 75,
-                                          width: 75,
-                                          decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color: Colors.orangeAccent,
-                                                  width: 3),
-                                              borderRadius:
-                                                  BorderRadius.circular(50)),
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(50),
-                                            child: state.currentUserAvatar ==
-                                                    null || state.currentUserAvatar ==''
-                                                ? Image.asset(
-                                                    'assets/images/empty.png',
-                                                    fit: BoxFit.cover,
-                                                  )
-                                                : Image.network(
-                                                    state.currentUserAvatar!,
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 5,
-                                        ),
-                                        Text(AppLocalizations.of(context)!
-                                            .myStatus),
-                                      ],
-                                    ),
-                                    Positioned(
-                                      bottom: 30,
-                                      right: 0,
-                                      child: SizedBox(
-                                        height: 36,
-                                        width: 36,
-                                        child: Card(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20.0),
-                                          ),
-                                          child: Image.asset(
-                                            'assets/icons/plus.png',
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            // ListView.builder(
-                            //     shrinkWrap: true,
-                            //     itemCount: state.usersList!.length,
-                            //     scrollDirection: Axis.horizontal,
-                            //     itemBuilder: (context, index) {
-                            //       return Padding(
-                            //         padding: const EdgeInsets.only(right: 1),
-                            //         child: Column(
-                            //           mainAxisAlignment: MainAxisAlignment.center,
-                            //           children: [
-                            //             Container(
-                            //               height: 75,
-                            //               width: 75,
-                            //               decoration: BoxDecoration(
-                            //                   border: Border.all(
-                            //                       color: Colors.orange, width: 3),
-                            //                   borderRadius:
-                            //                       BorderRadius.circular(50)),
-                            //               child: ClipRRect(
-                            //                 borderRadius: BorderRadius.circular(50),
-                            //                 child: state.image?[index] == null ||
-                            //                         state.image?[index] != ''
-                            //                     ? Image.network(
-                            //                         state.image![index],
-                            //                         fit: BoxFit.cover,
-                            //                       )
-                            //                     : Stack(
-                            //                         fit: StackFit.expand,
-                            //                         children: [
-                            //                           Image.asset(
-                            //                             'assets/images/empty.png',
-                            //                             fit: BoxFit.cover,
-                            //                           ),
-                            //                           const Center(
-                            //                             child: Padding(
-                            //                               padding:
-                            //                                   EdgeInsets.all(8.0),
-                            //                               child: Text(
-                            //                                 'No Avatar',
-                            //                                 textAlign:
-                            //                                     TextAlign.center,
-                            //                                 style: TextStyle(
-                            //                                     fontSize: 10,
-                            //                                     fontWeight:
-                            //                                         FontWeight
-                            //                                             .bold),
-                            //                               ),
-                            //                             ),
-                            //                           ),
-                            //                         ],
-                            //                       ),
-                            //               ),
-                            //             ),
-                            //             const SizedBox(
-                            //               height: 5,
-                            //             ),
-                            //             Text(state.usersList![index].firstName!),
-                            //           ],
-                            //         ),
-                            //       );
-                            //     }),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                  const StoriesBar(),
                   const SizedBox(
                     height: 30,
                   ),
@@ -578,3 +439,5 @@ class _ContactsScreenState extends State<ContactsScreen> {
         });
   }
 }
+
+

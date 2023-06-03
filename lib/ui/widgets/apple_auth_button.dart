@@ -5,9 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../core/service_locator.dart';
+import '../../core/services/service_locator.dart';
 import '../bloc/apple_auth/apple_auth_cubit.dart';
-import '../screens/home_screen.dart';
 
 class AppleAuthButton extends StatelessWidget {
   const AppleAuthButton({Key? key}) : super(key: key);
@@ -28,24 +27,29 @@ class _AppleAuthButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AppleAuthCubit, AppleAuthState>(
-      listener: ((context, state) {
-        if (state.status!.isLoaded) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const HomeScreen(),
+      listener: (context, state) {
+        if (state.status!.isError) {
+          final snackBar = SnackBar(
+            backgroundColor: Colors.redAccent,
+            content: Text(
+              state.status!.errorMessage! == '-' ? AppLocalizations.of(context)!.loginError : state.status!.errorMessage!,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: Colors.white,
+              ),
             ),
           );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
         }
-      }),
+      },
       builder: (context, state) {
         return ElevatedButton(
           onPressed: state.status!.isLoading == true
               ? null
               : () => BlocProvider.of<AppleAuthCubit>(context).login(),
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.transparent,
-            shadowColor: Colors.white,
+            backgroundColor: const Color(0xFFf5f5f5),
+            disabledBackgroundColor: const Color(0xFFf5f5f5),
             elevation: 0,
             fixedSize: const Size(340, 55),
             side: const BorderSide(color: Colors.black),

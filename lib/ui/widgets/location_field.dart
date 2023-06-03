@@ -4,6 +4,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'field_decor.dart';
 
@@ -137,39 +138,59 @@ class _LocationFieldState extends State<LocationField> {
   Future<bool> _handleLocationPermission() async {
     bool serviceEnabled;
     LocationPermission permission;
+    PermissionStatus androidPermission = await Permission.location.request();
 
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-       ScaffoldMessenger.of(context).showSnackBar(
+    if (androidPermission.isDenied || androidPermission.isPermanentlyDenied) {
+      ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Colors.red,
           duration: const Duration(seconds: 5),
-          content: Text(
-            AppLocalizations.of(context)!.locationServicesAreDes,
-          ),
+          content: Text(AppLocalizations.of(context)!.locationPermissionDenied),
         ),
       );
       return false;
     }
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+     if(context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 5),
+            content: Text(
+              AppLocalizations.of(context)!.locationServicesAreDes,
+            ),
+          ),
+        );
+        return false;
+      }
+    }
+
     permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
+    if (permission == LocationPermission.denied || androidPermission.isDenied) {
       permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
+
+      if (permission == LocationPermission.denied ) {
+        if(context.mounted){
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Colors.red,
             duration: const Duration(seconds: 5),
             content:
                 Text(AppLocalizations.of(context)!.locationPermissionDenied)));
-        return false;
+        return false;}
       }
     }
     if (permission == LocationPermission.deniedForever) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          backgroundColor: Colors.red,
-          duration: const Duration(seconds: 5),
-          content: Text(
-              AppLocalizations.of(context)!.locationPermissionArePermanently)));
-      return false;
+      if(context.mounted){
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 5),
+            content: Text(
+                AppLocalizations.of(context)!.locationPermissionArePermanently)));
+        return false;
+      }
+
     }
     return true;
   }

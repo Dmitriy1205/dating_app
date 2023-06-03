@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:agora_uikit/agora_uikit.dart';
 import 'package:dating_app/data/models/call_model.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +7,7 @@ import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/constants.dart';
-import '../../core/service_locator.dart';
+import '../../core/services/service_locator.dart';
 import '../../core/services/cache_helper.dart';
 import '../bloc/video_call/video_call_cubit.dart';
 import '../widgets/reusable_widgets.dart';
@@ -52,12 +54,28 @@ class _VideoCallScreen extends StatefulWidget {
   State<_VideoCallScreen> createState() => _VideoCallScreenState();
 }
 
-class _VideoCallScreenState extends State<_VideoCallScreen> {
+class _VideoCallScreenState extends State<_VideoCallScreen>{
   late VideoCallCubit cubit;
-
+  late Timer _timer;
+  late List<Color> _colors;
+  late int _currentColorIndex;
   @override
   void initState() {
     super.initState();
+    _currentColorIndex = 0;
+    _colors = [
+
+      Colors.yellow.shade800,
+Colors.yellow,
+      Colors.orange,
+    ];
+    _timer = Timer.periodic(const Duration(seconds: 3), (Timer timer) {
+      setState(() {
+        _currentColorIndex = (_currentColorIndex + 1) % _colors.length;
+      });
+    });
+
+
     cubit = BlocProvider.of<VideoCallCubit>(context);
     getPermissions();
     cubit.getInfo(widget.id);
@@ -89,8 +107,10 @@ class _VideoCallScreenState extends State<_VideoCallScreen> {
       receiverId: widget.receiverId,
       status: CallStatus.end.name,
     ));
+    _timer.cancel();
     super.dispose();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -148,17 +168,40 @@ class _VideoCallScreenState extends State<_VideoCallScreen> {
           backgroundColor: Colors.grey.shade50,
           body: Stack(
             children: [
-              Container(
-                height: double.infinity,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      Colors.orange.shade100,
-                      Colors.orange.shade400,
-                    ],
+              // AnimatedContainer(
+              //   height: double.infinity,
+              //   width: double.infinity,
+              //   duration: const Duration(milliseconds: 500),
+              //   decoration: BoxDecoration(
+              //     gradient: LinearGradient(
+              //       colors: [
+              //         _colorAnimation.value!,
+              //         _colorAnimation.value!.withOpacity(0.5),
+              //         _colorAnimation.value!.withOpacity(0.2),
+              //       ],
+              //       begin: Alignment.bottomCenter,
+              //       end: Alignment.topCenter,
+              //     ),
+              //   ),
+              // ),
+              Positioned.fill(
+                child: AnimatedContainer(
+                  duration: const Duration(seconds: 1),
+                  color: _colors[_currentColorIndex],
+                ),
+              ),
+              Positioned.fill(
+                child: AnimatedContainer(
+                  duration: const Duration(seconds: 2),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.transparent,
+                        _colors[_currentColorIndex].withOpacity(0.8),
+                      ],
+                    ),
                   ),
                 ),
               ),

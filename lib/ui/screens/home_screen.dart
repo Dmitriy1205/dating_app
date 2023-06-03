@@ -1,13 +1,12 @@
-import 'package:dating_app/ui/bloc/home/home_cubit.dart';
 import 'package:dating_app/ui/bloc/register_call/register_call_cubit.dart';
 import 'package:dating_app/ui/screens/contacts_screen.dart';
+import 'package:dating_app/ui/screens/filter_screen.dart';
 import 'package:dating_app/ui/screens/profile_screen.dart';
 import 'package:dating_app/ui/screens/video_call_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/constants.dart';
-import '../../core/service_locator.dart';
 import '../widgets/home_body.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -87,7 +86,8 @@ class HomeScreen extends StatelessWidget {
                       padding: const EdgeInsets.all(5.0),
                       child: GestureDetector(
                           onTap: () {
-                            Navigator.pushNamed(context, 'filter');
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=> const FilterScreen()));
+
                           },
                           child: SizedBox(
                               height: 50,
@@ -105,12 +105,10 @@ class HomeScreen extends StatelessWidget {
             ),
             elevation: 0,
           ),
-          body: BlocProvider(
-            create: (context) => sl<HomeCubit>(),
-            child: const HomeBody1(),
+          body:  const HomeBody1(),
           ),
         ),
-      ),
+
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dating_app/data/data_provider/firestore_data_provider.dart';
 import '../models/friend_model.dart';
 import '../models/message_model.dart';
@@ -13,24 +14,24 @@ class DataRepository {
     return dataProvider.setProfileFields(id, data);
   }
 
-  Future<List<UserModel>> getPals() async {
-    return await dataProvider.getUsers();
+  Future<List<UserModel>> getPals({required String currentUserId}) async {
+    return await dataProvider.getUsers(currentUserId: currentUserId);
   }
 
-  Future<List<UserModel>> getContacts() async {
-    return await dataProvider.getContacts();
+  Future<List<UserModel>> getContacts({required String currentUserId}) async {
+    return await dataProvider.getContacts(currentUserId: currentUserId);
   }
 
-  Future<List<UserModel>> getBlockedContacts() async {
-    return await dataProvider.getBlockedContactsList();
+  Future<List<UserModel>> getBlockedContacts({required String currentUserId}) async {
+    return await dataProvider.getBlockedContactsList(currentUserId: currentUserId);
   }
 
-  Future<void> blockContact(String id) async {
-    await dataProvider.toBlockContact(id);
+  Future<void> blockContact(String id,{required String currentUserId}) async {
+    await dataProvider.toBlockContact(id, currentUserId: currentUserId);
   }
 
-  Future<void> unblockContact(String id) async {
-    await dataProvider.toUnblockContact(id);
+  Future<void> unblockContact(String id,{required String currentUserId}) async {
+    await dataProvider.toUnblockContact(id, currentUserId: currentUserId);
   }
 
   Future<void> sendMessageToPal(messageModel, String chatId) async {
@@ -91,24 +92,17 @@ class DataRepository {
     return dataProvider.isUserMatch(id);
   }
 
-// Future<SearchPrefFields?> getSearchFields(String id) async {
-//   final fields = await dataProvider.getSearchFields(id);
-//   return fields;
-// }
+  Future<DocumentSnapshot<Map<String, dynamic>>> getField(
+      {required String collectionName, required String userId}) async {
+    return await dataProvider.getField(
+        collectionName: collectionName, userId: userId);
+  }
 
-// Future<void> updateProfileFields(String id, Map<String, dynamic> data) async {
-//   await dataProvider.updateProfileFields(id, data);
-// }
+  Future<void> saveToken({
+    required String token,
+    required String currentUserId,
+  }) async {
+    await dataProvider.saveToken(token: token, currentUserId: currentUserId);
+  }
 
-// Future<ProfileInfoFields?> getProfileFields(String id) async {
-//   final fields = await dataProvider.getProfileFields(id);
-//   return fields;
-// }
-// Future<List<ProfileInfoFields>> getAllFields() async {
-//   return dataProvider.getAllFields();
-// }
-//
-// Future<List<SearchPrefFields>> getAllSearchFields() async {
-//   return dataProvider.getAllSearchFields();
-// }
 }

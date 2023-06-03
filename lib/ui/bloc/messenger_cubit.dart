@@ -2,14 +2,15 @@ import 'package:bloc/bloc.dart';
 import 'package:dating_app/data/repositories/user_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../../core/notifications.dart';
-import '../../core/service_locator.dart';
+import '../../core/services/service_locator.dart';
 import '../../data/models/message_model.dart';
 import '../../data/models/status.dart';
 import '../../data/models/user_model.dart';
 import '../../data/repositories/data_repository.dart';
 
 class MessengerCubit extends Cubit<MessengerStates> {
+  final FirebaseAuth auth;
+  final DataRepository db;
   MessengerCubit(this.db, this.auth, UserModel userModel)
       : super(MessengerStates(
           messagesList: const [],
@@ -18,16 +19,14 @@ class MessengerCubit extends Cubit<MessengerStates> {
     // messagesStream();
   }
 
-  final FirebaseAuth auth;
-  List<MessageModel> messagesList = [];
-  final DataRepository db;
+
+  // List<MessageModel> messagesList = [];
+
   UserRepository loggedUser = sl<UserRepository>();
   String getChatId = '';
   String loggedUserPicture = '';
 
   get getLoggedUserId => auth.currentUser!.uid;
-
-  get getLoggedUserPictureUrl => loggedUserPicture;
 
   Future<void> getUsersBlock({
     required String currentUserId,
@@ -37,7 +36,6 @@ class MessengerCubit extends Cubit<MessengerStates> {
     bool? isBlocked = await db
         .isUserBlocked(currentUserId, blockerUserId)
         .then((value) => value!.isBlocked);
-    // bool isBlocked = fields?.map((e) => e.isBlocked) ;
     emit(state.copyWith(userBlocked: isBlocked));
   }
 
@@ -47,7 +45,6 @@ class MessengerCubit extends Cubit<MessengerStates> {
             'https://firebasestorage.googleapis.com/v0/b/dating-app-95830.appspot.com/o/users%2F7kyZ3iSjKUQyQHNTNpB1gzU8pP33%2Fimage2.png?alt=media&token=968c17f4-46ee-4e0b-a3e7-b6d0a92c3f4c');
   }
 
-  // get getChatId => db.getClearId(loggedUserId, openedChatUserId);
 
   void getChatId2(String openedChatUserId) {
     getChatId = db.getClearId(getLoggedUserId, openedChatUserId);
@@ -72,11 +69,11 @@ class MessengerCubit extends Cubit<MessengerStates> {
         emit(state.copyWith(messagesList: data, status: Status.loaded()));
         if (!data[0].isRead!) {
           if (data[0].senderName != loggedUser.getUserName) {
-            Notifications.showReceivedMessageNotification(
-                title: data[0].senderName!,
-                payload: 'payload',
-                body: data[0].message!,
-                fln: Notifications.flutterLocalNotificationsPlugin);
+            // Notifications.showReceivedMessageNotification(
+            //     title: data[0].senderName!,
+            //     payload: 'payload',
+            //     body: data[0].message!,
+            //     fln: Notifications.flutterLocalNotificationsPlugin);
           }
         }
       } else {
@@ -94,7 +91,7 @@ class MessengerCubit extends Cubit<MessengerStates> {
   }
 
   Future<void> blockUser(String id) async {
-    await db.blockContact(id);
+    await db.blockContact(id, currentUserId: auth.currentUser!.uid);
   }
 }
 

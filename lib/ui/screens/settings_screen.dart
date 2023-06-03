@@ -11,7 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../core/service_locator.dart';
+import '../../core/services/service_locator.dart';
 import '../bloc/blocked_contacts/blocked_contacts_cubit.dart';
 import 'friend_list_screen.dart';
 

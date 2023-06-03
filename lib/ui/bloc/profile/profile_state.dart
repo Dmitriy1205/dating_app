@@ -5,14 +5,14 @@ class ProfileState extends Equatable {
   final ProfileInfoFields? profile;
   final UserModel? user;
   final List<String>? images;
-  final Map<String, dynamic>? lookingFor;
+  final List<dynamic>? lookingForFields;
 
   const ProfileState({
     this.status,
     this.profile,
     this.user,
     this.images,
-    this.lookingFor,
+    this.lookingForFields,
   });
 
   @override
@@ -21,7 +21,7 @@ class ProfileState extends Equatable {
         profile,
         user,
         images,
-        lookingFor,
+        lookingForFields,
       ];
 
   ProfileState copyWith({
@@ -29,15 +29,14 @@ class ProfileState extends Equatable {
     ProfileInfoFields? profile,
     UserModel? user,
     List<String>? images,
-    Map<String, dynamic>? lookingFor,
+    List<dynamic>? lookingForFields,
   }) {
     return ProfileState(
       status: status ?? this.status,
       profile: profile ?? this.profile,
       user: user ?? this.user,
       images: images ?? this.images,
-      lookingFor: lookingFor ?? this.lookingFor,
+      lookingForFields: lookingForFields ?? this.lookingForFields,
     );
   }
-
 }

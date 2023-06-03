@@ -181,6 +181,7 @@
               "unknown":"inconnu",
               "noAvatar":"Pas D'avatar",
                 "editYorProfile":"Modifier votre profil",
+                "loginError":"Aucun utilisateur enregistré avec cet e-mail",
             "sharedHobbies":"Loisirs partagés"
 
 }

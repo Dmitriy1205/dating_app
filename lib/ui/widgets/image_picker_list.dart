@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:dating_app/ui/widgets/reusable_widgets.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +22,6 @@ class _ImagePickerList extends StatelessWidget {
   final Function(String) userImage;
 
   _ImagePickerList({Key? key, required this.userImage}) : super(key: key);
-  int _itemCount = 0;
   ReUsableWidgets reUsableWidget = ReUsableWidgets();
   int? _selected;
 
@@ -45,14 +44,14 @@ class _ImagePickerList extends StatelessWidget {
                   onTap: () {
                     reUsableWidget.showPicker(
                       context,
-                      func: (File? f) {
+                      func: (Uint8List? f) {
                         context
                             .read<ImagePickerCubit>()
-                            .uploadImage(f!, '${_itemCount++}')
+                            .uploadImage(f!)
                             .whenComplete(() => context
                                 .read<ImagePickerCubit>()
                                 .getAllImages());
-                        userImage(list!.first);
+                        userImage(list!.last);
                       },
                     );
                   },

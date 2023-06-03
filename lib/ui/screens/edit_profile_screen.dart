@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../core/service_locator.dart';
+import '../../core/services/service_locator.dart';
 import '../widgets/edit_profile_form.dart';
 
 class EditProfileScreen extends StatefulWidget {

@@ -93,7 +93,7 @@ class FriendListScreen extends StatelessWidget {
                                       : Image.network(
                                           contact.usersList![index].profileInfo!
                                               .image!,
-                                    fit: BoxFit.fill,
+                                    fit: BoxFit.cover,
                                         ),
                                 ),
                               ),

@@ -1,3 +1,4 @@
+import 'package:dating_app/ui/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -15,9 +16,7 @@ class Profile extends StatelessWidget {
     return BlocBuilder<ProfileCubit, ProfileState>(
       builder: (context, state) {
         if (state.status!.isLoading) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const LoadingIndicator();
         }
         List<String> lookin = [
           AppLocalizations.of(context)!.aMentee,
@@ -67,30 +66,21 @@ class Profile extends StatelessWidget {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(5),
                               child: Stack(
-                                fit: StackFit
-                                    .expand,
+                                fit: StackFit.expand,
                                 children: [
                                   Image.asset(
                                     'assets/images/empty.png',
-                                    fit: BoxFit
-                                        .cover,
+                                    fit: BoxFit.cover,
                                   ),
-                                   Center(
-                                    child:
-                                    Padding(
-                                      padding:
-                                      const EdgeInsets.all(
-                                          8.0),
+                                  Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
                                       child: Text(
                                         '${AppLocalizations.of(context)!.noAvatar}\n\n ${AppLocalizations.of(context)!.editYorProfile}',
-                                        textAlign:
-                                        TextAlign
-                                            .center,
+                                        textAlign: TextAlign.center,
                                         style: const TextStyle(
-                                            fontSize:
-                                            20,
-                                            fontWeight:
-                                            FontWeight.bold),
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
                                       ),
                                     ),
                                   ),
@@ -314,24 +304,19 @@ class Profile extends StatelessWidget {
                                 )
                               : Wrap(
                                   crossAxisAlignment: WrapCrossAlignment.end,
-                                  children: List<Widget>.generate(
-                                      state.user!.searchPref!.lookingFor!
-                                          .length, (index) {
-                                    String text = '${lookin[index]}. ';
-
-                                    return state.user!.searchPref!.lookingFor!
-                                                .values
-                                                .elementAt(index) ==
-                                            false
-                                        ? const SizedBox()
-                                        : Text(
-                                            text,
-                                            textAlign: TextAlign.start,
-                                            style: const TextStyle(
-                                                color: Colors.grey,
-                                                fontSize: 14),
-                                          );
-                                  }).toList(),
+                                  children: [
+                                    for (var i = 0;
+                                        i < state.lookingForFields!.length;
+                                        i++)
+                                      Text(
+                                        '${lookin[i]}${i == state.lookingForFields!.length - 1 ? '. ' : ', '}',
+                                        textAlign: TextAlign.start,
+                                        style: const TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                  ],
                                 ),
                         ),
                       ],

@@ -180,6 +180,7 @@
   "unknown":"unknown",
   "noAvatar":"No Avatar",
   "editYorProfile":"Edit Your Profile",
+  "loginError":"No user registered with this email",
   "sharedHobbies":"Shared hobbies"
 
 }

@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -9,9 +9,12 @@ class StorageDataProvider {
 
   StorageDataProvider({required this.storage});
 
-  Future<String> upload(File file, String destination) async {
+  Future<String> upload(Uint8List file, String destination) async {
     try {
-      UploadTask task = storage.ref(destination).putFile(file);
+      final metadata = SettableMetadata(
+        contentType: 'image/jpeg',
+      );
+      UploadTask task = storage.ref(destination).putData(file, metadata);
       await task;
       return await task.snapshot.ref.getDownloadURL();
     } on FirebaseException catch (e) {

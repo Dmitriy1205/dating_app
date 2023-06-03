@@ -1,6 +1,7 @@
 import 'package:dating_app/data/models/profile_info_data.dart';
 import 'package:dating_app/ui/bloc/edit_profile_bloc.dart';
 import 'package:dating_app/ui/widgets/image_picker_list.dart';
+import 'package:dating_app/ui/widgets/loading_indicator.dart';
 import 'package:dating_app/ui/widgets/location_field.dart';
 import 'package:dating_app/ui/widgets/reusable_widgets.dart';
 import 'package:flutter/material.dart';
@@ -65,9 +66,8 @@ class _EditProfileFormState extends State<EditProfileForm> {
     return BlocBuilder<EditProfileCubit, EditProfileState>(
       builder: (BuildContext context, state) {
         if (state.status!.isLoading) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const LoadingIndicator();
+
         }
         List<String> inter = [
           AppLocalizations.of(context)!.photography,
@@ -193,7 +193,7 @@ class _EditProfileFormState extends State<EditProfileForm> {
                       Ink(
                         child: Container(
                           height: 57,
-                          width: 350,
+
                           decoration: BoxDecoration(
                               color: Colors.white,
                               border: Border.all(color: Colors.grey[300]!),
@@ -589,7 +589,8 @@ class _EditProfileFormState extends State<EditProfileForm> {
                                 ),
                                 borderRadius: BorderRadius.circular(50)),
                             child: Container(
-                              width: 340,
+
+
                               height: 55,
                               alignment: Alignment.center,
                               child: Text(

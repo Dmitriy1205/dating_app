@@ -1,11 +1,10 @@
 import 'package:dating_app/ui/bloc/google_auth/google_auth_cubit.dart';
-import 'package:dating_app/ui/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../core/service_locator.dart';
+import '../../core/services/service_locator.dart';
 
 class GoogleAuthButton extends StatelessWidget {
   const GoogleAuthButton({Key? key}) : super(key: key);
@@ -26,13 +25,18 @@ class _GoogleAuthButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<GoogleAuthCubit, GoogleAuthState>(
       listener: (context, state) {
-        if (state.status!.isLoaded) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const HomeScreen(),
+        if (state.status!.isError) {
+          final snackBar = SnackBar(
+            backgroundColor: Colors.redAccent,
+            content: Text(
+              state.status!.errorMessage! == '-' ? AppLocalizations.of(context)!.loginError : state.status!.errorMessage!,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: Colors.white,
+              ),
             ),
           );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
         }
       },
       builder: (context, state) {
@@ -43,8 +47,8 @@ class _GoogleAuthButton extends StatelessWidget {
                   context.read<GoogleAuthCubit>().login();
                 },
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.transparent,
-            shadowColor: Colors.white,
+            backgroundColor: const Color(0xFFf5f5f5),
+            disabledBackgroundColor:const Color(0xFFf5f5f5) ,
             elevation: 0,
             fixedSize: const Size(340, 55),
             side: const BorderSide(color: Colors.red),

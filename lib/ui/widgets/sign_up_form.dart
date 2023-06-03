@@ -1,5 +1,4 @@
 import 'package:dating_app/core/constants.dart';
-import 'package:dating_app/ui/bloc/auth/auth_cubit.dart';
 import 'package:dating_app/ui/bloc/localization/localization_cubit.dart';
 import 'package:dating_app/ui/screens/login_screen.dart';
 import 'package:dating_app/ui/screens/terms.dart';
@@ -15,6 +14,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:jiffy/jiffy.dart';
 import '../../core/functions/validation.dart';
+import '../../core/services/service_locator.dart';
+import '../bloc/sign_up/sign_up_cubit.dart';
 import '../screens/otp_verification_screen.dart';
 import '../screens/profile_info_screen.dart';
 
@@ -26,6 +27,7 @@ class SignUpForm extends StatefulWidget {
 }
 
 class _SignUpFormState extends State<SignUpForm> {
+  // final SignUpCubit _cubit = sl<SignUpCubit>();
   final _formKey = GlobalKey<FormState>();
   bool isChecked = false;
   final _nameController = TextEditingController();
@@ -48,7 +50,8 @@ class _SignUpFormState extends State<SignUpForm> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AuthCubit, AuthState>(
+    return BlocConsumer<SignUpCubit, SignUpState>(
+
       listener: (context, state) {
         if (state.status!.isError) {
           final snackBar = SnackBar(
@@ -159,7 +162,6 @@ class _SignUpFormState extends State<SignUpForm> {
                               onSaved: (value) {
                                 isoCode = value!.countryCode;
                                 _phoneController.text = value.number;
-
                               },
                               validator: validatePhoneField,
                             ),
@@ -256,7 +258,7 @@ class _SignUpFormState extends State<SignUpForm> {
                                       }
                                       _formKey.currentState!.save();
 
-                                      context.read<AuthCubit>().signUp(
+                                      context.read<SignUpCubit>().signUp(
                                           phoneNumber:
                                               isoCode + _phoneController.text,
                                           verificationId: verificationId,
@@ -287,6 +289,7 @@ class _SignUpFormState extends State<SignUpForm> {
                                               ),
                                             );
                                           });
+                                      // context.read<SignUpCubit>().reset();
                                     },
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.transparent,
@@ -305,7 +308,7 @@ class _SignUpFormState extends State<SignUpForm> {
                                     ),
                                     borderRadius: BorderRadius.circular(50)),
                                 child: Container(
-                                  width: 340,
+                                  // width: 340,
                                   height: 55,
                                   alignment: Alignment.center,
                                   child: Text(

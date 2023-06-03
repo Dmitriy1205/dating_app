@@ -29,13 +29,20 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(state.copyWith(status: Status.loading()));
 
     try {
+      List lookingForFields = [];
       final id = auth.currentUser()!.uid;
       final user = await db.getUserFields(id);
       final image = await storage.getAllById(id);
+      for (var i = 0; i < user!.searchPref!.lookingFor!.length; i++){
+        if (user.searchPref!.lookingFor!.values.elementAt(i) == true){
+          lookingForFields.add(user.searchPref!.lookingFor!.values.elementAt(i));
+        }
+      }
       emit(state.copyWith(
         status: Status.loaded(),
         user: user,
         images: image,
+        lookingForFields:lookingForFields,
       ));
     } on BadRequestException catch (e) {
       emit(state.copyWith(status: Status.error(e.message)));

@@ -1,9 +1,6 @@
-import 'package:dating_app/ui/bloc/filter/filter_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../core/service_locator.dart';
 import '../widgets/filter_form.dart';
 
 class FilterScreen extends StatelessWidget {
@@ -26,7 +23,7 @@ class FilterScreen extends StatelessWidget {
                 onTap: () {
                   Navigator.pop(context);
                 },
-                child:  Text(
+                child: Text(
                   AppLocalizations.of(context)!.reset,
                   style: const TextStyle(
                       color: Colors.deepOrangeAccent,
@@ -56,10 +53,8 @@ class FilterScreen extends StatelessWidget {
               color: Colors.black, fontWeight: FontWeight.bold, fontSize: 25),
         ),
       ),
-      body: BlocProvider.value(
-        value: sl<FilterCubit>(),
-        child: FilterForm(),
-      ),
+      body:  FilterForm(),
+
     );
   }
 }

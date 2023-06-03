@@ -4,7 +4,7 @@ import 'package:dating_app/data/repositories/auth_repository.dart';
 import 'package:dating_app/data/repositories/data_repository.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../core/service_locator.dart';
+import '../../../core/services/service_locator.dart';
 import '../../../data/models/search_pref_data.dart';
 import '../../../data/models/status.dart';
 import '../../../data/models/user_model.dart';
@@ -33,152 +33,20 @@ class HomeCubit extends Cubit<HomeState> {
     init();
   }
 
-  // Future<void> init() async {
-  //   emit(state.copyWith(
-  //     status: Status.loading(),
-  //   ));
-  //   List<UserModel> filtered = [];
-  //   List<UserModel> filteredInterests = [];
-  //   List<UserModel> filteredHobbies = [];
-  //   List<UserModel> filteredLookingFor = [];
-  //
-  //   try {
-  //     final id = auth.currentUser()!.uid;
-  //     final UserModel? searchUser = await db.getUserFields(id);
-  //     final List<UserModel> allUsers = await db.getPals();
-  //     allUsers
-  //       ..removeWhere((element) => element.id == id)
-  //       ..removeWhere((element) => element.searchPref == null)
-  //       ..removeWhere((element) =>
-  //           element.searchPref!.distance! > searchUser!.searchPref!.distance! )
-  //       ..removeWhere((element) =>
-  //           int.parse(element.profileInfo!.age!) <
-  //               searchUser?.searchPref!.yearsRange?.values.elementAt(0) ||
-  //           int.parse(element.profileInfo!.age!) >
-  //               searchUser?.searchPref!.yearsRange?.values.elementAt(1))
-  //       ..removeWhere((element) =>
-  //           element.profileInfo!.gender != searchUser?.searchPref!.gender);
-  //     print('allUsers ${allUsers.length}');
-  //
-  //     for (int a = 0; a < searchUser!.searchPref!.interests!.length; a++) {
-  //       if (searchUser.searchPref!.interests!.values.elementAt(a)) {
-  //         for (var user in allUsers) {
-  //           bool boolInUser = user.searchPref!.interests![
-  //               searchUser.searchPref!.interests!.keys.elementAt(a)];
-  //           if (boolInUser) {
-  //             print(' added interests ${user.firstName}');
-  //             filteredInterests.contains(user)
-  //                 ? null
-  //                 : filteredInterests.add(user);
-  //             // allUsers.removeWhere((element) => element.id == allUsers[i].id);
-  //           }
-  //         }
-  //       }
-  //     }
-  //     for (int a = 0; a < searchUser!.searchPref!.hobbies!.length; a++) {
-  //       if (searchUser.searchPref!.hobbies!.values.elementAt(a)) {
-  //         for (var user in allUsers) {
-  //           bool boolInUser = user.searchPref!
-  //               .hobbies![searchUser.searchPref!.hobbies!.keys.elementAt(a)];
-  //           if (boolInUser) {
-  //             print(' added hobbies ${user.firstName}');
-  //             filteredHobbies.contains(user) ? null : filteredHobbies.add(user);
-  //             print('filteredLookingFor ${filteredHobbies.first}');
-  //             // allUsers.removeWhere((element) => element.id == allUsers[i].id);
-  //           }
-  //         }
-  //       }
-  //     }
-  //
-  //     for (int a = 0; a < searchUser!.searchPref!.lookingFor!.length; a++) {
-  //       if (searchUser.searchPref!.lookingFor!.values.elementAt(a)) {
-  //         for (var user in allUsers) {
-  //           bool boolInUser = user.searchPref!.lookingFor![
-  //               searchUser.searchPref!.lookingFor!.keys.elementAt(a)];
-  //           if (boolInUser) {
-  //             print(' added lookingFor ${user.firstName}');
-  //
-  //             filteredLookingFor.contains(user)
-  //                 ? null
-  //                 : filteredLookingFor.add(user);
-  //             print('filteredLookingFor ${filteredLookingFor.first}');
-  //             // allUsers.removeWhere((element) => element.id == allUsers[i].id);
-  //           }
-  //         }
-  //       }
-  //     }
-  //     List<UserModel> partiallyfiltered = [];
-  //     filteredInterests.forEach((element) {
-  //       filteredHobbies.contains(element)
-  //           ? partiallyfiltered.add(element)
-  //           : null;
-  //     });
-  //     partiallyfiltered.forEach((element) {
-  //       filteredLookingFor.contains(element) ? filtered.add(element) : null;
-  //     });
-  //     if (filtered.isNotEmpty) {
-  //       // for (var i = 0; i < allUsers.length; i++) {
-  //       //   for (int a = 0; a < searchUser!.searchPref!.hobbies!.length; a++) {
-  //       //     if (searchUser!.searchPref!.hobbies!.values.elementAt(a)) {
-  //       //       if (allUsers[i].profileInfo!.hobbies!.values.elementAt(a) ==
-  //       //           searchUser!.searchPref!.hobbies!.values.elementAt(a)) {
-  //       //         filtered.add(allUsers[i]);
-  //       //       }
-  //       //     }
-  //       //   }
-  //       // }
-  //
-  //       // for (var i = 0; i < allUsers.length; i++) {
-  //       //   for (int a = 0; a < searchUser!.searchPref!.lookingFor!.length; a++) {
-  //       //     if (searchUser!.searchPref!.lookingFor!.values.elementAt(a)) {
-  //       //       if (allUsers[i].searchPref!.lookingFor!.values.elementAt(a) ==
-  //       //           searchUser!.searchPref!.lookingFor!.values.elementAt(a)) {
-  //       //         filtered.add(allUsers[i]);
-  //       //       }
-  //       //     }
-  //       //   }
-  //       // }
-  //
-  //       // print(lookingFor.length);
-  //       // for (var i = 0; i < lookingFor.length; i++) {
-  //       //   print(lookingFor.map((e) => e.id).toList());
-  //       //   print('----------------');
-  //       //   print(allProfileFields.map((e) => e.id).toList());
-  //       //   if (lookingFor[i].id != allProfileFields[i].id) {
-  //       //     lookingFor.removeWhere((element) => element.id == allProfileFields[i].id);
-  //       //
-  //       //     print(lookingFor[i].id);
-  //       //   }
-  //       //
-  //       //   red.add(lookingFor[i]);
-  //       // }
-  //
-  //       emit(state.copyWith(
-  //         status: Status.loaded(),
-  //         // fields: filtered,
-  //         // lookingFor: red,
-  //         user: filtered,
-  //       ));
-  //     } else {
-  //       emit(state.copyWith(status: Status.error()));
-  //     }
-  //   } on Exception catch (e) {
-  //     print(e.toString());
-  //     emit(state.copyWith(
-  //       status: Status.error(),
-  //     ));
-  //   }
-  // }
   Future<void> init() async {
     emit(state.copyWith(status: Status.loading()));
 
     try {
-      final id = auth.currentUser()!.uid;
-      final searchUser = await db.getUserFields(id);
-      final allUsers = await db.getPals();
+      final currentUserId = auth.currentUser()!.uid;
+      final searchUser = await db.getUserFields(currentUserId);
+      final allUsers = await db.getPals(currentUserId: currentUserId);
 
-      final filtered = allUsers.where((user) {
-        return user.id != id &&
+      print('===========${allUsers[0].firstName}');
+
+       List<UserModel> filtered = allUsers.where((user) {
+        return
+          user.id != currentUserId
+              &&
             user.searchPref != null &&
             user.searchPref!.distance! <= searchUser!.searchPref!.distance! &&
             int.parse(user.profileInfo!.age!) >=
@@ -192,20 +60,23 @@ class HomeCubit extends Cubit<HomeState> {
             user.profileInfo!.gender == searchUser.searchPref!.gender;
       }).toList();
 
-      filtered.removeWhere((user) {
-        final interests = searchUser!.searchPref!.interests!.entries
-            .where((entry) => entry.value);
-        final hobbies = searchUser.searchPref!.hobbies!.entries
-            .where((entry) => entry.value);
-        final lookingFor = searchUser.searchPref!.lookingFor!.entries
-            .where((entry) => entry.value);
+      print('===========${filtered}');
 
-        return !interests.every(
-                (interest) => user.searchPref!.interests![interest.key]) ||
-            !hobbies.every((hobby) => user.searchPref!.hobbies![hobby.key]) ||
-            !lookingFor.every(
-                (lookingFor) => user.searchPref!.lookingFor![lookingFor.key]);
-      });
+      // filtered.removeWhere((user) {
+      //   final interests = searchUser!.searchPref!.interests!.entries
+      //       .where((entry) => entry.value);
+      //   final hobbies = searchUser.searchPref!.hobbies!.entries
+      //       .where((entry) => entry.value);
+      //   final lookingFor = searchUser.searchPref!.lookingFor!.entries
+      //       .where((entry) => entry.value);
+      //
+      //   return !interests.every(
+      //           (interest) => user.searchPref!.interests![interest.key]) ||
+      //       !hobbies.every((hobby) => user.searchPref!.hobbies![hobby.key]) ||
+      //       !lookingFor.every(
+      //           (lookingFor) => user.searchPref!.lookingFor![lookingFor.key]);
+      // });
+      print('===========${filtered}');
 
       emit(state.copyWith(status: Status.loaded(), user: filtered));
     } catch (e) {
@@ -216,7 +87,7 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> addUser(String id) async {
-    db.dataProvider.addedToFriends(id);
+    db.dataProvider.addedToFriends(id, currentUserId: auth.currentUser()!.uid);
     try {
       List<String> userMatch = await db.isUserMatch(id);
       UserModel? matchUser = await db.getUserFields(id);
@@ -236,6 +107,6 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   void refuseUser(String id) {
-    db.dataProvider.refusedFriends(id);
+    db.dataProvider.refusedFriends(id, currentUserId: auth.currentUser()!.uid);
   }
 }

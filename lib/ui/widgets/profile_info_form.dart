@@ -1,8 +1,9 @@
 import 'package:dating_app/data/models/hobbies.dart';
+import 'package:dating_app/ui/bloc/image_picker/image_picker_cubit.dart';
 import 'package:dating_app/ui/bloc/localization/localization_cubit.dart';
 import 'package:dating_app/ui/bloc/profile_info_cubit/profile_info_cubit.dart';
-import 'package:dating_app/ui/widgets/image_picker_list.dart';
 import 'package:dating_app/ui/widgets/location_field.dart';
+import 'package:dating_app/ui/widgets/profile_image_picker.dart';
 import 'package:dating_app/ui/widgets/reusable_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -202,7 +203,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                                     context
                                         .read<ProfileInfoCubit>()
                                         .saveData(data: {
-                                      'image': userImage,
+                                      'image': context.read<ImagePickerCubit>().state.image?[0] ?? '',
                                       'name': nameController.text,
                                       'bio': bioController.text,
                                       'gender': gender,
@@ -235,9 +236,11 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
                               height: 20,
                             ),
 
-                            ImagePickerList(
+                            ProfileImagePicker(
                               userImage: (i) {
-                                userImage = i;
+                                setState(() {
+                                  userImage = i;
+                                });
                               },
                             ),
                             Column(

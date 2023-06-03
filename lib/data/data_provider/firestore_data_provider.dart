@@ -4,12 +4,10 @@ import 'package:dating_app/data/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import '../../core/exceptions.dart';
-import '../../core/service_locator.dart';
 import '../models/friend_model.dart';
 import '../models/message_model.dart';
 import 'package:dating_app/data/models/profile_info_data.dart';
 import '../models/search_pref_data.dart';
-import '../repositories/user_repository.dart';
 import 'package:ntp/ntp.dart';
 
 class FirebaseDataProvider {
@@ -17,19 +15,18 @@ class FirebaseDataProvider {
   UserModel userModel = UserModel();
   MessageModel? messageModel;
   late String clearId;
-  UserRepository userRepository = sl<UserRepository>();
 
   FirebaseDataProvider({required this.firestore});
 
-  Future<void> createUser(
-    User user,
-    String name,
-    String phone,
-    String date,
-    String joinDate,
-    String email,
-    String language,
-  ) async {
+  Future<void> createUser({
+    required User user,
+    required String name,
+    required String phone,
+    required String date,
+    required String joinDate,
+    required String email,
+    required String language,
+  }) async {
     userModel.id = user.uid;
     userModel.firstName = name;
     userModel.phone = phone;
@@ -134,15 +131,15 @@ class FirebaseDataProvider {
               .map((doc) => MessageModel.fromJson(doc.data()))
               .toList());
 
-  Future<List<UserModel>> getUsers() async {
+  Future<List<UserModel>> getUsers({required String currentUserId}) async {
     List<String> listAddedToFriends = [];
     try {
       QuerySnapshot<Map<String, dynamic>> getAddedFriends = await firestore
-          .collection('users/${userRepository.getLoggedUser.id}/addedFriends')
+          .collection('users/$currentUserId/addedFriends')
           .get()
           .then((value) => value);
       QuerySnapshot<Map<String, dynamic>> refusedFriends = await firestore
-          .collection('users/${userRepository.getLoggedUser.id}/refusedFriends')
+          .collection('users/$currentUserId/refusedFriends')
           .get();
       for (var element in getAddedFriends.docs) {
         listAddedToFriends.add(element.data()['addedFriend']);
@@ -165,11 +162,11 @@ class FirebaseDataProvider {
     }
   }
 
-  Future<List<UserModel>> getContacts() async {
+  Future<List<UserModel>> getContacts({required String currentUserId}) async {
     List<String> listAddedToFriends = [];
     try {
       QuerySnapshot<Map<String, dynamic>> getAddedFriends = await firestore
-          .collection('users/${userRepository.getLoggedUser.id}/addedFriends')
+          .collection('users/$currentUserId/addedFriends')
           .get();
       for (var element in getAddedFriends.docs) {
         if (element.data()['blockedFriend'] == false) {
@@ -190,11 +187,11 @@ class FirebaseDataProvider {
     }
   }
 
-  Future<List<UserModel>> getBlockedContactsList() async {
+  Future<List<UserModel>> getBlockedContactsList({required String currentUserId}) async {
     List<String> listAddedToFriends = [];
     try {
       QuerySnapshot<Map<String, dynamic>> getAddedFriends = await firestore
-          .collection('users/${userRepository.getLoggedUser.id}/addedFriends')
+          .collection('users/$currentUserId/addedFriends')
           .get();
       for (var element in getAddedFriends.docs) {
         if (element.data()['blockedFriend'] == true) {
@@ -215,11 +212,11 @@ class FirebaseDataProvider {
     }
   }
 
-  Future<void> toBlockContact(String id) async {
+  Future<void> toBlockContact(String id,{required String currentUserId}) async {
     try {
       await firestore
           .collection('users')
-          .doc(userRepository.getLoggedUser.id)
+          .doc(currentUserId)
           .collection('addedFriends')
           .doc(id)
           .update({'blockedFriend': true});
@@ -228,11 +225,11 @@ class FirebaseDataProvider {
     }
   }
 
-  Future<void> toUnblockContact(String id) async {
+  Future<void> toUnblockContact(String id,{required String currentUserId}) async {
     try {
       await firestore
           .collection('users')
-          .doc(userRepository.getLoggedUser.id)
+          .doc(currentUserId)
           .collection('addedFriends')
           .doc(id)
           .update({'blockedFriend': false});
@@ -363,10 +360,10 @@ class FirebaseDataProvider {
     }
   }
 
-  Future<void> addedToFriends(String addedFriendId) async {
+  Future<void> addedToFriends(String addedFriendId,{required String currentUserId}) async {
     try {
       await firestore
-          .collection('users/${userRepository.getLoggedUser.id}/addedFriends')
+          .collection('users/$currentUserId/addedFriends')
           .doc(addedFriendId)
           .set(UserModel().addedFriendToFirestore(addedFriendId));
     } on FirebaseException catch (e) {
@@ -374,10 +371,10 @@ class FirebaseDataProvider {
     }
   }
 
-  Future<void> refusedFriends(String refusedFriends) async {
+  Future<void> refusedFriends(String refusedFriends,{required String currentUserId}) async {
     try {
       await firestore
-          .collection('users/${userRepository.getLoggedUser.id}/refusedFriends')
+          .collection('users/$currentUserId/refusedFriends')
           .doc(refusedFriends)
           .set(UserModel().addedFriendToFirestore(refusedFriends));
     } on FirebaseException catch (e) {
@@ -426,6 +423,72 @@ class FirebaseDataProvider {
       return data.docs.map((e) => e.id).toList();
     } on FirebaseException catch (e) {
       throw BadRequestException(message: e.message!);
+    }
+  }
+
+  Future<DocumentSnapshot<Map<String, dynamic>>> getField(
+      {required String collectionName, required String userId}) async {
+    try {
+      return await firestore.collection(collectionName).doc(userId).get();
+    } on FirebaseException catch (e) {
+      throw BadRequestException(message: e.code);
+    }
+  }
+
+  Future<void> saveToken({
+    required String token,
+    required String currentUserId,
+  }) async {
+    try {
+      await firestore
+          .collection('fcmTokens')
+          .doc(currentUserId)
+          .set({'token': token});
+    } on FirebaseException catch (e) {
+      throw BadRequestException(message: e.message.toString());
+    }
+  }
+
+  Future<void> saveField({
+    required String collection,
+    required String nameFieldToUpdate,
+    required String userId,
+    required String avatar,
+    required String userName,
+    required dynamic data,
+  }) async {
+    try {
+      await firestore.collection(collection).doc(userId).set({
+        'userId': userId,
+        'avatar': avatar,
+        'name': userName,
+        nameFieldToUpdate: data
+      }, SetOptions(merge: true));
+    } on FirebaseException catch (e) {
+      throw Exception(e.code.toString());
+    }
+  }
+
+  Future<DocumentSnapshot<Map<String, dynamic>>> getCollectionById({
+    required String collection,
+    required String userId,
+  }) async {
+    try {
+      final data = await firestore.collection(collection).doc(userId).get();
+      return data;
+    } on FirebaseException catch (e) {
+      throw Exception(e.code.toString());
+    }
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getAllCollectionFields({
+    required String collection,
+  }) async {
+    try {
+      final data = await firestore.collection(collection).get();
+      return data;
+    } on FirebaseException catch (e) {
+      throw Exception(e.code.toString());
     }
   }
 }

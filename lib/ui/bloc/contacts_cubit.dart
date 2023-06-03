@@ -1,44 +1,56 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:dating_app/data/models/call_model.dart';
 import 'package:dating_app/data/models/user_model.dart';
 import 'package:dating_app/data/repositories/auth_repository.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../core/constants.dart';
-import '../../core/service_locator.dart';
 import '../../data/models/status.dart';
 import '../../data/repositories/data_repository.dart';
+import '../../data/repositories/user_repository.dart';
 
 class ContactsCubit extends Cubit<ContactsCubitStates> {
-  ContactsCubit({required this.authRepository})
-      : super(ContactsCubitStates(status: Status.initial())) {
+  final UserRepository _userRepository;
+  final DataRepository _dataRepository;
+  final AuthRepository _authRepository;
+
+  ContactsCubit(
+      {required AuthRepository authRepository,
+      required UserRepository userRepository,
+      required DataRepository dataRepository})
+      : _authRepository = authRepository,
+        _userRepository = userRepository,
+        _dataRepository = dataRepository,
+        super(ContactsCubitStates(status: Status.initial())) {
     updateConnections();
   }
 
   late UserModel palUser;
-  DataRepository db = sl();
-  final AuthRepository authRepository;
 
   List<UserModel> addedUsersList = [];
   List<UserModel> foundedNames = [];
   List<UserModel> userNames = [];
 
   Future<String> getUrlImage(String id) async {
-    final String image = await db.getUserFields(id).then((value) {
+    final String image = await _dataRepository.getUserFields(id).then((value) {
       return value!.profileInfo!.image!;
     });
     return image;
   }
 
   Future<void> updateConnections() async {
-    addedUsersList = await db.getContacts();
-    final currentUserFields =
-        await db.getUserFields(authRepository.currentUser()!.uid);
+    addedUsersList = await _dataRepository.getContacts(currentUserId: _authRepository.currentUser()!.uid);
+    final currentUserFields = await _dataRepository.getUserFields(_authRepository.currentUser()!.uid);
+
+    final List<CallModel> callHistoryList = await _userRepository.getUserCallHistory();
+    callHistoryList.removeWhere((element) => element.callerId != _authRepository.currentUser()!.uid );
+
     for (var i = 0; i < addedUsersList.length; i++) {
       List<String> userMatch =
-          await db.isUserMatch(addedUsersList[i].id.toString());
-      if (!userMatch.contains(authRepository.currentUser()!.uid) ||
+          await _dataRepository.isUserMatch(addedUsersList[i].id.toString());
+      if (!userMatch.contains(_authRepository.currentUser()!.uid) ||
           userMatch.contains(null)) {
         addedUsersList.removeAt(i);
         i--;
@@ -56,6 +68,7 @@ class ContactsCubit extends Cubit<ContactsCubitStates> {
         currentUserAvatar: currentUserFields!.profileInfo?.image,
         currentUserId: currentUserFields.id,
         currentUserName: currentUserFields.firstName,
+        callHistory: callHistoryList,
       ),
     );
   }
@@ -63,7 +76,19 @@ class ContactsCubit extends Cubit<ContactsCubitStates> {
   Future<void> searchContact(String name) async {
     emit(state.copyWith(search: Search.searching));
     try {
-      addedUsersList = await db.getContacts();
+      addedUsersList = await _dataRepository.getContacts(currentUserId: _authRepository.currentUser()!.uid);
+      for (var i = 0; i < addedUsersList.length; i++) {
+        List<String> userMatch =
+            await _dataRepository.isUserMatch(addedUsersList[i].id.toString());
+        if (!userMatch.contains(_authRepository.currentUser()!.uid) ||
+            userMatch.contains(null)) {
+          addedUsersList.removeAt(i);
+          i--;
+        }
+        // if (usersList[i].id == authRepository.currentUser()!.uid) {
+        //   usersList.removeAt(i);
+        // }
+      }
       userNames = List.generate(
           addedUsersList.length, (index) => addedUsersList[index]);
 
@@ -102,6 +127,7 @@ class ContactsCubitStates extends Equatable {
   final bool? userMatch;
   final Search? search;
   final List<UserModel>? foundedUsersList;
+  final List<CallModel>? callHistory;
 
   const ContactsCubitStates({
     this.image,
@@ -114,6 +140,7 @@ class ContactsCubitStates extends Equatable {
     this.userMatch,
     this.search,
     this.foundedUsersList,
+    this.callHistory,
   });
 
   @override
@@ -128,6 +155,7 @@ class ContactsCubitStates extends Equatable {
         userMatch,
         search,
         foundedUsersList,
+    callHistory,
       ];
 
   ContactsCubitStates copyWith({
@@ -141,6 +169,7 @@ class ContactsCubitStates extends Equatable {
     bool? userMatch,
     Search? search,
     List<UserModel>? foundedUsersList,
+    List<CallModel>? callHistory,
   }) {
     return ContactsCubitStates(
       image: image ?? this.image,
@@ -153,6 +182,7 @@ class ContactsCubitStates extends Equatable {
       userMatch: userMatch ?? this.userMatch,
       search: search ?? this.search,
       foundedUsersList: foundedUsersList ?? this.foundedUsersList,
+      callHistory: callHistory ?? this.callHistory,
     );
   }
 }

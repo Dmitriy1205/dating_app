@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../core/service_locator.dart';
+import '../../core/services/service_locator.dart';
 
 class PersonalProf extends StatelessWidget {
   final String id;
@@ -105,7 +105,7 @@ class _PersonProfileState extends State<PersonProfile> {
               state.pic!.length,
               (index) => Image.network(
                 state.pic![index],
-                fit: BoxFit.fill,
+                fit: BoxFit.cover,
                 height: MediaQuery.of(context).size.height / 1.7,
                 filterQuality: FilterQuality.high,
               ),
