@@ -9,7 +9,7 @@ class CallModel {
   String? receiverName;
   String? receiverAvatar;
   String? status;
-  num? createAt;
+  String? createAt;
   bool? current;
 
   CallModel(
