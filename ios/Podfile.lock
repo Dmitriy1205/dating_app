@@ -207,6 +207,7 @@ DEPENDENCIES:
   - agora_uikit (from `.symlinks/plugins/agora_uikit/ios`)
   - audioplayers_darwin (from `.symlinks/plugins/audioplayers_darwin/ios`)
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
+  - Firebase/Auth
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
@@ -370,6 +371,6 @@ SPEC CHECKSUMS:
   sign_in_with_apple: f3bf75217ea4c2c8b91823f225d70230119b8440
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
 
-PODFILE CHECKSUM: 6c29ea0ed43c8aaba122f990e3d1590bbc1f663b
+PODFILE CHECKSUM: 55277b188f0470ff9545003766fed8a3a30d446d
 
 COCOAPODS: 1.12.1

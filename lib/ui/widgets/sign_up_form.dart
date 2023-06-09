@@ -14,7 +14,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:jiffy/jiffy.dart';
 import '../../core/functions/validation.dart';
-import '../../core/services/service_locator.dart';
 import '../bloc/sign_up/sign_up_cubit.dart';
 import '../screens/otp_verification_screen.dart';
 import '../screens/profile_info_screen.dart';
@@ -27,7 +26,6 @@ class SignUpForm extends StatefulWidget {
 }
 
 class _SignUpFormState extends State<SignUpForm> {
-  // final SignUpCubit _cubit = sl<SignUpCubit>();
   final _formKey = GlobalKey<FormState>();
   bool isChecked = false;
   final _nameController = TextEditingController();
@@ -163,7 +161,10 @@ class _SignUpFormState extends State<SignUpForm> {
                                 isoCode = value!.countryCode;
                                 _phoneController.text = value.number;
                               },
-                              validator: validatePhoneField,
+                              validator: (v){
+                                validatePhoneField(_phoneController.text);
+                                return null;
+                              },
                             ),
                             const SizedBox(
                               height: 20,
@@ -289,7 +290,7 @@ class _SignUpFormState extends State<SignUpForm> {
                                               ),
                                             );
                                           });
-                                      // context.read<SignUpCubit>().reset();
+
                                     },
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.transparent,

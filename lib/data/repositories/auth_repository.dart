@@ -28,9 +28,10 @@ class AuthRepository {
           verificationCompleted: (_) {},
           verificationFailed: (FirebaseAuthException e) {},
           codeSent: (verId, _) {
-            loaded;
+
             verificationId = verId;
             nav(verificationId);
+            loaded();
           },
           codeAutoRetrievalTimeout: (value) {},
         );
@@ -54,17 +55,22 @@ class AuthRepository {
       List<UserModel> allUsers = await db.getAllUserFields();
       final userPhone = allUsers.map((e) => e.phone).toList();
       if (userPhone.contains(phoneNumber)) {
-        await auth.verifyPhoneNumber(
-          phoneNumber: phoneNumber,
-          verificationCompleted: (_) {},
-          verificationFailed: (FirebaseAuthException e) {},
-          codeSent: (verId, _) {
-            loaded;
-            verificationId = verId;
-            nav(verificationId);
-          },
-          codeAutoRetrievalTimeout: (value) {},
-        );
+        try {
+          await auth.verifyPhoneNumber(
+            phoneNumber: phoneNumber,
+            verificationCompleted: (_) {},
+            verificationFailed: (FirebaseAuthException e) {},
+            codeSent: (verId, _) {
+
+              verificationId = verId;
+              nav(verificationId);
+              loaded;
+            },
+            codeAutoRetrievalTimeout: (value) {},
+          );
+        } on Exception catch (e) {
+          print(e.toString());
+        }
       } else {
         loaded;
         throw Exception();
@@ -89,14 +95,16 @@ class AuthRepository {
     required String language,
   }) async {
     try {
+      PhoneAuthCredential credential =
+      PhoneAuthProvider.credential(verificationId: verId, smsCode: code);
+
       UserCredential userCredential = await auth.createUserWithEmailAndPassword(
           email: email, password: 'password');
 
-      PhoneAuthCredential credential =
-          PhoneAuthProvider.credential(verificationId: verId, smsCode: code);
-      await userCredential.user!.linkWithCredential(credential);
-      var signIn = await auth.signInWithCredential(credential);
-      signIn;
+
+      var signIn =await userCredential.user!.linkWithCredential(credential);
+      // var signIn = await auth.signInWithCredential(credential);
+      // signIn;
       await db.createUser(
         user: signIn.user!,
         name: name,
@@ -219,6 +227,9 @@ class AuthRepository {
         throw BadRequestException(message: '-');
       }
     } on FirebaseAuthException catch (e) {
+      if(e.toString() == '[firebase_auth/provider-already-linked] [ERROR_PROVIDER_ALREADY_LINKED] - User can only be linked to one identity for the given provider.'){
+        return;
+      }
       throw BadRequestException(message: e.message!);
     } on Exception catch (e) {
       throw BadRequestException(message: e.toString());
