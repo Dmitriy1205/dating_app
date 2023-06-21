@@ -102,7 +102,7 @@ class _AddStoriesState extends State<AddStories> {
             child: IconButton(
               onPressed: () async {
                 final image = await _saveStory(context);
-                if (context.mounted) {
+                if (mounted) {
                   context.read<StoriesCubit>().publish(image: image);
                   Navigator.of(context).pop();
                 }

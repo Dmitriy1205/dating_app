@@ -153,7 +153,7 @@ class _LocationFieldState extends State<LocationField> {
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-     if(context.mounted) {
+     if(mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: Colors.red,
@@ -172,7 +172,7 @@ class _LocationFieldState extends State<LocationField> {
       permission = await Geolocator.requestPermission();
 
       if (permission == LocationPermission.denied ) {
-        if(context.mounted){
+        if(mounted){
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Colors.red,
             duration: const Duration(seconds: 5),
@@ -182,7 +182,7 @@ class _LocationFieldState extends State<LocationField> {
       }
     }
     if (permission == LocationPermission.deniedForever) {
-      if(context.mounted){
+      if(mounted){
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Colors.red,
             duration: const Duration(seconds: 5),

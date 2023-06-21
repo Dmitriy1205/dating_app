@@ -218,7 +218,7 @@ class _MessengerWidgetState extends State<MessengerWidget> {
                             MessageModel message = MessageModel(
                                 message: messageUrl,
                                 recipientName: widget.user.firstName);
-                            if(context.mounted){
+                            if(mounted){
                               context
                                   .read<MessengerCubit>()
                                   .sendMessage(message, widget.user, true);
