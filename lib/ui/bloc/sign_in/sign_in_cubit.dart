@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -10,16 +12,17 @@ part 'sign_in_state.dart';
 class SignInCubit extends Cubit<SignInState> {
   final AuthRepository authRepository;
 
-  SignInCubit({required this.authRepository})
-      : super(SignInState(status: Status.initial()));
+  SignInCubit({
+    required this.authRepository,
+  }) : super(SignInState(status: Status.initial()));
 
   Future<void> login({
     required String phoneNumber,
     required String verificationId,
     required void Function(String s) nav,
   }) async {
+    emit(state.copyWith(status: Status.loading()));
     try {
-      emit(state.copyWith(status: Status.loading()));
       await authRepository.loginWithPhone(
         phoneNumber,
         verificationId,
@@ -34,7 +37,9 @@ class SignInCubit extends Cubit<SignInState> {
       emit(state.copyWith(status: Status.error(e.toString())));
     }
   }
+
   Future<void> reset() async {
     emit(state.copyWith(status: Status.loaded()));
   }
+
 }

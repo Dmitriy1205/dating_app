@@ -14,9 +14,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:jiffy/jiffy.dart';
 import '../../core/functions/validation.dart';
+import '../bloc/connection/connection_cubit.dart';
 import '../bloc/sign_up/sign_up_cubit.dart';
 import '../screens/otp_verification_screen.dart';
 import '../screens/profile_info_screen.dart';
+import 'connection_message.dart';
 
 class SignUpForm extends StatefulWidget {
   const SignUpForm({Key? key}) : super(key: key);
@@ -259,7 +261,10 @@ class _SignUpFormState extends State<SignUpForm> {
                                       }
                                       _formKey.currentState!.save();
 
-                                      context.read<SignUpCubit>().signUp(
+                                      context.read<ConnectivityCubit>().state.status ==
+                                          ConnectivityStatus.lostConnectivity
+                                          ? ConnectionMessage.buildDisconnectedSnackbar(context)
+                                          :   context.read<SignUpCubit>().signUp(
                                           phoneNumber:
                                               isoCode + _phoneController.text,
                                           verificationId: verificationId,

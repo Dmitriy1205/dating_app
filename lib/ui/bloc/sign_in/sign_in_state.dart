@@ -1,9 +1,11 @@
 part of 'sign_in_cubit.dart';
 
- class SignInState extends Equatable {
+class SignInState extends Equatable {
   final Status? status;
 
-  const SignInState({this.status});
+  const SignInState({
+    this.status,
+  });
 
   SignInState copyWith({
     final Status? status,
@@ -14,5 +16,7 @@ part of 'sign_in_cubit.dart';
   }
 
   @override
-  List<Object?> get props => [status];
+  List<Object?> get props => [
+        status,
+      ];
 }

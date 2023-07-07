@@ -9,7 +9,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../core/routes.dart';
 import '../core/themes/colors.dart';
 import '../core/utils/navigation_key.dart';
+import '../ui/bloc/connection/connection_cubit.dart';
 import '../ui/bloc/localization/localization_cubit.dart';
+import '../ui/widgets/connection_message.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -38,16 +40,24 @@ class App extends StatelessWidget {
               routes: routes,
               debugShowCheckedModeBanner: false,
               title: 'Dating App',
-              home: BlocBuilder<AuthCubit, AuthState>(
-                builder: (context, state) {
-                  if (state is Authorized) {
-                    context.read<LocalizationCubit>().init();
-                    context.read<NotificationCubit>().saveToken(currentUserId: state.user!.uid);
-                    return const HomeScreen();
-                  } else {
-                    return const WelcomeScreen();
+              home: BlocListener<ConnectivityCubit, ConnectivityState>(
+                listener: (context, state) {
+                  if (state.status == ConnectivityStatus.lostConnectivity) {
+                    ConnectionMessage.buildDisconnectedSnackbar(context);
                   }
                 },
+                child: BlocBuilder<AuthCubit, AuthState>(
+                  builder: (context, state) {
+                    if (state is Authorized) {
+                      context.read<LocalizationCubit>().init();
+                      context.read<NotificationCubit>().saveToken(
+                          currentUserId: state.user!.uid);
+                      return const HomeScreen();
+                    } else {
+                      return const WelcomeScreen();
+                    }
+                  },
+                ),
               ),
             );
           },
@@ -55,13 +65,13 @@ class App extends StatelessWidget {
       ),
     );
   }
-  //
-  // Widget _buildHomeScreen() {
-  //   return StreamBuilder<User?>(
-  //     stream: FirebaseAuth.instance.authStateChanges(),
-  //     builder: (context, snapshot) {
-  //
-  //     },
-  //   );
-  // }
+//
+// Widget _buildHomeScreen() {
+//   return StreamBuilder<User?>(
+//     stream: FirebaseAuth.instance.authStateChanges(),
+//     builder: (context, snapshot) {
+//
+//     },
+//   );
+// }
 }

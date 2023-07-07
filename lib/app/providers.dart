@@ -1,3 +1,4 @@
+import 'package:dating_app/ui/bloc/connection/connection_cubit.dart';
 import 'package:dating_app/ui/bloc/notification/notification_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,6 +43,9 @@ class Providers extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => sl<SignInCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => sl<ConnectivityCubit>(),
         ),
         BlocProvider(
           create: (context) => sl<NotificationCubit>(),

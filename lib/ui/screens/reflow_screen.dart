@@ -1,5 +1,5 @@
 import 'package:dating_app/core/constants.dart';
-import 'package:dating_app/ui/screens/sing_up_screen.dart';
+import 'package:dating_app/ui/screens/sign_up_screen.dart';
 import 'package:dating_app/ui/screens/terms.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

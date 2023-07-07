@@ -8,6 +8,7 @@ import 'package:dating_app/data/repositories/storieas_repository.dart';
 import 'package:dating_app/data/repositories/user_repository.dart';
 import 'package:dating_app/data/repositories/video_call_repository.dart';
 import 'package:dating_app/ui/bloc/auth/auth_cubit.dart';
+import 'package:dating_app/ui/bloc/connection/connection_cubit.dart';
 import 'package:dating_app/ui/bloc/contacts_cubit.dart';
 import 'package:dating_app/ui/bloc/facebook_auth/facebook_auth_cubit.dart';
 import 'package:dating_app/ui/bloc/filter/filter_cubit.dart';
@@ -27,6 +28,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import '../../data/data_provider/storage_data_provider.dart';
 import '../../data/models/user_model.dart';
 import '../../data/repositories/notification_repository.dart';
@@ -54,6 +56,11 @@ Future<void> boot() async {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   FirebaseStorage storage = FirebaseStorage.instance;
   FirebaseMessaging messaging = FirebaseMessaging.instance;
+  InternetConnectionChecker internetChecker =
+      InternetConnectionChecker.createInstance(
+    checkTimeout: const Duration(seconds: 1),
+    checkInterval: const Duration(seconds: 1),
+  );
 
   //services
   sl.registerLazySingleton(() => FCMService(messaging: messaging));
@@ -67,10 +74,11 @@ Future<void> boot() async {
   sl.registerLazySingleton(() => VideoCallRepository(firestore: firestore));
   sl.registerLazySingleton(() => StorageRepository(storageProvider: sl()));
   sl.registerLazySingleton(() => AuthRepository(auth: auth, db: sl()));
-  sl.registerLazySingleton(
-      () => UserRepository(firestore: firestore, auth: auth, firebaseDataProvider: sl()));
+  sl.registerLazySingleton(() => UserRepository(
+      firestore: firestore, auth: auth, firebaseDataProvider: sl()));
   sl.registerLazySingleton(() => NotificationRepository(messaging: sl()));
-  sl.registerLazySingleton(()=> StoriesRepository(storage: sl(), firestore: sl()));
+  sl.registerLazySingleton(
+      () => StoriesRepository(storage: sl(), firestore: sl()));
 
   //Cubits
   sl.registerFactory(() => GoogleAuthCubit(sl()));
@@ -103,14 +111,18 @@ Future<void> boot() async {
   sl.registerFactory(() => AppleAuthCubit(sl()));
   sl.registerFactory(() => OtpCubit(sl()));
   sl.registerFactory(() => FacebookAuthCubit(sl()));
+  sl.registerFactory(
+      () => ConnectivityCubit(connectionChecker: internetChecker));
   sl.registerLazySingleton(() => AuthCubit(sl()));
-  sl.registerFactory(() => ContactsCubit(authRepository: sl(), userRepository: sl(), dataRepository: sl()));
+  sl.registerFactory(() => ContactsCubit(
+      authRepository: sl(), userRepository: sl(), dataRepository: sl()));
   sl.registerFactory(() => SignUpCubit(authRepository: sl()));
   sl.registerFactory(() => SignInCubit(authRepository: sl()));
   sl.registerFactory(() => MessengerCubit(sl(), auth, userModel));
   sl.registerLazySingleton(() => NotificationCubit(
       notificationRepo: sl(), firestoreRepo: sl(), authRepository: sl()));
-  sl.registerFactory(() => StoriesCubit(storiesRepository: sl(), authRepository: sl(), dataRepository: sl()));
+  sl.registerFactory(() => StoriesCubit(
+      storiesRepository: sl(), authRepository: sl(), dataRepository: sl()));
 }
 
 Future<void> init() async {

@@ -2,7 +2,7 @@ import 'package:dating_app/core/constants.dart';
 import 'package:dating_app/ui/bloc/auth/auth_cubit.dart';
 import 'package:dating_app/ui/screens/home_screen.dart';
 import 'package:dating_app/ui/screens/otp_verification_screen.dart';
-import 'package:dating_app/ui/screens/sing_up_screen.dart';
+import 'package:dating_app/ui/screens/sign_up_screen.dart';
 import 'package:dating_app/ui/widgets/apple_auth_button.dart';
 import 'package:dating_app/ui/widgets/facebook_auth_button.dart';
 import 'package:dating_app/ui/widgets/field_decor.dart';
@@ -15,7 +15,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
+import '../bloc/connection/connection_cubit.dart';
 import '../bloc/sign_in/sign_in_cubit.dart';
+import 'connection_message.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({Key? key}) : super(key: key);
@@ -168,7 +170,10 @@ class _LoginFormState extends State<LoginForm> {
                                 onPressed: () {
                                   if (!_formKey.currentState!.validate()) return;
                                   _formKey.currentState!.save();
-                                  context.read<SignInCubit>().login(
+                                  context.read<ConnectivityCubit>().state.status ==
+                                      ConnectivityStatus.lostConnectivity
+                                      ? ConnectionMessage.buildDisconnectedSnackbar(context)
+                                      : context.read<SignInCubit>().login(
                                       phoneNumber:
                                           isoCode + _phoneController.text,
                                       verificationId: verificationId,
