@@ -121,18 +121,18 @@ class RegisterCallCubit extends Cubit<RegisterCallState> {
     });
   }
 
-  void updateFcmToken({required String uId}) {
-    FirebaseMessaging.instance.getToken().then((token) {
-      UserTokenModel tokenModel = UserTokenModel(token: token!, uId: uId);
-      FirebaseFirestore.instance
-          .collection('Tokens')
-          .doc(CacheHelper.getString(key: 'uId'))
-          .set(tokenModel.toMap())
-          .then((value) {
-        debugPrint('User Fcm Token Updated $token');
-      }).catchError((onError) {
-        debugPrint(onError.toString());
-      });
-    });
-  }
+  // void updateFcmToken({required String uId}) {
+  //   FirebaseMessaging.instance.getToken().then((token) {
+  //     UserTokenModel tokenModel = UserTokenModel(token: token!, uId: uId);
+  //     FirebaseFirestore.instance
+  //         .collection('Tokens')
+  //         .doc(CacheHelper.getString(key: 'uId'))
+  //         .set(tokenModel.toMap())
+  //         .then((value) {
+  //       debugPrint('User Fcm Token Updated $token');
+  //     }).catchError((onError) {
+  //       debugPrint(onError.toString());
+  //     });
+  //   });
+  // }
 }

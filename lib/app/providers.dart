@@ -57,7 +57,7 @@ class Providers extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => sl<RegisterCallCubit>()
-            ..updateFcmToken(uId: CacheHelper.getString(key: 'uId'))
+            // ..updateFcmToken(uId: CacheHelper.getString(key: 'uId'))
             ..listenToInComingCalls(),
         ),
         BlocProvider(

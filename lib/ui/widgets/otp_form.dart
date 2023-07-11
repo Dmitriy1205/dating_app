@@ -38,17 +38,18 @@ class OtpForm extends StatefulWidget {
 
 class _OtpFormState extends State<OtpForm> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _numberController = TextEditingController();
+
   late String code;
 
-  @override
-  void dispose() {
-    _numberController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _numberController.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
+    // final TextEditingController _numberController = TextEditingController();
     return BlocConsumer<OtpCubit, OtpState>(
       listener: (context, state) {
         if (state.status!.isLoaded) {
@@ -110,7 +111,7 @@ class _OtpFormState extends State<OtpForm> {
                           shape: PinCodeFieldShape.box,
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        controller: _numberController,
+                        // controller: _numberController,
                         appContext: context,
                         length: 6,
                         onChanged: (value) {
@@ -129,7 +130,7 @@ class _OtpFormState extends State<OtpForm> {
                       context.read<OtpCubit>().verifySignUp(
                             verId: widget.verId,
                             date: widget.date ?? '',
-                            code: _numberController.text,
+                            code: code,
                             name: widget.name ?? '',
                             phone: widget.phone ?? '',
                             email: widget.email ?? '',
