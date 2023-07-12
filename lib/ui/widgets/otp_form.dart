@@ -52,6 +52,21 @@ class _OtpFormState extends State<OtpForm> {
     // final TextEditingController _numberController = TextEditingController();
     return BlocConsumer<OtpCubit, OtpState>(
       listener: (context, state) {
+
+          if (state.status!.isError) {
+            final snackBar = SnackBar(
+              backgroundColor: Colors.redAccent,
+              content: Text(
+                state.status!.errorMessage!,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }
+
         if (state.status!.isLoaded) {
           context.read<SignUpCubit>().reset();
           context.read<SignInCubit>().reset();

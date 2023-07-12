@@ -2,9 +2,9 @@
 <resources>
 
     <string name="app_name">dating_app</string>
-    <string name="facebook_app_id">504249461570428</string>
-    <string name="fb_login_protocol_scheme">fb504249461570428</string>
-    <string name="facebook_client_token">becf0ce0e8025a081b23bc632460665f</string>
+    <string name="facebook_app_id">614240994138585</string>
+    <string name="fb_login_protocol_scheme">fb614240994138585</string>
+    <string name="facebook_client_token">5d7d867fb4b1674694cbc763a29216f2</string>
 
 
 </resources>

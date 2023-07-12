@@ -3,9 +3,13 @@ import 'package:dating_app/l10n/l10n.dart';
 import 'package:dating_app/ui/bloc/auth/auth_cubit.dart';
 import 'package:dating_app/ui/bloc/notification/notification_cubit.dart';
 import 'package:dating_app/ui/screens/home_screen.dart';
+import 'package:dating_app/ui/screens/profile_info_screen.dart';
+import 'package:dating_app/ui/screens/search_pref_screen.dart';
 import 'package:dating_app/ui/screens/welcome_screen.dart';
+import 'package:dating_app/ui/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import '../core/routes.dart';
 import '../core/themes/colors.dart';
 import '../core/utils/navigation_key.dart';
@@ -50,9 +54,25 @@ class App extends StatelessWidget {
                   builder: (context, state) {
                     if (state is Authorized) {
                       context.read<LocalizationCubit>().init();
-                      context.read<NotificationCubit>().saveToken(
-                          currentUserId: state.user!.uid);
-                      return const HomeScreen();
+                      context
+                          .read<NotificationCubit>()
+                          .saveToken(currentUserId: state.user!.uid);
+                      if (state.userModel?.profileInfo == null) {
+                        DateFormat format = DateFormat('MMMM d, y');
+                        DateTime birthdayDate = format.parse(state.userModel!.birthday!);
+
+                        DateTime now = DateTime.now();
+                        int age = now.year - birthdayDate.year;
+                        return ProfileInfoScreen(
+                            name: state.userModel!.firstName!,
+                            date: age.toString());
+                      } else if (state.userModel?.searchPref == null) {
+                        return const SearchPrefScreen();
+                      } else {
+                        return const HomeScreen();
+                      }
+                    } else if (state is Loading) {
+                      return const Material(child: LoadingIndicator());
                     } else {
                       return const WelcomeScreen();
                     }

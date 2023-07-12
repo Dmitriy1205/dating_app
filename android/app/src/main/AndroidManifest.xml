@@ -20,12 +20,6 @@
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon"
         android:label="myness_own">
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
-        <meta-data
-            android:name="com.facebook.sdk.ClientToken"
-            android:value="@string/facebook_client_token" />
 
         <activity
             android:name=".MainActivity"
@@ -53,6 +47,10 @@
             android:name="flutterEmbedding"
             android:value="2" />
 
+        <!-- facebook configs   -->
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id" />
+        <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token" />
+
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
@@ -69,6 +67,7 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+        <!-- facebook configs   -->
 
     </application>
 </manifest>

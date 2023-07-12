@@ -62,7 +62,7 @@ class DataRepository {
   }
 
   Future<UserModel?> getUserFields(String id) async {
-    final fields = await dataProvider.getUserFields(id);
+    UserModel? fields = await dataProvider.getUserFields(id);
     return fields;
   }
 

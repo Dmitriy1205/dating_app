@@ -1,9 +1,9 @@
 import 'package:dating_app/ui/bloc/connection/connection_cubit.dart';
 import 'package:dating_app/ui/bloc/notification/notification_cubit.dart';
+import 'package:dating_app/ui/bloc/profile/profile_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../core/services/cache_helper.dart';
 import '../core/services/service_locator.dart';
 import '../ui/bloc/auth/auth_cubit.dart';
 import '../ui/bloc/filter/filter_cubit.dart';
@@ -27,6 +27,10 @@ class Providers extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => sl<AuthCubit>(),
+          lazy: true,
+        ),
+        BlocProvider(
+          create: (context) => sl<ProfileCubit>(),
           lazy: true,
         ),
         BlocProvider(

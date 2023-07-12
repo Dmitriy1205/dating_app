@@ -113,7 +113,7 @@ Future<void> boot() async {
   sl.registerFactory(() => FacebookAuthCubit(sl()));
   sl.registerFactory(
       () => ConnectivityCubit(connectionChecker: internetChecker));
-  sl.registerLazySingleton(() => AuthCubit(sl()));
+  sl.registerLazySingleton(() => AuthCubit(authRepository: sl(), db: sl()));
   sl.registerFactory(() => ContactsCubit(
       authRepository: sl(), userRepository: sl(), dataRepository: sl()));
   sl.registerFactory(() => SignUpCubit(authRepository: sl()));

@@ -36,8 +36,12 @@ class UserModel {
         birthday: data?['date'],
         email: data?['email'],
         joinDate: data?['joinDate'],
-        profileInfo: ProfileInfoFields.fromJson(data?['ProfileInfo']),
-        searchPref: SearchPrefFields.fromJson(data?['SearchPreferences']),
+        profileInfo: data?['ProfileInfo'] == null
+            ? null
+            : ProfileInfoFields.fromJson(data?['ProfileInfo']),
+        searchPref: data?['SearchPreferences'] == null
+            ? null
+            : SearchPrefFields.fromJson(data?['SearchPreferences']),
         language: data?['language'],
         firstName: data?['name'],
         phone: data?['phone'],

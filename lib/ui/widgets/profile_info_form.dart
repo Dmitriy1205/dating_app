@@ -17,6 +17,8 @@ import '../screens/search_pref_screen.dart';
 import 'field_decor.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'loading_indicator.dart';
+
 class ProfileInfoFrom extends StatefulWidget {
   final String name;
   final String date;
@@ -80,9 +82,7 @@ class _ProfileInfoFromState extends State<ProfileInfoFrom> {
       },
       builder: (context, state) {
         if (state.status!.isLoading) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const LoadingIndicator();
         }
         List<String> inter = [
           AppLocalizations.of(context)!.photography,

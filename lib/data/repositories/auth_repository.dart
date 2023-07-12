@@ -184,18 +184,21 @@ class AuthRepository {
       );
       List<String> signInMethods =
           await auth.fetchSignInMethodsForEmail(userData['email']);
-      if (signInMethods.isNotEmpty) {
-        UserCredential userCredential = await auth.signInWithEmailAndPassword(
-            email: userData['email'], password: 'password');
-        await userCredential.user?.linkWithCredential(facebookAuthCredential);
-        await FirebaseAuth.instance
-            .signInWithCredential(facebookAuthCredential);
-      } else {
-        throw BadRequestException(message: '-');
-      }
+
+        if (signInMethods.isNotEmpty) {
+          UserCredential userCredential = await auth.signInWithEmailAndPassword(
+              email: userData['email'], password: 'password');
+          await userCredential.user?.linkWithCredential(facebookAuthCredential);
+          await FirebaseAuth.instance
+              .signInWithCredential(facebookAuthCredential);
+        } else {
+          throw BadRequestException(message: '-');
+        }
     } on FirebaseAuthException catch (e) {
       throw BadRequestException(message: e.message!);
-    } catch (e) {
+    }on BadRequestException catch  (e) {
+      throw BadRequestException(message: e.message);
+    } catch (e){
       throw BadRequestException(message: e.toString());
     }
   }

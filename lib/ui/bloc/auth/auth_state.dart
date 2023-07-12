@@ -9,13 +9,17 @@ class Initial extends AuthState {
 
 class Authorized extends AuthState {
   final User? user;
+  final UserModel? userModel;
 
-  Authorized({this.user});
+  Authorized( {this.user, this.userModel,});
 
   @override
-  List<Object?> get props => [user];
+  List<Object?> get props => [user,userModel];
 }
-
+class Loading extends AuthState {
+  @override
+  List<Object?> get props => [];
+}
 class Unauthorized extends AuthState {
   @override
   List<Object?> get props => [];

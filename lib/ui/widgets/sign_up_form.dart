@@ -197,6 +197,7 @@ class _SignUpFormState extends State<SignUpForm> {
                               height: 20,
                             ),
                             TextFormField(
+                              autocorrect: false,
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
                               controller: _emailController,

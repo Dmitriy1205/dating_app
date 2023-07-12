@@ -29,18 +29,20 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
+			    <string>fb614240994138585</string>
 				<string>com.googleusercontent.apps.1060438574529-3hbbli4ma9441ogb583meh9phg6cqpjq</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+
 	<key>FacebookAppID</key>
-	<string>504249461570428</string>
+	<string>614240994138585</string>
 	<key>FacebookClientToken</key>
-	<string>token</string>
+	<string>5d7d867fb4b1674694cbc763a29216f2</string>
 	<key>FacebookDisplayName</key>
-	<string>date_app</string>
+	<string>dating_app</string>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<false/>
 	<key>FirebaseScreenReportingEnabled</key>
@@ -52,6 +54,8 @@
 		<string>fbauth2</string>
 		<string>fbshareextension</string>
 	</array>
+
+
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
