@@ -17,5 +17,5 @@ void main() async {
   await sl.init();
   Bloc.observer = GlobalObserver();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  runApp(const App());
+  runApp(App());
 }

@@ -79,12 +79,12 @@ class FCMService {
       ),
       iOS: DarwinNotificationDetails(presentSound: true));
 
-  Future<void> onMessage() async {
+  Future<void> onMessage({String? title, String? body}) async {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       await localNotificationsPlugin.show(
         0,
-        message.notification!.title,
-        message.notification!.body,
+        title ?? message.notification!.title,
+        body ?? message.notification!.body,
         platformChannelSpecifics,
         payload: message.data['type'],
       );

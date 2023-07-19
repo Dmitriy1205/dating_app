@@ -246,13 +246,15 @@ class _MessengerWidgetState extends State<MessengerWidget> {
                             time: DateTime.now().toString(),
                             recipientName: widget.user.firstName,
                           );
-                          context
-                              .read<NotificationCubit>()
-                              .sendMessageNotification(
-                                userId: widget.recieverId,
-                                senderName: widget.user.firstName!,
-                                message: myMessageController.text,
-                              );
+                          {
+                            context
+                                .read<NotificationCubit>()
+                                .sendMessageNotification(
+                                  userId: widget.recieverId,
+                                  senderName: widget.user.firstName!,
+                                  message: myMessageController.text,
+                                );
+                          }
                           context
                               .read<MessengerCubit>()
                               .sendMessage(message, widget.user);

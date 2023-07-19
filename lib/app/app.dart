@@ -12,7 +12,9 @@ import '../core/utils/navigation_key.dart';
 import '../ui/bloc/localization/localization_cubit.dart';
 
 class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
+  App({Key? key}) : super(key: key);
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +44,9 @@ class App extends StatelessWidget {
                 builder: (context, state) {
                   if (state is Authorized) {
                     context.read<LocalizationCubit>().init();
-                    context.read<NotificationCubit>().saveToken(currentUserId: state.user!.uid);
+                    context
+                        .read<NotificationCubit>()
+                        .saveToken(currentUserId: state.user!.uid);
                     return const HomeScreen();
                   } else {
                     return const WelcomeScreen();
@@ -55,13 +59,13 @@ class App extends StatelessWidget {
       ),
     );
   }
-  //
-  // Widget _buildHomeScreen() {
-  //   return StreamBuilder<User?>(
-  //     stream: FirebaseAuth.instance.authStateChanges(),
-  //     builder: (context, snapshot) {
-  //
-  //     },
-  //   );
-  // }
+//
+// Widget _buildHomeScreen() {
+//   return StreamBuilder<User?>(
+//     stream: FirebaseAuth.instance.authStateChanges(),
+//     builder: (context, snapshot) {
+//
+//     },
+//   );
+// }
 }

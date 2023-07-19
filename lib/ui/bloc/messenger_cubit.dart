@@ -1,7 +1,9 @@
 import 'package:bloc/bloc.dart';
+import 'package:dating_app/core/services/fcm_service.dart';
 import 'package:dating_app/data/repositories/user_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../../core/services/service_locator.dart';
 import '../../data/models/message_model.dart';
 import '../../data/models/status.dart';
@@ -11,6 +13,7 @@ import '../../data/repositories/data_repository.dart';
 class MessengerCubit extends Cubit<MessengerStates> {
   final FirebaseAuth auth;
   final DataRepository db;
+
   MessengerCubit(this.db, this.auth, UserModel userModel)
       : super(MessengerStates(
           messagesList: const [],
@@ -18,10 +21,11 @@ class MessengerCubit extends Cubit<MessengerStates> {
         )) {
     // messagesStream();
   }
-
+bool onMessengerScreen = false;
 
   // List<MessageModel> messagesList = [];
-
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
   UserRepository loggedUser = sl<UserRepository>();
   String getChatId = '';
   String loggedUserPicture = '';
@@ -32,7 +36,6 @@ class MessengerCubit extends Cubit<MessengerStates> {
     required String currentUserId,
     required String blockerUserId,
   }) async {
-
     bool? isBlocked = await db
         .isUserBlocked(currentUserId, blockerUserId)
         .then((value) => value!.isBlocked);
@@ -44,7 +47,6 @@ class MessengerCubit extends Cubit<MessengerStates> {
         value!.profileInfo!.image ??
             'https://firebasestorage.googleapis.com/v0/b/dating-app-95830.appspot.com/o/users%2F7kyZ3iSjKUQyQHNTNpB1gzU8pP33%2Fimage2.png?alt=media&token=968c17f4-46ee-4e0b-a3e7-b6d0a92c3f4c');
   }
-
 
   void getChatId2(String openedChatUserId) {
     getChatId = db.getClearId(getLoggedUserId, openedChatUserId);
@@ -60,6 +62,7 @@ class MessengerCubit extends Cubit<MessengerStates> {
     db.sendMessageToPal(messageModel, getChatId);
   }
 
+
   void messagesStream(String openedChatUserId) async {
     final messages = db
         .getAllChatMessagesStream(getLoggedUserId, openedChatUserId)
@@ -68,8 +71,14 @@ class MessengerCubit extends Cubit<MessengerStates> {
       if (data.isNotEmpty) {
         emit(state.copyWith(messagesList: data, status: Status.loaded()));
         if (!data[0].isRead!) {
+          print('isRead! + ');
+
           if (data[0].senderName != loggedUser.getUserName) {
-            // Notifications.showReceivedMessageNotification(
+            print('!data[0].isRead! ${!data[0].isRead!}');
+            flutterLocalNotificationsPlugin.show(0, data[0].senderName!,
+                data[0].message!, sl<FCMService>().platformChannelSpecifics);
+
+            // FCMService.showReceivedMessageNotification(
             //     title: data[0].senderName!,
             //     payload: 'payload',
             //     body: data[0].message!,

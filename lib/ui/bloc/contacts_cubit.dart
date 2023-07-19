@@ -15,6 +15,7 @@ class ContactsCubit extends Cubit<ContactsCubitStates> {
   final UserRepository _userRepository;
   final DataRepository _dataRepository;
   final AuthRepository _authRepository;
+  final isOnlineUserSubscription = StreamSubscription<List>;
 
   ContactsCubit(
       {required AuthRepository authRepository,
@@ -28,7 +29,7 @@ class ContactsCubit extends Cubit<ContactsCubitStates> {
   }
 
   late UserModel palUser;
-
+  List<String> onlineUsers = [];
   List<UserModel> addedUsersList = [];
   List<UserModel> foundedNames = [];
   List<UserModel> userNames = [];
@@ -41,11 +42,15 @@ class ContactsCubit extends Cubit<ContactsCubitStates> {
   }
 
   Future<void> updateConnections() async {
-    addedUsersList = await _dataRepository.getContacts(currentUserId: _authRepository.currentUser()!.uid);
-    final currentUserFields = await _dataRepository.getUserFields(_authRepository.currentUser()!.uid);
-
-    final List<CallModel> callHistoryList = await _userRepository.getUserCallHistory();
-    callHistoryList.removeWhere((element) => element.callerId != _authRepository.currentUser()!.uid );
+    _dataRepository.setCurrentUserIsOnline(_authRepository.currentUser()!.uid);
+    addedUsersList = await _dataRepository.getContacts(
+        currentUserId: _authRepository.currentUser()!.uid);
+    final currentUserFields =
+        await _dataRepository.getUserFields(_authRepository.currentUser()!.uid);
+    final List<CallModel> callHistoryList =
+        await _userRepository.getUserCallHistory();
+    callHistoryList.removeWhere(
+        (element) => element.callerId != _authRepository.currentUser()!.uid);
 
     for (var i = 0; i < addedUsersList.length; i++) {
       List<String> userMatch =
@@ -76,7 +81,8 @@ class ContactsCubit extends Cubit<ContactsCubitStates> {
   Future<void> searchContact(String name) async {
     emit(state.copyWith(search: Search.searching));
     try {
-      addedUsersList = await _dataRepository.getContacts(currentUserId: _authRepository.currentUser()!.uid);
+      addedUsersList = await _dataRepository.getContacts(
+          currentUserId: _authRepository.currentUser()!.uid);
       for (var i = 0; i < addedUsersList.length; i++) {
         List<String> userMatch =
             await _dataRepository.isUserMatch(addedUsersList[i].id.toString());
@@ -113,6 +119,18 @@ class ContactsCubit extends Cubit<ContactsCubitStates> {
     } on Exception catch (e) {
       emit(state.copyWith(status: Status.error(e.toString())));
     }
+  }
+
+  setCurrentUserIsOnline() {
+    _dataRepository.setCurrentUserIsOnline(_authRepository.currentUser()!.uid);
+  }
+
+  setCurrentUserIsOffline() {
+    _dataRepository.setCurrentUserIsOffline(_authRepository.currentUser()!.uid);
+  }
+
+  Stream<List<String>> getOnlineUsersList() async* {
+    yield* _dataRepository.getAllOnlineId();
   }
 }
 
@@ -155,7 +173,7 @@ class ContactsCubitStates extends Equatable {
         userMatch,
         search,
         foundedUsersList,
-    callHistory,
+        callHistory,
       ];
 
   ContactsCubitStates copyWith({

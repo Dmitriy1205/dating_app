@@ -22,6 +22,22 @@
           }
         },
         {
+          "client_id": "1060438574529-f9uf92gf8r5s6v03s662qojkjbp71o5c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dimporg.dating_app",
+            "certificate_hash": "074475d6bb8724da843d1f52f2d266410fa13cd9"
+          }
+        },
+        {
+          "client_id": "1060438574529-icl9mijiub64uma9tt66lg0mbvsvsh25.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dimporg.dating_app",
+            "certificate_hash": "e18281617ef673ea6e180704b9a110da079dabb0"
+          }
+        },
+        {
           "client_id": "1060438574529-6fhglm7dcm6mqnr5e4bc278kbeo3450c.apps.googleusercontent.com",
           "client_type": 3
         }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dating_app/data/data_provider/firestore_data_provider.dart';
 import '../models/friend_model.dart';
@@ -7,6 +9,8 @@ import '../models/user_model.dart';
 class DataRepository {
   final FirebaseDataProvider dataProvider;
   late String chatId;
+  bool isUserOnline = false;
+  StreamController<bool> _controller = StreamController<bool>.broadcast();
 
   DataRepository({required this.dataProvider});
 
@@ -22,15 +26,18 @@ class DataRepository {
     return await dataProvider.getContacts(currentUserId: currentUserId);
   }
 
-  Future<List<UserModel>> getBlockedContacts({required String currentUserId}) async {
-    return await dataProvider.getBlockedContactsList(currentUserId: currentUserId);
+  Future<List<UserModel>> getBlockedContacts(
+      {required String currentUserId}) async {
+    return await dataProvider.getBlockedContactsList(
+        currentUserId: currentUserId);
   }
 
-  Future<void> blockContact(String id,{required String currentUserId}) async {
+  Future<void> blockContact(String id, {required String currentUserId}) async {
     await dataProvider.toBlockContact(id, currentUserId: currentUserId);
   }
 
-  Future<void> unblockContact(String id,{required String currentUserId}) async {
+  Future<void> unblockContact(String id,
+      {required String currentUserId}) async {
     await dataProvider.toUnblockContact(id, currentUserId: currentUserId);
   }
 
@@ -105,4 +112,23 @@ class DataRepository {
     await dataProvider.saveToken(token: token, currentUserId: currentUserId);
   }
 
+  Future<void> setCurrentUserIsOnline(String chatId) async {
+    isUserOnline = true;
+    _controller.add(isUserOnline);
+    await dataProvider.setCurrentUserIsOnline(chatId);
+  }
+
+  Future<void> setCurrentUserIsOffline(String chatId) async {
+    isUserOnline = false;
+    _controller.add(isUserOnline);
+    await dataProvider.setCurrentUserIsOffline(chatId);
+  }
+
+  Stream<bool> getIsUserOnline() {
+    return _controller.stream;
+  }
+
+  Stream<List<String>> getAllOnlineId() async* {
+    yield* dataProvider.getAllIsUserOnline();
+  }
 }

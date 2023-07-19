@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dating_app/core/services/cache_helper.dart';
 import 'package:dating_app/ui/bloc/contacts_cubit.dart';
 import 'package:dating_app/ui/bloc/stories/stories_cubit.dart';
@@ -21,41 +23,51 @@ class ContactsScreen extends StatefulWidget {
   State<ContactsScreen> createState() => _ContactsScreenState();
 }
 
-class _ContactsScreenState extends State<ContactsScreen> {
+class _ContactsScreenState extends State<ContactsScreen>
+    with WidgetsBindingObserver {
   late ContactsCubit bloc;
   late TextEditingController controller;
+  List<String> onlineUsersList = [];
 
   @override
   void initState() {
     bloc = sl<ContactsCubit>();
     context.read<StoriesCubit>().fetchAllStories();
     controller = TextEditingController();
+    // bloc.getOnlineUsersList().listen((event) {
+    //   onlineUsersList.add(event);
+    //   print('bloc.onlineUsersList ${onlineUsersList}');
+    // });
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<RegisterCallCubit, RegisterCallState>(
-      listener: (context, state) {
-        if (state.inCallStatus == IncomingCallStatus.successOuterCall) {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (_) => VideoCallScreen(
-                    receiverId: state.callModel!.receiverId!,
-                    id: state.callModel!.id,
-                    isReceiver: false,
-                  )));
-        } else if (state.status!.isError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: Colors.red,
-              duration: const Duration(seconds: 5),
-              content: Text(
-                state.status!.errorMessage!,
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<RegisterCallCubit, RegisterCallState>(
+            listener: (context, state) {
+          if (state.inCallStatus == IncomingCallStatus.successOuterCall) {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (_) => VideoCallScreen(
+                      receiverId: state.callModel!.receiverId!,
+                      id: state.callModel!.id,
+                      isReceiver: false,
+                    )));
+          } else if (state.status!.isError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: Colors.red,
+                duration: const Duration(seconds: 5),
+                content: Text(
+                  state.status!.errorMessage!,
+                ),
               ),
-            ),
-          );
-        }
-      },
+            );
+          }
+        })
+      ],
       child: BlocProvider.value(
           value: bloc,
           child: Scaffold(
@@ -439,6 +451,28 @@ class _ContactsScreenState extends State<ContactsScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              StreamBuilder(
+                                  stream: bloc.getOnlineUsersList(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      onlineUsersList = snapshot.data as List<String>;
+                                      print('snapshot.data ${snapshot.data}');
+                                      if(onlineUsersList.contains(state.usersList![index].id)){
+                                        return Container(
+                                          decoration: BoxDecoration(
+                                              color: Colors.green,
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                          height: 10,
+                                          width: 10,
+                                        );
+                                      }
+                                    } else if (snapshot.hasError){
+                                      print('snapshot error ${snapshot.error}');
+                                    }
+                                      return const SizedBox();
+
+                                  }),
                               Text(
                                 state.usersList![index].firstName!,
                                 style: const TextStyle(
@@ -465,5 +499,26 @@ class _ContactsScreenState extends State<ContactsScreen> {
             ),
           );
         });
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.detached) {
+      print('AppLifecycleState.  ${state.name}');
+      bloc.setCurrentUserIsOffline();
+    }
+    if (state == AppLifecycleState.resumed) {
+      print('AppLifecycleState.resumed  ${state.name}');
+      bloc.setCurrentUserIsOnline();
+    }
+  }
+
+  @override
+  void dispose() {
+    bloc.setCurrentUserIsOffline();
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 }

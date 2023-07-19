@@ -13,8 +13,8 @@ import 'package:ntp/ntp.dart';
 class FirebaseDataProvider {
   final FirebaseFirestore firestore;
   UserModel userModel = UserModel();
-  MessageModel? messageModel;
-  late String clearId;
+  final StreamController<List<String>> _streamController = StreamController.broadcast();
+
 
   FirebaseDataProvider({required this.firestore});
 
@@ -165,9 +165,8 @@ class FirebaseDataProvider {
   Future<List<UserModel>> getContacts({required String currentUserId}) async {
     List<String> listAddedToFriends = [];
     try {
-      QuerySnapshot<Map<String, dynamic>> getAddedFriends = await firestore
-          .collection('users/$currentUserId/addedFriends')
-          .get();
+      QuerySnapshot<Map<String, dynamic>> getAddedFriends =
+          await firestore.collection('users/$currentUserId/addedFriends').get();
       for (var element in getAddedFriends.docs) {
         if (element.data()['blockedFriend'] == false) {
           listAddedToFriends.add(element.data()['addedFriend']);
@@ -187,12 +186,12 @@ class FirebaseDataProvider {
     }
   }
 
-  Future<List<UserModel>> getBlockedContactsList({required String currentUserId}) async {
+  Future<List<UserModel>> getBlockedContactsList(
+      {required String currentUserId}) async {
     List<String> listAddedToFriends = [];
     try {
-      QuerySnapshot<Map<String, dynamic>> getAddedFriends = await firestore
-          .collection('users/$currentUserId/addedFriends')
-          .get();
+      QuerySnapshot<Map<String, dynamic>> getAddedFriends =
+          await firestore.collection('users/$currentUserId/addedFriends').get();
       for (var element in getAddedFriends.docs) {
         if (element.data()['blockedFriend'] == true) {
           listAddedToFriends.add(element.data()['addedFriend']);
@@ -212,7 +211,8 @@ class FirebaseDataProvider {
     }
   }
 
-  Future<void> toBlockContact(String id,{required String currentUserId}) async {
+  Future<void> toBlockContact(String id,
+      {required String currentUserId}) async {
     try {
       await firestore
           .collection('users')
@@ -225,7 +225,8 @@ class FirebaseDataProvider {
     }
   }
 
-  Future<void> toUnblockContact(String id,{required String currentUserId}) async {
+  Future<void> toUnblockContact(String id,
+      {required String currentUserId}) async {
     try {
       await firestore
           .collection('users')
@@ -360,7 +361,8 @@ class FirebaseDataProvider {
     }
   }
 
-  Future<void> addedToFriends(String addedFriendId,{required String currentUserId}) async {
+  Future<void> addedToFriends(String addedFriendId,
+      {required String currentUserId}) async {
     try {
       await firestore
           .collection('users/$currentUserId/addedFriends')
@@ -371,7 +373,8 @@ class FirebaseDataProvider {
     }
   }
 
-  Future<void> refusedFriends(String refusedFriends,{required String currentUserId}) async {
+  Future<void> refusedFriends(String refusedFriends,
+      {required String currentUserId}) async {
     try {
       await firestore
           .collection('users/$currentUserId/refusedFriends')
@@ -489,6 +492,52 @@ class FirebaseDataProvider {
       return data;
     } on FirebaseException catch (e) {
       throw Exception(e.code.toString());
+    }
+  }
+
+  Future<void> setCurrentUserIsOnline(String userId) async {
+    try {
+      final data = await firestore
+          .collection('users')
+          .doc(userId)
+          .update({'isOnline': true});
+      return data;
+    } on FirebaseException catch (e) {
+      throw Exception(e.code.toString());
+    }
+  }
+
+  Future<void> setCurrentUserIsOffline(String userId) async {
+    try {
+      final data = await firestore
+          .collection('users')
+          .doc(userId)
+          .update({'isOnline': false});
+      return data;
+    } on FirebaseException catch (e) {
+      throw Exception(e.code.toString());
+    }
+  }
+
+  Stream<List<String>>
+      getAllIsUserOnline() async* {
+    List<String> onlineUsers = [];
+    try {
+      firestore
+          .collection('users')
+          .where('isOnline', isEqualTo: true)
+          .snapshots()
+          .listen((data) {
+        onlineUsers.clear();
+        data.docs.forEach((doc) {
+          onlineUsers.add(doc.id);
+          print('onlineUsers 2 ${doc.id}');
+          _streamController.add(onlineUsers);
+        });
+      });
+       yield* _streamController.stream;
+    } on FirebaseException catch (e) {
+      throw BadRequestException(message: e.message!);
     }
   }
 }

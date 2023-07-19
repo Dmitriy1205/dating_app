@@ -232,7 +232,11 @@ class _MessengerScreenState extends State<MessengerScreen> {
           recieverId: widget.user.id!,
         ));
   }
-
+@override
+  void dispose() {
+    context.read<NotificationCubit>().disableScreen();
+    super.dispose();
+  }
   void handleClick(String value) {
     switch (value) {
       case 'Logout':

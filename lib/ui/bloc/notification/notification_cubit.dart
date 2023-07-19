@@ -1,10 +1,8 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:dating_app/data/models/status.dart';
 import 'package:dating_app/data/repositories/auth_repository.dart';
 import 'package:equatable/equatable.dart';
-
 import '../../../data/repositories/data_repository.dart';
 import '../../../data/repositories/notification_repository.dart';
 
@@ -19,7 +17,25 @@ class NotificationCubit extends Cubit<NotificationState> {
     required this.notificationRepo,
     required this.firestoreRepo,
     required this.authRepository,
-  }) : super(NotificationState(status: Status.initial()));
+  }) : super(NotificationState(status: Status.initial())) {
+    getIsUserOnline().listen((event) {
+      if (event) {
+        isNotification = false;
+        print('print from NotificationState TRUE');
+      } else {
+        isNotification = true;
+        print('print from NotificationState FALSE');
+      }
+    });
+
+    firestoreRepo.getAllOnlineId().listen((event) {
+      onlineUsersId.addAll(event);
+      print('onlineUsersId $onlineUsersId');
+    });
+  }
+
+  List<String> onlineUsersId = [];
+  bool isNotification = true;
 
   Future<void> saveToken({required String currentUserId}) async {
     String? token = await notificationRepo.getToken();
@@ -31,12 +47,15 @@ class NotificationCubit extends Cubit<NotificationState> {
       {required String userId,
       required String senderName,
       required String message}) async {
-    final data = await firestoreRepo.getField(
-        collectionName: 'fcmTokens', userId: userId);
-    String token = data['token'];
-    await notificationRepo.sendMessage(
-        token: token, body: message, title: senderName, type: 'message');
-    emit(state.copyWith(status: Status.loaded()));
+    print ('!onlineUsersId.contains(userId) ${!onlineUsersId.contains(userId)}');
+    if (!onlineUsersId.contains(userId)) {
+      final data = await firestoreRepo.getField(
+          collectionName: 'fcmTokens', userId: userId);
+      String token = data['token'];
+      await notificationRepo.sendMessage(
+          token: token, body: message, title: senderName, type: 'message');
+      emit(state.copyWith(status: Status.loaded()));
+    }
   }
 
   Future<void> sendCallNotification({
@@ -53,5 +72,12 @@ class NotificationCubit extends Cubit<NotificationState> {
 
   Future<void> cancel() async {
     notificationRepo.cancelNotification();
+  }
+
+  Future<void> disableScreen() async {}
+
+  Stream<bool> getIsUserOnline() async* {
+    print('from notificationCubit');
+    yield* firestoreRepo.getIsUserOnline();
   }
 }
